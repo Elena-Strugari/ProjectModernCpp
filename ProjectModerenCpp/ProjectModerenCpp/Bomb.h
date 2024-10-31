@@ -9,7 +9,7 @@ struct Position
 class Bomb
 {
 public:
-	void Explode();
+	void Explode(Position m_bombPosition/*second parameter is the map size*/ );
 
 private:
 	Position m_bombPosition;
