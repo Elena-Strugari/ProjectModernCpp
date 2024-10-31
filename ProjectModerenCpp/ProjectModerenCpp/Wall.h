@@ -25,5 +25,7 @@ public:
 private:
 	Position m_position;
 	bool m_destructible; //1 = destructible, 0 = indestructible
+	bool m_exist;
+	uint8_t m_hitCount;
 };
 
