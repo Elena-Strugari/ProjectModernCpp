@@ -10,21 +10,26 @@ struct Position
 class Wall
 {
 public:
+	enum class Destructible : uint8_t
+	{
+		destructible,
+		indestructible
+	};
+public:
 
 	//CONSTRUCTOR
-	Wall(uint16_t x, uint16_t y, bool destructible, bool exist, uint8_t hitCount /* Bomb* bomb, Heart* heart*/);
+	Wall(uint16_t x, uint16_t y, Destructible destructible, bool exist, uint8_t hitCount /* Bomb* bomb, Heart* heart*/);
 
-	bool isDistructible()const;
-	Position getPosition()const;
-	bool destroy()const;
-	bool hit();
+	Destructible IsDistructible()const;
+	Position GetPosition()const;
+	bool Destroy()const;
+	bool Hit();
 	//GETTERS
 
-
-
 private:
+
 	Position m_position;
-	bool m_destructible; //1 = destructible, 0 = indestructible
+	Destructible m_destructible : 1;
 	bool m_exist;
 	uint8_t m_hitCount;
 };
