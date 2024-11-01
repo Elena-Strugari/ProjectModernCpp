@@ -6,7 +6,7 @@ Wall::Wall(uint16_t x, uint16_t y, bool destructible, bool exist, uint8_t hitCou
 	, m_exist(true)
 	, m_hitCount(hitCount)
 {
-	//EMPTY
+	//empty
 }
 
 bool Wall::isDistructible() const
