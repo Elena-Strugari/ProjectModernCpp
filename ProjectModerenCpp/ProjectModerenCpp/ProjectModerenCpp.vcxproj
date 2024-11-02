@@ -129,18 +129,22 @@
   <ItemGroup>
     <ClInclude Include="Bomb.h" />
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="CollisionManeger.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="MoveObject.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Wall.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bomb.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="CollisionManeger.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MoveObject.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

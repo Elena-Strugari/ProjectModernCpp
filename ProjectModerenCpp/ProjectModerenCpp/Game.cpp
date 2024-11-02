@@ -15,3 +15,7 @@ void Game::checkCollisions()
 void Game::HandleInput()
 {
 }
+
+void Game::Run()
+{
+}

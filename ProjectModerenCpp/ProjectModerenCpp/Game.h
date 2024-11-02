@@ -7,6 +7,9 @@ public:
 	void checkCollisions();
 	void HandleInput();
 
+
+
+	void Run();
 private:
 	/*Map  m_map;
 	std::vector<Tank> m_tanks;
