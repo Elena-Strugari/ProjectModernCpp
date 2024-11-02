@@ -8,9 +8,9 @@ public:
 	void HandleInput();
 
 private:
-	/*Map  map;
-	std::vector<Tank> tanks;
-	std::vector<Bullet> bullets;
-	Player player;*/
+	/*Map  m_map;
+	std::vector<Tank> m_tanks;
+	std::vector<Bullet> m_bullets;
+	Player m_player;*/
 };
 
