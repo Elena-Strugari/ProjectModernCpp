@@ -6,6 +6,7 @@
 class GameObject
 {
 public:
+	GameObject(uint8_t x, uint8_t y);
 	virtual void update() = 0;
 	//virtual void render() = 0; //- for GUI
 

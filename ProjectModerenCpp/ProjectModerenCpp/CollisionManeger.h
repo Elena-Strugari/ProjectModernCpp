@@ -5,6 +5,6 @@
 class CollisionManeger
 {
 public:
-	CollisionType checkCollosion(GameObject obj1, GameObject obj2);
+	//CollisionType checkCollosion(GameObject obj1, GameObject obj2);
 };
 
