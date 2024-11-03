@@ -10,3 +10,18 @@ Tank::Tank(uint16_t startX, uint16_t startY, Type type)
 {
     // empty
 }
+void Tank::setPosition(int x, int y) {
+    m_position.x = x;
+    m_position.y = y;
+}
+Position Tank::getPosition() const {
+    return m_position;
+}
+
+Tank::Direction Tank::getDirection() const {
+    return m_direction;
+}
+
+int Tank::getHealth() const {
+    return m_health;
+}
