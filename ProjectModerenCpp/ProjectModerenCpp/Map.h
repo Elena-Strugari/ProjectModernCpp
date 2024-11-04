@@ -2,6 +2,9 @@
 #include <cstdint>
 #include <vector>
 #include "Wall.h"
+//#include "Position.h"
+
+
 struct Dimentions {
 	uint16_t width;
 	uint16_t height;
