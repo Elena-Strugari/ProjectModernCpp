@@ -1,11 +1,14 @@
 #pragma once
 #include <cstdint>
+#include "Bomb.h"
+#include "BonusLife.h"
+#include "Position.h"
 
-struct Position
-{
-	uint16_t x, y;
-
-};
+//struct Position
+//{
+//	uint16_t x, y;
+//
+//};
 
 class Wall
 {
@@ -22,14 +25,14 @@ public:
 
 	Destructible IsDistructible()const;
 	Position GetPosition()const;
-	bool Destroy()const;
+	bool Destroy();
 	bool Hit();
 	//GETTERS
 
 private:
 
 	Position m_position;
-	Destructible m_destructible : 1;
+	Destructible m_destructible:1;
 	bool m_exist;
 	uint8_t m_hitCount;
 };
