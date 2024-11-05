@@ -1,6 +1,7 @@
 ﻿#include "Bomb.h"
 #include<cmath>
-void Bomb::Explode(Position m_bombPosition /*second parameter is the map size*/)
+#include"Position.h"
+void Bomb::Explode(Position m_bombPosition,Map map)
 {
     
     //for (int i = std::max(0, m_bombPosition.x - 5); i <= std::min(/* rows-1,*/ m_bombPosition.x + 5);i++) 

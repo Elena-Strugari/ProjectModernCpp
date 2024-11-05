@@ -142,6 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="BonusLife.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="CollisionManeger.cpp" />
     <ClCompile Include="Game.cpp" />
