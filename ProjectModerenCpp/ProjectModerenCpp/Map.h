@@ -14,6 +14,8 @@ class Map
 public:
 	//CONSTRUCTOR
 	Map(uint16_t width, uint16_t height, std::vector <std::vector<Wall*>> grid);
+	uint16_t GetWidth() const;
+	uint16_t GetHeight() const;
 
 private:
 
