@@ -1,4 +1,6 @@
 #pragma once
+#include "Map.h"
+
 class Game
 {
 public:
@@ -7,7 +9,10 @@ public:
 	void checkCollisions();
 	void HandleInput();
 
-
+	//Functii test
+	Game();
+	void TestRun();
+	void DisplayMap() const;
 
 	void Run();
 private:
@@ -15,5 +20,9 @@ private:
 	std::vector<Tank> m_tanks;
 	std::vector<Bullet> m_bullets;
 	Player m_player;*/
+
+	// Variabile de test
+	Map m_map;
+	void InitializeMap();
 };
 

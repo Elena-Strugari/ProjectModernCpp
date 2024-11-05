@@ -5,6 +5,7 @@
 class Bullet: public GameObject, public MoveObject
 {
 public:
+	Bullet();
 	Bullet(uint8_t x, uint8_t y, Direction direction);
 	void update() override;
 	//void render() override; //GUI
