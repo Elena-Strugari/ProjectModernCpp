@@ -13,6 +13,7 @@ public:
 	Game();
 	void TestRun();
 	void DisplayMap() const;
+	void InitializeMap();
 
 	void Run();
 private:
@@ -23,6 +24,6 @@ private:
 
 	// Variabile de test
 	Map m_map;
-	void InitializeMap();
+	//void InitializeMap();
 };
 
