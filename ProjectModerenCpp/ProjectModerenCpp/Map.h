@@ -20,6 +20,9 @@ public:
 	uint16_t GetWidth() const;
 	uint16_t GetHeight() const;
 	Wall* GetWallAt(uint16_t i, uint16_t j) const;
+	void SetBomb();
+	void SetBonus();
+	void SetBush();
 
 private:
 

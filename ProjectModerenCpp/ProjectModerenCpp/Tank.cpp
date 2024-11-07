@@ -22,6 +22,11 @@ Tank::Direction Tank::getDirection() const {
     return m_direction;
 }
 
-int Tank::getHealth() const {
+uint16_t Tank::getHealth() const {
     return m_health;
+}
+
+float Tank::GetSpeed() const
+{
+    return m_speed;
 }

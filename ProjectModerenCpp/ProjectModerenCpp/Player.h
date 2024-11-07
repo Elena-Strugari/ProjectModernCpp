@@ -12,7 +12,6 @@ public:
 
 private:
 	uint8_t m_score;
-protected:
 	uint8_t lives;
 };
 

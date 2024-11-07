@@ -2,7 +2,7 @@
 #include <cstdint>
 #include"Position.h"
 #include"Player.h"
-class BonusLife : public Player
+class BonusLife
 {
 public:
 	void Collect(Position m_heartPosition);
