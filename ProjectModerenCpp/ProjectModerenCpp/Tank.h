@@ -3,7 +3,7 @@
 #include "Bomb.h"
 #include "Wall.h"
 
-class Tank {
+class Tank {   //cum legam tanc de player; cum stim ce tanc cui apartine
 public:
     enum class Direction : uint8_t {
         Up,
@@ -27,7 +27,9 @@ public:
     void setPosition(int x, int y);
     Position getPosition() const;
     Direction getDirection() const;
-    int getHealth() const;
+    uint16_t getHealth() const;
+    float GetSpeed()const;
+
 
 private:
     Position m_position;
