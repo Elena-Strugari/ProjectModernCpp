@@ -15,25 +15,19 @@ class Wall
 public:
 	enum class Destructible : uint8_t
 	{
-		destructible,
-		indestructible
+		destructible=0,
+		indestructible=1
 	};
 public:
 
 	//CONSTRUCTOR
-	Wall(uint16_t x, uint16_t y, Destructible destructible, bool exist, uint8_t hitCount /* Bomb* bomb, Heart* heart*/);
+	Wall(Destructible destructible);
 
 	Destructible IsDestructible()const;
-	Position GetPosition()const;
-	bool Destroy();
-	bool Hit();
-	//GETTERS
 
 private:
 
-	Position m_position;
 	Wall:: Destructible m_destructible : 1;
-	bool m_exist;
-	uint8_t m_hitCount;
+	
 };
 

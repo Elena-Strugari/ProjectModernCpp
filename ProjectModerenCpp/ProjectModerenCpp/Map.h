@@ -1,33 +1,35 @@
 #pragma once
 #include <cstdint>
+#include <iostream>
 #include <vector>
-//includerea wall.h este paguboasa.
-//#include "Wall.h"
-//#include "Position.h"
 
-class Wall;
 
-struct Dimentions {
-	uint16_t width;
-	uint16_t height;
-};
 class Map
 {
 public:
 	//CONSTRUCTOR
-	Map();
-	Map(uint16_t width, uint16_t height, std::vector <std::vector<Wall*>> grid);
-	uint16_t GetWidth() const;
+	Map();      // va trebui adaugare nivel 
+
+	void print()const;
+
+
+
+
+
+	/*uint16_t GetWidth() const;
 	uint16_t GetHeight() const;
 	Wall* GetWallAt(uint16_t i, uint16_t j) const;
 	void SetBomb();
 	void SetBonus();
-	void SetBush();
+	void SetBush();*/
 
 private:
 
-	Dimentions m_dimentions;
-	std::vector<std::vector<Wall*>> m_grid;//pointeri catre wall sau nullptr
+	uint16_t m_width;
+	uint16_t m_height;
+	std::vector<std::vector<int>> m_map;
+
+	//std::vector<std::vector<Wall>> m_grid;
 
 
 };

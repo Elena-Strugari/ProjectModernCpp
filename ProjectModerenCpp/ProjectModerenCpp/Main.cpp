@@ -1,9 +1,12 @@
 #include <iostream>
-#include "Game.h"
+#include "Map.h"
 int main()
 {
 	//EMPTY
-	Game game;
-	game.TestRun();
+	//Game game;
+	//game.TestRun();
+	Map matrix;
+	matrix.print();
+
 	return 0;
 }
