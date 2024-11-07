@@ -8,7 +8,7 @@ public:
 	Player(uint8_t x, uint8_t y);
 	void updateScore(int points);
 	void loseLife();
-	bool isGameOver();
+	bool isGameOver();//trebuie oare aici sau in clasa Game?
 
 private:
 	uint8_t m_score;

@@ -23,7 +23,7 @@ public:
 	//CONSTRUCTOR
 	Wall(uint16_t x, uint16_t y, Destructible destructible, bool exist, uint8_t hitCount /* Bomb* bomb, Heart* heart*/);
 
-	Destructible IsDistructible()const;
+	Destructible IsDestructible()const;
 	Position GetPosition()const;
 	bool Destroy();
 	bool Hit();
@@ -32,7 +32,7 @@ public:
 private:
 
 	Position m_position;
-	Destructible m_destructible:1;
+	Wall:: Destructible m_destructible : 1;
 	bool m_exist;
 	uint8_t m_hitCount;
 };

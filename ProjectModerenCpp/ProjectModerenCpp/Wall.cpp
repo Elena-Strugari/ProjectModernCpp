@@ -23,7 +23,7 @@ Wall::Wall(uint16_t x, uint16_t y, Destructible destructible, bool exist, uint8_
 	//EMPTY
 }
 
-Wall::Destructible Wall::IsDistructible() const
+Wall::Destructible Wall::IsDestructible() const
 {
 	return m_destructible;
 }
