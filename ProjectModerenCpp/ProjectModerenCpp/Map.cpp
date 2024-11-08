@@ -6,7 +6,7 @@
 
 Map::Map()
 {
-	uint8_t minVal=10, maxVal=20;   // pt nivel 1 
+	uint8_t minVal=10, maxVal=20;   // pt nivel 1 , se va adauga un vector pt toate nivelele 
 	// random val mat 
 	std::srand(std::time(nullptr));
 	m_width = minVal + std::rand() % (maxVal - minVal + 1);

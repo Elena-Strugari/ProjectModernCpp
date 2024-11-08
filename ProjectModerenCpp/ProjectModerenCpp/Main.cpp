@@ -1,12 +1,13 @@
 #include <iostream>
 #include "Map.h"
+#include "Tank.h"
+
 int main()
 {
-	//EMPTY
-	//Game game;
-	//game.TestRun();
 	Map matrix;
-	matrix.print();
+	//matrix.print();
+	Tank tank{ Tank::ColorTank::Red };
+	
 
 	return 0;
 }

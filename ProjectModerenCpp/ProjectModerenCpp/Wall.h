@@ -1,14 +1,6 @@
 #pragma once
 #include <cstdint>
-#include "Bomb.h"
-#include "BonusLife.h"
-#include "Position.h"
 
-//struct Position
-//{
-//	uint16_t x, y;
-//
-//};
 
 class Wall
 {
