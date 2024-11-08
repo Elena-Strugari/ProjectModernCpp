@@ -54,6 +54,9 @@
     <ClInclude Include="Bush.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BonusLife.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Wall.cpp">
