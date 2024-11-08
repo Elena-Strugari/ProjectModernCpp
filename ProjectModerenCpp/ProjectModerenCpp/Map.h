@@ -2,7 +2,7 @@
 #include <cstdint>
 #include <iostream>
 #include <vector>
-
+#include "Wall.h"
 
 class Map
 {
@@ -22,7 +22,10 @@ public:
 	void SetBomb();
 	void SetBonus();
 	void SetBush();*/
-
+	void AddWall(uint16_t x, uint16_t y, Wall::Destructible destructible);
+	void GenerateWalls();
+	uint16_t GetWidth()const;
+	uint16_t GetHeight()const;
 private:
 
 	uint16_t m_width;
