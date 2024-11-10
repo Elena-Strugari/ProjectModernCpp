@@ -138,7 +138,6 @@
     <ClInclude Include="CollisionManeger.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
-    <ClInclude Include="Header.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="MoveObject.h" />
     <ClInclude Include="Player.h" />
@@ -162,6 +161,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PowerUp.cpp" />
     <ClCompile Include="Tank.cpp" />
+    <ClCompile Include="UserManager.cpp" />
     <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
