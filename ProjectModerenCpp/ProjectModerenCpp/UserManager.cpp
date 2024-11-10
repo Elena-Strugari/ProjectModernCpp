@@ -6,8 +6,8 @@ UserManager::UserManager() = default;
 void UserManager::PromptLoginOrRegister() {
     while (true) {
         std::cout << "Bine ai venit! Alege o optiune:\n";
-        std::cout << "1. Login\n";
-        std::cout << "2. Register\n";
+        std::cout << "1. Register\n";
+        std::cout << "2. Login\n";
         std::cout << "3. Exit\n";
 
         int choice;
