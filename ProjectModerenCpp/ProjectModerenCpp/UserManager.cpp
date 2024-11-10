@@ -22,5 +22,23 @@ void UserManager::PromptLoginOrRegister() {
         std::cout << "Introduceti numele de utilizator: ";
         std::string username;
         std::getline(std::cin, username);
+
+        if (choice == 1) {
+            Register(username);
+        }
+        else {
+            std::cout << "Optiune invalida.\n";
+        }
     }
+}
+
+bool UserManager::Register(const std::string& username) {
+    if (users.find(username) != users.end()) {
+        std::cout << "Numele de utilizator este deja folosit. Alegeti alt nume.\n";
+        return false;
+    }
+
+    users.insert(username);
+    std::cout << "Inregistrare reusita!\n";
+    return true;
 }
