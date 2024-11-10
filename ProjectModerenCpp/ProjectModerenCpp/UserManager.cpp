@@ -26,6 +26,10 @@ void UserManager::PromptLoginOrRegister() {
         if (choice == 1) {
             Register(username);
         }
+        if (choice == 2)
+        {
+            Login(username);
+        }
         else {
             std::cout << "Optiune invalida.\n";
         }
@@ -41,4 +45,15 @@ bool UserManager::Register(const std::string& username) {
     users.insert(username);
     std::cout << "Inregistrare reusita!\n";
     return true;
+}
+
+bool UserManager::Login(const std::string& username) {
+    if (users.find(username) != users.end()) {
+        std::cout << "Login reusit! Bine ai venit, " << username << "!" << "\n";
+        return true;
+    }
+    else {
+        std::cout << "Numele de utilizator nu exista. Inregistreaza-te mai intai.\n";
+        return false;
+    }
 }
