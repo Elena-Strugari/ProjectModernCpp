@@ -28,6 +28,6 @@ public:
      friend std::ostream& operator<<(std::ostream& os, const Tank& tank);
 
 private:
-    ColorTank m_color : 1;
+    ColorTank m_color : 2;    // with one bit (is just for red and blue )
     
 };

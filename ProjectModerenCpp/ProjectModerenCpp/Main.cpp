@@ -6,10 +6,11 @@
 int main()
 {
 	Map matrix;
-	matrix.GenerateWalls();
-	matrix.print();
-	//Tank tank{ Tank::ColorTank::Red };
+	//matrix.GenerateWalls();
+	//matrix.print();
+	//Tank tank{ Tank::ColorTank::Green };
 	
+	//std::cout << tank;
 
 	return 0;
 }

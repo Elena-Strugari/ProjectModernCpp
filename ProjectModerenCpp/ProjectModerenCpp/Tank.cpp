@@ -13,7 +13,11 @@ Tank::ColorTank Tank::GetColor() const
 
 std::ostream& operator<<(std::ostream& os, const Tank& tank)
 {
-	return os << std::format("{}",
-		static_cast<int>(tank.GetColor())
-	);
+    switch (tank.GetColor()) {
+    case Tank::ColorTank::Red:    os << "R"; break;
+    case Tank::ColorTank::Blue:   os << "B"; break;
+    case Tank::ColorTank::Green:  os << "G"; break;
+    case Tank::ColorTank::Yellow: os << "Y"; break;
+    }
+    return os;
 }

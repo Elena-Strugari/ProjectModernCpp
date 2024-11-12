@@ -1,7 +1,8 @@
-//#include "GameObject.h"
-//
-//GameObject::GameObject(uint8_t x, uint8_t y)
-//	:m_x(x),
-//	 m_y(y)
-//{
-//}
+#include "GameObject.h"
+
+
+GameObject::GameObject(Tank::ColorTank tank, Bullet bullet)
+	:Tank(tank), Bullet(bullet)
+{
+
+}
