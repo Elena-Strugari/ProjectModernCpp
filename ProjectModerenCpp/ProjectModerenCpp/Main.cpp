@@ -6,10 +6,9 @@
 int main()
 {
 	Map matrix;
+	matrix.GenerateWalls();
 	matrix.print();
-	Tank tank{ Tank::ColorTank::Red };
-	//UserManager userManager;
-	//userManager.PromptLoginOrRegister();
+	//Tank tank{ Tank::ColorTank::Red };
 	
 
 	return 0;
