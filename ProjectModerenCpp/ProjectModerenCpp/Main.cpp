@@ -1,10 +1,10 @@
 #include <iostream>
 #include "Map.h"
-#include "Tank.h"
 #include "UserManager.h"
 #include<utility>
 #include<vector>
 #include"Position.h"
+#include "GameObject.h"
 int main()
 {
 	Map matrix(2);
@@ -14,9 +14,11 @@ int main()
 	std::vector<std::pair<uint16_t, uint16_t>>startPosition = p.PlayersStartPositions(matrix.GetWidth(), matrix.GetHeight());
 	for (int i = 0; i < 4; i++)
 		std::cout << "Playier " << i << " : " << startPosition[i].first << "," << startPosition[i].second << "\n";
-	//Tank tank{ Tank::ColorTank::Green };
-	
-	//std::cout << tank;
+
+	GameObject obj(Tank::ColorTank::Blue);
+	std::cout << obj<<std::endl;
+
+	obj.ShootBullet();
 
 	return 0;
 }

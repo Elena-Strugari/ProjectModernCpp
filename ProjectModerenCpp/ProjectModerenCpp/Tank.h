@@ -14,7 +14,7 @@ public:
     };
 
 public:
-   
+    Tank();
     Tank(ColorTank color);
     ColorTank GetColor()const;
    
