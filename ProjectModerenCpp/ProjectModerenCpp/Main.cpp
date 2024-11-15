@@ -4,7 +4,7 @@
 #include<utility>
 #include<vector>
 #include"Position.h"
-#include "GameObject.h"
+#include "MoveObject.h"
 int main()
 {
 	Map matrix(2);
@@ -15,10 +15,13 @@ int main()
 	for (int i = 0; i < 4; i++)
 		std::cout << "Playier " << i << " : " << startPosition[i].first << "," << startPosition[i].second << "\n";
 
+
+	//afis 
 	GameObject obj(Tank::ColorTank::Blue);
 	std::cout << obj<<std::endl;
+	MoveObject moveObj(std::move(obj));
 
-	obj.ShootBullet();
+	moveObj.ShootBullet();
 
 	return 0;
 }

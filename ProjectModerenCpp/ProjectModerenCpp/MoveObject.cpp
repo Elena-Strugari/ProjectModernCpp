@@ -1,4 +1,34 @@
-//#include "MoveObject.h"
+﻿#include "MoveObject.h"
+#include <conio.h>
+
+
+MoveObject::MoveObject(GameObject&& obj)
+    :GameObject(std::move(obj))
+{
+}
+
+void MoveObject::ShootBullet()
+{
+    std::cout << "Apasa 'b' pentru a trage ('q' pentru a iesi)...\n";
+
+    char key;
+    while (true) {
+        if (_kbhit()) { 
+            key = _getch(); 
+
+            if (key == 'q') { 
+                std::cout << "End Game.\n";
+                break;
+            }
+
+            if (key == 'b') { 
+                Shoot();
+            }
+        }
+    }
+}
+
+
 
 
 
