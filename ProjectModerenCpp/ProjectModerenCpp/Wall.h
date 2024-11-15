@@ -5,10 +5,10 @@
 class Wall
 {
 public:
-	enum class Destructible : uint8_t
+	enum class Destructible : char
 	{
-		destructible=0,
-		indestructible=1
+		destructible='@',
+		indestructible='#'
 	};
 public:
 
@@ -19,7 +19,7 @@ public:
 
 private:
 
-	Wall:: Destructible m_destructible : 1;
+	Wall:: Destructible m_destructible;
 	
 };
 

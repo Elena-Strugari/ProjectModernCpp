@@ -6,8 +6,8 @@
 int main()
 {
 	Map matrix;
-	//matrix.GenerateWalls();
-	//matrix.print();
+	matrix.GenerateWalls();
+	matrix.print();
 	//Tank tank{ Tank::ColorTank::Green };
 	
 	//std::cout << tank;

@@ -30,7 +30,7 @@ private:
 
 	uint16_t m_width;
 	uint16_t m_height;
-	std::vector<std::vector<int>> m_map;
+	std::vector<std::vector<char>> m_map;
 
 	//std::vector<std::vector<Wall>> m_grid;
 
