@@ -6,7 +6,7 @@
 
 Map::Map()
 {
-	uint8_t minVal=15, maxVal=20;   // pt nivel 1 
+	uint16_t minVal=15, maxVal=20;   // pt nivel 1 
 	// random val mat 
 	std::srand(std::time(nullptr));
 	m_width = minVal + std::rand() % (maxVal - minVal + 1);

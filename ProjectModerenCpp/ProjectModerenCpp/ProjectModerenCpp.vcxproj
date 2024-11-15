@@ -157,6 +157,7 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MoveObject.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Position.cpp" />
     <ClCompile Include="PowerUp.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="UserManager.cpp" />

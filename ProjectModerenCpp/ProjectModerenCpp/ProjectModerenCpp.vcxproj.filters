@@ -51,9 +51,6 @@
     <ClInclude Include="Position.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Bush.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BonusLife.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -101,10 +98,10 @@
     <ClCompile Include="BonusLife.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Bush.cpp">
+    <ClCompile Include="UserManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UserManager.cpp">
+    <ClCompile Include="Position.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
