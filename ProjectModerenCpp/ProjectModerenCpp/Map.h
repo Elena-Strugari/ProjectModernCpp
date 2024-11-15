@@ -8,7 +8,7 @@ class Map
 {
 public:
 	//CONSTRUCTOR
-	Map();      // va trebui adaugare nivel 
+	Map(uint8_t level);      // va trebui adaugare nivel 
 
 	void print()const;
 
@@ -23,7 +23,7 @@ public:
 	void SetBonus();
 	void SetBush();*/
 	void AddWall(uint16_t x, uint16_t y, Wall::Destructible destructible);
-	void GenerateWalls();
+	void GenerateWalls(uint8_t level);
 	uint16_t GetWidth()const;
 	uint16_t GetHeight()const;
 private:

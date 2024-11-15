@@ -4,10 +4,14 @@
 #include <ctime>
 
 
-Map::Map()
+Map::Map(uint8_t level)
 {
-	uint16_t minVal=15, maxVal=20;   // pt nivel 1 
+	uint16_t minVal, maxVal;   // pt nivel 1 
 	// random val mat 
+	if (level == 1)
+		minVal = 15, maxVal = 20;
+	else if (level == 2)
+		minVal = 20, maxVal = 25;
 	std::srand(std::time(nullptr));
 	m_width = minVal + std::rand() % (maxVal - minVal + 1);
 	m_height = minVal + std::rand() % (maxVal - minVal + 1);	
@@ -49,59 +53,103 @@ uint16_t Map::GetHeight() const
 {
 	return m_height;
 }
-void Map::GenerateWalls()
+void Map::GenerateWalls(uint8_t level)
 {
 	//astea vor fi pentru verificare daca corespund indicii cu dimensiunile hartii
 
 	uint16_t height = GetHeight();
 	uint16_t width = GetWidth();
-	/*AddWall(3, 4, Wall::Destructible::destructible);
-	AddWall(3, 5, Wall::Destructible::destructible);
-	AddWall(2, 7, Wall::Destructible::destructible);
-	AddWall(8, 5, Wall::Destructible::destructible);
-	AddWall(6, 2, Wall::Destructible::destructible);*/
-	AddWall(0, 6, Wall::Destructible::indestructible);
-	AddWall(1, 6, Wall::Destructible::indestructible);
-	AddWall(1, 7, Wall::Destructible::indestructible);
-	AddWall(3, 8, Wall::Destructible::indestructible);
-	AddWall(4, 0, Wall::Destructible::indestructible);
-	AddWall(4, 1, Wall::Destructible::indestructible);
-	AddWall(4, 8, Wall::Destructible::indestructible);
-	AddWall(5, 2, Wall::Destructible::indestructible);
-	/*AddWall(3, 1, Wall::Destructible::destructible);
-	AddWall(3, 6, Wall::Destructible::destructible);
-	AddWall(4, 2, Wall::Destructible::destructible);
-	AddWall(4, 3, Wall::Destructible::destructible);
-	AddWall(2, 8, Wall::Destructible::destructible);
-	AddWall(6, 4, Wall::Destructible::destructible);
-	AddWall(5, 5, Wall::Destructible::destructible);
-	AddWall(7, 4, Wall::Destructible::destructible);
-	AddWall(4, 8, Wall::Destructible::destructible);
-	AddWall(8, 3, Wall::Destructible::destructible);*/
-	AddWall(5, 8, Wall::Destructible::indestructible);
-	AddWall(5, 9, Wall::Destructible::indestructible);
-	AddWall(5, 10, Wall::Destructible::indestructible);
-	AddWall(5, 14, Wall::Destructible::indestructible);
-	AddWall(6, 6, Wall::Destructible::indestructible);
-	AddWall(6, 14, Wall::Destructible::indestructible);
-	AddWall(7, 5, Wall::Destructible::indestructible);
-	AddWall(7, 6, Wall::Destructible::indestructible);
+	switch (level)
+	{
+	case 1:
+		AddWall(0, 6, Wall::Destructible::indestructible);
+		AddWall(1, 6, Wall::Destructible::indestructible);
+		AddWall(1, 7, Wall::Destructible::indestructible);
+		AddWall(3, 8, Wall::Destructible::indestructible);
+		AddWall(4, 0, Wall::Destructible::indestructible);
+		AddWall(4, 1, Wall::Destructible::indestructible);
+		AddWall(4, 8, Wall::Destructible::indestructible);
+		AddWall(5, 2, Wall::Destructible::indestructible);
+		AddWall(5, 8, Wall::Destructible::indestructible);
+		AddWall(5, 9, Wall::Destructible::indestructible);
+		AddWall(5, 10, Wall::Destructible::indestructible);
+		AddWall(5, 14, Wall::Destructible::indestructible);
+		AddWall(6, 6, Wall::Destructible::indestructible);
+		AddWall(6, 14, Wall::Destructible::indestructible);
+		AddWall(7, 5, Wall::Destructible::indestructible);
+		AddWall(7, 6, Wall::Destructible::indestructible);
+		AddWall(7, 7, Wall::Destructible::indestructible);
+		AddWall(10, 0, Wall::Destructible::indestructible);
+		AddWall(10, 1, Wall::Destructible::indestructible);
+		AddWall(10, 2, Wall::Destructible::indestructible);
+		AddWall(10, 3, Wall::Destructible::indestructible);
+		AddWall(10, 11, Wall::Destructible::indestructible);
+		AddWall(10, 12, Wall::Destructible::indestructible);
+		AddWall(12, 5, Wall::Destructible::indestructible);
+		AddWall(12, 9, Wall::Destructible::indestructible);
+		AddWall(12, 10, Wall::Destructible::indestructible);
+		AddWall(12, 11, Wall::Destructible::indestructible);
+		AddWall(12, 12, Wall::Destructible::indestructible);
+		AddWall(13, 5, Wall::Destructible::indestructible);
+		AddWall(13, 12, Wall::Destructible::indestructible);
+		AddWall(14, 5, Wall::Destructible::indestructible);
+		break;
+	case 2:
+		AddWall(2, 1, Wall::Destructible::indestructible);
+		AddWall(2, 2, Wall::Destructible::indestructible);
+		AddWall(2,3, Wall::Destructible::indestructible);
+		AddWall(0, 7, Wall::Destructible::indestructible);
+		AddWall(0, 8, Wall::Destructible::indestructible);
+		AddWall(0, 9, Wall::Destructible::indestructible);
+		AddWall(1, 8, Wall::Destructible::indestructible);
+		AddWall(2, 8, Wall::Destructible::indestructible);
+		AddWall(3, 8, Wall::Destructible::indestructible);
+		AddWall(4, 12, Wall::Destructible::indestructible);
+		AddWall(1, 16, Wall::Destructible::indestructible);
+		AddWall(2, 16, Wall::Destructible::indestructible);
+		AddWall(6, 6, Wall::Destructible::indestructible);
+		AddWall(6, 7, Wall::Destructible::indestructible);
+		AddWall(6, 8, Wall::Destructible::indestructible);
+		AddWall(6, 9, Wall::Destructible::indestructible);
+		AddWall(7, 13, Wall::Destructible::indestructible);
+		AddWall(8, 13, Wall::Destructible::indestructible);
+		AddWall(9, 13, Wall::Destructible::indestructible);
+		AddWall(10, 11, Wall::Destructible::indestructible);
+		AddWall(10, 12, Wall::Destructible::indestructible);
+		AddWall(9, 19, Wall::Destructible::indestructible);
+		AddWall(7, 19, Wall::Destructible::indestructible);
+		AddWall(8, 19, Wall::Destructible::indestructible);
+		AddWall(8, 18, Wall::Destructible::indestructible);
+		AddWall(9, 4, Wall::Destructible::indestructible);
+		AddWall(10, 4, Wall::Destructible::indestructible);
+		AddWall(11, 4, Wall::Destructible::indestructible);
+		AddWall(13, 5, Wall::Destructible::indestructible);
+		AddWall(11, 1, Wall::Destructible::indestructible);
+		AddWall(11, 2, Wall::Destructible::indestructible);
 
-	AddWall(7, 7, Wall::Destructible::indestructible);
-	AddWall(10, 0, Wall::Destructible::indestructible);
-	AddWall(10, 1, Wall::Destructible::indestructible);
-	AddWall(10, 2, Wall::Destructible::indestructible);
-	AddWall(10, 3, Wall::Destructible::indestructible);
-	AddWall(10, 11, Wall::Destructible::indestructible);
-	AddWall(10, 12, Wall::Destructible::indestructible);
-	AddWall(12, 5, Wall::Destructible::indestructible);
+		AddWall(11, 3, Wall::Destructible::indestructible);
+		AddWall(11, 4, Wall::Destructible::indestructible);
+		AddWall(11, 7, Wall::Destructible::indestructible);
+		AddWall(12, 7, Wall::Destructible::indestructible);
+		AddWall(13, 7, Wall::Destructible::indestructible);
+		AddWall(14, 7, Wall::Destructible::indestructible);
+		AddWall(11, 4, Wall::Destructible::indestructible);
+		AddWall(14, 8, Wall::Destructible::indestructible);
+		AddWall(14, 9, Wall::Destructible::indestructible);
+		AddWall(15, 2, Wall::Destructible::indestructible);
 
-	AddWall(12, 9, Wall::Destructible::indestructible);
-	AddWall(12, 10, Wall::Destructible::indestructible);
-	AddWall(12, 11, Wall::Destructible::indestructible);
-	AddWall(12, 12, Wall::Destructible::indestructible);
-	AddWall(13, 5, Wall::Destructible::indestructible);
-	AddWall(13, 12, Wall::Destructible::indestructible);
-	AddWall(14, 5, Wall::Destructible::indestructible);
+		AddWall(18, 4, Wall::Destructible::indestructible);
+		AddWall(19, 4, Wall::Destructible::indestructible);
+		AddWall(17, 12, Wall::Destructible::indestructible);
+		AddWall(17, 13, Wall::Destructible::indestructible);
+		AddWall(17, 14, Wall::Destructible::indestructible);
+		AddWall(16, 13, Wall::Destructible::indestructible);
+		AddWall(18, 14, Wall::Destructible::indestructible);
+		AddWall(15, 18, Wall::Destructible::indestructible);
+		
+	default:
+		break;
+	}
+	
 
 }

@@ -7,8 +7,8 @@
 #include"Position.h"
 int main()
 {
-	Map matrix;
-	matrix.GenerateWalls();
+	Map matrix(2);
+	matrix.GenerateWalls(2);
 	matrix.print();
 	Position p;
 	std::vector<std::pair<uint16_t, uint16_t>>startPosition = p.PlayersStartPositions(matrix.GetWidth(), matrix.GetHeight());
