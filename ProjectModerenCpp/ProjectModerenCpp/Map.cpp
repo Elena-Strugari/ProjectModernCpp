@@ -103,6 +103,5 @@ void Map::GenerateWalls()
 	AddWall(13, 5, Wall::Destructible::indestructible);
 	AddWall(13, 12, Wall::Destructible::indestructible);
 	AddWall(14, 5, Wall::Destructible::indestructible);
-	//AddWall(7, 6, Wall::Destructible::indestructible);
 
 }
