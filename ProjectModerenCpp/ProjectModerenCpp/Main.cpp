@@ -8,7 +8,7 @@
 int main()
 {
 	Map matrix(3);
-	matrix.GenerateWalls(3);
+	matrix.GenerateWalls(2);
 	//matrix.print();
 	matrix.PrintWithBorder();
 	Position p;
