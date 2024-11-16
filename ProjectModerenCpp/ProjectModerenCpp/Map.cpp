@@ -33,6 +33,33 @@ void Map::print() const
 		std::cout << std::endl;
 	}
 }
+void Map::PrintWithBorder()const
+{
+	int rows = m_map.size();
+	int cols = m_map[0].size();
+
+	for (int i = 0; i < (cols+1)*2; i++) 
+	{
+		std::cout << "#";
+	}
+	std::cout << '\n';
+	for (const auto& row : m_map)
+	{
+		std::cout << "#"; 
+		for (int val : row)
+		{
+			std::cout << char(val) << " ";
+		}
+		std::cout << "#" << '\n';
+	}
+	//std::cout << "#";
+	for (int i = 0; i < (cols+1)*2; ++i) 
+	{
+		std::cout << "#";
+	}
+	std::cout << '\n';
+
+}
 
 void Map::AddWall(uint16_t x, uint16_t y, Wall::Destructible destructible)
 {

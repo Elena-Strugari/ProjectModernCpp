@@ -9,7 +9,8 @@ int main()
 {
 	Map matrix(2);
 	matrix.GenerateWalls(2);
-	matrix.print();
+	//matrix.print();
+	matrix.PrintWithBorder();
 	Position p;
 	std::vector<std::pair<uint16_t, uint16_t>>startPosition = p.PlayersStartPositions(matrix.GetWidth(), matrix.GetHeight());
 	for (int i = 0; i < 4; i++)

@@ -11,7 +11,7 @@ public:
 	Map(uint8_t level);      // va trebui adaugare nivel 
 
 	void print()const;
-
+	void PrintWithBorder()const;
 
 
 
