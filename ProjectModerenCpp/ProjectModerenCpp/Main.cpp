@@ -7,8 +7,8 @@
 #include "MoveObject.h"
 int main()
 {
-	Map matrix(2);
-	matrix.GenerateWalls(2);
+	Map matrix(3);
+	matrix.GenerateWalls(3);
 	//matrix.print();
 	matrix.PrintWithBorder();
 	Position p;
