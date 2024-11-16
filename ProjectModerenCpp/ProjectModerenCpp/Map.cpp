@@ -89,7 +89,10 @@ std::vector<std::pair<int, int>> Map::RandomDestructibleWall(uint16_t m_width, u
 		std::pair<int, int> coord;
 		coord.first = std::rand() % m_width;  
 		coord.second = std::rand() % m_height; 
-		coordonate.push_back(coord);
+		if (m_map[coord.first][coord.second] == '#' || m_map[coord.first][coord.second] == '@')
+			i--;
+		else
+		   coordonate.push_back(coord);
 	}
 	return coordonate;
 }
