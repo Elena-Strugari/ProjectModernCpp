@@ -4,6 +4,7 @@
 
 #include <string>
 #include <set>
+#include <regex>
 
 class UserManager {
 public:
@@ -14,6 +15,7 @@ private:
     std::set<std::string> users;
     bool Register(const std::string& username);
     bool Login(const std::string& username);
+    bool ValidateUsername(const std::string& username);
 };
 
 #endif // USERMANAGER_H
