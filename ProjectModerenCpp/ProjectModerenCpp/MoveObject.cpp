@@ -16,3 +16,32 @@ MoveObject::MoveObject(GameObject&& obj, Map* map, int startX, int startY)
 void MoveObject::ShootBullet() {
     m_bullet.Shoot();
 }
+void MoveObject::Move(Direction direction) {
+    int newX = x, newY = y;
+
+    switch (direction) {
+    case Direction::Up:
+        newX--;
+        break;
+    case Direction::Down:
+        newX++;
+        break;
+    case Direction::Left:
+        newY--;
+        break;
+    case Direction::Right:
+        newY++;
+        break;
+    }
+
+    if (m_map->IsValidPosition(newX, newY) && m_map->GetCell(newX, newY) == '_') {
+        m_map->SetCell(x, y, '_');
+        x = newX;
+        y = newY;
+        m_map->SetCell(x, y, 'T');
+        std::cout << "Tank moved to (" << x << ", " << y << ")\n";
+    }
+    else {
+        std::cout << "Mutarea nu este posibila: obstacol sau iesire din harta\n";
+    }
+}
