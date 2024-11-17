@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Map.h"
 #include <cstdlib>  
 #include <ctime>
@@ -81,6 +81,22 @@ uint16_t Map::GetHeight() const
 {
 	return m_height;
 }
+bool Map::IsValidPosition(int x, int y) const {
+	return x >= 0 && x < m_width && y >= 0 && y < m_height;
+}
+
+void Map::SetCell(int x, int y, char value) {
+	if (IsValidPosition(x, y)) {
+		m_map[x][y] = value;
+	}
+}
+char Map::GetCell(int x, int y) const {
+	if (IsValidPosition(x, y)) {
+		return m_map[x][y];
+	}
+	return '#'; // Returnează un caracter special pentru poziții invalide
+}
+
 std::vector<std::pair<int, int>> Map::RandomDestructibleWall(uint16_t m_width, uint16_t m_height,int NumberOfWalls)
 {
 	std::vector<std::pair<int, int>> coordonate;
