@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include "Map.h"
 #include "UserManager.h"
 #include<utility>
@@ -19,10 +19,9 @@ int main()
 
 	//afis 
 	GameObject obj(Tank::ColorTank::Blue);
-	std::cout << obj<<std::endl;
-	MoveObject moveObj(std::move(obj));
-
-	moveObj.ShootBullet();
+	MoveObject tank(std::move(obj), &matrix, startPosition[0].first, startPosition[0].second);
+	//tank.ShootBullet();
+    tank.HandleInput();
 
 	return 0;
 }
