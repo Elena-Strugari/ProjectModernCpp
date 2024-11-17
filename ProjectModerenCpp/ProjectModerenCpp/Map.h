@@ -12,16 +12,15 @@ public:
 
 	void print()const;
 	void PrintWithBorder()const;
-
-
-
-
 	/*uint16_t GetWidth() const;
 	uint16_t GetHeight() const;
 	Wall* GetWallAt(uint16_t i, uint16_t j) const;
 	void SetBomb();
 	void SetBonus();
 	void SetBush();*/
+	bool IsValidPosition(int x, int y) const;
+	void SetCell(int x, int y, char value);
+	char GetCell(int x, int y) const;
 	void AddWall(uint16_t x, uint16_t y, Wall::Destructible destructible);
 	void GenerateWalls(uint8_t level);
 	uint16_t GetWidth()const;
