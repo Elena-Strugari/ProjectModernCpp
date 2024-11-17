@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 //#include <cstdint>
 //import std;
 #include <iostream>
@@ -24,10 +24,8 @@ public:
     Tank(const Tank&) = delete;                     // delete copy constructor
     Tank& operator=(const Tank&) = delete;          // delete op = copy constructor
 
-
      friend std::ostream& operator<<(std::ostream& os, const Tank& tank);
 
 private:
     ColorTank m_color : 2;    // with one bit (is just for red and blue )
-    
 };
