@@ -26,7 +26,7 @@ Map::Map(uint8_t level)
 	}
 }
 
-void Map::print() const
+void Map::Print() const
 {
 	for (const auto& row : m_map) {
 		for (int val : row) {
@@ -81,28 +81,28 @@ uint16_t Map::GetHeight() const
 {
 	return m_height;
 }
-bool Map::IsValidPosition(int x, int y) const {
+bool Map::IsValidPosition(uint16_t x, uint16_t y) const {
 	return x >= 0 && x < m_width && y >= 0 && y < m_height;
 }
 
-void Map::SetCell(int x, int y, char value) {
+void Map::SetCell(uint16_t x, uint16_t y, char value) {
 	if (IsValidPosition(x, y)) {
 		m_map[x][y] = value;
 	}
 }
-char Map::GetCell(int x, int y) const {
+char Map::GetCell(uint16_t x, uint16_t y) const {
 	if (IsValidPosition(x, y)) {
 		return m_map[x][y];
 	}
 	return '#'; // Returnează un caracter special pentru poziții invalide
 }
 
-std::vector<std::pair<int, int>> Map::RandomDestructibleWall(uint16_t m_width, uint16_t m_height,int NumberOfWalls)
+std::vector<std::pair<uint16_t, uint16_t>> Map::RandomDestructibleWall(uint16_t m_width, uint16_t m_height,int NumberOfWalls)
 {
-	std::vector<std::pair<int, int>> coordonate;
+	std::vector<std::pair<uint16_t, uint16_t>> coordonate;
 	std::srand(std::time(nullptr));
 	for (int i = 0; i < NumberOfWalls; ++i) {
-		std::pair<int, int> coord;
+		std::pair<uint16_t, uint16_t> coord;
 		coord.first = std::rand() % m_width;  
 		coord.second = std::rand() % m_height; 
 		if (m_map[coord.first][coord.second] == '#' || m_map[coord.first][coord.second] == '@')
@@ -119,7 +119,7 @@ void Map::GenerateWalls(uint8_t level)
 
 	uint16_t height = GetHeight();
 	uint16_t width = GetWidth();
-	std::vector<std::pair<int, int>> coordonate;
+	std::vector<std::pair<uint16_t, uint16_t>> coordonate;
 	switch (level)
 	{
 	case 1:

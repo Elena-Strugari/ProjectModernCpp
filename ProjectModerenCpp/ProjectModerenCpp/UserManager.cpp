@@ -41,18 +41,18 @@ bool UserManager::Register(const std::string& username) {
         return false;
     }
 
-    if (users.find(username) != users.end()) {
+    if (m_users.find(username) != m_users.end()) {
         std::cout << "Numele de utilizator este deja folosit. Alegeti alt nume.\n";
         return false;
     }
 
-    users.insert(username);
+    m_users.insert(username);
     std::cout << "Inregistrare reusita!\n";
     return true;
 }
 
 bool UserManager::Login(const std::string& username) {
-    if (users.find(username) != users.end()) {
+    if (m_users.find(username) != m_users.end()) {
         std::cout << "Login reusit! Bine ai venit, " << username << "!\n";
         return true;
     }

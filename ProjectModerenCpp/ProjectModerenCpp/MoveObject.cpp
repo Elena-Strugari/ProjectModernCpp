@@ -2,10 +2,10 @@
 #include <conio.h>
 #include <iostream>
 
-MoveObject::MoveObject(GameObject&& obj, Map* map, int startX, int startY)
-    : GameObject(std::move(obj)), m_map(map), x(startX), y(startY) {
-    if (m_map->IsValidPosition(x, y)) {
-        m_map->SetCell(x, y, 'T');
+MoveObject::MoveObject(GameObject&& obj, Map* map, uint16_t startX, uint16_t startY)
+    : GameObject(std::move(obj)), m_map(map), m_MOx(startX), m_MOy(startY) {
+    if (m_map->IsValidPosition(m_MOx, m_MOy)) {
+        m_map->SetCell(m_MOx, m_MOy, 'T');
         m_map->PrintWithBorder();
     }
     else {
@@ -17,7 +17,7 @@ void MoveObject::ShootBullet() {
     m_bullet.Shoot();
 }
 void MoveObject::Move(Direction direction) {
-    int newX = x, newY = y;
+    uint16_t newX = m_MOx, newY = m_MOy;
 
     switch (direction) {
     case Direction::Up:
@@ -35,11 +35,11 @@ void MoveObject::Move(Direction direction) {
     }
 
     if (m_map->IsValidPosition(newX, newY) && m_map->GetCell(newX, newY) == '_') {
-        m_map->SetCell(x, y, '_');
-        x = newX;
-        y = newY;
-        m_map->SetCell(x, y, 'T');
-        std::cout << "Tank moved to (" << x << ", " << y << ")\n";
+        m_map->SetCell(m_MOx, m_MOy, '_');
+        m_MOx = newX;
+        m_MOy = newY;
+        m_map->SetCell(m_MOx, m_MOy, 'T');
+        std::cout << "Tank moved to (" << m_MOx << ", " << m_MOy << ")\n";
     }
     else {
         std::cout << "Mutarea nu este posibila: obstacol sau iesire din harta\n";

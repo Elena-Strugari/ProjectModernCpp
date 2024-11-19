@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Map.h"
+#include <cstdint>
 
 class MoveObject: public GameObject
 {
@@ -20,7 +21,7 @@ public:
         Base
     };
 public:
-    MoveObject(GameObject&& obj, Map* map, int startX = 0, int startY = 0);
+    MoveObject(GameObject&& obj, Map* map, uint16_t startX = 0, uint16_t startY = 0);
     void ShootBullet();
     void Move(Direction direction);
     void HandleInput();
@@ -28,7 +29,7 @@ public:
 private:
     Direction m_direction;
     Bullet m_bullet;
-    int x, y;
+    uint16_t m_MOx, m_MOy;
     Map* m_map;
 };
 

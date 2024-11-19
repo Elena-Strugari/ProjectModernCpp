@@ -12,7 +12,7 @@ public:
     void PromptLoginOrRegister();
 
 private:
-    std::set<std::string> users;
+    std::set<std::string> m_users; 
     bool Register(const std::string& username);
     bool Login(const std::string& username);
     bool ValidateUsername(const std::string& username);
