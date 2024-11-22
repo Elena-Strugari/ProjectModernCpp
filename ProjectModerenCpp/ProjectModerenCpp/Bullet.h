@@ -6,8 +6,8 @@ class Bullet
 public:
 	Bullet()=default;
 	
-	void Shoot() const {
-		std::cout << "pew pew\n";
+	std::string Shoot() const {
+		return "pew pew";
 	}
 
 	friend std::ostream& operator<<(std::ostream& os, const Bullet& bullet);
