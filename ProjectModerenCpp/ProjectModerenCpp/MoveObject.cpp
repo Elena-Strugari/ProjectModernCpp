@@ -4,7 +4,7 @@
 #include <windows.h>
 
 MoveObject::MoveObject(GameObject&& obj, Map* map, uint16_t startX, uint16_t startY)
-    : GameObject(std::move(obj)), m_map(map), m_MOx(startX), m_MOy(startY) {
+    : GameObject(std::move(obj)), m_map(map), m_MOx(startX), m_MOy(startY), m_direction(Direction::Up) {
     if (m_map->IsValidPosition(m_MOx, m_MOy)) {
         m_map->SetCell(m_MOx, m_MOy, 'T');
         m_map->PrintWithBorder();
@@ -13,11 +13,12 @@ MoveObject::MoveObject(GameObject&& obj, Map* map, uint16_t startX, uint16_t sta
         std::cerr << "Pozitia initiala a tancului este invalida!\n";
     }
 }
-void MoveCursorToTop() {
+void MoveObject::MoveCursorToTop() {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD coordScreen = { 0, 0 };
     SetConsoleCursorPosition(hConsole, coordScreen);
 }
+
 
 void MoveObject::ShootBullet() {
     m_bullet.Shoot();
