@@ -1,6 +1,7 @@
 ﻿#include "MoveObject.h"
 #include <conio.h>
 #include <iostream>
+#include <windows.h>
 
 MoveObject::MoveObject(GameObject&& obj, Map* map, uint16_t startX, uint16_t startY)
     : GameObject(std::move(obj)), m_map(map), m_MOx(startX), m_MOy(startY) {
@@ -11,6 +12,13 @@ MoveObject::MoveObject(GameObject&& obj, Map* map, uint16_t startX, uint16_t sta
     else {
         std::cerr << "Pozitia initiala a tancului este invalida!\n";
     }
+}
+void ClearScreen() {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD coordScreen = { 0, 0 };
+    DWORD cCharsWritten;
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    DWORD dwConSize;
 }
 
 void MoveObject::ShootBullet() {
@@ -75,7 +83,7 @@ void MoveObject::HandleInput() {
                 Move(Direction::Right);
                 std::cout << "Tancul s-a deplasat la dreapta.\n";
             }
-
+            ClearScreen();
             m_map->PrintWithBorder();
         }
     }
