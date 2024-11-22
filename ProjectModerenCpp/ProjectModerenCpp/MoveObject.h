@@ -25,6 +25,7 @@ public:
     void ShootBullet();
     void Move(Direction direction);
     void HandleInput();
+    void MoveCursorToTop();
 
 private:
     Direction m_direction;

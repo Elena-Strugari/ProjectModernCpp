@@ -13,16 +13,9 @@ MoveObject::MoveObject(GameObject&& obj, Map* map, uint16_t startX, uint16_t sta
         std::cerr << "Pozitia initiala a tancului este invalida!\n";
     }
 }
-void ClearScreen() {
+void MoveCursorToTop() {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD coordScreen = { 0, 0 };
-    DWORD cCharsWritten;
-    CONSOLE_SCREEN_BUFFER_INFO csbi;
-    DWORD dwConSize;
-    if (!GetConsoleScreenBufferInfo(hConsole, &csbi)) return;
-    dwConSize = csbi.dwSize.X * csbi.dwSize.Y;
-    FillConsoleOutputCharacter(hConsole, ' ', dwConSize, coordScreen, &cCharsWritten);
-    FillConsoleOutputAttribute(hConsole, csbi.wAttributes, dwConSize, coordScreen, &cCharsWritten);
     SetConsoleCursorPosition(hConsole, coordScreen);
 }
 
@@ -66,7 +59,7 @@ void MoveObject::HandleInput() {
         if (_kbhit()) {
             key = _getch();
             if (key == 'q') {
-                std::cout << "Joc încheiat.\n";
+                std::cout << "Joc incheiat.\n";
                 break;
             }
             if (key == 'b') {
@@ -88,7 +81,7 @@ void MoveObject::HandleInput() {
                 Move(Direction::Right);
                 std::cout << "Tancul s-a deplasat la dreapta.\n";
             }
-            ClearScreen();
+            MoveCursorToTop();
             m_map->PrintWithBorder();
         }
     }
