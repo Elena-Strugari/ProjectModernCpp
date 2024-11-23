@@ -119,13 +119,10 @@ void Map::GenerateWalls(uint8_t level)
 
 	uint16_t height = GetHeight();
 	uint16_t width = GetWidth();
-	std::vector<std::pair<uint16_t, uint16_t>> coordonate;
+	std::vector<std::pair<uint16_t, uint16_t>> coordonate, indestructibleWallsCoordonate;
 	switch (level)
 	{
 	case 1:
-		coordonate = RandomDestructibleWall(width, height, 50);
-		for (int i = 0; i < 50; i++)
-			AddWall(coordonate[i].first, coordonate[i].second, Wall::Destructible::destructible);
 		AddWall(0, 6, Wall::Destructible::indestructible);
 		AddWall(1, 6, Wall::Destructible::indestructible);
 		AddWall(1, 7, Wall::Destructible::indestructible);
@@ -171,41 +168,31 @@ void Map::GenerateWalls(uint8_t level)
 		AddWall(7, 8, Wall::Destructible::indestructible);
 		AddWall(6, 9, Wall::Destructible::indestructible);
 		AddWall(5, 11, Wall::Destructible::indestructible);
-
-		// Zona centrală stângă
 		AddWall(4, 12, Wall::Destructible::indestructible);
 		AddWall(3, 13, Wall::Destructible::indestructible);
 		AddWall(2, 14, Wall::Destructible::indestructible);
 
-		// for destructible wals
-		AddWall(2, 2, Wall::Destructible::destructible);
-		AddWall(2, 3, Wall::Destructible::destructible);
-		AddWall(3, 2, Wall::Destructible::destructible);
-		
-		AddWall(7, 4, Wall::Destructible::destructible);
-		AddWall(7, 5, Wall::Destructible::destructible);
-		AddWall(3, 3, Wall::Destructible::destructible);
-		AddWall(4, 3, Wall::Destructible::destructible);
-		AddWall(4, 4, Wall::Destructible::destructible);
-		AddWall(5, 4, Wall::Destructible::destructible);
-		AddWall(6, 4, Wall::Destructible::destructible);
-		AddWall(6, 5, Wall::Destructible::destructible);
-		AddWall(6, 6, Wall::Destructible::destructible);
-		AddWall(8, 8, Wall::Destructible::destructible);
-		AddWall(8, 9, Wall::Destructible::destructible);
-		AddWall(9, 8, Wall::Destructible::destructible);
-		AddWall(9, 9, Wall::Destructible::destructible);
-		AddWall(9, 10, Wall::Destructible::destructible);
-		AddWall(10, 9, Wall::Destructible::destructible);
+		// Destructible walls
 
-		AddWall(12, 3, Wall::Destructible::destructible);
-		AddWall(13, 3, Wall::Destructible::destructible);
-		AddWall(14, 3, Wall::Destructible::destructible);
-		AddWall(14, 4, Wall::Destructible::destructible);
-		AddWall(13, 4, Wall::Destructible::destructible);
-		AddWall(12, 4, Wall::Destructible::destructible);
-		AddWall(12, 5, Wall::Destructible::destructible);
-		AddWall(12, 6, Wall::Destructible::destructible);
+		AddWall(2, 2, Wall::Destructible::destructible);
+		AddWall(2, 6, Wall::Destructible::destructible);
+		AddWall(2, 9, Wall::Destructible::destructible);
+		AddWall(6, 9, Wall::Destructible::destructible);
+		AddWall(8, 8, Wall::Destructible::destructible);
+		AddWall(11, 4, Wall::Destructible::destructible);
+		AddWall(11, 9, Wall::Destructible::destructible);
+		AddWall(13, 7, Wall::Destructible::destructible);
+		AddWall(14, 10, Wall::Destructible::destructible);
+
+		//Zidurile random se adauga dupa inserarea zidurilor fixe.
+
+		coordonate = RandomDestructibleWall(width, height, 70);
+		for (int i = 0; i < 70; i++)
+			AddWall(coordonate[i].first, coordonate[i].second, Wall::Destructible::destructible);
+
+		indestructibleWallsCoordonate = RandomDestructibleWall(width, height, 20);
+		for (int i = 0; i < 20; i++)
+			AddWall(indestructibleWallsCoordonate[i].first, indestructibleWallsCoordonate[i].second, Wall::Destructible::indestructible);
 
 
 		break;
