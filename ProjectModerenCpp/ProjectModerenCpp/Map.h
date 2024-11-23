@@ -30,7 +30,7 @@ private:
 	uint16_t m_width;
 	uint16_t m_height;
 	std::vector<std::vector<char>> m_map;
-	std::vector<std::pair<uint16_t, uint16_t>>RandomDestructibleWall(uint16_t x, uint16_t y,int NumberOfWalls);
+	std::vector<std::pair<uint16_t, uint16_t>>RandomWall(uint16_t x, uint16_t y,int NumberOfWalls);
 	//std::vector<std::vector<Wall>> m_grid;
 
 

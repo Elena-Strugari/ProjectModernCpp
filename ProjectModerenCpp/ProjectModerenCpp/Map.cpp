@@ -97,7 +97,7 @@ char Map::GetCell(uint16_t x, uint16_t y) const {
 	return '#'; // Returnează un caracter special pentru poziții invalide
 }
 
-std::vector<std::pair<uint16_t, uint16_t>> Map::RandomDestructibleWall(uint16_t m_width, uint16_t m_height,int NumberOfWalls)
+std::vector<std::pair<uint16_t, uint16_t>> Map::RandomWall(uint16_t m_width, uint16_t m_height,int NumberOfWalls)
 {
 	std::vector<std::pair<uint16_t, uint16_t>> coordonate;
 	std::srand(std::time(nullptr));
@@ -105,7 +105,7 @@ std::vector<std::pair<uint16_t, uint16_t>> Map::RandomDestructibleWall(uint16_t 
 		std::pair<uint16_t, uint16_t> coord;
 		coord.first = std::rand() % m_width;  
 		coord.second = std::rand() % m_height; 
-		if (m_map[coord.first][coord.second] == '#' || m_map[coord.first][coord.second] == '@')
+		if (m_map[coord.first][coord.second] !='_') //mai tarziu inlocuim cu ' '
 			i--;
 		else
 		   coordonate.push_back(coord);
@@ -119,10 +119,26 @@ void Map::GenerateWalls(uint8_t level)
 
 	uint16_t height = GetHeight();
 	uint16_t width = GetWidth();
-	std::vector<std::pair<uint16_t, uint16_t>> coordonate, indestructibleWallsCoordonate;
+	std::vector<std::pair<uint16_t, uint16_t>> destructibleWallsCoordonate, indestructibleWallsCoordonate;
 	switch (level)
 	{
 	case 1:
+
+		/* Putem face asa cred
+		
+		std::vector<std::pair<int, int>> ImpliciteIndestructible = {
+		{0, 6}, {1, 6}, {1, 7}, {3, 8}, {4, 0}, {4, 1}, {4, 8},
+		{5, 2}, {5, 8}, {5, 9}, {5, 10}, {5, 14}, {6, 6}, {6, 14},
+		{7, 5}, {7, 6}, {7, 7}, {10, 0}, {10, 1}, {10, 2}, {10, 3},
+		{10, 11}, {10, 12}, {12, 5}, {12, 9}, {12, 10}, {12, 11},
+		{12, 12}, {13, 5}, {13, 12}, {14, 5}, {12, 13}, {13, 14},
+		{14, 13}, {9, 5}, {8, 6}, {7, 8}, {6, 9}, {5, 11}, {4, 12},
+		{3, 13}, {2, 14}};
+
+		for (const auto& pair : ImpliciteIndestructible) 
+			AddWall(pair.first, pair.second, Wall::Destructible::indestructible);
+
+		*/
 		AddWall(0, 6, Wall::Destructible::indestructible);
 		AddWall(1, 6, Wall::Destructible::indestructible);
 		AddWall(1, 7, Wall::Destructible::indestructible);
@@ -154,14 +170,10 @@ void Map::GenerateWalls(uint8_t level)
 		AddWall(13, 5, Wall::Destructible::indestructible);
 		AddWall(13, 12, Wall::Destructible::indestructible);
 		AddWall(14, 5, Wall::Destructible::indestructible);
-		//New indestructible wals
-		
-		
 		// Zona inferioară stânga
 		AddWall(12, 13, Wall::Destructible::indestructible);
 		AddWall(13, 14, Wall::Destructible::indestructible);
 		AddWall(14, 13, Wall::Destructible::indestructible);
-
 		// Zona centrală inferioară
 		AddWall(9, 5, Wall::Destructible::indestructible);
 		AddWall(8, 6, Wall::Destructible::indestructible);
@@ -173,7 +185,6 @@ void Map::GenerateWalls(uint8_t level)
 		AddWall(2, 14, Wall::Destructible::indestructible);
 
 		// Destructible walls
-
 		AddWall(2, 2, Wall::Destructible::destructible);
 		AddWall(2, 6, Wall::Destructible::destructible);
 		AddWall(2, 9, Wall::Destructible::destructible);
@@ -185,24 +196,21 @@ void Map::GenerateWalls(uint8_t level)
 		AddWall(14, 10, Wall::Destructible::destructible);
 
 		//Zidurile random se adauga dupa inserarea zidurilor fixe.
+		destructibleWallsCoordonate = RandomWall(width, height, 40);  //DE VERIFICAT NR DE ZIDURI IMPLICTIE SI RANDOM SA NU INCARTE PREA MULT HARTA
+		for (int i = 0; i < 40; i++)
+			AddWall(destructibleWallsCoordonate[i].first, destructibleWallsCoordonate[i].second, Wall::Destructible::destructible);
 
-		coordonate = RandomDestructibleWall(width, height, 70);
-		for (int i = 0; i < 70; i++)
-			AddWall(coordonate[i].first, coordonate[i].second, Wall::Destructible::destructible);
-
-		indestructibleWallsCoordonate = RandomDestructibleWall(width, height, 20);
-		for (int i = 0; i < 20; i++)
+		indestructibleWallsCoordonate = RandomWall(width, height, 10);
+		for (int i = 0; i < 10; i++)
 			AddWall(indestructibleWallsCoordonate[i].first, indestructibleWallsCoordonate[i].second, Wall::Destructible::indestructible);
-
-
 		break;
+
+
+
 	case 2:
-		coordonate = RandomDestructibleWall(width, height, 30);
-		for (int i = 0; i < 30; i++)
-			AddWall(coordonate[i].first, coordonate[i].second, Wall::Destructible::destructible);
 		AddWall(2, 1, Wall::Destructible::indestructible);
 		AddWall(2, 2, Wall::Destructible::indestructible);
-		AddWall(2,3, Wall::Destructible::indestructible);
+		AddWall(2, 3, Wall::Destructible::indestructible);
 		AddWall(0, 7, Wall::Destructible::indestructible);
 		AddWall(0, 8, Wall::Destructible::indestructible);
 		AddWall(0, 9, Wall::Destructible::indestructible);
@@ -249,11 +257,18 @@ void Map::GenerateWalls(uint8_t level)
 		AddWall(16, 13, Wall::Destructible::indestructible);
 		AddWall(18, 14, Wall::Destructible::indestructible);
 		AddWall(15, 18, Wall::Destructible::indestructible);
+		//DE ADAUGAT ZIDURI DESTRUCTIBILE IMPLICITE
+		destructibleWallsCoordonate = RandomWall(width, height, 50); //DE VERIFICAT NR DE ZIDURI IMPLICTIE SI RANDOM SA NU INCARTE PREA MULT HARTA
+		for (int i = 0; i < 50; i++)
+			AddWall(destructibleWallsCoordonate[i].first, destructibleWallsCoordonate[i].second, Wall::Destructible::destructible);
+
+		indestructibleWallsCoordonate = RandomWall(width, height, 15);
+		for (int i = 0; i < 15; i++)
+			AddWall(indestructibleWallsCoordonate[i].first, indestructibleWallsCoordonate[i].second, Wall::Destructible::indestructible);
 		break;
+
+
 	case 3:
-		coordonate = RandomDestructibleWall(width, height, 35);
-		for (int i = 0; i < 35; i++)
-			AddWall(coordonate[i].first, coordonate[i].second, Wall::Destructible::destructible);
 		AddWall(0, 2, Wall::Destructible::indestructible);
 		AddWall(0, 3, Wall::Destructible::indestructible);
 		AddWall(0, 4, Wall::Destructible::indestructible);
@@ -283,12 +298,9 @@ void Map::GenerateWalls(uint8_t level)
 		AddWall(10, 12, Wall::Destructible::indestructible);
 		AddWall(10, 13, Wall::Destructible::indestructible);
 		AddWall(10, 14, Wall::Destructible::indestructible);
-		AddWall(11, 4, Wall::Destructible::indestructible);
 		AddWall(11, 7, Wall::Destructible::indestructible);
-
 		AddWall(11, 10, Wall::Destructible::indestructible);
 		AddWall(11, 12, Wall::Destructible::indestructible);
-		AddWall(12, 4, Wall::Destructible::indestructible);
 		AddWall(12, 5, Wall::Destructible::indestructible);
 		AddWall(12, 6, Wall::Destructible::indestructible);
 		AddWall(12, 12, Wall::Destructible::indestructible);
@@ -296,7 +308,6 @@ void Map::GenerateWalls(uint8_t level)
 		AddWall(13, 5, Wall::Destructible::indestructible);
 		AddWall(13, 6, Wall::Destructible::indestructible);
 		AddWall(13, 12, Wall::Destructible::indestructible);
-
 		AddWall(14, 12, Wall::Destructible::indestructible);
 		AddWall(14, 19, Wall::Destructible::indestructible);
 		AddWall(15, 1, Wall::Destructible::indestructible);
@@ -315,7 +326,6 @@ void Map::GenerateWalls(uint8_t level)
 		AddWall(19, 21, Wall::Destructible::indestructible);
 		AddWall(19, 22, Wall::Destructible::indestructible);
 		AddWall(20, 8, Wall::Destructible::indestructible);
-
 		AddWall(21, 3, Wall::Destructible::indestructible);
 		AddWall(21, 12, Wall::Destructible::indestructible);
 		AddWall(21, 13, Wall::Destructible::indestructible);
@@ -328,10 +338,48 @@ void Map::GenerateWalls(uint8_t level)
 		AddWall(23, 16, Wall::Destructible::indestructible);
 		AddWall(24, 8, Wall::Destructible::indestructible);
 		AddWall(24, 16, Wall::Destructible::indestructible);
+
+		AddWall(1, 9, Wall::Destructible::destructible);
+		AddWall(2, 8, Wall::Destructible::destructible);
+		AddWall(3, 7, Wall::Destructible::destructible);
+		AddWall(3, 8, Wall::Destructible::destructible);
+		AddWall(3, 20, Wall::Destructible::destructible);
+		AddWall(3, 21, Wall::Destructible::destructible);
+		AddWall(3, 22, Wall::Destructible::destructible);
+		AddWall(3, 23, Wall::Destructible::destructible);
+		AddWall(4, 6, Wall::Destructible::destructible);
+		AddWall(4, 7, Wall::Destructible::destructible);
+		AddWall(5, 6, Wall::Destructible::destructible);
+		AddWall(5, 7, Wall::Destructible::destructible);
+		AddWall(7, 17, Wall::Destructible::destructible);
+		AddWall(7, 18, Wall::Destructible::destructible);
+		AddWall(8, 17, Wall::Destructible::destructible);
+		AddWall(8, 18, Wall::Destructible::destructible);
+		AddWall(9, 17, Wall::Destructible::destructible);
+		AddWall(9, 18, Wall::Destructible::destructible);
+		AddWall(11, 4, Wall::Destructible::destructible);
+		AddWall(12, 4, Wall::Destructible::destructible);
+		AddWall(15, 12, Wall::Destructible::destructible);
+		AddWall(16, 12, Wall::Destructible::destructible);
+		AddWall(17, 12, Wall::Destructible::destructible);
+		AddWall(18, 12, Wall::Destructible::destructible);
+		AddWall(18, 13, Wall::Destructible::destructible);
+		AddWall(22, 19, Wall::Destructible::destructible);
+		AddWall(23, 19, Wall::Destructible::destructible);
+		AddWall(24, 19, Wall::Destructible::destructible);
+
+		destructibleWallsCoordonate = RandomWall(width, height, 70); //DE VERIFICAT NR DE ZIDURI IMPLICTIE SI RANDOM SA NU INCARTE PREA MULT HARTA
+		for (int i = 0; i < 70; i++)
+			AddWall(destructibleWallsCoordonate[i].first, destructibleWallsCoordonate[i].second, Wall::Destructible::destructible);
+
+		indestructibleWallsCoordonate = RandomWall(width, height, 20);
+		for (int i = 0; i < 20; i++)
+			AddWall(indestructibleWallsCoordonate[i].first, indestructibleWallsCoordonate[i].second, Wall::Destructible::indestructible);
 		break;
+
 	default:
 		break;
 	}
-	
+
 
 }

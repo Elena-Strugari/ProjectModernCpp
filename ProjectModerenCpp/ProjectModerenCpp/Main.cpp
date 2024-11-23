@@ -7,7 +7,7 @@
 #include "MoveObject.h"
 int main()
 {
-	Map matrix(3);
+	Map matrix(1);
 	matrix.GenerateWalls(1);
 	//matrix.print();
 	matrix.PrintWithBorder();
