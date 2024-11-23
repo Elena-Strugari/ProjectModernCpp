@@ -73,6 +73,12 @@ void Map::AddWall(uint16_t x, uint16_t y, Wall::Destructible destructible)
 			m_map[x][y] = '#';
 	}
 }
+void Map::AddBomb(uint16_t x, uint16_t y)
+{
+	if (x >= 0 && x < m_width && y >= 0 && y < m_height)
+		if(m_map[x][y] != '💣')
+		    m_map[x][y] = '💣';
+}
 uint16_t Map::GetWidth() const
 {
 	return m_width;
@@ -184,6 +190,10 @@ void Map::GenerateWalls(uint8_t level)
 		AddWall(3, 13, Wall::Destructible::indestructible);
 		AddWall(2, 14, Wall::Destructible::indestructible);
 
+		indestructibleWallsCoordonate = RandomWall(width, height, 15);
+		for (int i = 0; i < 15; i++)
+			AddWall(indestructibleWallsCoordonate[i].first, indestructibleWallsCoordonate[i].second, Wall::Destructible::indestructible);
+		
 		// Destructible walls
 		AddWall(2, 2, Wall::Destructible::destructible);
 		AddWall(2, 6, Wall::Destructible::destructible);
@@ -200,9 +210,9 @@ void Map::GenerateWalls(uint8_t level)
 		for (int i = 0; i < 40; i++)
 			AddWall(destructibleWallsCoordonate[i].first, destructibleWallsCoordonate[i].second, Wall::Destructible::destructible);
 
-		indestructibleWallsCoordonate = RandomWall(width, height, 10);
-		for (int i = 0; i < 10; i++)
-			AddWall(indestructibleWallsCoordonate[i].first, indestructibleWallsCoordonate[i].second, Wall::Destructible::indestructible);
+		/*std::srand(std::time(nullptr));
+		int bombWallIndex =std::rand() % (40);
+		AddBomb(destructibleWallsCoordonate[bombWallIndex].first, destructibleWallsCoordonate[bombWallIndex].second);*/
 		break;
 
 
@@ -257,14 +267,19 @@ void Map::GenerateWalls(uint8_t level)
 		AddWall(16, 13, Wall::Destructible::indestructible);
 		AddWall(18, 14, Wall::Destructible::indestructible);
 		AddWall(15, 18, Wall::Destructible::indestructible);
+
+		indestructibleWallsCoordonate = RandomWall(width, height, 15);
+		for (int i = 0; i < 15; i++)
+			AddWall(indestructibleWallsCoordonate[i].first, indestructibleWallsCoordonate[i].second, Wall::Destructible::indestructible);
+
 		//DE ADAUGAT ZIDURI DESTRUCTIBILE IMPLICITE
 		destructibleWallsCoordonate = RandomWall(width, height, 50); //DE VERIFICAT NR DE ZIDURI IMPLICTIE SI RANDOM SA NU INCARTE PREA MULT HARTA
 		for (int i = 0; i < 50; i++)
 			AddWall(destructibleWallsCoordonate[i].first, destructibleWallsCoordonate[i].second, Wall::Destructible::destructible);
 
-		indestructibleWallsCoordonate = RandomWall(width, height, 15);
-		for (int i = 0; i < 15; i++)
-			AddWall(indestructibleWallsCoordonate[i].first, indestructibleWallsCoordonate[i].second, Wall::Destructible::indestructible);
+		/*std::srand(std::time(nullptr));
+		int bombWallIndex = std::rand() % (50);
+		AddBomb(destructibleWallsCoordonate[bombWallIndex].first, destructibleWallsCoordonate[bombWallIndex].second); */
 		break;
 
 
@@ -339,6 +354,11 @@ void Map::GenerateWalls(uint8_t level)
 		AddWall(24, 8, Wall::Destructible::indestructible);
 		AddWall(24, 16, Wall::Destructible::indestructible);
 
+		indestructibleWallsCoordonate = RandomWall(width, height, 15);
+		for (int i = 0; i < 15; i++)
+			AddWall(indestructibleWallsCoordonate[i].first, indestructibleWallsCoordonate[i].second, Wall::Destructible::indestructible);
+
+
 		AddWall(1, 9, Wall::Destructible::destructible);
 		AddWall(2, 8, Wall::Destructible::destructible);
 		AddWall(3, 7, Wall::Destructible::destructible);
@@ -372,9 +392,11 @@ void Map::GenerateWalls(uint8_t level)
 		for (int i = 0; i < 70; i++)
 			AddWall(destructibleWallsCoordonate[i].first, destructibleWallsCoordonate[i].second, Wall::Destructible::destructible);
 
-		indestructibleWallsCoordonate = RandomWall(width, height, 20);
-		for (int i = 0; i < 20; i++)
-			AddWall(indestructibleWallsCoordonate[i].first, indestructibleWallsCoordonate[i].second, Wall::Destructible::indestructible);
+		/*std::srand(std::time(nullptr));
+		int bombWallIndex1 = std::rand() % (70);
+		int bombWallIndex2 = std::rand() % (70);
+		AddBomb(destructibleWallsCoordonate[bombWallIndex1].first, destructibleWallsCoordonate[bombWallIndex1].second);
+		AddBomb(destructibleWallsCoordonate[bombWallIndex2].first, destructibleWallsCoordonate[bombWallIndex2].second); */
 		break;
 
 	default:

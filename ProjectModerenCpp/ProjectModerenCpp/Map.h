@@ -22,6 +22,7 @@ public:
 	void SetCell(uint16_t x, uint16_t y, char value);
 	char GetCell(uint16_t x, uint16_t y) const;
 	void AddWall(uint16_t x, uint16_t y, Wall::Destructible destructible);
+	void AddBomb(uint16_t x, uint16_t y);
 	void GenerateWalls(uint8_t level);
 	uint16_t GetWidth()const;
 	uint16_t GetHeight()const;
