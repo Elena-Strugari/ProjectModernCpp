@@ -25,6 +25,7 @@ public:
 	void AddWall(uint16_t x, uint16_t y, Wall::Destructible destructible);
 	void AddBomb(uint16_t x, uint16_t y);
 	void GenerateWalls(uint8_t level);
+	void AddBonusLife(uint16_t x, uint16_t y);
 	uint16_t GetWidth()const;
 	uint16_t GetHeight()const;
 private:

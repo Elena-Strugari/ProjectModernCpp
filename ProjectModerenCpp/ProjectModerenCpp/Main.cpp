@@ -8,10 +8,10 @@
 #include "MoveObject.h"
 int main()
 {
-	Map matrix(3);
-	matrix.GenerateWalls(3);
+	Map matrix(1);
+	matrix.GenerateWalls(1);
 	//matrix.print();
-	matrix.PrintWithBorder();
+	//matrix.PrintWithBorder();
 	Position p;
 	std::vector<std::pair<uint16_t, uint16_t>>startPosition = p.PlayersStartPositions(matrix.GetWidth(), matrix.GetHeight());
 	for (int i = 0; i < 4; i++)

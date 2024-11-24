@@ -14,7 +14,7 @@ Map::Map(uint8_t level)
 	  {minVal = 20, maxVal = 25;}
 	else  //leveel==3
 	  {minVal = 25, maxVal = 30;}
-	std::srand(std::time(nullptr));
+	std::srand(std::time(0));
 	m_width = minVal + std::rand() % (maxVal - minVal + 1);
 	m_height = minVal + std::rand() % (maxVal - minVal + 1);	
 	m_map.resize( m_width, std::vector<char>(m_height));
@@ -76,8 +76,8 @@ void Map::AddWall(uint16_t x, uint16_t y, Wall::Destructible destructible)
 void Map::AddBomb(uint16_t x, uint16_t y)
 {
 	if (x >= 0 && x < m_width && y >= 0 && y < m_height)
-		if(m_map[x][y] != '💣')
-		    m_map[x][y] = '💣';
+		if(m_map[x][y] != 'O')
+		    m_map[x][y] = 'O'; //💣
 }
 uint16_t Map::GetWidth() const
 {
@@ -128,7 +128,7 @@ void Map::GenerateWalls(uint8_t level)
 	std::vector<std::pair<uint16_t, uint16_t>> destructibleWallsCoordonate, indestructibleWallsCoordonate;
 	switch (level)
 	{
-	case 1:
+	case 1: {
 
 		/* Putem face asa cred
 		
@@ -210,14 +210,21 @@ void Map::GenerateWalls(uint8_t level)
 		for (int i = 0; i < 40; i++)
 			AddWall(destructibleWallsCoordonate[i].first, destructibleWallsCoordonate[i].second, Wall::Destructible::destructible);
 
-		/*std::srand(std::time(nullptr));
+		std::srand(std::time(0));
 		int bombWallIndex =std::rand() % (40);
-		AddBomb(destructibleWallsCoordonate[bombWallIndex].first, destructibleWallsCoordonate[bombWallIndex].second);*/
+		int bonuslifeWallIndex1 = std::rand() % (40);
+		int bonuslifeWallIndex2 = std::rand() % (40);
+		int bonuslifeWallIndex3 = std::rand() % (40);
+		//std::cout << "Indice pentru bomba "<< bombWallIndex;
+		AddBomb(destructibleWallsCoordonate[bombWallIndex].first, destructibleWallsCoordonate[bombWallIndex].second);
+		AddBonusLife(destructibleWallsCoordonate[bonuslifeWallIndex1].first, destructibleWallsCoordonate[bonuslifeWallIndex1].second);
+		AddBonusLife(destructibleWallsCoordonate[bonuslifeWallIndex2].first, destructibleWallsCoordonate[bonuslifeWallIndex2].second);
+		AddBonusLife(destructibleWallsCoordonate[bonuslifeWallIndex3].first, destructibleWallsCoordonate[bonuslifeWallIndex3].second);
 		break;
 
 
-
-	case 2:
+	}
+	case 2:{
 		AddWall(2, 1, Wall::Destructible::indestructible);
 		AddWall(2, 2, Wall::Destructible::indestructible);
 		AddWall(2, 3, Wall::Destructible::indestructible);
@@ -277,13 +284,21 @@ void Map::GenerateWalls(uint8_t level)
 		for (int i = 0; i < 50; i++)
 			AddWall(destructibleWallsCoordonate[i].first, destructibleWallsCoordonate[i].second, Wall::Destructible::destructible);
 
-		/*std::srand(std::time(nullptr));
+		std::srand(std::time(nullptr));
 		int bombWallIndex = std::rand() % (50);
-		AddBomb(destructibleWallsCoordonate[bombWallIndex].first, destructibleWallsCoordonate[bombWallIndex].second); */
+		int bonuslifeWallIndex1 = std::rand() % (50);
+		int bonuslifeWallIndex2 = std::rand() % (50);
+		int bonuslifeWallIndex3 = std::rand() % (50);
+		AddBomb(destructibleWallsCoordonate[bombWallIndex].first, destructibleWallsCoordonate[bombWallIndex].second);
+		AddBonusLife(destructibleWallsCoordonate[bonuslifeWallIndex1].first, destructibleWallsCoordonate[bonuslifeWallIndex1].second);
+		AddBonusLife(destructibleWallsCoordonate[bonuslifeWallIndex2].first, destructibleWallsCoordonate[bonuslifeWallIndex2].second);
+		AddBonusLife(destructibleWallsCoordonate[bonuslifeWallIndex3].first, destructibleWallsCoordonate[bonuslifeWallIndex3].second);
 		break;
+	}
 
+	case 3: {
 
-	case 3:
+	
 		AddWall(0, 2, Wall::Destructible::indestructible);
 		AddWall(0, 3, Wall::Destructible::indestructible);
 		AddWall(0, 4, Wall::Destructible::indestructible);
@@ -392,16 +407,29 @@ void Map::GenerateWalls(uint8_t level)
 		for (int i = 0; i < 70; i++)
 			AddWall(destructibleWallsCoordonate[i].first, destructibleWallsCoordonate[i].second, Wall::Destructible::destructible);
 
-		/*std::srand(std::time(nullptr));
+		std::srand(std::time(nullptr));
 		int bombWallIndex1 = std::rand() % (70);
 		int bombWallIndex2 = std::rand() % (70);
+		int bonuslifeWallIndex1 = std::rand() % (70);
+		int bonuslifeWallIndex2 = std::rand() % (70);
+		int bonuslifeWallIndex3 = std::rand() % (70);
 		AddBomb(destructibleWallsCoordonate[bombWallIndex1].first, destructibleWallsCoordonate[bombWallIndex1].second);
-		AddBomb(destructibleWallsCoordonate[bombWallIndex2].first, destructibleWallsCoordonate[bombWallIndex2].second); */
+		AddBomb(destructibleWallsCoordonate[bombWallIndex2].first, destructibleWallsCoordonate[bombWallIndex2].second); 
+		AddBonusLife(destructibleWallsCoordonate[bonuslifeWallIndex1].first, destructibleWallsCoordonate[bonuslifeWallIndex1].second);
+		AddBonusLife(destructibleWallsCoordonate[bonuslifeWallIndex2].first, destructibleWallsCoordonate[bonuslifeWallIndex2].second);
+		AddBonusLife(destructibleWallsCoordonate[bonuslifeWallIndex3].first, destructibleWallsCoordonate[bonuslifeWallIndex3].second);
 		break;
-
+	}
 	default:
 		break;
 	}
 
 
+}
+
+void Map::AddBonusLife(uint16_t x, uint16_t y)
+{
+	if (x >= 0 && x < m_width && y >= 0 && y < m_height)
+		if (m_map[x][y] != 'H')
+			m_map[x][y] = 'H'; //H de la heart
 }
