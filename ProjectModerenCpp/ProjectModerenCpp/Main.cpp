@@ -9,7 +9,7 @@
 int main()
 {
 	Map matrix(1);
-	matrix.GenerateWalls(1);
+	matrix.GenerateMapElements(matrix);
 	//matrix.print();
 	//matrix.PrintWithBorder();
 	Position p;

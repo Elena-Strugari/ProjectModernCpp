@@ -3,7 +3,7 @@
 #include <cstdlib>  
 #include <ctime>
 #include<vector>
-
+#include<set>
 Map::Map(uint8_t level)
 {
 	uint16_t minVal, maxVal;   // pt nivel 1 
@@ -18,7 +18,7 @@ Map::Map(uint8_t level)
 	m_width = minVal + std::rand() % (maxVal - minVal + 1);
 	m_height = minVal + std::rand() % (maxVal - minVal + 1);	
 	m_map.resize( m_width, std::vector<char>(m_height));
-
+	m_level = level;
 	for (int i = 0; i < m_width; ++i) {
 		for (int j = 0; j < m_height; ++j) {
 			m_map[i][j] = '_';
@@ -77,7 +77,7 @@ void Map::AddBomb(uint16_t x, uint16_t y)
 {
 	if (x >= 0 && x < m_width && y >= 0 && y < m_height)
 		if(m_map[x][y] != 'O')
-		    m_map[x][y] = 'O'; //💣
+		    m_map[x][y] = 'O'; 
 }
 uint16_t Map::GetWidth() const
 {
@@ -106,12 +106,14 @@ char Map::GetCell(uint16_t x, uint16_t y) const {
 std::vector<std::pair<uint16_t, uint16_t>> Map::RandomWall(uint16_t m_width, uint16_t m_height,int NumberOfWalls)
 {
 	std::vector<std::pair<uint16_t, uint16_t>> coordonate;
+	std::set<std::pair<uint16_t, uint16_t>>cornes = { {0, 0}, {0, m_height - 1}, {m_width - 1,0},{m_width - 1,m_height - 1} };
 	std::srand(std::time(nullptr));
 	for (int i = 0; i < NumberOfWalls; ++i) {
 		std::pair<uint16_t, uint16_t> coord;
 		coord.first = std::rand() % m_width;  
 		coord.second = std::rand() % m_height; 
-		if (m_map[coord.first][coord.second] !='_') //mai tarziu inlocuim cu ' '
+		
+		if (m_map[coord.first][coord.second] !='_' || cornes.count(coord) !=0) //mai tarziu inlocuim cu ' '
 			i--;
 		else
 		   coordonate.push_back(coord);
@@ -119,293 +121,103 @@ std::vector<std::pair<uint16_t, uint16_t>> Map::RandomWall(uint16_t m_width, uin
 	return coordonate;
 }
 
-void Map::GenerateWalls(uint8_t level)
+void Map::GenerateMapElements(Map& map)
 {
 	//astea vor fi pentru verificare daca corespund indicii cu dimensiunile hartii
 
 	uint16_t height = GetHeight();
 	uint16_t width = GetWidth();
 	std::vector<std::pair<uint16_t, uint16_t>> destructibleWallsCoordonate, indestructibleWallsCoordonate;
-	switch (level)
+	switch (m_level)
 	{
 	case 1: {
-
-		/* Putem face asa cred
-		
-		std::vector<std::pair<int, int>> ImpliciteIndestructible = {
-		{0, 6}, {1, 6}, {1, 7}, {3, 8}, {4, 0}, {4, 1}, {4, 8},
-		{5, 2}, {5, 8}, {5, 9}, {5, 10}, {5, 14}, {6, 6}, {6, 14},
-		{7, 5}, {7, 6}, {7, 7}, {10, 0}, {10, 1}, {10, 2}, {10, 3},
-		{10, 11}, {10, 12}, {12, 5}, {12, 9}, {12, 10}, {12, 11},
-		{12, 12}, {13, 5}, {13, 12}, {14, 5}, {12, 13}, {13, 14},
-		{14, 13}, {9, 5}, {8, 6}, {7, 8}, {6, 9}, {5, 11}, {4, 12},
-		{3, 13}, {2, 14}};
-
+		std::vector<std::pair<int, int>> ImpliciteIndestructible = 
+		{ {0, 6}, {1, 6}, {1, 7}, {3, 8}, {4, 0}, {4, 1}, {4, 8},{5, 2}, {5, 8}, {5, 9}, {5, 10}, {5, 14}, {6, 6}, {6, 14},{7, 5}, {7, 6}, {7, 7}, {10, 0}, 
+		  {10, 1}, {10, 2}, {10, 3},{10, 11}, {10, 12}, {12, 5}, {12, 9}, {12, 10}, {12, 11},{12, 12}, {13, 5}, {13, 12}, {14, 5}, {12, 13}, {13, 14},{14, 13}, 
+		  {9, 5}, {8, 6}, {7, 8}, {6, 9}, {5, 11}, {4, 12},{3, 13}, {2, 14}};
 		for (const auto& pair : ImpliciteIndestructible) 
-			AddWall(pair.first, pair.second, Wall::Destructible::indestructible);
-
-		*/
-		AddWall(0, 6, Wall::Destructible::indestructible);
-		AddWall(1, 6, Wall::Destructible::indestructible);
-		AddWall(1, 7, Wall::Destructible::indestructible);
-		AddWall(3, 8, Wall::Destructible::indestructible);
-		AddWall(4, 0, Wall::Destructible::indestructible);
-		AddWall(4, 1, Wall::Destructible::indestructible);
-		AddWall(4, 8, Wall::Destructible::indestructible);
-		AddWall(5, 2, Wall::Destructible::indestructible);
-		AddWall(5, 8, Wall::Destructible::indestructible);
-		AddWall(5, 9, Wall::Destructible::indestructible);
-		AddWall(5, 10, Wall::Destructible::indestructible);
-		AddWall(5, 14, Wall::Destructible::indestructible);
-		AddWall(6, 6, Wall::Destructible::indestructible);
-		AddWall(6, 14, Wall::Destructible::indestructible);
-		AddWall(7, 5, Wall::Destructible::indestructible);
-		AddWall(7, 6, Wall::Destructible::indestructible);
-		AddWall(7, 7, Wall::Destructible::indestructible);
-		AddWall(10, 0, Wall::Destructible::indestructible);
-		AddWall(10, 1, Wall::Destructible::indestructible);
-		AddWall(10, 2, Wall::Destructible::indestructible);
-		AddWall(10, 3, Wall::Destructible::indestructible);
-		AddWall(10, 11, Wall::Destructible::indestructible);
-		AddWall(10, 12, Wall::Destructible::indestructible);
-		AddWall(12, 5, Wall::Destructible::indestructible);
-		AddWall(12, 9, Wall::Destructible::indestructible);
-		AddWall(12, 10, Wall::Destructible::indestructible);
-		AddWall(12, 11, Wall::Destructible::indestructible);
-		AddWall(12, 12, Wall::Destructible::indestructible);
-		AddWall(13, 5, Wall::Destructible::indestructible);
-		AddWall(13, 12, Wall::Destructible::indestructible);
-		AddWall(14, 5, Wall::Destructible::indestructible);
-		// Zona inferioară stânga
-		AddWall(12, 13, Wall::Destructible::indestructible);
-		AddWall(13, 14, Wall::Destructible::indestructible);
-		AddWall(14, 13, Wall::Destructible::indestructible);
-		// Zona centrală inferioară
-		AddWall(9, 5, Wall::Destructible::indestructible);
-		AddWall(8, 6, Wall::Destructible::indestructible);
-		AddWall(7, 8, Wall::Destructible::indestructible);
-		AddWall(6, 9, Wall::Destructible::indestructible);
-		AddWall(5, 11, Wall::Destructible::indestructible);
-		AddWall(4, 12, Wall::Destructible::indestructible);
-		AddWall(3, 13, Wall::Destructible::indestructible);
-		AddWall(2, 14, Wall::Destructible::indestructible);
+			AddWall(pair.first, pair.second, Wall::Destructible::indestructible);  //Indestructibile implicite
 
 		indestructibleWallsCoordonate = RandomWall(width, height, 15);
 		for (int i = 0; i < 15; i++)
-			AddWall(indestructibleWallsCoordonate[i].first, indestructibleWallsCoordonate[i].second, Wall::Destructible::indestructible);
+			AddWall(indestructibleWallsCoordonate[i].first, indestructibleWallsCoordonate[i].second, Wall::Destructible::indestructible);  //indestructibile random
 		
-		// Destructible walls
-		AddWall(2, 2, Wall::Destructible::destructible);
-		AddWall(2, 6, Wall::Destructible::destructible);
-		AddWall(2, 9, Wall::Destructible::destructible);
-		AddWall(6, 9, Wall::Destructible::destructible);
-		AddWall(8, 8, Wall::Destructible::destructible);
-		AddWall(11, 4, Wall::Destructible::destructible);
-		AddWall(11, 9, Wall::Destructible::destructible);
-		AddWall(13, 7, Wall::Destructible::destructible);
-		AddWall(14, 10, Wall::Destructible::destructible);
-
-		//Zidurile random se adauga dupa inserarea zidurilor fixe.
-		destructibleWallsCoordonate = RandomWall(width, height, 40);  //DE VERIFICAT NR DE ZIDURI IMPLICTIE SI RANDOM SA NU INCARTE PREA MULT HARTA
+		
+		std::vector<std::pair<int, int>> ImpliciteDestructible = { {2,2},{2,6},{2,9},{6,9},{8,8},{11,4},{11,9},{13,7},{14,10} };
+		for (const auto& pair : ImpliciteDestructible)
+			AddWall(pair.first, pair.second, Wall::Destructible::destructible);  //destructibile implicite
+		
+		destructibleWallsCoordonate = RandomWall(width, height, 40); 
 		for (int i = 0; i < 40; i++)
-			AddWall(destructibleWallsCoordonate[i].first, destructibleWallsCoordonate[i].second, Wall::Destructible::destructible);
+			AddWall(destructibleWallsCoordonate[i].first, destructibleWallsCoordonate[i].second, Wall::Destructible::destructible);  // destructibile random
 
 		std::srand(std::time(0));
 		int bombWallIndex =std::rand() % (40);
 		int bonuslifeWallIndex1 = std::rand() % (40);
-		int bonuslifeWallIndex2 = std::rand() % (40);
-		int bonuslifeWallIndex3 = std::rand() % (40);
 		//std::cout << "Indice pentru bomba "<< bombWallIndex;
 		AddBomb(destructibleWallsCoordonate[bombWallIndex].first, destructibleWallsCoordonate[bombWallIndex].second);
 		AddBonusLife(destructibleWallsCoordonate[bonuslifeWallIndex1].first, destructibleWallsCoordonate[bonuslifeWallIndex1].second);
-		AddBonusLife(destructibleWallsCoordonate[bonuslifeWallIndex2].first, destructibleWallsCoordonate[bonuslifeWallIndex2].second);
-		AddBonusLife(destructibleWallsCoordonate[bonuslifeWallIndex3].first, destructibleWallsCoordonate[bonuslifeWallIndex3].second);
 		break;
-
-
 	}
+
+
 	case 2:{
-		AddWall(2, 1, Wall::Destructible::indestructible);
-		AddWall(2, 2, Wall::Destructible::indestructible);
-		AddWall(2, 3, Wall::Destructible::indestructible);
-		AddWall(0, 7, Wall::Destructible::indestructible);
-		AddWall(0, 8, Wall::Destructible::indestructible);
-		AddWall(0, 9, Wall::Destructible::indestructible);
-		AddWall(1, 8, Wall::Destructible::indestructible);
-		AddWall(2, 8, Wall::Destructible::indestructible);
-		AddWall(3, 8, Wall::Destructible::indestructible);
-		AddWall(4, 12, Wall::Destructible::indestructible);
-		AddWall(1, 16, Wall::Destructible::indestructible);
-		AddWall(2, 16, Wall::Destructible::indestructible);
-		AddWall(6, 6, Wall::Destructible::indestructible);
-		AddWall(6, 7, Wall::Destructible::indestructible);
-		AddWall(6, 8, Wall::Destructible::indestructible);
-		AddWall(6, 9, Wall::Destructible::indestructible);
-		AddWall(7, 13, Wall::Destructible::indestructible);
-		AddWall(8, 13, Wall::Destructible::indestructible);
-		AddWall(9, 13, Wall::Destructible::indestructible);
-		AddWall(10, 11, Wall::Destructible::indestructible);
-		AddWall(10, 12, Wall::Destructible::indestructible);
-		AddWall(9, 19, Wall::Destructible::indestructible);
-		AddWall(7, 19, Wall::Destructible::indestructible);
-		AddWall(8, 19, Wall::Destructible::indestructible);
-		AddWall(8, 18, Wall::Destructible::indestructible);
-		AddWall(9, 4, Wall::Destructible::indestructible);
-		AddWall(10, 4, Wall::Destructible::indestructible);
-		AddWall(11, 4, Wall::Destructible::indestructible);
-		AddWall(13, 5, Wall::Destructible::indestructible);
-		AddWall(11, 1, Wall::Destructible::indestructible);
-		AddWall(11, 2, Wall::Destructible::indestructible);
-		AddWall(11, 3, Wall::Destructible::indestructible);
-		AddWall(11, 4, Wall::Destructible::indestructible);
-		AddWall(11, 7, Wall::Destructible::indestructible);
-		AddWall(12, 7, Wall::Destructible::indestructible);
-		AddWall(13, 7, Wall::Destructible::indestructible);
-		AddWall(14, 7, Wall::Destructible::indestructible);
-		AddWall(11, 4, Wall::Destructible::indestructible);
-		AddWall(14, 8, Wall::Destructible::indestructible);
-		AddWall(14, 9, Wall::Destructible::indestructible);
-		AddWall(15, 2, Wall::Destructible::indestructible);
-		AddWall(18, 4, Wall::Destructible::indestructible);
-		AddWall(19, 4, Wall::Destructible::indestructible);
-		AddWall(17, 12, Wall::Destructible::indestructible);
-		AddWall(17, 13, Wall::Destructible::indestructible);
-		AddWall(17, 14, Wall::Destructible::indestructible);
-		AddWall(16, 13, Wall::Destructible::indestructible);
-		AddWall(18, 14, Wall::Destructible::indestructible);
-		AddWall(15, 18, Wall::Destructible::indestructible);
+		std::vector<std::pair<int, int>> ImpliciteIndestructible =
+		{ {2, 1}, {2, 2}, {2, 3}, {0, 7}, {0, 8}, {0, 9}, {1, 8}, {2, 8},{3, 8}, {4, 12}, {1, 16}, {2, 16}, {6, 6}, {6, 7}, {6, 8}, {6, 9},
+		  {7, 13}, {8, 13}, {9, 13}, {10, 11}, {10, 12}, {9, 19}, {7, 19}, {8, 19},{8, 18}, {9, 4}, {10, 4}, {11, 4}, {13, 5}, {11, 1}, {11, 2},
+		  {11, 3},{11, 4}, {11, 7}, {12, 7}, {13, 7}, {14, 7}, {11, 4}, {14, 8}, {14, 9},{15, 2}, {18, 4}, {19, 4}, {17, 12}, {17, 13}, {17, 14}, 
+		  {16, 13}, {18, 14},{15, 18}
+		};
+		for (const auto& pair : ImpliciteIndestructible)
+			AddWall(pair.first, pair.second, Wall::Destructible::indestructible);  //Indestructibile implicite
 
 		indestructibleWallsCoordonate = RandomWall(width, height, 15);
 		for (int i = 0; i < 15; i++)
-			AddWall(indestructibleWallsCoordonate[i].first, indestructibleWallsCoordonate[i].second, Wall::Destructible::indestructible);
+			AddWall(indestructibleWallsCoordonate[i].first, indestructibleWallsCoordonate[i].second, Wall::Destructible::indestructible); //indestructibile random
 
-		//DE ADAUGAT ZIDURI DESTRUCTIBILE IMPLICITE
-		destructibleWallsCoordonate = RandomWall(width, height, 50); //DE VERIFICAT NR DE ZIDURI IMPLICTIE SI RANDOM SA NU INCARTE PREA MULT HARTA
+		std::vector<std::pair<int, int>> ImpliciteDestructible = { /*DE ADAUGAT ZIDURI DESTRUCTIBILE IMPLICITE*/ };
+		for (const auto& pair : ImpliciteDestructible)
+			AddWall(pair.first, pair.second, Wall::Destructible::destructible);  //destructibile implicite
+
+		destructibleWallsCoordonate = RandomWall(width, height, 50);
 		for (int i = 0; i < 50; i++)
-			AddWall(destructibleWallsCoordonate[i].first, destructibleWallsCoordonate[i].second, Wall::Destructible::destructible);
+			AddWall(destructibleWallsCoordonate[i].first, destructibleWallsCoordonate[i].second, Wall::Destructible::destructible);   //destructibile random
 
-		std::srand(std::time(nullptr));
-		int bombWallIndex = std::rand() % (50);
-		int bonuslifeWallIndex1 = std::rand() % (50);
-		int bonuslifeWallIndex2 = std::rand() % (50);
-		int bonuslifeWallIndex3 = std::rand() % (50);
-		AddBomb(destructibleWallsCoordonate[bombWallIndex].first, destructibleWallsCoordonate[bombWallIndex].second);
-		AddBonusLife(destructibleWallsCoordonate[bonuslifeWallIndex1].first, destructibleWallsCoordonate[bonuslifeWallIndex1].second);
-		AddBonusLife(destructibleWallsCoordonate[bonuslifeWallIndex2].first, destructibleWallsCoordonate[bonuslifeWallIndex2].second);
-		AddBonusLife(destructibleWallsCoordonate[bonuslifeWallIndex3].first, destructibleWallsCoordonate[bonuslifeWallIndex3].second);
+		std::srand(std::time(nullptr)); 
+		int bombWallIndex = std::rand() % (50); 
+		int bonuslifeWallIndex1 = std::rand() % (50); 
+		int bonuslifeWallIndex2 = std::rand() % (50); 
+		AddBomb(destructibleWallsCoordonate[bombWallIndex].first, destructibleWallsCoordonate[bombWallIndex].second); 
+		AddBonusLife(destructibleWallsCoordonate[bonuslifeWallIndex1].first, destructibleWallsCoordonate[bonuslifeWallIndex1].second); 
+		AddBonusLife(destructibleWallsCoordonate[bonuslifeWallIndex2].first, destructibleWallsCoordonate[bonuslifeWallIndex2].second); 
 		break;
 	}
 
 	case 3: {
-
-	
-		AddWall(0, 2, Wall::Destructible::indestructible);
-		AddWall(0, 3, Wall::Destructible::indestructible);
-		AddWall(0, 4, Wall::Destructible::indestructible);
-		AddWall(2, 9, Wall::Destructible::indestructible);
-		AddWall(2, 10, Wall::Destructible::indestructible);
-		AddWall(2, 19, Wall::Destructible::indestructible);
-		AddWall(2, 20, Wall::Destructible::indestructible);
-		AddWall(2, 21, Wall::Destructible::indestructible);
-		AddWall(2, 22, Wall::Destructible::indestructible);
-		AddWall(2, 23, Wall::Destructible::indestructible);
-		AddWall(2, 24, Wall::Destructible::indestructible);
-		AddWall(3, 9, Wall::Destructible::indestructible);
-		AddWall(3, 10, Wall::Destructible::indestructible);
-		AddWall(3, 24, Wall::Destructible::indestructible);
-		AddWall(4, 11, Wall::Destructible::indestructible);
-		AddWall(4, 12, Wall::Destructible::indestructible);
-		AddWall(4, 24, Wall::Destructible::indestructible);
-		AddWall(5, 24, Wall::Destructible::indestructible);
-		AddWall(6, 24, Wall::Destructible::indestructible);
-		AddWall(7, 24, Wall::Destructible::indestructible);
-		AddWall(8, 3, Wall::Destructible::indestructible);
-		AddWall(8, 4, Wall::Destructible::indestructible);
-		AddWall(8, 24, Wall::Destructible::indestructible);
-		AddWall(9, 4, Wall::Destructible::indestructible);
-		AddWall(10, 4, Wall::Destructible::indestructible);
-		AddWall(10, 11, Wall::Destructible::indestructible);
-		AddWall(10, 12, Wall::Destructible::indestructible);
-		AddWall(10, 13, Wall::Destructible::indestructible);
-		AddWall(10, 14, Wall::Destructible::indestructible);
-		AddWall(11, 7, Wall::Destructible::indestructible);
-		AddWall(11, 10, Wall::Destructible::indestructible);
-		AddWall(11, 12, Wall::Destructible::indestructible);
-		AddWall(12, 5, Wall::Destructible::indestructible);
-		AddWall(12, 6, Wall::Destructible::indestructible);
-		AddWall(12, 12, Wall::Destructible::indestructible);
-		AddWall(13, 4, Wall::Destructible::indestructible);
-		AddWall(13, 5, Wall::Destructible::indestructible);
-		AddWall(13, 6, Wall::Destructible::indestructible);
-		AddWall(13, 12, Wall::Destructible::indestructible);
-		AddWall(14, 12, Wall::Destructible::indestructible);
-		AddWall(14, 19, Wall::Destructible::indestructible);
-		AddWall(15, 1, Wall::Destructible::indestructible);
-		AddWall(15, 19, Wall::Destructible::indestructible);
-		AddWall(16, 1, Wall::Destructible::indestructible);
-		AddWall(16, 19, Wall::Destructible::indestructible);
-		AddWall(17, 1, Wall::Destructible::indestructible);
-		AddWall(17, 18, Wall::Destructible::indestructible);
-		AddWall(17, 19, Wall::Destructible::indestructible);
-		AddWall(18, 1, Wall::Destructible::indestructible);
-		AddWall(18, 19, Wall::Destructible::indestructible);
-		AddWall(18, 20, Wall::Destructible::indestructible);
-		AddWall(18, 21, Wall::Destructible::indestructible);
-		AddWall(19, 1, Wall::Destructible::indestructible);
-		AddWall(19, 13, Wall::Destructible::indestructible);
-		AddWall(19, 21, Wall::Destructible::indestructible);
-		AddWall(19, 22, Wall::Destructible::indestructible);
-		AddWall(20, 8, Wall::Destructible::indestructible);
-		AddWall(21, 3, Wall::Destructible::indestructible);
-		AddWall(21, 12, Wall::Destructible::indestructible);
-		AddWall(21, 13, Wall::Destructible::indestructible);
-		AddWall(21, 14, Wall::Destructible::indestructible);
-		AddWall(22, 8, Wall::Destructible::indestructible);
-		AddWall(22, 14, Wall::Destructible::indestructible);
-		AddWall(22, 15, Wall::Destructible::indestructible);
-		AddWall(22, 16, Wall::Destructible::indestructible);
-		AddWall(23, 8, Wall::Destructible::indestructible);
-		AddWall(23, 16, Wall::Destructible::indestructible);
-		AddWall(24, 8, Wall::Destructible::indestructible);
-		AddWall(24, 16, Wall::Destructible::indestructible);
+		std::vector<std::pair<int, int>> ImpliciteIndestructible = 
+		 { {0, 2}, {0, 3}, {0, 4}, {2, 9}, {2, 10}, {2, 19}, {2, 20}, {2, 21},{2, 22}, {2, 23}, {2, 24}, {3, 9}, {3, 10}, {3, 24}, {4, 11}, {4, 12},
+		   {4, 24}, {5, 24}, {6, 24}, {7, 24}, {8, 3}, {8, 4}, {8, 24}, {9, 4},{10, 4}, {10, 11}, {10, 12}, {10, 13}, {10, 14}, {11, 7}, {11, 10},
+		   {11, 12}, {12, 5}, {12, 6}, {12, 12}, {13, 4}, {13, 5}, {13, 6},{13, 12}, {14, 12}, {14, 19}, {15, 1}, {15, 19}, {16, 1}, {16, 19},
+	 	   {17, 1}, {17, 18}, {17, 19}, {18, 1}, {18, 19}, {18, 20}, {18, 21},{19, 1}, {19, 13}, {19, 21}, {19, 22}, {20, 8}, {21, 3}, {21, 12},
+		   {21, 13}, {21, 14}, {22, 8}, {22, 14}, {22, 15}, {22, 16}, {23, 8},{23, 16}, {24, 8}, {24, 16}
+		 };
+		for (const auto& pair : ImpliciteIndestructible) 
+			AddWall(pair.first, pair.second, Wall::Destructible::indestructible);  //indestructibile implictite
 
 		indestructibleWallsCoordonate = RandomWall(width, height, 15);
 		for (int i = 0; i < 15; i++)
-			AddWall(indestructibleWallsCoordonate[i].first, indestructibleWallsCoordonate[i].second, Wall::Destructible::indestructible);
+			AddWall(indestructibleWallsCoordonate[i].first, indestructibleWallsCoordonate[i].second, Wall::Destructible::indestructible); //indestructibile random
 
+		std::vector<std::pair<int, int>> ImpliciteDestructible = 
+		{ {1, 9}, {2, 8}, {3, 7}, {3, 8}, {3, 20}, {3, 21}, {3, 22}, {3, 23},{4, 6}, {4, 7}, {5, 6}, {5, 7}, {7, 17}, {7, 18}, {8, 17}, {8, 18},
+		  {9, 17}, {9, 18}, {11, 4}, {12, 4}, {15, 12}, {16, 12}, {17, 12},{18, 12}, {18, 13}, {22, 19}, {23, 19}, {24, 19} };
+		for (const auto& pair : ImpliciteDestructible)
+			AddWall(pair.first, pair.second, Wall::Destructible::destructible);  //destructibile implicite
+		
 
-		AddWall(1, 9, Wall::Destructible::destructible);
-		AddWall(2, 8, Wall::Destructible::destructible);
-		AddWall(3, 7, Wall::Destructible::destructible);
-		AddWall(3, 8, Wall::Destructible::destructible);
-		AddWall(3, 20, Wall::Destructible::destructible);
-		AddWall(3, 21, Wall::Destructible::destructible);
-		AddWall(3, 22, Wall::Destructible::destructible);
-		AddWall(3, 23, Wall::Destructible::destructible);
-		AddWall(4, 6, Wall::Destructible::destructible);
-		AddWall(4, 7, Wall::Destructible::destructible);
-		AddWall(5, 6, Wall::Destructible::destructible);
-		AddWall(5, 7, Wall::Destructible::destructible);
-		AddWall(7, 17, Wall::Destructible::destructible);
-		AddWall(7, 18, Wall::Destructible::destructible);
-		AddWall(8, 17, Wall::Destructible::destructible);
-		AddWall(8, 18, Wall::Destructible::destructible);
-		AddWall(9, 17, Wall::Destructible::destructible);
-		AddWall(9, 18, Wall::Destructible::destructible);
-		AddWall(11, 4, Wall::Destructible::destructible);
-		AddWall(12, 4, Wall::Destructible::destructible);
-		AddWall(15, 12, Wall::Destructible::destructible);
-		AddWall(16, 12, Wall::Destructible::destructible);
-		AddWall(17, 12, Wall::Destructible::destructible);
-		AddWall(18, 12, Wall::Destructible::destructible);
-		AddWall(18, 13, Wall::Destructible::destructible);
-		AddWall(22, 19, Wall::Destructible::destructible);
-		AddWall(23, 19, Wall::Destructible::destructible);
-		AddWall(24, 19, Wall::Destructible::destructible);
-
-		destructibleWallsCoordonate = RandomWall(width, height, 70); //DE VERIFICAT NR DE ZIDURI IMPLICTIE SI RANDOM SA NU INCARTE PREA MULT HARTA
+		destructibleWallsCoordonate = RandomWall(width, height, 70); 
 		for (int i = 0; i < 70; i++)
-			AddWall(destructibleWallsCoordonate[i].first, destructibleWallsCoordonate[i].second, Wall::Destructible::destructible);
+			AddWall(destructibleWallsCoordonate[i].first, destructibleWallsCoordonate[i].second, Wall::Destructible::destructible); //destructibile random
 
 		std::srand(std::time(nullptr));
 		int bombWallIndex1 = std::rand() % (70);
@@ -423,13 +235,11 @@ void Map::GenerateWalls(uint8_t level)
 	default:
 		break;
 	}
-
-
 }
 
 void Map::AddBonusLife(uint16_t x, uint16_t y)
 {
 	if (x >= 0 && x < m_width && y >= 0 && y < m_height)
-		if (m_map[x][y] != 'H')
+		if (m_map[x][y] != 'H' && m_map[x][y]!='O')
 			m_map[x][y] = 'H'; //H de la heart
 }
