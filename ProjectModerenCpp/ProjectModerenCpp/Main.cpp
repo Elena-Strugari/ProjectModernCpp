@@ -1,4 +1,5 @@
-﻿#include <iostream>
+﻿//server 
+#include <iostream>
 #include "Map.h"
 #include "UserManager.h"
 #include<utility>
