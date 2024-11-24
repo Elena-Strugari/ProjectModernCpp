@@ -160,7 +160,6 @@ void Map::GenerateMapElements(Map& map)
 		break;
 	}
 
-
 	case 2:{
 		std::vector<std::pair<int, int>> ImpliciteIndestructible =
 		{ {2, 1}, {2, 2}, {2, 3}, {0, 7}, {0, 8}, {0, 9}, {1, 8}, {2, 8},{3, 8}, {4, 12}, {1, 16}, {2, 16}, {6, 6}, {6, 7}, {6, 8}, {6, 9},
@@ -232,6 +231,7 @@ void Map::GenerateMapElements(Map& map)
 		AddBonusLife(destructibleWallsCoordonate[bonuslifeWallIndex3].first, destructibleWallsCoordonate[bonuslifeWallIndex3].second);
 		break;
 	}
+
 	default:
 		break;
 	}

@@ -9,16 +9,9 @@ class Map
 {
 public:
 	//CONSTRUCTOR
-	Map(uint8_t level);      // va trebui adaugare nivel 
-
+	Map(uint8_t level); 
 	void Print()const;     
 	void PrintWithBorder()const;
-	/*uint16_t GetWidth() const;
-	uint16_t GetHeight() const;
-	Wall* GetWallAt(uint16_t i, uint16_t j) const;
-	void SetBomb();
-	void SetBonus();
-	void SetBush();*/
 	bool IsValidPosition(uint16_t x, uint16_t y) const;
 	void SetCell(uint16_t x, uint16_t y, char value);
 	char GetCell(uint16_t x, uint16_t y) const;
