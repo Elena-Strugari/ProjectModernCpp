@@ -1,3 +1,4 @@
+//de discutat, cred server
 #pragma once
 #include <cstdint>
 #include <iostream>

@@ -1,3 +1,4 @@
+//server
 //#pragma once
 //#include "GameObject.h"
 //#include "MoveObject.h"

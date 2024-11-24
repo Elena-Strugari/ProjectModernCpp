@@ -1,3 +1,4 @@
+//de discutat
 #pragma once
 #include <iostream>
 
