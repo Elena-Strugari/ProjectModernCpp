@@ -1,63 +1,121 @@
-//#include "MoveObject.h"
-//#include <conio.h>
-//#include <iostream>
-//#include <windows.h>
-//#include <vector>
-//#include <string>
-//
-//MoveObject::MoveObject(GameObject&& obj, Map* map, uint16_t startX, uint16_t startY)
-//    : GameObject(std::move(obj)), m_map(map), m_MOx(startX), m_MOy(startY), m_direction(Direction::Up) {
-//    if (m_map->IsValidPosition(m_MOx, m_MOy)) {
-//        m_map->SetCell(m_MOx, m_MOy, 'T');
-//        m_map->PrintWithBorder();
-//    }
-//    else {
-//        std::cerr << "Pozitia initiala a tancului este invalida!\n";
-//    }
-//}
-//void MoveObject::MoveCursorToTop() {
-//    system("cls");
-//    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-//    COORD coordScreen = { 0, 0 };
-//    SetConsoleCursorPosition(hConsole, coordScreen);
-//
-//}
-//
-//void MoveObject::ShootBullet() {
-//    std::string shootMessage = m_bullet.Shoot();
-//    std::cout << shootMessage << std::endl;
-//}
-//
-//void MoveObject::Move(Direction direction) {
-//    uint16_t newX = m_MOx, newY = m_MOy;
-//
-//    switch (direction) {
-//    case Direction::Up:
-//        newX--;
-//        break;
-//    case Direction::Down:
-//        newX++;
-//        break;
-//    case Direction::Left:
-//        newY--;
-//        break;
-//    case Direction::Right:
-//        newY++;
-//        break;
-//    }
-//
-//    if (m_map->IsValidPosition(newX, newY) && m_map->GetCell(newX, newY) == '_') {
-//        m_map->SetCell(m_MOx, m_MOy, '_');
-//        m_MOx = newX;
-//        m_MOy = newY;
-//        m_map->SetCell(m_MOx, m_MOy, 'T');
-//        
-//        std::cout << "Tank moved to (" << m_MOx << ", " << m_MOy << ")\n";
-//    }
-//    else {
-//        std::cout << "Mutarea nu este posibila: obstacol sau iesire din harta\n";
-//    }
-//}
+#include "MoveObject.h"
+#include <conio.h>
+#include <iostream>
+#include <windows.h>
+#include <vector>
+#include <string>
+
+
+
+MoveObject::MoveObject(GameObject&& obj, Map* map)
+    : GameObject(std::move(obj)), m_map(map), m_MOx(0), m_MOy(0), m_direction(Direction::Up) {}
+
+void MoveObject::MoveCursorToTop() {
+    system("cls");
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD coordScreen = { 0, 0 };
+    SetConsoleCursorPosition(hConsole, coordScreen);
+
+}
+
+uint16_t MoveObject::GetX() const
+{
+    return m_MOx;
+}
+
+uint16_t MoveObject::GetY() const
+{
+    return m_MOy;
+}
+
+void MoveObject::SetPosition(uint16_t x, uint16_t y)
+{
+    m_MOx = x;
+    m_MOy = y;
+}
+
+void MoveObject::SetColor(Tank::ColorTank color)
+{
+    m_color = color;
+}
+
+std::pair<uint16_t, uint16_t> MoveObject::GetPosition()const
+{
+    return std::make_pair(m_MOx, m_MOy);
+}
+
+bool MoveObject::IsValidPos(uint16_t x, uint16_t y)const
+{
+    return m_map->IsValidPosition(x, y);
+}
+
+std::tuple<uint16_t, uint16_t, Tank::ColorTank> MoveObject::StartPositionColor()
+{
+    //daca e primul jucator 
+    m_MOx = 1;
+    m_MOy = 1;
+    m_color = Tank::ColorTank::Blue;
+
+    return std::make_tuple(m_MOx, m_MOy, m_color);
+    // vor venii mai multe if uri pt ceilalti jucator(cred) , va trebui sa avem ca parametru si id jucator
+    //va trebui returnat si map , nu stiu cum pt serverObeject 
+}
+
+
+
+void MoveObject::ShootBullet() {
+    std::string shootMessage = m_bullet.Shoot();
+    std::cout << shootMessage << std::endl;
+}
+
+void MoveObject::Move(Direction direction) {
+    uint16_t newX = m_MOx, newY = m_MOy;
+
+    switch (direction) {
+    case Direction::Up:
+        newY--;
+        break;
+    case Direction::Down:
+        newY++;
+        break;
+    case Direction::Left:
+        newX--;
+        break;
+    case Direction::Right:
+        newX++;
+        break;
+    }
+
+    //collision
+}
+
+void MoveObject::MoveServer(uint16_t x, uint16_t y, Direction direction)
+{
+
+    //de revenit 
+    switch (direction) {
+    case Direction::Up:
+        if (y > 0)
+            y--;
+        break;
+    case Direction::Down:
+        //  if (y < m_map->GetHeight()-1) // Limita grilei
+        y++;
+        break;
+    case Direction::Left:
+        if (x > 0)
+            x--;
+        break;
+    case Direction::Right:
+        // if (x < m_map->GetWidth()-1) // Limita grilei
+        x++;
+        break;
+    }
+    MoveObject::SetPosition(x, y);
+}
+
+//incercari
+
 //void MoveObject::HandleInput() {
 //    std::vector<std::string> messageLog;
 //    const int maxMessages = 3;
@@ -91,7 +149,7 @@
 //            if (key == 77) {
 //                Move(Direction::Right);
 //                message = "Tancul s-a deplasat la dreapta.";
-//            }      
+//            }
 //            if (!message.empty()) {
 //                messageLog.push_back(message + " Pozitia curenta: (" + std::to_string(m_MOx) + ", " + std::to_string(m_MOy) + ")");
 //                if (messageLog.size() > maxMessages) {
@@ -100,7 +158,7 @@
 //            }
 //            system("cls");
 //            MoveCursorToTop();
-//            m_map->PrintWithBorder();
+//
 //            for (const auto& msg : messageLog) {
 //                std::cout << msg << "\n";
 //            }
@@ -108,37 +166,58 @@
 //        }
 //    }
 //}
+//std::tuple<uint16_t, uint16_t, Tank::ColorTank>  MoveObject::MoveServer2(Direction direction) {
+//    uint16_t newX = m_MOx, newY = m_MOy;
 //
-////void move(Direction direction);
-//       //void rotate(Direction newDirection);
-//       //// void shoot();
-//       //void takeDamage(int amount);
-//       //bool isDestroyed() const;
-//       //void setPosition(int x, int y);
-//       //Position getPosition() const;
-//       //Direction getDirection() const;
-//       //uint16_t getHealth() const;
-//       //float GetSpeed()const;
+//    switch (direction) {
+//    case Direction::Up:
+//        newY--;
+//        break;
+//    case Direction::Down:
+//        newY++;
+//        break;
+//    case Direction::Left:
+//        newX--;
+//        break;
+//    case Direction::Right:
+//        newX++;
+//        break;
+//    }
+//    return std::make_tuple(newX, newY, m_color);
 //
-//
-//
-//       //void Tank::setPosition(int x, int y) {
-//       //    m_position.x = x;
-//       //    m_position.y = y;
-//       //}
-//       //Position Tank::getPosition() const {
-//       //    return m_position;
-//       //}
-//       //
-//       //Tank::Direction Tank::getDirection() const {
-//       //    return m_direction;
-//       //}
-//       //
-//       //uint16_t Tank::getHealth() const {
-//       //    return m_health;
-//       //}
-//       //
-//       //float Tank::GetSpeed() const
-//       //{
-//       //    return m_speed;
-//       //
+//    //collision
+//}
+
+//void move(Direction direction);
+       //void rotate(Direction newDirection);
+       //// void shoot();
+       //void takeDamage(int amount);
+       //bool isDestroyed() const;
+       //void setPosition(int x, int y);
+       //Position getPosition() const;
+       //Direction getDirection() const;
+       //uint16_t getHealth() const;
+       //float GetSpeed()const;
+
+
+
+       //void Tank::setPosition(int x, int y) {
+       //    m_position.x = x;
+       //    m_position.y = y;
+       //}
+       //Position Tank::getPosition() const {
+       //    return m_position;
+       //}
+       //
+       //Tank::Direction Tank::getDirection() const {
+       //    return m_direction;
+       //}
+       //
+       //uint16_t Tank::getHealth() const {
+       //    return m_health;
+       //}
+       //
+       //float Tank::GetSpeed() const
+       //{
+       //    return m_speed;
+       //
