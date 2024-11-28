@@ -1,4 +1,4 @@
-de discutat
+//de discutat
 //#pragma once
 //#include<cstdint>
 //#include"Position.h"

@@ -1,26 +1,23 @@
-// server 
 #pragma once
 #include <cstdint>
-
 
 class Wall
 {
 public:
-	enum class Destructible : char
+	enum class TypeWall
 	{
-		destructible='@',
-		indestructible='#'
+		destructible,
+		indestructible,
 	};
 public:
 
-	//CONSTRUCTOR
-	Wall(Destructible destructible);
+	Wall(TypeWall typeWall);
 
-	Destructible IsDestructible()const;
+	TypeWall IsDestructible()const;
 
 private:
 
-	Wall:: Destructible m_destructible;
-	
+	Wall::TypeWall m_typeWall;
+
 };
 

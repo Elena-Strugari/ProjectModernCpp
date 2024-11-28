@@ -6,13 +6,13 @@ Tank::Tank()
 }
 
 Tank::Tank(ColorTank color)
-	:m_color(color)
+    :m_color(color)
 {
 }
 
 Tank::ColorTank Tank::GetColor() const
 {
-	return m_color;
+    return m_color;
 }
 
 std::ostream& operator<<(std::ostream& os, const Tank& tank)
