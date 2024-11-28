@@ -1,12 +1,11 @@
-//de discutat
 #pragma once
 #include <iostream>
 
 class Bullet
 {
 public:
-	Bullet()=default;
-	
+	Bullet() = default;
+
 	std::string Shoot() const {
 		return "pew pew";
 	}
@@ -16,7 +15,5 @@ public:
 
 private:
 	//uint8_t m_speed;
-	
+
 };
-
-
