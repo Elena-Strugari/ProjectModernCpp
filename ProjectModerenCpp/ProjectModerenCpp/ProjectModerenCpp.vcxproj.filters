@@ -60,6 +60,9 @@
     <ClInclude Include="routing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ServerController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Wall.cpp">
@@ -108,6 +111,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="routing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
