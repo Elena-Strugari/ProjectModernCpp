@@ -144,6 +144,7 @@
     <ClInclude Include="PowerUp.h" />
     <ClInclude Include="routing.h" />
     <ClInclude Include="ServerController.h" />
+    <ClInclude Include="ServerObject.h" />
     <ClInclude Include="Tank.h" />
     <ClInclude Include="UserManager.h" />
     <ClInclude Include="Wall.h" />
@@ -163,6 +164,7 @@
     <ClCompile Include="PowerUp.cpp" />
     <ClCompile Include="routing.cpp" />
     <ClCompile Include="ServerController.cpp" />
+    <ClCompile Include="ServerObject.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="UserManager.cpp" />
     <ClCompile Include="Wall.cpp" />
