@@ -42,3 +42,47 @@ std::pair<uint16_t, uint16_t> Map::getLevelBounds(uint8_t level) const
         throw std::invalid_argument("Nivel invalid! Nivelul trebuie să fie 1, 2 sau 3.");
     }
 }
+
+//Get 
+uint16_t Map::GetWidth() const
+{
+    return m_width;
+}
+uint16_t Map::GetHeight() const
+{
+    return m_height;
+}
+Map::Cell Map::GetType() const
+{
+    return m_cellType;
+}
+
+std::vector<std::vector<Map::Cell>> Map::GetMap() const
+{
+    return m_map;
+
+}
+
+//Add
+
+void Map::AddWall(uint16_t x, uint16_t y, Wall::TypeWall typeWall)
+{
+    if (IsValidPosition(x, y))
+    {
+        Wall wall(typeWall);
+        m_map[x][y].typeWall = typeWall;
+
+        // Dacă peretele este destructibil, setăm simbolul 'space' la '@', altfel la '#'
+        m_map[x][y].space = (typeWall == Wall::TypeWall::destructible) ? '@' : '#';
+        // m_wall.push_back(wall);
+    }
+}
+
+// validation
+bool Map::IsValidPosition(uint16_t x, uint16_t y) const {
+    return x >= 0 && x < m_width && y >= 0 && y < m_height;
+}
+
+
+
+
