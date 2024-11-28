@@ -86,3 +86,50 @@ bool Map::IsValidPosition(uint16_t x, uint16_t y) const {
 
 
 
+//display 
+void Map::DisplayMap()const {
+
+    for (const auto& row : m_map) {
+        for (const auto& cell : row) {
+            if (cell.border == 1) {
+                std::cout << "H";
+            }
+            else
+                if (cell.space == '_')
+                    std::cout << "_";
+                else {
+                    switch (cell.typeWall) {
+                    case Wall::TypeWall::destructible:
+                        std::cout << "@";  //destructible
+                        break;
+                    case Wall::TypeWall::indestructible:
+                        std::cout << "#";  // indestructible
+                        break;
+                    }
+                }
+        }
+        std::cout << std::endl;
+    }
+}
+
+
+
+std::vector<std::pair<uint16_t, uint16_t>> Map::RandomWall(uint16_t width, uint16_t height, int numberOfWalls)
+{
+    std::vector<std::pair<uint16_t, uint16_t>> randomWalls;
+
+    // Inițializăm generatorul de numere aleatoare cu time(0) pentru a obține rezultate diferite de fiecare dată
+    srand(static_cast<unsigned int>(time(0)));
+
+    // Generăm pereți aleatori
+    for (int i = 0; i < numberOfWalls; ++i)
+    {
+        uint16_t x = rand() % width;  // Coordonata X aleatoare în intervalul [0, width-1]
+        uint16_t y = rand() % height; // Coordonata Y aleatoare în intervalul [0, height-1]
+        randomWalls.push_back({ x, y });  // Adăugăm perechea (x, y) în vectorul de pereți
+    }
+    return randomWalls;
+
+
+}
+
