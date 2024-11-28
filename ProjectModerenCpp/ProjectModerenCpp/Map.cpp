@@ -245,3 +245,63 @@ void Map::GenerateWalls(uint8_t level)
         break;
     }
 }
+
+void Map::SetCell(uint16_t x, uint16_t y, Cell value) {
+    if (IsValidPosition(x, y)) {
+        m_map[x][y] = value;
+    }
+}
+Map::Cell Map::GetCell(uint16_t x, uint16_t y) const {
+    if (IsValidPosition(x, y)) {
+        return m_map[x][y];
+    }
+}
+
+
+
+
+//void Map::AddBomb(uint16_t x, uint16_t y)
+//{
+//	if (x >= 0 && x < m_width && y >= 0 && y < m_height)
+//		if (m_map[x][y] != '💣')
+//			m_map[x][y] = '💣';
+//}
+//std::vector<Wall::TypeWall> Map::GetWalls() const
+//{
+//	return m_wall;
+//}
+
+// 
+// 
+
+//std::vector<std::vector<Wall::TypeWall>> Map::GetMapWithBorder()const
+//{
+//	std::vector<std::vector<Wall::TypeWall>> mapWithBorder;
+//	int rows = m_map.size();
+//	int cols = m_map[0].size();
+//
+//	// Adăugarea unui border de sus
+//	std::vector<Wall::TypeWall> borderRow(cols + 2, Wall::TypeWall{ -1 });  // -1 sau orice alt indicator de border
+//	mapWithBorder.push_back(borderRow);
+//
+//	// Adăugarea rândurilor cu border
+//	for (const auto& row : m_map) {
+//		std::vector<Wall::TypeWall> newRow;
+//
+//		// Adăugăm border la începutul fiecărui rând
+//		newRow.push_back(Wall::TypeWall{ -1 });  // Adăugăm border pe stânga
+//
+//		// Adăugăm valorile rândului actual
+//		for (int val : row) {
+//			newRow.push_back(Wall::TypeWall{ val });
+//		}
+//
+//		// Adăugăm border la sfârșitul fiecărui rând
+//		newRow.push_back(Wall::TypeWall{ -1 });  // Adăugăm border pe dreapta
+//
+//		mapWithBorder.push_back(newRow);
+//	}
+//}
+
+//
+//
