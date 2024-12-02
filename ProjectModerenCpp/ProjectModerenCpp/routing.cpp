@@ -4,7 +4,7 @@ using namespace http;
 void http::Routing::Run()
 {
     CROW_ROUTE(m_app, "/incerc")([]() {
-        return "Sunt aici";
+        return "sunt aici ";
         });
 
     //std::unordered_map<std::string, std::string> clientLevels;

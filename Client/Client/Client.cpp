@@ -79,15 +79,15 @@ char get_input() {
 int main() {
 
 
-    //std::string clientId;  // ID-ul clientului
-    //std::string level;
-    //std::cout << "Scrie numele client: ";
-    // std::cin >> clientId;
-    //std::cout << "Alege un nivel:   {Usor, Mediu , Greu}:  ";
-    //std::cin >> level;
+    std::string clientId;  // ID-ul clientului
+    std::string level;
+    std::cout << "Scrie numele client: ";
+     std::cin >> clientId;
+    std::cout << "Alege un nivel:   {Usor, Mediu , Greu}:  ";
+    std::cin >> level;
 
-    std::string clientId = "client1";
-    std::string level = "Usor";
+   /* std::string clientId = "client1";
+    std::string level = "Usor";*/
 
 
     // POST
