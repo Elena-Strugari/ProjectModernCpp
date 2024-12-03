@@ -185,8 +185,8 @@ void http::Routing::Run()
         });
 
 
-    ServerController controller(m_app);
-    controller.Run();
+    /*ServerController controller(m_app);
+    controller.Run();*/
 
     unsigned int numThreads = std::thread::hardware_concurrency(); // Determină numărul de fire
     if (numThreads == 0) numThreads = 4; // Asigură-te că există cel puțin un fir
