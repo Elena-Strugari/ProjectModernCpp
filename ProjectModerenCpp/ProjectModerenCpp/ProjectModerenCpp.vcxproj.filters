@@ -60,9 +60,6 @@
     <ClInclude Include="routing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ServerController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ServerObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -114,9 +111,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="routing.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ServerController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ServerObject.cpp">

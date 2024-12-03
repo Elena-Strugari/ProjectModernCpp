@@ -34,7 +34,7 @@ void ServerObject::MoveTank(const std::string& clientId, MoveObject::Direction d
         auto [currentX, currentY] = it->second.GetPosition();
 
         std::cout << "Pozitie curenta: " << currentX << ", " << currentY << ", culoare: "
-            << it->second.GetColor() << std::endl;
+            << it->second.GetTank().GetColor() << std::endl;
         it->second.MoveServer(currentX, currentY, direction);// de revenit aici 
 
         auto [newX, newY] = it->second.GetPosition();
@@ -51,7 +51,7 @@ std::tuple<uint16_t, uint16_t, Tank::ColorTank> ServerObject::GetTankPositionCol
     auto it = m_tanks.find(clientId);
     if (it != m_tanks.end()) {
         //MoveObject& tank = it->second;
-        return std::make_tuple(m_SOtank.GetX(), m_SOtank.GetY(), m_SOtank.GetColor());
+        return std::make_tuple(m_SOtank.GetX(), m_SOtank.GetY(), m_SOtank.GetTank().GetColor());
     }
 
     return std::make_tuple(0, 0, Tank::ColorTank::Red);
@@ -66,7 +66,7 @@ void ServerObject::displayClients()
 
         std::cout << "Client ID: " << clientId
             << ", Poziție: (" << tank.GetX() << ", " << tank.GetY() << ")"
-            << ", Culoare: " << static_cast<int>(tank.GetColor()) << std::endl;
+            << ", Culoare: " << static_cast<int>(tank.GetTank().GetColor()) << std::endl;
     }
 }
 

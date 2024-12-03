@@ -8,7 +8,7 @@
 #include "MoveObject.h"
 
 
-class ServerObject : public MoveObject
+class ServerObject
 {
 
 public:

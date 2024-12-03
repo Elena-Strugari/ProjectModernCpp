@@ -120,7 +120,7 @@ void http::Routing::Run()
                 return crow::response(404, R"({"error":"Tank not found for given Client ID"})");
             }
             const auto& tank = m_tanks[clientId];
-            Tank::ColorTank color = tank.GetColor();
+            Tank::ColorTank color = tank.GetTank().GetColor();
 
             std::string rezColorTank;
             switch (color) {
@@ -184,9 +184,6 @@ void http::Routing::Run()
 
         });
 
-
-    /*ServerController controller(m_app);
-    controller.Run();*/
 
     unsigned int numThreads = std::thread::hardware_concurrency(); // Determină numărul de fire
     if (numThreads == 0) numThreads = 4; // Asigură-te că există cel puțin un fir

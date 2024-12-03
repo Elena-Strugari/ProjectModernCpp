@@ -4,7 +4,7 @@
 #include "Tank.h"
 #include "Bullet.h"
 
-class GameObject : public Tank, public Bullet
+class GameObject 
 {
 public:
 	GameObject();
