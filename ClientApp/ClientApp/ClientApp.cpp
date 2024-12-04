@@ -71,7 +71,8 @@ void ClientApp::onGetMap() {
     );
 
     if (r.status_code == 200) {
-        outputLabel->setText("Map retrieved successfully! JSON:\n" + QString::fromStdString(r.text));
+        //outputLabel->setText("Map retrieved successfully! JSON:\n" + QString::fromStdString(r.text));
+        outputLabel->setText("Map retrieved successfully! JSON:\n");
     }
     else {
         outputLabel->setText("Error retrieving map: " + QString::fromStdString(r.text));
