@@ -153,26 +153,26 @@ void http::Routing::Run()
 
         if (clientId && direction) {
 
-            MoveObject::Direction dir;
+            MovementObject::Direction dir;
             if (strcmp(direction, "U") == 0) {
                 // return crow::response(200, "S-a mutat sus");
-                MoveTank(clientId, MoveObject::Direction::Up);
+                MoveTank(clientId, MovementObject::Direction::Up);
 
                 std::string word = GetTankPositionString(clientId);
                 return crow::response(200, "S-a mutat sus" + word);
             }
             else if (strcmp(direction, "D") == 0) {
-                MoveTank(clientId, MoveObject::Direction::Down);
+                MoveTank(clientId, MovementObject::Direction::Down);
                 std::string word = GetTankPositionString(clientId);
                 return crow::response(200, "S-a mutat jos" + word);
             }
             else if (strcmp(direction, "L") == 0) {
-                MoveTank(clientId, MoveObject::Direction::Left);
+                MoveTank(clientId, MovementObject::Direction::Left);
                 std::string word = GetTankPositionString(clientId);
                 return crow::response(200, "S-a mutat la stanga" + word);
             }
             else if (strcmp(direction, "R") == 0) {
-                MoveTank(clientId, MoveObject::Direction::Right);
+                MoveTank(clientId, MovementObject::Direction::Right);
                 std::string word = GetTankPositionString(clientId);
                 return crow::response(200, "S-a mutat la dreapta" + word);
             }
@@ -240,18 +240,18 @@ void http::Routing::Run()
 //        auto it = m_tanks.find(client_id);
 //        if (it != m_tanks.end()) {
 //            // Transformă caracterul direcției într-un obiect Direction
-//            MoveObject::Direction dir;
+//            MovementObject::Direction dir;
 //            if (strcmp(direction, "U") == 0) {
-//                dir = MoveObject::Direction::Up;
+//                dir = MovementObject::Direction::Up;
 //            }
 //            else if (strcmp(direction, "D") == 0) {
-//                dir = MoveObject::Direction::Down;
+//                dir = MovementObject::Direction::Down;
 //            }
 //            else if (strcmp(direction, "L") == 0) {
-//                dir = MoveObject::Direction::Left;
+//                dir = MovementObject::Direction::Left;
 //            }
 //            else if (strcmp(direction, "R") == 0) {
-//                dir = MoveObject::Direction::Right;
+//                dir = MovementObject::Direction::Right;
 //            }
 //            else {
 //                return crow::response(400, "Invalid direction");
@@ -260,7 +260,7 @@ void http::Routing::Run()
 //                // Transformă caracterul direcției într-un obiect Direction
 
 //            //std::cout << direction;
-//            //    MoveObject::Direction dir;
+//            //    MovementObject::Direction dir;
 //            //    if (strcmp(direction, "U") == 0) {  // Compară cu "U"
 //            //        // Mișcă în sus
 //            //        return crow::response(200, "S-a mutat sus");

@@ -3,7 +3,7 @@
 #include "Map.h"
 #include <cstdint>
 
-class MoveObject : public GameObject
+class MovementObject : public GameObject
 {
 public:
     enum class Direction {
@@ -21,11 +21,11 @@ public:
         Base
     };
 public:
-    MoveObject() = default;
-    MoveObject(GameObject&& obj, Map* map);
-    MoveObject(const MoveObject&) = delete;    // Explicitly deleted copy constructor
-    ~MoveObject() = default;
-    MoveObject& operator=(MoveObject&& other) noexcept {
+    MovementObject() = default;
+    MovementObject(GameObject&& obj, Map* map);
+    MovementObject(const MovementObject&) = delete;    // Explicitly deleted copy constructor
+    ~MovementObject() = default;
+    MovementObject& operator=(MovementObject&& other) noexcept {
         if (this == &other) // Verificăm auto-atribuirea
             return *this;
         m_MOx = other.m_MOx;

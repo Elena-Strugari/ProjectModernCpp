@@ -1,4 +1,4 @@
-#include "MoveObject.h"
+#include "MovementObject.h"
 #include <conio.h>
 #include <iostream>
 #include <windows.h>
@@ -7,10 +7,10 @@
 
 
 
-MoveObject::MoveObject(GameObject&& obj, Map* map)
+MovementObject::MovementObject(GameObject&& obj, Map* map)
     : GameObject(std::move(obj)), m_map(map), m_MOx(0), m_MOy(0), m_direction(Direction::Up) {}
 
-void MoveObject::MoveCursorToTop() {
+void MovementObject::MoveCursorToTop() {
     system("cls");
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD coordScreen = { 0, 0 };
@@ -18,38 +18,38 @@ void MoveObject::MoveCursorToTop() {
 
 }
 
-uint16_t MoveObject::GetX() const
+uint16_t MovementObject::GetX() const
 {
     return m_MOx;
 }
 
-uint16_t MoveObject::GetY() const
+uint16_t MovementObject::GetY() const
 {
     return m_MOy;
 }
 
-void MoveObject::SetPosition(uint16_t x, uint16_t y)
+void MovementObject::SetPosition(uint16_t x, uint16_t y)
 {
     m_MOx = x;
     m_MOy = y;
 }
 
-void MoveObject::SetColor(Tank::ColorTank color)
+void MovementObject::SetColor(Tank::ColorTank color)
 {
     m_color = color;
 }
 
-std::pair<uint16_t, uint16_t> MoveObject::GetPosition()const
+std::pair<uint16_t, uint16_t> MovementObject::GetPosition()const
 {
     return std::make_pair(m_MOx, m_MOy);
 }
 
-bool MoveObject::IsValidPos(uint16_t x, uint16_t y)const
+bool MovementObject::IsValidPos(uint16_t x, uint16_t y)const
 {
     return m_map->IsValidPosition(x, y);
 }
 
-std::tuple<uint16_t, uint16_t, Tank::ColorTank> MoveObject::StartPositionColor()
+std::tuple<uint16_t, uint16_t, Tank::ColorTank> MovementObject::StartPositionColor()
 {
     //daca e primul jucator 
     m_MOx = 1;
@@ -63,12 +63,12 @@ std::tuple<uint16_t, uint16_t, Tank::ColorTank> MoveObject::StartPositionColor()
 
 
 
-void MoveObject::ShootBullet() {
+void MovementObject::ShootBullet() {
     std::string shootMessage = m_bullet.Shoot();
     std::cout << shootMessage << std::endl;
 }
 
-void MoveObject::Move(Direction direction) {
+void MovementObject::Move(Direction direction) {
     uint16_t newX = m_MOx, newY = m_MOy;
 
     switch (direction) {
@@ -89,7 +89,7 @@ void MoveObject::Move(Direction direction) {
     //collision
 }
 
-void MoveObject::MoveServer(uint16_t x, uint16_t y, Direction direction)
+void MovementObject::MoveServer(uint16_t x, uint16_t y, Direction direction)
 {
 
     //de revenit 
@@ -111,12 +111,12 @@ void MoveObject::MoveServer(uint16_t x, uint16_t y, Direction direction)
         x++;
         break;
     }
-    MoveObject::SetPosition(x, y);
+    MovementObject::SetPosition(x, y);
 }
 
 //incercari
 
-//void MoveObject::HandleInput() {
+//void MovementObject::HandleInput() {
 //    std::vector<std::string> messageLog;
 //    const int maxMessages = 3;
 //    std::cout << "Folositi sagetile pentru a muta tancul" << std::endl << "'b' pentru a trage, 'q' pentru a iesi\n";
@@ -166,7 +166,7 @@ void MoveObject::MoveServer(uint16_t x, uint16_t y, Direction direction)
 //        }
 //    }
 //}
-//std::tuple<uint16_t, uint16_t, Tank::ColorTank>  MoveObject::MoveServer2(Direction direction) {
+//std::tuple<uint16_t, uint16_t, Tank::ColorTank>  MovementObject::MoveServer2(Direction direction) {
 //    uint16_t newX = m_MOx, newY = m_MOy;
 //
 //    switch (direction) {

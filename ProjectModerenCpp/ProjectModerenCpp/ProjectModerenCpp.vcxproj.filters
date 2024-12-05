@@ -27,7 +27,7 @@
     <ClInclude Include="GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MoveObject.h">
+    <ClInclude Include="MovementObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Bullet.h">
@@ -107,7 +107,7 @@
     <ClCompile Include="Position.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MoveObject.cpp">
+    <ClCompile Include="MovementObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="routing.cpp">

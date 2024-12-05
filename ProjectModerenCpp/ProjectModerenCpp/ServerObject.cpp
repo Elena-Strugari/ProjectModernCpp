@@ -26,11 +26,11 @@ std::string ServerObject::GetTankPositionString(const std::string& clientId)
     return "Tank not found";
 }
 
-void ServerObject::MoveTank(const std::string& clientId, MoveObject::Direction direction)
+void ServerObject::MoveTank(const std::string& clientId, MovementObject::Direction direction)
 {
     auto it = m_tanks.find(clientId);
     if (it != m_tanks.end()) {
-        //m_SOtank = it->second; // Referință la obiectul MoveObject
+        //m_SOtank = it->second; // Referință la obiectul MovementObject
         auto [currentX, currentY] = it->second.GetPosition();
 
         std::cout << "Pozitie curenta: " << currentX << ", " << currentY << ", culoare: "
@@ -50,7 +50,7 @@ std::tuple<uint16_t, uint16_t, Tank::ColorTank> ServerObject::GetTankPositionCol
 {
     auto it = m_tanks.find(clientId);
     if (it != m_tanks.end()) {
-        //MoveObject& tank = it->second;
+        //MovementObject& tank = it->second;
         return std::make_tuple(m_SOtank.GetX(), m_SOtank.GetY(), m_SOtank.GetTank().GetColor());
     }
 
@@ -62,7 +62,7 @@ void ServerObject::displayClients()
 {
     for (const auto& pair : m_tanks) {
         const std::string& clientId = pair.first;
-        const MoveObject& tank = pair.second;
+        const MovementObject& tank = pair.second;
 
         std::cout << "Client ID: " << clientId
             << ", Poziție: (" << tank.GetX() << ", " << tank.GetY() << ")"
@@ -70,11 +70,11 @@ void ServerObject::displayClients()
     }
 }
 
-//void ServerObject::MoveTank(const std::string& clientId, MoveObject::Direction direction)
+//void ServerObject::MoveTank(const std::string& clientId, MovementObject::Direction direction)
 //{
 //    auto it = m_tanks.find(clientId);
 //    if (it != m_tanks.end()) {
-//       //m_SOtank = it->second; // Referință la obiectul MoveObject
+//       //m_SOtank = it->second; // Referință la obiectul MovementObject
 //        auto [currentX, currentY] = it->second.GetPosition(); // Obținem poziția curentă
 //
 //        std::cout << "Pozitie curenta: " << currentX << ", " << currentY << ", culoare: "
@@ -112,7 +112,7 @@ void ServerObject::displayClients()
 //}
 //std::tuple<uint16_t, uint16_t, Tank::ColorTank> ServerObject::GetTankPositionColor(const std::string& clientId)
 //{
-//    //std::tuple<uint16_t, uint16_t, Tank::ColorTank> rez= MoveObject::StartPositionColor();
+//    //std::tuple<uint16_t, uint16_t, Tank::ColorTank> rez= MovementObject::StartPositionColor();
 //    std::tuple<uint16_t, uint16_t, Tank::ColorTank> rez= std::make_tuple(0, 0, Tank::ColorTank::Red);
 //        uint16_t x = std::get<0>(rez);
 //        uint16_t y = std::get<1>(rez);
@@ -122,7 +122,7 @@ void ServerObject::displayClients()
 //    
 //}
 //
-//void ServerObject::MoveTank(const std::string& clientId, MoveObject::Direction direction)
+//void ServerObject::MoveTank(const std::string& clientId, MovementObject::Direction direction)
 //{
 //    auto it = m_tanks.find(clientId);
 //    if (it != m_tanks.end()) {
@@ -132,8 +132,8 @@ void ServerObject::displayClients()
 //        std::cout << "current direct" << currentX << " " << currentY << " " << currentColor << std::endl;
 //
 //        
-//        // Cream un obiect MoveObject temporar
-//    //    MoveObject tempTank;
+//        // Cream un obiect MovementObject temporar
+//    //    MovementObject tempTank;
 //    //    tempTank.SetPosition(currentX, currentY);
 //    //    tempTank.SetColor(currentColor);
 //
@@ -162,11 +162,11 @@ void ServerObject::displayClients()
 //    //}
 //    //else {
 //    //    std::cerr << "Tank-ul cu ID-ul " << clientId << " nu există!\n";
-//    //    //// Apelează MoveServer pe obiectul `MoveObject` din mapa `m_tanks`
+//    //    //// Apelează MoveServer pe obiectul `MovementObject` din mapa `m_tanks`
 //    //    //std::tuple<uint16_t, uint16_t, Tank::ColorTank> rez
-//    //    //auto [newX, newY, color] = MoveObject::MoveServer(direction);  // Deconstruim tuple-ul
+//    //    //auto [newX, newY, color] = MovementObject::MoveServer(direction);  // Deconstruim tuple-ul
 //
-//    //    //// Actualizăm poziția și culoarea în obiectul `MoveObject`
+//    //    //// Actualizăm poziția și culoarea în obiectul `MovementObject`
 //    //    //it->second.SetPosition(newX, newY);  // Setează noile coordonate
 //    //    //it->second.SetColor(color);  // Setează culoarea, dacă este necesar
 //    //}

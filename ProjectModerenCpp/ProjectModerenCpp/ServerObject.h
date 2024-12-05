@@ -5,7 +5,7 @@
 #include <string>
 
 
-#include "MoveObject.h"
+#include "MovementObject.h"
 
 
 class ServerObject
@@ -25,7 +25,7 @@ public:
     std::tuple<uint16_t, uint16_t, Tank::ColorTank> GetTankPositionColor(const std::string& clientId);
 
     void AddClient(const std::string& clientId, const std::string& level);
-    void MoveTank(const std::string& clientId, MoveObject::Direction direction);
+    void MoveTank(const std::string& clientId, MovementObject::Direction direction);
     bool clientExists(const std::string& clientId);
 
 
@@ -35,8 +35,8 @@ public:
 protected:
     std::unordered_map<std::string, std::string> m_clientLevels;  // Mapează ID-ul clientului la nivelul ales
     //std::unordered_map<std::string, std::tuple<uint16_t, uint16_t, Tank::ColorTank>> m_tanks;
-    std::unordered_map<std::string, MoveObject> m_tanks;
+    std::unordered_map<std::string, MovementObject> m_tanks;
 private:
-    MoveObject m_SOtank;
+    MovementObject m_SOtank;
 };
 
