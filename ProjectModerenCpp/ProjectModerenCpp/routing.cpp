@@ -3,13 +3,10 @@ using namespace http;
 
 void http::Routing::Run()
 {
-    CROW_ROUTE(m_app, "/incerc")([]() {
+    /*CROW_ROUTE(m_app, "/incerc")([]() {
         return "sunt aici ";
         });
-
-    //std::unordered_map<std::string, std::string> clientLevels;
-    //std::mutex clientLevelsMutex;
-
+*/
 
     CROW_ROUTE(m_app, "/choose_level").methods(crow::HTTPMethod::POST)([&](const crow::request& req) {
         try {
@@ -104,7 +101,7 @@ void http::Routing::Run()
         });
 
 
-    /*CROW_ROUTE(m_app, "/get_tank")
+    CROW_ROUTE(m_app, "/get_tank")
         ([this](const crow::request& req) {
         crow::json::wvalue response;
         auto clientId = req.url_params.get("id");
@@ -139,7 +136,7 @@ void http::Routing::Run()
         }
 
         return crow::response(400, R"({"error":"Client ID missing"})");
-            });*/
+            });
 
 
     CROW_ROUTE(m_app, "/move_tank/up")([this](const crow::request& req) {
