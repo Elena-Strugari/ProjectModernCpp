@@ -96,7 +96,11 @@
     <QtUic Include="ClientApp.ui" />
     <QtMoc Include="ClientApp.h" />
     <ClCompile Include="ClientApp.cpp" />
+    <ClCompile Include="LoginWindow.cpp" />
     <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="LoginWindow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
