@@ -142,41 +142,48 @@ void http::Routing::Run()
             });
 
 
-    CROW_ROUTE(m_app, "/move_tank")([this](const crow::request& req) {
+    CROW_ROUTE(m_app, "/move_tank/up")([this](const crow::request& req) {
         auto clientId = req.url_params.get("id");
-        char* direction = req.url_params.get("direction");
-
-        if (clientId && direction) {
-
-            MovementObject::Direction dir;
-            if (strcmp(direction, "U") == 0) {
-                // return crow::response(200, "S-a mutat sus");
-                MoveTank(clientId, MovementObject::Direction::Up);
-
-                std::string word = GetTankPositionString(clientId);
-                return crow::response(200, "S-a mutat sus" + word);
-            }
-            else if (strcmp(direction, "D") == 0) {
-                MoveTank(clientId, MovementObject::Direction::Down);
-                std::string word = GetTankPositionString(clientId);
-                return crow::response(200, "S-a mutat jos" + word);
-            }
-            else if (strcmp(direction, "L") == 0) {
-                MoveTank(clientId, MovementObject::Direction::Left);
-                std::string word = GetTankPositionString(clientId);
-                return crow::response(200, "S-a mutat la stanga" + word);
-            }
-            else if (strcmp(direction, "R") == 0) {
-                MoveTank(clientId, MovementObject::Direction::Right);
-                std::string word = GetTankPositionString(clientId);
-                return crow::response(200, "S-a mutat la dreapta" + word);
-            }
-            else {
-                return crow::response(400, "Direcție invalida");
-            }
+        if (!clientId) {
+            return crow::response(400, "Missing client ID");
         }
-        return crow::response(400, "Missing parameters");
 
+        MoveTank(clientId, MovementObject::Direction::Up);
+        std::string word = GetTankPositionString(clientId);
+        return crow::response(200, "S-a mutat sus " + word);
+        });
+
+    CROW_ROUTE(m_app, "/move_tank/down")([this](const crow::request& req) {
+        auto clientId = req.url_params.get("id");
+        if (!clientId) {
+            return crow::response(400, "Missing client ID");
+        }
+
+        MoveTank(clientId, MovementObject::Direction::Down);
+        std::string word = GetTankPositionString(clientId);
+        return crow::response(200, "S-a mutat jos " + word);
+        });
+
+    CROW_ROUTE(m_app, "/move_tank/left")([this](const crow::request& req) {
+        auto clientId = req.url_params.get("id");
+        if (!clientId) {
+            return crow::response(400, "Missing client ID");
+        }
+
+        MoveTank(clientId, MovementObject::Direction::Left);
+        std::string word = GetTankPositionString(clientId);
+        return crow::response(200, "S-a mutat la stanga " + word);
+        });
+
+    CROW_ROUTE(m_app, "/move_tank/right")([this](const crow::request& req) {
+        auto clientId = req.url_params.get("id");
+        if (!clientId) {
+            return crow::response(400, "Missing client ID");
+        }
+
+        MoveTank(clientId, MovementObject::Direction::Right);
+        std::string word = GetTankPositionString(clientId);
+        return crow::response(200, "S-a mutat la dreapta " + word);
         });
 
 

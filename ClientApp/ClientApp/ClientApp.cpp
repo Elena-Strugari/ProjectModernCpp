@@ -81,7 +81,7 @@ void ClientApp::onGetMap() {
 
 void ClientApp::sendMoveRequest(const std::string& direction) {
     std::string clientId = clientIdInput->text().toStdString();
-    std::string url = "http://localhost:8080/move_tank?id=" + clientId + "&direction=" + direction;
+    std::string url = "http://localhost:8080/move_tank/" + direction + "?id=" + clientId;
 
     cpr::Response r = cpr::Get(cpr::Url{ url });
 
@@ -94,17 +94,17 @@ void ClientApp::sendMoveRequest(const std::string& direction) {
 }
 
 void ClientApp::onMoveTankUp() {
-    sendMoveRequest("U");
+    sendMoveRequest("up");
 }
 
 void ClientApp::onMoveTankDown() {
-    sendMoveRequest("D");
+    sendMoveRequest("down");
 }
 
 void ClientApp::onMoveTankLeft() {
-    sendMoveRequest("L");
+    sendMoveRequest("left");
 }
 
 void ClientApp::onMoveTankRight() {
-    sendMoveRequest("R");
+    sendMoveRequest("right");
 }
