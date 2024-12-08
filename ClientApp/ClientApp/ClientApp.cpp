@@ -4,9 +4,9 @@
 ClientApp::ClientApp(QWidget* parent) : QWidget(parent) {
     QVBoxLayout* layout = new QVBoxLayout(this);
 
-    QPushButton* smallButton = new QPushButton("Small Map", this);
-    QPushButton* mediumButton = new QPushButton("Medium Map", this);
-    QPushButton* largeButton = new QPushButton("Large Map", this);
+    QPushButton* smallButton = new QPushButton("Easy", this);
+    QPushButton* mediumButton = new QPushButton("Medium", this);
+    QPushButton* largeButton = new QPushButton("Hard", this);
 
     layout->addWidget(smallButton);
     layout->addWidget(mediumButton);
