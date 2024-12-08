@@ -9,10 +9,6 @@ namespace http {
 	{
 	public:
 		void Run();
-		//Routing() {
-		//	// Inițializare mapă tanks cu un exemplu
-		//	m_tanks["ela"] = GameObject(Tank::ColorTank::Red);
-		//}
 
 	private:
 		crow::SimpleApp m_app;

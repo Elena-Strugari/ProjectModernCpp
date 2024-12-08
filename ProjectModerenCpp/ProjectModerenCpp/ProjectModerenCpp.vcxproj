@@ -135,6 +135,7 @@
     <ClInclude Include="BonusLife.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="CollisionManeger.h" />
+    <ClInclude Include="dataBase.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Map.h" />
@@ -153,6 +154,7 @@
     <ClCompile Include="BonusLife.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="CollisionManeger.cpp" />
+    <ClCompile Include="dataBase.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Main.cpp" />

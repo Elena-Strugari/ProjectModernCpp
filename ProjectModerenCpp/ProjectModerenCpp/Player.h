@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <memory>
+// cred ca trebuie conectata aici baza de date 
 
 #include "GameObject.h"
 
