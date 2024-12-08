@@ -23,11 +23,6 @@ void http::Routing::Run()
                 return crow::response(400, "Server:Bad request: missing client ID");
             }
 
-            //{
-            //   // std::lock_guard<std::mutex> lock(clientLevelsMutex);
-
-            //    clientLevels[clientId] = levelType;
-            //}
             std::cout << "Nivel ales pentru Client-ID " << clientId << ": " << levelType << std::endl;
             AddClient(clientId, levelType);
             std::cout << "Nivel ales pentru Client-ID " << clientId << ": " << levelType << std::endl;

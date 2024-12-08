@@ -16,8 +16,8 @@ class ClientApp : public QWidget
     Q_OBJECT
 
 public:
-    explicit ClientApp(QWidget *parent = nullptr);
-   // ~ClientApp();
+    explicit ClientApp(QWidget* parent = nullptr);
+    // ~ClientApp();
 
 private slots:
     void onChooseLevel();
