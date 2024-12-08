@@ -104,7 +104,7 @@ void http::Routing::Run()
         });
 
 
-    CROW_ROUTE(m_app, "/get_tank")
+    /*CROW_ROUTE(m_app, "/get_tank")
         ([this](const crow::request& req) {
         crow::json::wvalue response;
         auto clientId = req.url_params.get("id");
@@ -139,7 +139,7 @@ void http::Routing::Run()
         }
 
         return crow::response(400, R"({"error":"Client ID missing"})");
-            });
+            });*/
 
 
     CROW_ROUTE(m_app, "/move_tank/up")([this](const crow::request& req) {
