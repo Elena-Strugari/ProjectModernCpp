@@ -1,18 +1,24 @@
-//client
-//#pragma once
-//
-//#include <cstdint>
-//// #include "Tank.h"
-//class Player
-//{
-//public:
-//	Player(uint8_t x, uint8_t y);
-//	void updateScore(int points);
-//	void loseLife();
-//	bool isGameOver();//trebuie oare aici sau in clasa Game?
-//
-//private:
-//	uint8_t m_score;
-//	uint8_t lives;
-//};
-//
+#pragma once
+#include <string>
+#include <memory>
+
+#include "GameObject.h"
+
+class Player
+{
+public:
+	Player(const std::string& name, uint16_t lives);
+
+	void AssignTank(std::shared_ptr<Tank> tank);
+	void LoseLife();
+	void GainLife();
+
+	uint16_t GetLives()const;
+
+
+private:
+	std::string m_userName;
+	uint16_t m_lives;
+	std::shared_ptr<Tank> m_tank;// pointer catre tancul jucatorului 
+};
+
