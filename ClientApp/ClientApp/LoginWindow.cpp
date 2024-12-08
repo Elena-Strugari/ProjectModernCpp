@@ -4,12 +4,12 @@
 LoginWindow::LoginWindow(QWidget* parent) : QWidget(parent) {
     QVBoxLayout* layout = new QVBoxLayout(this);
 
-    nameInput = new QLineEdit(this);
-    nameInput->setPlaceholderText("Enter your name");
+    clientInput = new QLineEdit(this);
+    clientInput->setPlaceholderText("Enter your name");
 
     loginButton = new QPushButton("Log In", this);
 
-    layout->addWidget(nameInput);
+    layout->addWidget(clientInput);
     layout->addWidget(loginButton);
 
     setLayout(layout);
@@ -18,10 +18,12 @@ LoginWindow::LoginWindow(QWidget* parent) : QWidget(parent) {
 }
 
 void LoginWindow::onLogin() {
-    QString name = nameInput->text();
-    if (name.isEmpty()) {
-        return; // Or show an error message
-    }
+    std::string clientId = clientInput->text().toStdString();
+    //if (clientId) {
+    //    return; // Or show an error message
+    //}
+    //create route for login in server and client 
+
 
     // Open the main window
     ClientApp* clientApp = new ClientApp();

@@ -4,32 +4,57 @@
 ClientApp::ClientApp(QWidget* parent) : QWidget(parent) {
     QVBoxLayout* layout = new QVBoxLayout(this);
 
-    QPushButton* smallButton = new QPushButton("Easy", this);
+    QPushButton* easyButton = new QPushButton("Easy", this);
     QPushButton* mediumButton = new QPushButton("Medium", this);
-    QPushButton* largeButton = new QPushButton("Hard", this);
+    QPushButton* hardButton = new QPushButton("Hard", this);
 
-    layout->addWidget(smallButton);
+    layout->addWidget(easyButton);
     layout->addWidget(mediumButton);
-    layout->addWidget(largeButton);
+    layout->addWidget(hardButton);
 
     setLayout(layout);
 
-    connect(smallButton, &QPushButton::clicked, this, &ClientApp::onChooseSmall);
+   /* connect(easyButton, &QPushButton::clicked, this, &ClientApp::onChooseSmall);
     connect(mediumButton, &QPushButton::clicked, this, &ClientApp::onChooseMedium);
-    connect(largeButton, &QPushButton::clicked, this, &ClientApp::onChooseLarge);
+    connect(hardButton, &QPushButton::clicked, this, &ClientApp::onChooseLarge);*/
 }
 
-void ClientApp::onChooseSmall() {
-    QMessageBox::information(this, "Map Size", "You chose a Small Map!");
-}
 
-void ClientApp::onChooseMedium() {
-    QMessageBox::information(this, "Map Size", "You chose a Medium Map!");
-}
-
-void ClientApp::onChooseLarge() {
-    QMessageBox::information(this, "Map Size", "You chose a Large Map!");
-}
+// to modify , 
+// 
+// 
+//void ClientApp::onChooseLevel(const std::string&clientId , const std::string& level) {
+//   // std::string clientId = clientIdInput->text().toStdString();
+//    /*if (clientId.empty()) {
+//        QMessageBox::warning(this, "Error", "Client ID is required!");
+//        return;
+//    }*/
+//
+//    cpr::Response r = cpr::Post(
+//        cpr::Url{ "http://localhost:8080/choose_level" },
+//        cpr::Header{ {"Client-ID", clientId} },
+//        cpr::Body{ level }
+//    );
+//
+//    if (r.status_code == 200) {
+//        outputLabel->setText("Level chosen successfully: " + QString::fromStdString(r.text));
+//    }
+//    else {
+//        outputLabel->setText("Error choosing level: " + QString::fromStdString(r.text));
+//    }
+//}
+//
+//void ClientApp::onChooseSmall() {
+//    onChooseLevel(clientId, "Easy");
+//}
+//
+//void ClientApp::onChooseMedium() {
+//    onChooseLevel("Medium");
+//}
+//
+//void ClientApp::onChooseLarge() {
+//    onChooseLevel("Hard");
+//}
 
 
 

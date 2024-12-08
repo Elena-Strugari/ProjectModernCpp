@@ -18,7 +18,7 @@ private slots:
     void onLogin();
 
 private:
-    QLineEdit* nameInput;
+    QLineEdit* clientInput;
     QPushButton* loginButton;
 
 };
