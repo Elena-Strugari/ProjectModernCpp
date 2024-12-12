@@ -1,4 +1,6 @@
 <RCC>
-    <qresource prefix="ClientApp">
+    <qresource prefix="/ClientApp"/>
+    <qresource prefix="/startImage">
+        <file>resources/StartGame.jpg</file>
     </qresource>
 </RCC>

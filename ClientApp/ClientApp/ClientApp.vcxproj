@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="MainWindow.cpp" />
     <QtRcc Include="ClientApp.qrc" />
     <QtUic Include="ClientApp.ui" />
     <QtMoc Include="ClientApp.h" />
@@ -101,6 +102,9 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="LoginWindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="MainWindow.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

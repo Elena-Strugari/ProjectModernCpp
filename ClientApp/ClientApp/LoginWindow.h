@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <QWidget>
 #include <QLineEdit>
@@ -16,10 +16,12 @@ public:
 
 private slots:
     void onLogin();
+    void onRegister();
 
 private:
     QLineEdit* clientInput;
     QPushButton* loginButton;
+    QPushButton* registerButton;
 
 };
 
