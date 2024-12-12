@@ -1,4 +1,4 @@
-#include "MainWindow.h"
+﻿#include "MainWindow.h"
 #include "LoginWindow.h"
 #include <QPixmap>
 #include <QLabel>
@@ -36,4 +36,28 @@ MainWindow::MainWindow(QWidget* parent) : QWidget(parent), imageLabel(new QLabel
     setLayout(layout);
     setWindowTitle("Start Game");
     resize(800, 600);
+}
+
+void MainWindow::resizeEvent(QResizeEvent* event) {
+    // Actualizăm imaginea de fundal la dimensiunea ferestrei
+    QPixmap pixmap(":/startImage/resources/StartGame.jpg");
+    if (!pixmap.isNull()) {
+        imageLabel->setPixmap(pixmap.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
+    }
+    QWidget::resizeEvent(event);
+}
+
+void MainWindow::keyPressEvent(QKeyEvent* event) {
+    if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
+        onStartGameClicked();
+    }
+}
+
+void MainWindow::onStartGameClicked() {
+    // Deschidem LoginWindow
+    LoginWindow* loginWindow = new LoginWindow();
+    loginWindow->show();
+
+    // Închidem fereastra curentă
+    close();
 }
