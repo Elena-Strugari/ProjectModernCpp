@@ -187,7 +187,7 @@ void http::Routing::Run()
     unsigned int numThreads = std::thread::hardware_concurrency(); // Determină numărul de fire
     if (numThreads == 0) numThreads = 4; // Asigură-te că există cel puțin un fir
 
-    m_app.port(8080).concurrency(numThreads).run();
+    m_app.port(18080).concurrency(numThreads).run();
 }
 
 
