@@ -13,12 +13,12 @@ LoginWindow::LoginWindow(QWidget* parent) : QWidget(parent) {
 
     layout->addWidget(clientInput);
     layout->addWidget(loginButton);
-    layout->addWidget(registerButton); // Adăugăm butonul Register
+    layout->addWidget(registerButton);
 
     setLayout(layout);
 
     connect(loginButton, &QPushButton::clicked, this, &LoginWindow::onLogin);
-    connect(registerButton, &QPushButton::clicked, this, &LoginWindow::onRegister); // Conectăm butonul la funcția onRegister
+    connect(registerButton, &QPushButton::clicked, this, &LoginWindow::onRegister);
 }
 
 void LoginWindow::onLogin() {
@@ -29,11 +29,9 @@ void LoginWindow::onLogin() {
         return;
     }
 
-    // Deschidem fereastra principală
     ClientApp* clientApp = new ClientApp();
     clientApp->show();
 
-    // Închidem fereastra curentă
     close();
 }
 
@@ -45,13 +43,10 @@ void LoginWindow::onRegister() {
         return;
     }
 
-    // Aici poți adăuga logica pentru înregistrare (apel HTTP către server)
     QMessageBox::information(this, "Register", "Register functionality not implemented yet!");
 
-    // Deschidem fereastra principală
     ClientApp* clientApp = new ClientApp();
     clientApp->show();
 
-    // Închidem fereastra curentă
     close();
 }

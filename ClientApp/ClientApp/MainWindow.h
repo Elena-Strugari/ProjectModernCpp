@@ -18,18 +18,18 @@ public:
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 protected:
-    /*void resizeEvent(QResizeEvent* event) override;
-    void keyPressEvent(QKeyEvent* event) override;*/
+    void resizeEvent(QResizeEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
 
-//private slots:
-   // void onStartGameClicked();
+private slots:
+    void onStartGameClicked();
 
 private:
 
-    //QLabel* imageLabel; // Imaginea de fundal
-    //QLabel* textLabel;  // Textul "Start Game"
-    //QPixmap pixmap;     // Imaginea încărcată
-    ClientMap* map;
+    QLabel* imageLabel; // Imaginea de fundal
+    QLabel* textLabel;  // Textul "Start Game"
+    QPixmap pixmap;     // Imaginea încărcată
+   // ClientMap* map;
 };
 
 #endif // MAINWINDOW_H
