@@ -2,11 +2,15 @@
 #ifndef CELL_H
 #define CELL_H
 
+#include <memory>
+#include "GameEntity.h"
+
 class MapCell
 {
 private:
 	bool m_isWall;
 	bool m_isDestructible;
+	std::shared_ptr<GameEntity> m_object;
 
 public:
 	MapCell();
@@ -15,6 +19,9 @@ public:
 
 	bool IsDestructible() const;
 	void SetDestructible(bool destructible);
+
+	std::shared_ptr<GameEntity> GetObject() const;
+	void SetObject(std::shared_ptr<GameEntity> obj);
 
 	bool IsFree() const;
 };

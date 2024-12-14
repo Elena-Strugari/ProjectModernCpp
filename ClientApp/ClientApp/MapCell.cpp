@@ -3,7 +3,7 @@
 MapCell::MapCell()
 	: m_isWall(false)
 	, m_isDestructible(false)
-	//, m_object(nullptr)
+	, m_object(nullptr)
 {
 	//EMPTY
 }
@@ -28,7 +28,17 @@ void MapCell::SetDestructible(bool destructible)
 	m_isDestructible = destructible;
 }
 
+std::shared_ptr<GameEntity> MapCell::GetObject() const
+{
+	return m_object;
+}
+
+void MapCell::SetObject(std::shared_ptr<GameEntity> obj)
+{
+	m_object = obj;
+}
+
 bool MapCell::IsFree() const
 {
-	return !m_isWall && !m_isDestructible; //&& !m_object;
+	return !m_isWall && !m_isDestructible && !m_object;
 }
