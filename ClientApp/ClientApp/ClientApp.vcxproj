@@ -36,12 +36,12 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>QT_6.7</QtInstall>
+    <QtInstall>Qt6.5</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>QT_6.7</QtInstall>
+    <QtInstall>Qt6.5</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
@@ -68,7 +68,7 @@
       <AdditionalDependencies>Qt6Widgets.lib
 ;Qt6Core.lib
 ;Qt6Gui.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Qt\6.7.3\msvc2019_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\Documents\QTCreator\6.7.3\msvc2022_64\lib;C:\Qt\6.7.3\msvc2019_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -76,7 +76,7 @@
       <AdditionalDependencies>Qt6Widgets.lib
 ;Qt6Core.lib
 ;Qt6Gui.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Qt\6.7.3\msvc2019_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\Documents\QTCreator\6.7.3\msvc2022_64\lib;C:\Qt\6.7.3\msvc2019_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
