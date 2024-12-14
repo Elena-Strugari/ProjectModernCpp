@@ -11,7 +11,7 @@ class GameEntity
 	virtual ~GameEntity() = default;
 	virtual void draw(QPainter* painter, int tileSize) const = 0;
 	virtual void update() = 0;
-
+public:
 	QPoint position;
 
 

@@ -7,24 +7,29 @@
 #include <QPixmap>
 #include <QVBoxLayout>
 #include <QKeyEvent>
+#include <QMainWindow>
+#include "ClientMap.h"
 
-class MainWindow : public QWidget {
+class MainWindow : public QMainWindow //QWidget 
+{
     Q_OBJECT
 
 public:
     explicit MainWindow(QWidget* parent = nullptr);
-
+    ~MainWindow();
 protected:
-    void resizeEvent(QResizeEvent* event) override;
-    void keyPressEvent(QKeyEvent* event) override;
+    /*void resizeEvent(QResizeEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;*/
 
-private slots:
-    void onStartGameClicked();
+//private slots:
+   // void onStartGameClicked();
 
 private:
-    QLabel* imageLabel; // Imaginea de fundal
-    QLabel* textLabel;  // Textul "Start Game"
-    QPixmap pixmap;     // Imaginea încărcată
+
+    //QLabel* imageLabel; // Imaginea de fundal
+    //QLabel* textLabel;  // Textul "Start Game"
+    //QPixmap pixmap;     // Imaginea încărcată
+    ClientMap* map;
 };
 
 #endif // MAINWINDOW_H

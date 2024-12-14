@@ -92,15 +92,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ClientMap.cpp" />
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="MapCell.cpp" />
+    <ClCompile Include="TestMap.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
+    </ClCompile>
     <QtRcc Include="ClientApp.qrc" />
     <QtUic Include="ClientApp.ui" />
     <QtMoc Include="ClientApp.h" />
     <ClCompile Include="ClientApp.cpp" />
     <ClCompile Include="LoginWindow.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="LoginWindow.h" />
@@ -109,6 +117,7 @@
     <QtMoc Include="MainWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="ClientMap.h" />
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="MapCell.h" />
   </ItemGroup>
