@@ -1,7 +1,7 @@
 #pragma once  
 
-#ifndef SELECTPLAYER_H
-#define SELECTPLAYR_H
+#ifndef SELECTPLAYERWINDOW_H
+#define SELECTPLAYERWINDOW_H
 
 #include <QDialog>
 class SelectPlayer : public QDialog
@@ -12,4 +12,4 @@ public:
 protected:
 	void keyPressEvent(QKeyEvent* event)override;
 };
-#endif SELECTPLAYER.H
+#endif // SELECTPLAYERWINDOW_H

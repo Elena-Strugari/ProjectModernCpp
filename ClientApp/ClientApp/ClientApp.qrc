@@ -3,4 +3,10 @@
     <qresource prefix="/startImage">
         <file>resources/StartGame.jpg</file>
     </qresource>
+    <qresource prefix="/selectPlayers">
+        <file>resources/Astronaut_1.png</file>
+        <file>resources/Astronaut_2.png</file>
+        <file>resources/Astronaut_3.png</file>
+        <file>resources/Astronaut_4.png</file>
+    </qresource>
 </RCC>
