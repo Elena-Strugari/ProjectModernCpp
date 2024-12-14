@@ -68,7 +68,7 @@
       <AdditionalDependencies>Qt6Widgets.lib
 ;Qt6Core.lib
 ;Qt6Gui.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\Documents\QTCreator\6.7.3\msvc2022_64\lib;C:\Qt\6.7.3\msvc2019_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\qt\6.7.3\msvc2022_64\lib;D:\Documents\QTCreator\6.7.3\msvc2022_64\lib;C:\Qt\6.7.3\msvc2019_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -76,7 +76,7 @@
       <AdditionalDependencies>Qt6Widgets.lib
 ;Qt6Core.lib
 ;Qt6Gui.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\Documents\QTCreator\6.7.3\msvc2022_64\lib;C:\Qt\6.7.3\msvc2019_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\qt\6.7.3\msvc2022_64\lib;D:\Documents\QTCreator\6.7.3\msvc2022_64\lib;C:\Qt\6.7.3\msvc2019_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -112,6 +112,7 @@
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="MapCell.cpp" />
+    <ClCompile Include="SelectPlayer.cpp" />
     <ClCompile Include="TestMap.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -133,6 +134,7 @@
     <QtMoc Include="MainWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SelectPlayer.h" />
     <QtMoc Include="ClientMap.h" />
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="MapCell.h" />
