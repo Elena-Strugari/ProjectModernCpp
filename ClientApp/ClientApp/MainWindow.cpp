@@ -7,34 +7,35 @@
 #include <QVBoxLayout>
 #include <QGraphicsOpacityEffect>
 
-MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), imageLabel(new QLabel(this)), textLabel(new QLabel("Start Game", this)) {
-    QVBoxLayout* layout = new QVBoxLayout(this);
-    layout->setContentsMargins(0, 0, 0, 0);
-
+MainWindow::MainWindow(QWidget* parent)
+    : QMainWindow(parent), imageLabel(new QLabel(this)), textLabel(new QLabel("Start Game", this)) {
     QPixmap pixmap(":/startImage/resources/StartGame.jpg");
-    imageLabel->setPixmap(pixmap.scaled(800, 600, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
-    imageLabel->setScaledContents(true);
+    if (!pixmap.isNull()) {
+        imageLabel->setPixmap(pixmap.scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    }
     imageLabel->setAlignment(Qt::AlignCenter);
-    layout->addWidget(imageLabel);
+    imageLabel->setScaledContents(false); // Nu forțăm scalarea completă
 
     textLabel->setAlignment(Qt::AlignCenter);
     textLabel->setStyleSheet(
         "font-size: 36px; "
         "color: white; "
         "font-weight: bold; "
-        "background-color: rgba(0, 0, 0, 128); " 
+        "background-color: rgba(0, 0, 0, 128); "
         "padding: 10px; "
         "border-radius: 10px;"
     );
 
-    imageLabel->setLayout(new QVBoxLayout());
-    imageLabel->layout()->addWidget(textLabel);
-    imageLabel->layout()->setAlignment(textLabel, Qt::AlignCenter);
+    // Adăugăm textul peste imagine
+    QVBoxLayout* labelLayout = new QVBoxLayout(imageLabel);
+    labelLayout->addWidget(textLabel);
+    labelLayout->setAlignment(textLabel, Qt::AlignCenter);
 
-    setLayout(layout);
+    setCentralWidget(imageLabel); // Setăm imaginea ca widget central
     setWindowTitle("Start Game");
     resize(800, 600);
 }
+
 MainWindow::~MainWindow() {
 
 }
