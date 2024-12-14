@@ -67,6 +67,7 @@ LoginWindow::LoginWindow(QWidget* parent)
     mainLayout->addLayout(contentLayout);
     setLayout(mainLayout);
 
+    // Conectăm butoanele
     connect(loginButton, &QPushButton::clicked, this, &LoginWindow::onLogin);
     connect(registerButton, &QPushButton::clicked, this, &LoginWindow::onRegister);
 
@@ -85,31 +86,35 @@ void LoginWindow::resizeEvent(QResizeEvent* event) {
 }
 
 void LoginWindow::onLogin() {
-    std::string clientId = clientInput->text().toStdString();
+    QString clientId = clientInput->text().trimmed();
 
-    if (clientId.empty()) {
+    if (clientId.isEmpty()) {
         QMessageBox::warning(this, "Eroare", "Vă rugăm să introduceți un nume!");
         return;
     }
 
+    // Creează fereastra ClientApp și o afișează
     ClientApp* clientApp = new ClientApp();
+    clientApp->setWindowTitle("Game"); // Setăm titlul
     clientApp->show();
 
-    close();
+    close(); // Închidem fereastra curentă
 }
 
 void LoginWindow::onRegister() {
-    std::string clientId = clientInput->text().toStdString();
+    QString clientId = clientInput->text().trimmed();
 
-    if (clientId.empty()) {
+    if (clientId.isEmpty()) {
         QMessageBox::warning(this, "Eroare", "Vă rugăm să introduceți un nume!");
         return;
     }
 
     QMessageBox::information(this, "Înregistrare", "Funcționalitatea de înregistrare nu este încă implementată!");
 
+    // Creează fereastra ClientApp și o afișează
     ClientApp* clientApp = new ClientApp();
+    clientApp->setWindowTitle("Game"); // Setăm titlul
     clientApp->show();
 
-    close();
+    close(); // Închidem fereastra curentă
 }

@@ -1,9 +1,9 @@
-//#pragma once
 #pragma once
 #include <QWidget>
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QLineEdit>
+#include <QStackedLayout>
 #include <QLabel>
 #include <cpr/cpr.h>
 
@@ -13,16 +13,15 @@ class ClientApp : public QWidget {
 public:
     explicit ClientApp(QWidget* parent = nullptr);
 
-private slots:
-    /* void onChooseLevel(const std::string& clientId , const std::string& level);
+private:
+    QStackedLayout* stackedLayout; // Layout stratificat pentru navigare
 
-    void onChooseSmall();
-    void onChooseMedium();
-    void onChooseLarge();*/
+private slots:
+    void onLevelChosen(const QString& level);
 };
 
 
-//
+
 //#include <QtWidgets/QMainWindow>
 //#include "ui_ClientApp.h"
 //
