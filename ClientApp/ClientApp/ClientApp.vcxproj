@@ -36,12 +36,12 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>QT_6.7</QtInstall>
+    <QtInstall>Qt6.5</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>QT_6.7</QtInstall>
+    <QtInstall>Qt6.5</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
@@ -117,11 +117,14 @@
       </ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="MapCell.cpp" />
-    <ClCompile Include="SelectPlayerTest.cpp" />
-    <ClCompile Include="SelectPlayerWindow.cpp" />
-    <ClCompile Include="TestMap.cpp">
+    <ClCompile Include="SelectPlayerTest.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="SelectPlayerWindow.cpp" />
+    <ClCompile Include="TestMap.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
     <QtRcc Include="ClientApp.qrc" />
     <QtUic Include="ClientApp.ui" />
