@@ -11,6 +11,9 @@
 //#include "ClientMap.h"
 #include "ClientApp.h"
 
+
+#include "StartGame.h"
+
 class MainWindow : public QMainWindow //QWidget 
 {
     Q_OBJECT
@@ -18,12 +21,13 @@ class MainWindow : public QMainWindow //QWidget
 public:
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
-protected:
-    void resizeEvent(QResizeEvent* event) override;
-    void keyPressEvent(QKeyEvent* event) override;
+   // StartGame* startGameWindow = new StartGame(this);
+    
+   
 
 private slots:
-    void onStartGameClicked();
+    void firstWindow();            //start game
+    void onStartGameClicked();     // log 
 
 private:
 

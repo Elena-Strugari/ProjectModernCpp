@@ -1,6 +1,28 @@
-﻿//#include "ClientServer.h"
-//
-//
+﻿#include "ClientServer.h"
+#include <iostream>
+
+
+void ClientServer::connectServer() {
+    std::string server_url = "http://localhost:8080/connect";
+
+    try {
+        cpr::Response response = cpr::Get(cpr::Url{ server_url });
+
+        if (response.status_code == 200) {
+            std::cout << "Mesaj de la server: " << response.text << std::endl;
+        }
+        else {
+            std::cerr << "Eroare la conectare. Cod răspuns: " << response.status_code << std::endl;
+        }
+    }
+    catch (const std::exception& ex) {
+        std::cerr << "Excepție la conectare: " << ex.what() << std::endl;
+    }
+}
+
+
+
+
 //void ClientApp::onChooseLevel(const std::string& clientId, const std::string& level) {
 //    // std::string clientId = clientIdInput->text().toStdString();
 //     /*if (clientId.empty()) {
@@ -146,3 +168,4 @@
 //void ClientApp::onMoveTankRight() {
 //    sendMoveRequest("right");
 //}
+

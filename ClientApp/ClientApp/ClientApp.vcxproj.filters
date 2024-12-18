@@ -67,6 +67,9 @@
     <ClCompile Include="ClientServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="StartGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="LoginWindow.h">
@@ -76,6 +79,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ClientMap.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="StartGame.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

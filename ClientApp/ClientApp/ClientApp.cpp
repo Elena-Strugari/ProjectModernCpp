@@ -1,10 +1,14 @@
 ﻿#include "ClientApp.h"
+#include "ClientServer.h"
 #include <QLabel>
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QMessageBox>
 #include <QPalette>
 #include <QPixmap>
+
+
+
 
 ClientApp::ClientApp(QWidget* parent) : QWidget(parent) {
     // Imaginea de fundal
@@ -14,7 +18,8 @@ ClientApp::ClientApp(QWidget* parent) : QWidget(parent) {
         palette.setBrush(QPalette::Window, pixmap.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
         setAutoFillBackground(true);
         setPalette(palette);
-    }
+    }  
+    ClientServer::connectServer();
 
     // Layout principal stratificat (pentru navigare între "ecrane")
     stackedLayout = new QStackedLayout(this);

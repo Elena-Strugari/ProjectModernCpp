@@ -8,6 +8,11 @@ void http::Routing::Run()
         });
 */
 
+    CROW_ROUTE(m_app, "/connect")([]() {
+        return crow::response(200, "Server: Conectare reușită!");
+        });
+
+
     CROW_ROUTE(m_app, "/choose_level").methods(crow::HTTPMethod::POST)([&](const crow::request& req) {
         try {
             std::string levelType = req.body;
@@ -184,10 +189,11 @@ void http::Routing::Run()
         });
 
 
-    unsigned int numThreads = std::thread::hardware_concurrency(); // Determină numărul de fire
-    if (numThreads == 0) numThreads = 4; // Asigură-te că există cel puțin un fir
+    //unsigned int numThreads = std::thread::hardware_concurrency(); // Determină numărul de fire
+    //if (numThreads == 0) numThreads = 4; // Asigură-te că există cel puțin un fir
 
-    m_app.port(18080).concurrency(numThreads).run();
+   // m_app.port(8080).concurrency(numThreads).run();
+    m_app.port(18080).run();
 }
 
 

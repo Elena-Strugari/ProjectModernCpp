@@ -1,9 +1,20 @@
-//#pragma once
-//class ClientServer
-//{
-//};
-//
-//#include <QtWidgets/QMainWindow>
+#pragma once
+#include <QtWidgets/QMainWindow>
+#include <cpr/cpr.h>
+
+
+class ClientServer
+{
+
+public :
+
+	static void connectServer();
+
+private :
+
+};
+
+
 //#include "ui_ClientApp.h"
 //
 //#include <QWidget>
