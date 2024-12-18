@@ -78,9 +78,6 @@
     <QtMoc Include="ClientMap.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="SelectPlayerWindow.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapCell.h">
@@ -90,6 +87,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ClientServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectPlayerWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
