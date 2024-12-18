@@ -18,7 +18,8 @@ void MainWindow::firstWindow() {
     setCentralWidget(startGameWindow);
     setWindowTitle("Start Window");
     resize(800, 600);
-    
+
+    ClientServer::connectServer();
 }
 
 void MainWindow::onStartGameClicked() {

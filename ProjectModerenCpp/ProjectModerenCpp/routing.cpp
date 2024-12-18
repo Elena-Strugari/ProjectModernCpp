@@ -1,15 +1,58 @@
-﻿#include "routing.h"
+﻿#pragma once
+#include "routing.h"
 using namespace http;
+
+namespace http {
+    std::unordered_map<std::string, std::string> Routing::m_users;
+} 
+
 
 void http::Routing::Run()
 {
     /*CROW_ROUTE(m_app, "/incerc")([]() {
         return "sunt aici ";
         });
-*/
+    */
 
     CROW_ROUTE(m_app, "/connect")([]() {
         return crow::response(200, "Server: Conectare reușită!");
+     });
+
+    CROW_ROUTE(m_app, "/login").methods(crow::HTTPMethod::POST)([](const crow::request& req) {
+        auto body = crow::json::load(req.body);
+        std::string clientId = body["client_id"].s();
+
+        if (!body || clientId.empty()) {
+            return crow::response(400, "Bad Request: Missing client_id");
+        }
+
+
+        // Verificăm dacă utilizatorul există
+        if (m_users.find(clientId) != m_users.end()) {
+            return crow::response(200, "Login successful");
+        }
+        else {
+            return crow::response(401, "Login failed: User not found");
+        }
+     });
+
+    CROW_ROUTE(m_app, "/register").methods(crow::HTTPMethod::POST)([](const crow::request& req) {
+        auto body = crow::json::load(req.body);
+
+        std::string clientId = body["client_id"].s();
+        if (!body || clientId.empty()) {
+            return crow::response(400, "Bad Request: Missing client_id");
+        }
+
+
+        // Verificăm dacă utilizatorul există deja
+        if (m_users.find(clientId) != m_users.end()) {
+            return crow::response(409, "Registration failed: User already exists");
+        }
+
+        // Adăugăm utilizatorul în sistem
+        m_users[clientId] = "placeholder_password"; // Parola poate fi gestionată separat
+        return crow::response(200, "Registration successful");
         });
 
 
@@ -193,7 +236,7 @@ void http::Routing::Run()
     //if (numThreads == 0) numThreads = 4; // Asigură-te că există cel puțin un fir
 
    // m_app.port(8080).concurrency(numThreads).run();
-    m_app.port(18080).run();
+    m_app.port(8080).run();
 }
 
 

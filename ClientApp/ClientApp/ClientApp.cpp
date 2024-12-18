@@ -19,7 +19,7 @@ ClientApp::ClientApp(QWidget* parent) : QWidget(parent) {
         setAutoFillBackground(true);
         setPalette(palette);
     }  
-    ClientServer::connectServer();
+   // ClientServer::connectServer();
 
     // Layout principal stratificat (pentru navigare între "ecrane")
     stackedLayout = new QStackedLayout(this);

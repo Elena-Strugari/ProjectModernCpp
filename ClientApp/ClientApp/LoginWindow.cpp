@@ -1,4 +1,6 @@
-﻿#include "LoginWindow.h"
+﻿#pragma once 
+#include "LoginWindow.h"
+#include "ClientServer.h"
 #include "ClientApp.h"
 #include <QMessageBox>
 #include <QPixmap>
@@ -92,13 +94,27 @@ void LoginWindow::onLogin() {
         QMessageBox::warning(this, "Eroare", "Vă rugăm să introduceți un nume!");
         return;
     }
-
     // Creează fereastra ClientApp și o afișează
     ClientApp* clientApp = new ClientApp();
-    clientApp->setWindowTitle("Game"); // Setăm titlul
+    clientApp->setWindowTitle("Game");
     clientApp->show();
 
     close(); // Închidem fereastra curentă
+
+    //// Apelăm funcția login din ClientServer
+    //if (ClientServer::loginClient(clientId.toStdString())) {
+    //    qDebug() << "Login successful";
+
+    //    // Creează fereastra ClientApp și o afișează
+    //    ClientApp* clientApp = new ClientApp();
+    //    clientApp->setWindowTitle("Game");
+    //    clientApp->show();
+
+    //    close(); // Închidem fereastra curentă
+    //}
+    //else {
+    //    QMessageBox::warning(this, "Login Failed", "ID-ul introdus nu este valid sau serverul nu este disponibil.");
+    //}
 }
 
 void LoginWindow::onRegister() {
@@ -109,12 +125,25 @@ void LoginWindow::onRegister() {
         return;
     }
 
-    QMessageBox::information(this, "Înregistrare", "Funcționalitatea de înregistrare nu este încă implementată!");
-
     // Creează fereastra ClientApp și o afișează
     ClientApp* clientApp = new ClientApp();
-    clientApp->setWindowTitle("Game"); // Setăm titlul
+    clientApp->setWindowTitle("Game");
     clientApp->show();
 
-    close(); // Închidem fereastra curentă
+    close();
+
+    //// Apelăm funcția registerClient din ClientServer
+    //if (ClientServer::registerClient(clientId.toStdString())) {
+    //    qDebug() << "Registration successful";
+
+    //    // Creează fereastra ClientApp și o afișează
+    //    ClientApp* clientApp = new ClientApp();
+    //    clientApp->setWindowTitle("Game");
+    //    clientApp->show();
+
+    //    close(); // Închidem fereastra curentă
+    //}
+    //else {
+    //    QMessageBox::warning(this, "Registration Failed", "Înregistrarea nu a reușit. Verificați serverul.");
+    //}
 }

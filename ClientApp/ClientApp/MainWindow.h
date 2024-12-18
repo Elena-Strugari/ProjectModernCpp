@@ -9,10 +9,11 @@
 #include <QKeyEvent>
 #include <QMainWindow>
 //#include "ClientMap.h"
-#include "ClientApp.h"
 
 
 #include "StartGame.h"
+#include "ClientApp.h"
+#include "ClientServer.h"
 
 class MainWindow : public QMainWindow //QWidget 
 {
@@ -20,11 +21,8 @@ class MainWindow : public QMainWindow //QWidget
 
 public:
     explicit MainWindow(QWidget* parent = nullptr);
-    ~MainWindow();
-   // StartGame* startGameWindow = new StartGame(this);
-    
+    ~MainWindow();    
    
-
 private slots:
     void firstWindow();            //start game
     void onStartGameClicked();     // log 

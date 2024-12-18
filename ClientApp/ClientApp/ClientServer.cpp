@@ -1,4 +1,5 @@
-﻿#include "ClientServer.h"
+﻿#pragma once
+#include "ClientServer.h"
 #include <iostream>
 
 
@@ -21,6 +22,49 @@ void ClientServer::connectServer() {
 }
 
 
+bool ClientServer::loginClient(const std::string& clientId) {
+    try {
+        cpr::Response response = cpr::Post(
+            cpr::Url{ "http://localhost:8080/login" },
+            cpr::Payload{ {"client_id", clientId} }
+        );
+
+        if (response.status_code == 200) {
+            qDebug() << "Login successful: " << QString::fromStdString(response.text);
+            return true;
+        }
+        else {
+            qDebug() << "Login failed. Status code: " << response.status_code;
+            return false;
+        }
+    }
+    catch (const std::exception& ex) {
+        qDebug() << "Exception during login: " << ex.what();
+        return false;
+    }
+}
+
+bool ClientServer::registerClient(const std::string& clientId) {
+    try {
+        cpr::Response response = cpr::Post(
+            cpr::Url{ "http://localhost:8080/register" },
+            cpr::Payload{ {"client_id", clientId} }
+        );
+
+        if (response.status_code == 200) {
+            qDebug() << "Registration successful: " << QString::fromStdString(response.text);
+            return true;
+        }
+        else {
+            qDebug() << "Registration failed. Status code: " << response.status_code;
+            return false;
+        }
+    }
+    catch (const std::exception& ex) {
+        qDebug() << "Exception during registration: " << ex.what();
+        return false;
+    }
+}
 
 
 //void ClientApp::onChooseLevel(const std::string& clientId, const std::string& level) {

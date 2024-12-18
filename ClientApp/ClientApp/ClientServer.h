@@ -9,6 +9,9 @@ class ClientServer
 public :
 
 	static void connectServer();
+	static bool loginClient(const std::string& clientId);
+	static bool registerClient(const std::string& clientId);
+
 
 private :
 
