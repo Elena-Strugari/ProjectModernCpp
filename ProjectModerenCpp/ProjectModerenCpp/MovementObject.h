@@ -1,67 +1,28 @@
 ﻿#pragma once
 #include "GameObject.h"
-#include "Map.h"
-#include <cstdint>
 
-class MovementObject : public GameObject
-{
+class MovementObject {
 public:
-    enum class Direction {
-        Up,
-        Down,
-        Left,
-        Right
-    };
+    enum class Direction { Up, Down, Left, Right };
 
-    enum class CollisionType {
-        None,
-        Wall,
-        Tank,
-        Bullet,
-        Base
-    };
-public:
-    MovementObject() = default;
-    MovementObject(GameObject&& obj, Map* map);
-    MovementObject(const MovementObject&) = delete;    // Explicitly deleted copy constructor
-    ~MovementObject() = default;
-    MovementObject& operator=(MovementObject&& other) noexcept {
-        if (this == &other) // Verificăm auto-atribuirea
-            return *this;
-        m_MOx = other.m_MOx;
-        m_MOy = other.m_MOy;
-        m_color = other.m_color;
-        return *this;
-    }
+    MovementObject(GameObject* gameObject); // Constructor cu GameObject
 
-    //Get 
-    uint16_t GetX()const;
-    uint16_t GetY()const;
-    std::pair<uint16_t, uint16_t> GetPosition()const;
+    uint16_t GetX() const;
+    uint16_t GetY() const;
+    GameObject* GetObject()const;
+    std::pair<uint16_t, uint16_t> GetPosition() const;
 
-
-    //set 
     void SetPosition(uint16_t x, uint16_t y);
-    void SetColor(Tank::ColorTank color);
-
-    //valid 
-    bool IsValidPos(uint16_t x, uint16_t y)const;
-
-    void ShootBullet();
     void Move(Direction direction);
-    //std::tuple<uint16_t, uint16_t, Tank::ColorTank>  MoveServer2(Direction direction);
-    void MoveServer(uint16_t x, uint16_t y, Direction direction);
-    void HandleInput();
-    void MoveCursorToTop();
-    std::tuple<uint16_t, uint16_t, Tank::ColorTank> StartPositionColor();
+    Direction GetDirection() const;
 
 private:
-    Direction m_direction;
-   // Bullet m_bullet;
-    uint16_t m_MOx, m_MOy;
-    Tank::ColorTank m_color= m_GOTank.GetColor();
-    Map* m_map;
+    GameObject* m_GameObject; // Pointer către GameObject
+    uint16_t m_MOx;          // Poziția curentă pe axa X
+    uint16_t m_MOy;          // Poziția curentă pe axa Y
+    Direction m_direction;   // Direcția curentă
 };
+
 
 
 //idee

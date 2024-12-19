@@ -1,12 +1,13 @@
 ﻿#pragma once
 #include <crow.h>
-#include "ServerObject.h"
+//#include "ServerObject.h"
 
 
 
 namespace http {
 
-	class Routing : public ServerObject
+	//class Routing : public ServerObject
+	class Routing 
 	{
 	public:
 		void Run();

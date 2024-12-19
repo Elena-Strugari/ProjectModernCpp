@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 //tank + bullet
 #include <cstdint>
 #include "Tank.h"
@@ -29,11 +29,16 @@ public:
 	const Tank& GetTank()const;
 	const Bullet& GetBullet() const;
 
+	void SetPosition(uint16_t x, uint16_t y); // Actualizează poziția GameObject
+	std::pair<uint16_t, uint16_t> GetPosition() const; // Obține poziția curentă
+
 	// shoot
 	void ShootObj();
 
 protected:
 	Tank m_GOTank;
 	Bullet m_GOBullet;
+	uint16_t m_PosX; 
+	uint16_t m_PosY;
 };
 

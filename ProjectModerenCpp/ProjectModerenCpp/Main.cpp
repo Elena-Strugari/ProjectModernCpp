@@ -1,14 +1,13 @@
 ﻿#include <iostream>
-#include "Map.h"
 #include<utility>
 #include<vector>
-#include "Tank.h"
 
 #include "routing.h"
 
 
 
-#include "Player.h"
+#include "Map.h"
+#include "PlayerGameObjectManager.h"
 
 using namespace http;
 int main()
@@ -103,6 +102,31 @@ int main()
     //// Afișăm starea finală
     //std::cout << player1.getName() << " has " << player1.getLives() << " lives left." << std::endl;
     //std::cout << player2.getName() << " has " << player2.getLives() << " lives left." << std::endl;
+
+
+    //// verif player move 
+    //Database db("clients.db");
+
+    //// Creează un Player
+    //Player player1("Player1", db, false);
+
+    //// Creează un GameObject (tank)
+    //GameObject gameObject(Tank::ColorTank::Blue);
+
+    //// Creează un MovementObject
+    //Map map; // Harta jocului
+    //MovementObject movement(&gameObject);
+
+    //// Creează un PlayerGameObjectManager
+    //PlayerGameObjectManager manager(&player1, &movement);
+
+    //// Controlează tank-ul
+    //manager.moveTank(MovementObject::Direction::Up); // Mută tank-ul în sus
+    //manager.moveTank(MovementObject::Direction::Right); // Mută tank-ul spre dreapta
+    //manager.shoot(); // Tank-ul trage
+
+    //// Afișează statusul jucătorului
+    //manager.displayStatus();
 
 
 	return 0;

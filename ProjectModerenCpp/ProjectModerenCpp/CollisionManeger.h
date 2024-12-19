@@ -9,3 +9,14 @@
 //	//CollisionType checkCollosion(GameObject obj1, GameObject obj2);
 //};
 //
+
+
+
+//  din move class
+/*enum class CollisionType {
+    None,
+    Wall,
+    Tank,
+    Bullet,
+    Base
+}; */
