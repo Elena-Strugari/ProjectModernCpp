@@ -1,25 +1,24 @@
-#pragma once
+﻿#pragma once
 #include <string>
-#include <memory>
-// cred ca trebuie conectata aici baza de date 
+#include "Database.h"
 
-#include "GameObject.h"
-
-class Player
-{
+class Player {
 public:
-	Player(const std::string& name, uint16_t lives);
+    Player(const std::string& name, Database& db, bool isRegistering);
+    // Getters
+    const std::string& getName() const;
+    int getLives() const;
 
-	void AssignTank(std::shared_ptr<Tank> tank);
-	void LoseLife();
-	void GainLife();
+    // Lives management
+    void loseLife();
+    void gainLife();
 
-	uint16_t GetLives()const;
-
+    // Save state to database
+    void saveState();
 
 private:
-	std::string m_userName;
-	uint16_t m_lives;
-	std::shared_ptr<Tank> m_tank;// pointer catre tancul jucatorului 
+    std::string name;   // Numele jucătorului
+    int lives;          // Numărul de vieți
+    int score;
+    Database& database; // Referință la baza de date pentru salvarea stării
 };
-

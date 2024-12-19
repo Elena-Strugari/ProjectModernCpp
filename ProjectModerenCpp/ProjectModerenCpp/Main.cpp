@@ -8,7 +8,7 @@
 
 
 
-#include "Database.h"
+#include "Player.h"
 
 using namespace http;
 int main()
@@ -22,6 +22,7 @@ int main()
 	//Routing r;
 	//r.Run();
     // 
+    // for database 
         // Inițializăm baza de date
         //Database db("clients.db");
 
@@ -74,6 +75,32 @@ int main()
         //    std::cerr << "Failed to delete client 'user1'." << std::endl;
         //}
 
+
+    // for player
+    //Database db("clients.db");
+
+    //// Adăugăm jucători
+    //Player player1("Player1", db, false);
+    //Player player2("Player2", db, false);
+
+    //// Afișăm starea inițială
+    //std::cout << player1.getName() << " starts with " << player1.getLives() << " lives." << std::endl;
+    //std::cout << player2.getName() << " starts with " << player2.getLives() << " lives." << std::endl;
+
+    //// Simulăm pierderi și câștiguri de vieți
+    //player1.loseLife();
+    //player1.loseLife();
+    //player1.gainLife();
+
+    //player2.loseLife();
+
+    //// Salvăm starea în baza de date
+    //player1.saveState();
+    //player2.saveState();
+
+    //// Afișăm starea finală
+    //std::cout << player1.getName() << " has " << player1.getLives() << " lives left." << std::endl;
+    //std::cout << player2.getName() << " has " << player2.getLives() << " lives left." << std::endl;
 
 
 	return 0;
