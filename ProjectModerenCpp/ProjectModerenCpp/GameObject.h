@@ -32,7 +32,7 @@ public:
 	// shoot
 	void ShootObj();
 
-private:
+protected:
 	Tank m_GOTank;
 	Bullet m_GOBullet;
 };

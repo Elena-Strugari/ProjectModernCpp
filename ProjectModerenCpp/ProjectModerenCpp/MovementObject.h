@@ -57,9 +57,9 @@ public:
 
 private:
     Direction m_direction;
-    Bullet m_bullet;
+   // Bullet m_bullet;
     uint16_t m_MOx, m_MOy;
-    Tank::ColorTank m_color;
+    Tank::ColorTank m_color= m_GOTank.GetColor();
     Map* m_map;
 };
 

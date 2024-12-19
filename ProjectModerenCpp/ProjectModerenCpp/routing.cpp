@@ -21,7 +21,7 @@ void http::Routing::Run()
     CROW_ROUTE(m_app, "/login").methods(crow::HTTPMethod::POST)([](const crow::request& req) {
         auto body = crow::json::load(req.body);
         std::string clientId = body["client_id"].s();
-
+        std::cout << "sunt aici";
         if (!body || clientId.empty()) {
             return crow::response(400, "Bad Request: Missing client_id");
         }

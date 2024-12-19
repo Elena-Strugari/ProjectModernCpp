@@ -30,4 +30,3 @@ std::ostream& operator<<(std::ostream& os, const GameObject& go)
 	return os;
 }
 
-//denisa

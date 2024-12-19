@@ -8,8 +8,6 @@ Map::Map() {}
 
 Map::Map(uint8_t level)
 {
-    //std::cout << "sunt in costructor cu level "<<level;
-
     auto [minVal, maxVal] = getLevelBounds(level);
 
     std::srand(static_cast<unsigned>(std::time(nullptr)));
@@ -25,7 +23,7 @@ Map::Map(uint8_t level)
                 m_map[i][j] = { Wall::TypeWall::indestructible, ' ', 1 }; // Border 
             }
             else {
-                m_map[i][j] = { Wall::TypeWall::destructible, '_', 0 };  // Spațiu interior
+                m_map[i][j] = { Wall::TypeWall::destructible, '_', 0 };  // Space 
             }
         }
     }

@@ -64,7 +64,7 @@ std::tuple<uint16_t, uint16_t, Tank::ColorTank> MovementObject::StartPositionCol
 
 
 void MovementObject::ShootBullet() {
-    std::string shootMessage = m_bullet.Shoot();
+    std::string shootMessage = m_GOBullet.Shoot();
     std::cout << shootMessage << std::endl;
 }
 

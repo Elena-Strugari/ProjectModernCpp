@@ -63,7 +63,7 @@
     <ClInclude Include="ServerObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="dataBase.h">
+    <ClInclude Include="Database.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -119,7 +119,7 @@
     <ClCompile Include="ServerObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dataBase.cpp">
+    <ClCompile Include="Database.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

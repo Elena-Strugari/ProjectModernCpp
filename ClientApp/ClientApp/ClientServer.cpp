@@ -24,6 +24,7 @@ void ClientServer::connectServer() {
 
 bool ClientServer::loginClient(const std::string& clientId) {
     try {
+
         cpr::Response response = cpr::Post(
             cpr::Url{ "http://localhost:8080/login" },
             cpr::Payload{ {"client_id", clientId} }

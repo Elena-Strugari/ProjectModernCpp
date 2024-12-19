@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <QPalette>
 
+
 LoginWindow::LoginWindow(QWidget* parent)
     : QWidget(parent), promptLabel(new QLabel("Introduceți numele dumneavoastră:", this)) {
     // Imaginea de fundal
@@ -94,27 +95,25 @@ void LoginWindow::onLogin() {
         QMessageBox::warning(this, "Eroare", "Vă rugăm să introduceți un nume!");
         return;
     }
-    // Creează fereastra ClientApp și o afișează
-    ClientApp* clientApp = new ClientApp();
-    clientApp->setWindowTitle("Game");
-    clientApp->show();
+    //// Creează fereastra ClientApp și o afișează
+    //ClientApp* clientApp = new ClientApp();
+    //clientApp->setWindowTitle("Game");
+    //clientApp->show();
 
-    close(); // Închidem fereastra curentă
+    //close(); // Închidem fereastra curentă
 
-    //// Apelăm funcția login din ClientServer
-    //if (ClientServer::loginClient(clientId.toStdString())) {
-    //    qDebug() << "Login successful";
+    // Apelăm funcția login din ClientServer
+    std::string stringId = clientId.toStdString();
+    if (ClientServer::loginClient(stringId)) {
+        ClientApp* clientApp = new ClientApp();
+        clientApp->setWindowTitle("Game");
+        clientApp->show();
 
-    //    // Creează fereastra ClientApp și o afișează
-    //    ClientApp* clientApp = new ClientApp();
-    //    clientApp->setWindowTitle("Game");
-    //    clientApp->show();
-
-    //    close(); // Închidem fereastra curentă
-    //}
-    //else {
-    //    QMessageBox::warning(this, "Login Failed", "ID-ul introdus nu este valid sau serverul nu este disponibil.");
-    //}
+        close();
+    }
+    else {
+        QMessageBox::warning(this, "Login Failed", "ID-ul introdus nu este valid sau serverul nu este disponibil.");
+    }
 }
 
 void LoginWindow::onRegister() {
