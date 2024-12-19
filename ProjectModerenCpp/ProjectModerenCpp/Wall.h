@@ -8,6 +8,7 @@ public:
 	{
 		destructible,
 		indestructible,
+		none
 	};
 public:
 

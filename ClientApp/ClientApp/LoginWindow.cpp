@@ -96,14 +96,14 @@ void LoginWindow::onLogin() {
         return;
     }
     //// Creează fereastra ClientApp și o afișează
-    //ClientApp* clientApp = new ClientApp();
-    //clientApp->setWindowTitle("Game");
-    //clientApp->show();
+    ClientApp* clientApp = new ClientApp();
+    clientApp->setWindowTitle("Game");
+    clientApp->show();
 
-    //close(); // Închidem fereastra curentă
+    close(); // Închidem fereastra curentă
 
     // Apelăm funcția login din ClientServer
-    std::string stringId = clientId.toStdString();
+    /*std::string stringId = clientId.toStdString();
     if (ClientServer::loginClient(stringId)) {
         ClientApp* clientApp = new ClientApp();
         clientApp->setWindowTitle("Game");
@@ -113,7 +113,7 @@ void LoginWindow::onLogin() {
     }
     else {
         QMessageBox::warning(this, "Login Failed", "ID-ul introdus nu este valid sau serverul nu este disponibil.");
-    }
+    }*/
 }
 
 void LoginWindow::onRegister() {

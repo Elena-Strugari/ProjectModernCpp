@@ -6,8 +6,8 @@
 
 
 
-#include "Map.h"
-#include "PlayerGameObjectManager.h"
+#include "Game.h"
+//#include "PlayerGameObjectManager.h"
 
 using namespace http;
 int main()
@@ -129,7 +129,31 @@ int main()
     //manager.displayStatus();
 
 
+    //game 
+    //Database db("clients.db");
+
+    //// Creează jocul (nivelul 1)
+    //Game game(1);
+
+    //// Creează un Player
+    //Player player1("Player1", db, false);
+
+    //// Creează un GameObject (tank)
+    //Tank tank(Tank::ColorTank::Blue);
+    //GameObject gameObject(Tank::ColorTank::Blue);
+
+    //// Creează un MovementObject
+    //MovementObject movement(&gameObject);
+
+    //// Adaugă jucătorul în joc
+    //game.addPlayer(&player1, &movement);
+
+    //// Mută jucătorul
+    //game.movePlayer(&player1, MovementObject::Direction::Up);
+    //game.movePlayer(&player1, MovementObject::Direction::Right);
+
+    //// Actualizează starea jocului (de exemplu, coliziuni)
+    //game.update();
 	return 0;
 }
 
-//

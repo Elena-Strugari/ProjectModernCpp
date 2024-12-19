@@ -4,7 +4,6 @@
 #include <ctime>
 #include<vector>
 
-Map::Map() {}
 
 Map::Map(uint8_t level)
 {

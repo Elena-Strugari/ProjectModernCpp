@@ -1,4 +1,53 @@
-﻿//#include "Game.h"
+﻿#include "Game.h"
+#include <iostream>
+
+Game::Game(uint8_t level)
+    : m_map(level), m_collisionManager(m_map) {}
+
+void Game::addPlayer(Player* player, MovementObject* movement) {
+    m_players.emplace_back(player, movement);
+}
+
+void Game::update() {
+    // Actualizează starea jocului (de exemplu, proiectile, coliziuni)
+    for (const auto& [player, movement] : m_players) {
+        auto [x, y] = movement->GetPosition();
+        if (m_collisionManager.checkCollision(x, y)) {
+            std::cout << "Collision detected for player " << player->getName() << " at (" << x << ", " << y << ")." << std::endl;
+            player->loseLife(); // Pierde o viață dacă există coliziune
+        }
+    }
+}
+
+void Game::movePlayer(Player* player, MovementObject::Direction direction) {
+    for (auto& [currentPlayer, movement] : m_players) {
+        if (currentPlayer == player) {
+            auto [x, y] = movement->GetPosition();
+            uint16_t newX = x, newY = y;
+
+            switch (direction) {
+            case MovementObject::Direction::Up:    newY--; break;
+            case MovementObject::Direction::Down:  newY++; break;
+            case MovementObject::Direction::Left:  newX--; break;
+            case MovementObject::Direction::Right: newX++; break;
+            }
+
+            if (m_collisionManager.isPositionValid(newX, newY) &&
+                !m_collisionManager.checkCollision(newX, newY)) {
+                movement->Move(direction);
+                std::cout << "Player " << player->getName() << " moved to (" << newX << ", " << newY << ")." << std::endl;
+            }
+            else {
+                std::cout << "Player " << player->getName() << " hit an obstacle at (" << newX << ", " << newY << ")." << std::endl;
+            }
+        }
+    }
+}
+
+
+
+
+//#include "Game.h"
 //#include "Map.h"
 //#include "Wall.h"
 ////P.S. voi testa putin sa vad daca functioneaza initializarea hartii Map.

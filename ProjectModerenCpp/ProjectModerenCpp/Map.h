@@ -16,7 +16,6 @@ public:
 	};
 public:
 
-	Map();
 	Map(uint8_t level);
 
 	//Get
