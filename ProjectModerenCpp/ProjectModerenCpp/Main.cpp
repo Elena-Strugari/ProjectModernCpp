@@ -93,11 +93,13 @@ int main()
     //player1.gainLife();
 
     //player2.loseLife();
+    //player2.getScore();
 
     //// Salvăm starea în baza de date
     //player1.saveState();
     //player2.saveState();
 
+    //player1.chooseKeyBindings("W", "S", "A", "D");
     //// Afișăm starea finală
     //std::cout << player1.getName() << " has " << player1.getLives() << " lives left." << std::endl;
     //std::cout << player2.getName() << " has " << player2.getLives() << " lives left." << std::endl;
@@ -105,3 +107,5 @@ int main()
 
 	return 0;
 }
+
+//

@@ -8,6 +8,8 @@ public:
     // Getters
     const std::string& getName() const;
     int getLives() const;
+    int getScore() const;
+
 
     // Lives management
     void loseLife();
@@ -15,6 +17,9 @@ public:
 
     // Save state to database
     void saveState();
+
+    void chooseKeyBindings(const std::string& up, const std::string& down, const std::string& left, const std::string& right);
+
 
 private:
     std::string name;   // Numele jucătorului
