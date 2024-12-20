@@ -36,14 +36,16 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>Qt6.7</QtInstall>
+    <QtInstall>Qt6.5</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
+    <QtLibrarySearchPath>D:\Documents\QTCreator\6.7.3\msvc2022_64\lib;$(QtLibrarySearchPath)</QtLibrarySearchPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>Qt6.7</QtInstall>
+    <QtInstall>Qt6.5</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
+    <QtLibrarySearchPath>D:\Documents\QTCreator\6.7.3\msvc2022_64\lib;$(QtLibrarySearchPath)</QtLibrarySearchPath>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
     <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
@@ -60,28 +62,34 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <ExecutablePath>D:\Documents\QTCreator\6.7.3\msvc2022_64\bin;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>D:\Documents\QTCreator\6.7.3\msvc2022_64\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Documents\QTCreator\6.7.3\msvc2022_64\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <ExecutablePath>D:\Documents\QTCreator\6.7.3\msvc2022_64\bin;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>D:\Documents\QTCreator\6.7.3\msvc2022_64\include;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\Documents\QTCreator\6.7.3\msvc2022_64\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
       <AdditionalDependencies>Qt6Widgets.lib;Qt6Core.lib;Qt6Gui.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\qt\6.7.3\msvc2022_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\Documents\QTCreator\6.7.3\msvc2022_64\lib;D:\qt\6.7.3\msvc2022_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>D:\qt\6.7.3\msvc2022_64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Documents\QTCreator\6.7.3\msvc2022_64\include;D:\qt\6.7.3\msvc2022_64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
       <AdditionalDependencies>Qt6Widgets.lib;Qt6Core.lib;Qt6Gui.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\qt\6.7.3\msvc2022_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\Documents\QTCreator\6.7.3\msvc2022_64\lib;D:\qt\6.7.3\msvc2022_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <AdditionalIncludeDirectories>D:\qt\6.7.3\msvc2022_64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Documents\QTCreator\6.7.3\msvc2022_64\include;D:\qt\6.7.3\msvc2022_64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
   </ItemDefinitionGroup>
