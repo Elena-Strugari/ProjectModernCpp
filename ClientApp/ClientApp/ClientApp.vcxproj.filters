@@ -58,16 +58,13 @@
     <ClCompile Include="TestMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SelectPlayerWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SelectPlayerTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ClientServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StartGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -84,6 +81,9 @@
     <QtMoc Include="StartGame.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="TestPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapCell.h">
@@ -95,7 +95,7 @@
     <ClInclude Include="ClientServer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SelectPlayerWindow.h">
+    <ClInclude Include="PlayerWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
