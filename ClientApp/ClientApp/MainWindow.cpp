@@ -51,7 +51,7 @@
 
 //  TEST PENTRU PLAYER
 
-#include "mainwindow.h"
+#include "MainWindow.h"
 #include <QVBoxLayout>
 #include <QDebug>
 

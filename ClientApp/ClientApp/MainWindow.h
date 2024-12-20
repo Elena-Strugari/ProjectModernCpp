@@ -1,11 +1,4 @@
-﻿#pragma once
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
-#include <QWidget>
-#include <QLabel>
-#include <QPixmap>
-//#include <QVBoxLayout>
+﻿//#include <QVBoxLayout>
 //#include <QKeyEvent>
 //#include <QMainWindow>
 ////#include "ClientMap.h"
@@ -63,7 +56,12 @@
 
 //   TEST PLENTRU PLAYER 
 #pragma once
+#ifndef MAINWINDOW_H
+#define MAINWINDOW_H
 
+#include <QWidget>
+#include <QLabel>
+#include <QPixmap>
 #include <QMainWindow>
 #include <QLineEdit>
 #include <QPushButton>
@@ -87,3 +85,4 @@ private:
     QLabel* imageLabel;
     PlayerWindow playerWindow;
 };
+#endif 
