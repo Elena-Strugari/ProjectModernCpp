@@ -81,9 +81,6 @@
     <QtMoc Include="StartGame.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="TestPlayer.cpp">
-      <Filter>Source Files</Filter>
-    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MapCell.h">

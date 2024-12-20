@@ -68,7 +68,7 @@
       <AdditionalDependencies>Qt6Widgets.lib
 ;Qt6Core.lib
 ;Qt6Gui.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\elena\OneDrive\Documente\QT\6.7.3\msvc2022_64\lib;D:\qt\6.7.3\msvc2022_64\lib;D:\Documents\QTCreator\6.7.3\msvc2022_64\lib;C:\Qt\6.7.3\msvc2019_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\qt\6.7.3\msvc2022_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -76,7 +76,7 @@
       <AdditionalDependencies>Qt6Widgets.lib
 ;Qt6Core.lib
 ;Qt6Gui.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\elena\OneDrive\Documente\QT\6.7.3\msvc2022_64\lib;D:\qt\6.7.3\msvc2022_64\lib;D:\Documents\QTCreator\6.7.3\msvc2022_64\lib;C:\Qt\6.7.3\msvc2019_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\qt\6.7.3\msvc2022_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -122,8 +122,10 @@
     </ClCompile>
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="MainWindow.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="MapCell.cpp" />
     <ClCompile Include="PlayerWindow.cpp" />
@@ -132,12 +134,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <QtMoc Include="TestPlayer.cpp">
-      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">input</DynamicSource>
-      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).moc</QtMocFileName>
-      <DynamicSource Condition="'$(Configuration)|$(Platform)'=='Release|x64'">input</DynamicSource>
-      <QtMocFileName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).moc</QtMocFileName>
-    </QtMoc>
     <QtRcc Include="ClientApp.qrc" />
     <QtUic Include="ClientApp.ui" />
     <QtMoc Include="ClientApp.h" />
