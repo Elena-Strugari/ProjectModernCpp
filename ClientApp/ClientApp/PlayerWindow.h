@@ -8,6 +8,7 @@
 class PlayerWindow
 {
 public:
+    PlayerWindow() {};
     void DisplayPlayerImage(int code, QLabel* imageLabel);
 
 private:
