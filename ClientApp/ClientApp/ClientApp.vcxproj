@@ -170,7 +170,12 @@
     <ClInclude Include="PlayerWindow.h" />
     <QtMoc Include="StartGame.h" />
     <QtMoc Include="ClientMap.h" />
-    <ClInclude Include="ClientServer.h" />
+    <ClInclude Include="ClientServer.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+      </ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+      </ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="MapCell.h" />
   </ItemGroup>
