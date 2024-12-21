@@ -77,7 +77,7 @@
       <AdditionalLibraryDirectories>D:\Documents\QTCreator\6.7.3\msvc2022_64\lib;D:\qt\6.7.3\msvc2022_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>D:\Documents\QTCreator\6.7.3\msvc2022_64\include;D:\qt\6.7.3\msvc2022_64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -88,7 +88,7 @@
       <AdditionalLibraryDirectories>D:\Documents\QTCreator\6.7.3\msvc2022_64\lib;D:\qt\6.7.3\msvc2022_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <ClCompile>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>D:\Documents\QTCreator\6.7.3\msvc2022_64\include;D:\qt\6.7.3\msvc2022_64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -175,7 +175,7 @@
   <ItemGroup>
     <ClInclude Include="PlayerWindow.h" />
     <QtMoc Include="StartGame.h" />
-    <QtMoc Include="ClientMap.h" />
+    <ClInclude Include="ClientMap.h" />
     <ClInclude Include="ClientServer.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </ExcludedFromBuild>

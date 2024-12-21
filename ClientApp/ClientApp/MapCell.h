@@ -1,7 +1,7 @@
 #pragma once
 #ifndef CELL_H
 #define CELL_H
-
+// de verificat daca aceasta descriere a unei celule este sustinuta de suportul serverului.
 #include <memory>
 #include "GameEntity.h"
 

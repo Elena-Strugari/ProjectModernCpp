@@ -6,6 +6,15 @@
 #include <QVBoxLayout>
 #include <QLabel>
 
+//biblioteci de test
+//#include <QVBoxLayout>
+//#include <QPushButton>
+//#include <QLineEdit>
+//#include <QLabel>
+#include <QPalette>
+#include <QResizeEvent>
+
+
 class ClientApp; // Forward declaration
 
 class LoginWindow :public QWidget

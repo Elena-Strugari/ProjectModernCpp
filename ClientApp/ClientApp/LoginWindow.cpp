@@ -58,7 +58,7 @@ LoginWindow::LoginWindow(QWidget* parent)
     contentLayout->addWidget(promptLabel);
     contentLayout->addWidget(clientInput);
     contentLayout->addWidget(loginButton);
-    contentLayout->addWidget(registerButton);
+    contentLayout ->addWidget(registerButton);
     contentLayout->setAlignment(promptLabel, Qt::AlignCenter);
     contentLayout->setAlignment(clientInput, Qt::AlignCenter);
     contentLayout->setAlignment(loginButton, Qt::AlignCenter);
