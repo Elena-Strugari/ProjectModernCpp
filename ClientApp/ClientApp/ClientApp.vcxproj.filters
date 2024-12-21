@@ -75,9 +75,6 @@
     <QtMoc Include="MainWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="ClientMap.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="StartGame.h">
       <Filter>Header Files</Filter>
     </QtMoc>
