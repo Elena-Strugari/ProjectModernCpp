@@ -92,5 +92,8 @@
     <ClInclude Include="PlayerWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ClientMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
