@@ -17,6 +17,8 @@ class Client : public QWidget
 public:
    explicit Client(QWidget *parent = nullptr);
     ~Client();
+    //Incercare de metoda noua
+    void resizeEvent(QResizeEvent* event);
 
 private:
     Ui::ClientClass ui;

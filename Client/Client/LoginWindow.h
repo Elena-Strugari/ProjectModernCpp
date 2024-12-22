@@ -23,6 +23,7 @@ class LoginWindow :public QWidget
 
 public:
     explicit LoginWindow(QWidget* parent = nullptr);
+    void initializeBackground();
 
 protected:
     void resizeEvent(QResizeEvent* event) override;

@@ -3,14 +3,48 @@
 #include <QLabel>
 #include <QVBoxLayout>
 
+//StartGameWindow::StartGameWindow(QWidget* parent)
+//    : QWidget(parent)
+//    , imageLabel(new QLabel(this))
+//    , textLabel(new QLabel("Start Game", this))
+//{
+//    setFocusPolicy(Qt::StrongFocus); // Ensure widget accepts focus
+//
+//    QPixmap pixmap(":/startImage/resources/StartGame.jpg");
+//    if (!pixmap.isNull()) {
+//        imageLabel->setPixmap(pixmap.scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+//    }
+//    imageLabel->setAlignment(Qt::AlignCenter);
+//    imageLabel->setScaledContents(false);
+//
+//    textLabel->setAlignment(Qt::AlignCenter);
+//    textLabel->setStyleSheet(
+//        "font-size: 36px; "
+//        "color: white; "
+//        "font-weight: bold;"
+//    );
+//
+//    QVBoxLayout* labelLayout = new QVBoxLayout(imageLabel);
+//    labelLayout->addWidget(textLabel);
+//    labelLayout->setAlignment(textLabel, Qt::AlignCenter);
+//
+//    QVBoxLayout* mainLayout = new QVBoxLayout(this);
+//    mainLayout->addWidget(imageLabel);
+//    setLayout(mainLayout);
+//
+//    setWindowTitle("Start Game");
+//    resize(800, 600); // Fixed window size
+//}
+
+
 StartGameWindow::StartGameWindow(QWidget* parent)
-    : QWidget(parent), imageLabel(new QLabel(this)), textLabel(new QLabel("Start Game", this)) {
+    : QWidget(parent)
+    , imageLabel(new QLabel(this))
+    , textLabel(new QLabel("Start Game", this))
+{
+    qDebug() << "StartGameWindow constructor called.";
     setFocusPolicy(Qt::StrongFocus); // Ensure widget accepts focus
 
-    QPixmap pixmap(":/startImage/resources/StartGame.jpg");
-    if (!pixmap.isNull()) {
-        imageLabel->setPixmap(pixmap.scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    }
     imageLabel->setAlignment(Qt::AlignCenter);
     imageLabel->setScaledContents(false);
 
@@ -33,7 +67,19 @@ StartGameWindow::StartGameWindow(QWidget* parent)
     resize(800, 600); // Fixed window size
 }
 
-StartGameWindow::~StartGameWindow() {}
+//Adaug o noua metoda pentru a initializa imaginea de fundal inafara constructorului, astfel incat sa nu se declanseze QPixmap inainte de QAplication
+void StartGameWindow::initializeBackground()
+{
+    QPixmap pixmap(":/startImage/resources/StartGame.jpg");
+    if (!pixmap.isNull()) {
+        imageLabel->setPixmap(pixmap.scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    }
+}
+
+StartGameWindow::~StartGameWindow() 
+{
+    //EMPTY
+}
 
 void StartGameWindow::resizeEvent(QResizeEvent* event) {
     QPixmap pixmap(":/startImage/resources/StartGame.jpg");

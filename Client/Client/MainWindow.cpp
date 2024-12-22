@@ -3,23 +3,36 @@
 #include "LoginWindow.h"
 
 MainWindow::MainWindow(QWidget* parent)
-    : QMainWindow(parent) {
-   
-    firstWindow();
+    : QMainWindow(parent)
+{
+   /* qDebug() << "Initializing MainWindow...";
+    firstWindow();*/
+    qDebug() << "MainWindow initialized.";
 }
 
-MainWindow::~MainWindow() {}
+MainWindow::~MainWindow()
+{
+    //EMPTY
+}
 
-void MainWindow::firstWindow() {
+void MainWindow::firstWindow()
+{
+    qDebug() << "Initializing StartGameWindow...";
     StartGameWindow* startGameWindow = new StartGameWindow(this);
-
+    qDebug() << "StartGameWindow initialized.";
     connect(startGameWindow, &StartGameWindow::startGame, this, &MainWindow::onStartGameClicked);
+    qDebug() << "Connected StartGameWindow signals.";
+
 
     setCentralWidget(startGameWindow);
-    setWindowTitle("Start Window");
-    resize(800, 600);
+    qDebug() << "Set StartGameWindow as central widget.";
 
+    setWindowTitle("Start Window");
+
+    resize(800, 600);
+    qDebug() << "Connecting to server...";
     ClientServer::connectServer();
+    qDebug() << "Connected to server.";
 }
 
 void MainWindow::onStartGameClicked() {

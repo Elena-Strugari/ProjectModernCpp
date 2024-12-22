@@ -11,6 +11,7 @@ class StartGameWindow : public QWidget {
 
 public:
     explicit StartGameWindow(QWidget* parent = nullptr);
+    void initializeBackground();
     ~StartGameWindow();
 
 signals:
