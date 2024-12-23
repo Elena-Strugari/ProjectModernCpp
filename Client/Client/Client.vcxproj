@@ -112,6 +112,7 @@
   <ItemGroup>
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="MapCell.cpp" />
+    <ClCompile Include="NoGreenScreen.cpp" />
     <ClCompile Include="PlayerWindow.cpp" />
     <ClCompile Include="StartGameWindow.cpp" />
     <ClCompile Include="TestMap.cpp">

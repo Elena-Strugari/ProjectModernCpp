@@ -1,5 +1,5 @@
 ﻿#include "PlayerWindow.h"
-
+#include "NoGreenScreen.cpp"
 void PlayerWindow::DisplayPlayerImage(int code, QLabel* imageLabel)
 {
     QString imagePath;
@@ -72,6 +72,12 @@ void PlayerWindow::ShowImage(const QString& imagePath, QLabel* imageLabel)
         imageLabel->setText("Imaginea nu poate fi afișată!");
         return;
     }
+    QImage image = pixmap.toImage();
 
+    // Aplicăm eliminarea green screen-ului
+    QImage processedImage = removeGreenScreen(image);
+
+    // Convertim înapoi în QPixmap și afișăm imaginea procesată
+    QPixmap processedPixmap = QPixmap::fromImage(processedImage);
     imageLabel->setPixmap(pixmap.scaled(imageLabel->size(), Qt::KeepAspectRatio));
 }

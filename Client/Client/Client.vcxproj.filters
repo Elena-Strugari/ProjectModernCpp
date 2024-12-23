@@ -67,6 +67,9 @@
     <ClCompile Include="TestMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="NoGreenScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientMap.h">
