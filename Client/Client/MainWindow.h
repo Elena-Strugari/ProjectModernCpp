@@ -87,4 +87,4 @@ private:
 //    QLabel* imageLabel;
 //    PlayerWindow playerWindow;
 //};
-//#endif 
+//#endif

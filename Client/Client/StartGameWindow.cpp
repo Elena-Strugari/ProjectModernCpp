@@ -70,7 +70,7 @@ StartGameWindow::StartGameWindow(QWidget* parent)
 //Adaug o noua metoda pentru a initializa imaginea de fundal inafara constructorului, astfel incat sa nu se declanseze QPixmap inainte de QAplication
 void StartGameWindow::initializeBackground()
 {
-    QPixmap pixmap(":/startImage/resources/StartGame.jpg");
+    QPixmap pixmap(":/StartImage/resources/StartGame.jpg");
     if (!pixmap.isNull()) {
         imageLabel->setPixmap(pixmap.scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
@@ -82,7 +82,7 @@ StartGameWindow::~StartGameWindow()
 }
 
 void StartGameWindow::resizeEvent(QResizeEvent* event) {
-    QPixmap pixmap(":/startImage/resources/StartGame.jpg");
+    QPixmap pixmap(":/StartImage/resources/StartGame.jpg");
     if (!pixmap.isNull()) {
         imageLabel->setPixmap(pixmap.scaled(event->size().boundedTo(QSize(800, 600)), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
     }

@@ -42,6 +42,8 @@ void MainWindow::onStartGameClicked() {
     close();
 }
 
+
+
 //#include "MainWindow.h"
 //#include <QDebug>
 //
@@ -112,4 +114,4 @@ void MainWindow::onStartGameClicked() {
 //
 //    playerWindow.DisplayPlayerImage(code, imageLabel);
 //}
-//
+
