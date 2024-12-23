@@ -135,6 +135,7 @@
     <ClInclude Include="ClientServer.h" />
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="MapCell.h" />
+    <ClInclude Include="NoGreenScreen.h" />
     <ClInclude Include="OtherMapElements.h" />
     <ClInclude Include="PlayerWindow.h" />
     <QtMoc Include="StartGameWindow.h" />
