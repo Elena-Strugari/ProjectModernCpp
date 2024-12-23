@@ -1,16 +1,16 @@
-#pragma once
-
-#include <QString>
-#include <QLabel>
-#include <QPixmap>
-#include <QDebug>
-
-class PlayerWindow
-{
-public:
-    PlayerWindow() {};
-    void DisplayPlayerImage(int code, QLabel* imageLabel);
-
-private:
-    void ShowImage(const QString& imagePath, QLabel* imageLabel);
-};
+//#pragma once
+//
+//#include <QString>
+//#include <QLabel>
+//#include <QPixmap>
+//#include <QDebug>
+//
+//class PlayerWindow
+//{
+//public:
+//    PlayerWindow() {};
+//    void DisplayPlayerImage(int code, QLabel* imageLabel);
+//
+//private:
+//    void ShowImage(const QString& imagePath, QLabel* imageLabel);
+//};
