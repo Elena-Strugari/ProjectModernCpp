@@ -113,6 +113,7 @@
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="MapCell.cpp" />
     <ClCompile Include="NoGreenScreen.cpp" />
+    <ClCompile Include="OtherMapElements.cpp" />
     <ClCompile Include="PlayerWindow.cpp" />
     <ClCompile Include="StartGameWindow.cpp" />
     <ClCompile Include="TestMap.cpp">
@@ -134,6 +135,7 @@
     <ClInclude Include="ClientServer.h" />
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="MapCell.h" />
+    <ClInclude Include="OtherMapElements.h" />
     <ClInclude Include="PlayerWindow.h" />
     <QtMoc Include="StartGameWindow.h" />
     <QtMoc Include="MainWindow.h" />
