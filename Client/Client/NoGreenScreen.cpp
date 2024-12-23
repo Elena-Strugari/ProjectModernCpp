@@ -1,7 +1,12 @@
 #include <QImage>
 #include <QColor>
-
+#include<QDebug>
 QImage removeGreenScreen(const QImage& inputImage, int threshold = 30) {
+
+    if (inputImage.isNull()) {
+        qDebug() << "Input image is null!";
+        return QImage();
+    }
     QImage resultImage = inputImage;
     int width = resultImage.width();
     int height = resultImage.height();
