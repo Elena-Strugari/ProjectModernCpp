@@ -250,7 +250,7 @@ Client::~Client() {}
 
 void Client::resizeEvent(QResizeEvent* event)
 {
-    QPixmap pixmap(":/startImage/resources/StartGame.jpg");
+    QPixmap pixmap(":/StartImage/resources/StartGame.jpg");
     if (!pixmap.isNull()) {
         QPalette palette;
         palette.setBrush(QPalette::Window, pixmap.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));

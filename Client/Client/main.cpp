@@ -11,10 +11,10 @@ int main(int argc, char *argv[])
 
     //Programul crapa imediat ce insearca sa instantieze MainWindow. Nici nu intra in constructor! 
 
-    /*MainWindow mainWindow;
+    MainWindow mainWindow;
     qDebug() << "Sunt dupa instantierea mui mainwindow";
     mainWindow.show();
-    qDebug() << "S-a incercat afisarea lui mainwindow";*/
+    qDebug() << "S-a incercat afisarea lui mainwindow";
     return a.exec();
 }
 

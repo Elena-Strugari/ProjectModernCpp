@@ -71,7 +71,12 @@ StartGameWindow::StartGameWindow(QWidget* parent)
 void StartGameWindow::initializeBackground()
 {
     QPixmap pixmap(":/StartImage/resources/StartGame.jpg");
-    if (!pixmap.isNull()) {
+    if (pixmap.isNull())
+    {
+        textLabel->setText("Failed to load background image");
+    }
+    else 
+    {
         imageLabel->setPixmap(pixmap.scaled(size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
 }
@@ -83,7 +88,12 @@ StartGameWindow::~StartGameWindow()
 
 void StartGameWindow::resizeEvent(QResizeEvent* event) {
     QPixmap pixmap(":/StartImage/resources/StartGame.jpg");
-    if (!pixmap.isNull()) {
+    if (pixmap.isNull()) 
+      {
+        textLabel->setText("Failed to load background image");
+      }
+    else
+    {
         imageLabel->setPixmap(pixmap.scaled(event->size().boundedTo(QSize(800, 600)), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
     }
     QWidget::resizeEvent(event);

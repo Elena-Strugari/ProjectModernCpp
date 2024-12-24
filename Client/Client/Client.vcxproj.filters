@@ -58,7 +58,7 @@
     <ClCompile Include="MapCell.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerWindow.cpp">
+    <ClCompile Include="DisplayElements.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StartGameWindow.cpp">
@@ -68,9 +68,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NoGreenScreen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OtherMapElements.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -87,10 +84,7 @@
     <ClInclude Include="MapCell.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OtherMapElements.h">
+    <ClInclude Include="DisplayElements.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NoGreenScreen.h">

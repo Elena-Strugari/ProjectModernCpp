@@ -148,7 +148,7 @@ LoginWindow::LoginWindow(QWidget* parent)
 
 void LoginWindow::initializeBackground() 
 {
-    QPixmap pixmap(":/startImage/resources/StartGame.jpg");
+    QPixmap pixmap(":/StartImage/resources/StartGame.jpg");
     if (!pixmap.isNull()) {
         QPalette palette;
         palette.setBrush(QPalette::Window, pixmap.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation));
@@ -159,7 +159,7 @@ void LoginWindow::initializeBackground()
 
 void LoginWindow::resizeEvent(QResizeEvent* event) 
 {
-    QPixmap pixmap(":/startImage/resources/StartGame.jpg");
+    QPixmap pixmap(":/StartImage/resources/StartGame.jpg");
     if (!pixmap.isNull()) 
     {
         QPalette palette;

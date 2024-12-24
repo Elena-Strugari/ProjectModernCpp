@@ -1,4 +1,4 @@
-//#ifndef MAINWINDOW_H
+﻿//#ifndef MAINWINDOW_H
 //#define MAINWINDOW_H
 //#include <QVBoxLayout>
 //#include <QKeyEvent>
@@ -26,7 +26,7 @@
 //
 //    QLabel* imageLabel; // Imaginea de fundal
 //    QLabel* textLabel;  // Textul "Start Game"
-//    QPixmap pixmap;     // Imaginea �nc�rcat�
+//    QPixmap pixmap;     // Imaginea încãrcatã
 //   // ClientMap* map;
 //};
 //
@@ -57,18 +57,12 @@
 
 
 //   TEST PLENTRU PLAYER 
-#pragma once
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QWidget>
-#include <QLabel>
-#include <QPixmap>
 #include <QMainWindow>
-#include <QLineEdit>
-#include <QPushButton>
 #include <QLabel>
-#include "PlayerWindow.h"
+#include "DisplayElements.h" // Include clasa Element dacă este necesar
 
 class MainWindow : public QMainWindow
 {
@@ -78,13 +72,9 @@ public:
     explicit MainWindow(QWidget* parent = nullptr);
     ~MainWindow();
 
-private slots:
-    void OnDisplayButtonClicked();
-
 private:
-    QLineEdit* codeInput;
-    QPushButton* displayButton;
     QLabel* imageLabel;
-    PlayerWindow playerWindow;
+    DisplayElements element; // Instanța clasei care gestionează imaginile
 };
-#endif
+
+#endif // MAINWINDOW_H

@@ -113,8 +113,7 @@
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="MapCell.cpp" />
     <ClCompile Include="NoGreenScreen.cpp" />
-    <ClCompile Include="OtherMapElements.cpp" />
-    <ClCompile Include="PlayerWindow.cpp" />
+    <ClCompile Include="DisplayElements.cpp" />
     <ClCompile Include="StartGameWindow.cpp" />
     <ClCompile Include="TestMap.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
@@ -136,8 +135,7 @@
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="MapCell.h" />
     <ClInclude Include="NoGreenScreen.h" />
-    <ClInclude Include="OtherMapElements.h" />
-    <ClInclude Include="PlayerWindow.h" />
+    <ClInclude Include="DisplayElements.h" />
     <QtMoc Include="StartGameWindow.h" />
     <QtMoc Include="MainWindow.h" />
     <QtMoc Include="LoginWindow.h" />

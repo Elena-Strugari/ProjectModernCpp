@@ -77,41 +77,17 @@
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
-    codeInput(new QLineEdit(this)),
-    displayButton(new QPushButton("Afișează Imagine", this)),
     imageLabel(new QLabel(this))
 {
-    // Set up layout
+    qDebug() << "Entering MainWindow constructor";
     QWidget* centralWidget = new QWidget(this);
     QVBoxLayout* layout = new QVBoxLayout(centralWidget);
 
-    layout->addWidget(new QLabel("Introduceți codul imaginii:", this));
-    layout->addWidget(codeInput);
-    layout->addWidget(displayButton);
     layout->addWidget(imageLabel);
-
     imageLabel->setAlignment(Qt::AlignCenter);
-    imageLabel->setText("Imaginea va apărea aici...");
     setCentralWidget(centralWidget);
-
-    // Connect button to slot
-    connect(displayButton, &QPushButton::clicked, this, &MainWindow::OnDisplayButtonClicked);
+    element.DisplayBombImage(imageLabel);
 }
 
 MainWindow::~MainWindow() = default;
-
-void MainWindow::OnDisplayButtonClicked()
-{
-    bool ok;
-    int code = codeInput->text().toInt(&ok);
-
-    if (!ok)
-    {
-        qDebug() << "Cod invalid introdus.";
-        imageLabel->setText("Cod invalid!");
-        return;
-    }
-
-    playerWindow.DisplayPlayerImage(code, imageLabel);
-}
 
