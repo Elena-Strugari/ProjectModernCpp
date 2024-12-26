@@ -4,7 +4,7 @@
 #include <QKeyEvent>
 #include <QMainWindow>
 //#include "ClientMap.h"
-
+#include <QFile>
 
 #include "StartGameWindow.h"
 #include "Client.h"

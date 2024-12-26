@@ -32,33 +32,33 @@
 //    resize(800, 600);
 //    qDebug() << "MainWindow: Central widget added.";
 //}
-MainWindow::MainWindow(QWidget* parent)
-    : QMainWindow(parent)
-{
-    qDebug() << "MainWindow: Constructor called.";
-
-    setWindowTitle("Main Window");
-    resize(800, 600); // Set an initial window size
-    initializeBackground(); // Set the background image
-
-    // Add central widget (for testing purposes)
-    QWidget* centralWidget = new QWidget(this);
-    QVBoxLayout* layout = new QVBoxLayout(centralWidget);
-
-    QLabel* placeholderLabel = new QLabel("Welcome to Main Window", centralWidget);
-    placeholderLabel->setAlignment(Qt::AlignCenter);
-    layout->addWidget(placeholderLabel);
-
-    centralWidget->setLayout(layout);
-    setCentralWidget(centralWidget);
-
-    qDebug() << "MainWindow: Central widget added.";
-}
-
-void MainWindow::initializeBackground() 
-{
-    // Load the background image
-    //QPixmap pixmap(":/StartImage/resources/StartGame.jpg");
+//MainWindow::MainWindow(QWidget* parent)
+//    : QMainWindow(parent)
+//{
+//    qDebug() << "MainWindow: Constructor called.";
+//
+//    setWindowTitle("Main Window");
+//    resize(800, 600); // Set an initial window size
+//    initializeBackground(); // Set the background image
+//
+//    // Add central widget (for testing purposes)
+//    QWidget* centralWidget = new QWidget(this);
+//    QVBoxLayout* layout = new QVBoxLayout(centralWidget);
+//
+//    QLabel* placeholderLabel = new QLabel("Welcome to Main Window", centralWidget);
+//    placeholderLabel->setAlignment(Qt::AlignCenter);
+//    layout->addWidget(placeholderLabel);
+//
+//    centralWidget->setLayout(layout);
+//    setCentralWidget(centralWidget);
+//
+//    qDebug() << "MainWindow: Central widget added.";
+//}
+//
+//void MainWindow::initializeBackground() 
+//{
+//     //Load the background image
+//    QPixmap pixmap(":/StartImage/resources/StartGame.jpg");
 //    if (pixmap.isNull()) 
 //    {
 //        qDebug() << "Failed to load image!";
@@ -78,6 +78,81 @@ void MainWindow::initializeBackground()
 //    {
 //        qDebug() << "Failed to load background image.";
 //    }
+//}
+
+
+//Reconstructia lui MainWindow
+
+//Am inlocuit toate aparitiile lui Q[ixmap cu QPalette
+//Avem probleme la incarcarea din fisierul qrc a imaginilor...daca dam calea absoluta functioneaza.
+
+
+MainWindow::MainWindow(QWidget* parent)
+: QMainWindow(parent)
+{
+    qDebug() << "MainWindow: Constructor called.";
+
+    setWindowTitle("Main Window");
+    resize(800, 600); 
+    initializeBackground(); 
+
+    QWidget* centralWidget = new QWidget(this);
+    QVBoxLayout* layout = new QVBoxLayout(centralWidget);
+
+    QLabel* placeholderLabel = new QLabel("Welcome to Main Window", centralWidget);
+    placeholderLabel->setAlignment(Qt::AlignCenter);
+    layout->addWidget(placeholderLabel);
+
+    centralWidget->setLayout(layout);
+    setCentralWidget(centralWidget);
+
+    qDebug() << "MainWindow: Central widget added.";
+}
+
+void MainWindow::initializeBackground()
+{
+    // Load the background image using QImage
+    /*QImage image(":/PlayersImage/resources/Astronaut_1.png");
+    QString absolutePath = "D:\\Facultate\\Anul_2\\Semestrul_1\\Modern_C++\\ProjectModernCpp\\Client\\Client\\resources\\StartGame.jpg";
+    qDebug() << "Checking absolute path:" << absolutePath;
+    if (QFile::exists(absolutePath)) 
+    {
+        qDebug() << "File exists at the given path.";
+    }
+    else 
+    {
+        qDebug() << "File does NOT exist!";
+    }*/
+
+    //QImage image("D:\\Facultate\\Anul_2\\Semestrul_1\\Modern_C++\\ProjectModernCpp\\Client\\Client\\resources\\StartGame.jpg");
+    //QString resourcePath = ":/PlayersImage/resources/Astronaut_1.png";
+    QString resourcePath = ":/StartImage/resources/StartGame.jpg";
+    qDebug() << "Checking resource path:" << resourcePath;
+
+    if (QFile::exists(resourcePath)) 
+    {
+        qDebug() << "Resource file exists!";
+    }
+    else 
+    {
+        qDebug() << "Resource file does NOT exist!";
+    }
+
+    QImage testImage(resourcePath);
+
+    if (testImage.isNull()) 
+    {
+        qDebug() << "Failed to load image from resource!";
+    }
+    else
+    {
+        qDebug() << "Image loaded successfully from resource!";
+    }
+
+    QPalette palette;
+    palette.setBrush(QPalette::Window, QBrush(testImage.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+    setPalette(palette);
+    setAutoFillBackground(true);
 }
 
 MainWindow::~MainWindow()
@@ -105,7 +180,8 @@ void MainWindow::firstWindow()
     qDebug() << "Connected to server.";
 }
 
-void MainWindow::onStartGameClicked() {
+void MainWindow::onStartGameClicked() 
+{
     LoginWindow* loginWindow = new LoginWindow();
     loginWindow->show();
 
