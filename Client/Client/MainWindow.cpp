@@ -83,14 +83,14 @@
 
 //Reconstructia lui MainWindow
 
-//Am inlocuit toate aparitiile lui Q[ixmap cu QPalette
+//Am inlocuit toate aparitiile lui QPixmap cu QPalette
 //Avem probleme la incarcarea din fisierul qrc a imaginilor...daca dam calea absoluta functioneaza.
 
 
 MainWindow::MainWindow(QWidget* parent)
 : QMainWindow(parent)
 {
-    qDebug() << "MainWindow: Constructor called.";
+    /*qDebug() << "MainWindow: Constructor called.";
 
     setWindowTitle("Main Window");
     resize(800, 600); 
@@ -106,7 +106,15 @@ MainWindow::MainWindow(QWidget* parent)
     centralWidget->setLayout(layout);
     setCentralWidget(centralWidget);
 
-    qDebug() << "MainWindow: Central widget added.";
+    qDebug() << "MainWindow: Central widget added.";*/
+
+    qDebug() << "MainWindow: Constructor called.";
+
+    setWindowTitle("Main Window");
+    resize(800, 600);
+
+    // Call the firstWindow method to initialize the start screen
+    firstWindow();
 }
 
 void MainWindow::initializeBackground()
@@ -123,24 +131,14 @@ void MainWindow::initializeBackground()
     {
         qDebug() << "File does NOT exist!";
     }*/
-
-    //QImage image("D:\\Facultate\\Anul_2\\Semestrul_1\\Modern_C++\\ProjectModernCpp\\Client\\Client\\resources\\StartGame.jpg");
-    //QString resourcePath = ":/PlayersImage/resources/Astronaut_1.png";
+   // QImage testImage("D:\\Facultate\\Anul_2\\Semestrul_1\\Modern_C++\\ProjectModernCpp\\Client\\Client\\resources\\StartGame.jpg");
+    //..........................................................................
     QString resourcePath = ":/StartImage/resources/StartGame.jpg";
-    qDebug() << "Checking resource path:" << resourcePath;
-
-    if (QFile::exists(resourcePath)) 
-    {
-        qDebug() << "Resource file exists!";
-    }
-    else 
-    {
-        qDebug() << "Resource file does NOT exist!";
-    }
-
+    //QString resourcePath = ":/PlayersImage/resources/Astronaut_1.png";
+   // qDebug() << "Attempting to load image:" << resourcePath;
     QImage testImage(resourcePath);
 
-    if (testImage.isNull()) 
+    if (testImage.isNull())
     {
         qDebug() << "Failed to load image from resource!";
     }
@@ -149,10 +147,12 @@ void MainWindow::initializeBackground()
         qDebug() << "Image loaded successfully from resource!";
     }
 
+
     QPalette palette;
     palette.setBrush(QPalette::Window, QBrush(testImage.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
     setPalette(palette);
     setAutoFillBackground(true);
+    //......................................................................................
 }
 
 MainWindow::~MainWindow()
@@ -162,7 +162,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::firstWindow()
 {
-    qDebug() << "Initializing StartGameWindow...";
+    /*qDebug() << "Initializing StartGameWindow...";
     StartGameWindow* startGameWindow = new StartGameWindow(this);
     qDebug() << "StartGameWindow initialized.";
     connect(startGameWindow, &StartGameWindow::startGame, this, &MainWindow::onStartGameClicked);
@@ -177,14 +177,89 @@ void MainWindow::firstWindow()
     resize(800, 600);
     qDebug() << "Connecting to server...";
     ClientServer::connectServer();
-    qDebug() << "Connected to server.";
+    qDebug() << "Connected to server.";*/
+    //......................................................................................
+    qDebug() << "Initializing first window...";
+    initializeBackground();
+    QWidget* centralWidget = new QWidget(this);
+    QVBoxLayout* layout = new QVBoxLayout(centralWidget);
+
+    QPushButton* signInButton = new QPushButton("Sign In", this);
+    QPushButton* signUpButton = new QPushButton("Sign Up", this);
+
+    QString buttonStyle =
+        "font-size: 18px; "
+        "color: white; "
+        "background-color: rgba(0, 0, 128, 200); "
+        "border: 2px solid white; "
+        "border-radius: 10px; "
+        "padding: 10px;";
+    signInButton->setStyleSheet(buttonStyle);
+    signUpButton->setStyleSheet(buttonStyle);
+
+    layout->addWidget(signInButton);
+    layout->addWidget(signUpButton);
+    layout->setAlignment(Qt::AlignCenter);
+    layout->setSpacing(20);
+
+    centralWidget->setLayout(layout);
+    setCentralWidget(centralWidget);
+
+    connect(signInButton, &QPushButton::clicked, this, &MainWindow::onSignInClicked);
+    connect(signUpButton, &QPushButton::clicked, this, &MainWindow::onSignUpClicked);
+
+    qDebug() << "First window initialized.";
+
+
+
+    //qDebug() << "Initializing StartGameWindow...";
+
+    //// Create and initialize StartGameWindow
+    //StartGameWindow* startGameWindow = new StartGameWindow(this);
+    //setCentralWidget(startGameWindow);
+
+    //// Connect the startGame signal to open LoginWindow
+    //connect(startGameWindow, &StartGameWindow::startGame, this, &MainWindow::onStartGameClicked);
+
+    //qDebug() << "StartGameWindow set as central widget.";
+}
+void MainWindow::onSignInClicked()
+{
+    //qDebug() << "Sign In button clicked!";
+    //LoginWindow* loginWindow = new LoginWindow(this); // Create LoginWindow
+    //loginWindow->show();
+    //this->close(); // Close the MainWindow
+    qDebug() << "Sign In button clicked!";
+    LoginWindow* loginWindow = new LoginWindow(); // Create LoginWindow (no parent to avoid closure issues)
+    loginWindow->show(); // Show the LoginWindow
+    this->hide();        // Hide the MainWindow temporarily
+
+    // Optional: Connect a signal to restore MainWindow when LoginWindow closes
+    connect(loginWindow, &QWidget::destroyed, this, &MainWindow::show);
+}
+
+// Slot for "Sign Up" button
+void MainWindow::onSignUpClicked()
+{
+    //qDebug() << "Sign Up button clicked!";
+    //// Redirect to LoginWindow or other functionality for registration
+    //LoginWindow* loginWindow = new LoginWindow(this); // Can be changed to RegisterWindow
+    //loginWindow->show();
+    //this->close(); // Close the MainWindow
+    qDebug() << "Sign Up button clicked!";
+    LoginWindow* loginWindow = new LoginWindow(); // Create LoginWindow (no parent to avoid closure issues)
+    loginWindow->show(); // Show the LoginWindow
+    this->hide();        // Hide the MainWindow temporarily
+
+    // Optional: Connect a signal to restore MainWindow when LoginWindow closes
+    connect(loginWindow, &QWidget::destroyed, this, &MainWindow::show);
 }
 
 void MainWindow::onStartGameClicked() 
 {
+    qDebug() << "Start Game button pressed!";
     LoginWindow* loginWindow = new LoginWindow();
     loginWindow->show();
-
     close();
 }
 

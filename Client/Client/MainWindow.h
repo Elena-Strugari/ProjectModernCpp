@@ -21,6 +21,8 @@ public:
 private slots:
     void firstWindow();            //start game
     void onStartGameClicked();     // log 
+    void onSignInClicked();
+    void onSignUpClicked();
 
 private:
     void initializeBackground();
