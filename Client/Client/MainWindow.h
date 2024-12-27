@@ -9,6 +9,7 @@
 #include "StartGameWindow.h"
 #include "Client.h"
 #include "ClientServer.h"
+#include <QDir>
 
 class MainWindow : public QMainWindow //QWidget 
 {
@@ -21,8 +22,8 @@ public:
 private slots:
     void firstWindow();            //start game
     void onStartGameClicked();     // log 
-    void onSignInClicked();
-    void onSignUpClicked();
+   // void onSignInClicked();
+  //  void onSignUpClicked();
 
 private:
     void initializeBackground();

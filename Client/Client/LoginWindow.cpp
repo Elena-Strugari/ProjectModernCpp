@@ -511,7 +511,7 @@ void LoginWindow::onRegister()
 #include <QPalette>
 #include <QImage>
 
-// Constructor
+
 LoginWindow::LoginWindow(QWidget* parent)
     : QWidget(parent)
     , promptLabel(new QLabel("Introduceți numele dumneavoastră:", this))
@@ -521,15 +521,13 @@ LoginWindow::LoginWindow(QWidget* parent)
 {
     qDebug() << "LoginWindow constructor called.";
 
-    // Styling the prompt label
     promptLabel->setAlignment(Qt::AlignCenter);
     promptLabel->setStyleSheet(
         "font-size: 18px; "
-        "color: white; "
+        "color: black; "
         "font-weight: bold;"
     );
 
-    // Styling the client input
     clientInput->setPlaceholderText("Numele dvs.");
     clientInput->setStyleSheet(
         "font-size: 16px; "
@@ -540,7 +538,6 @@ LoginWindow::LoginWindow(QWidget* parent)
         "background-color: rgba(255, 255, 255, 200);"
     );
 
-    // Styling the buttons
     QString buttonStyle =
         "font-size: 18px; "
         "color: white; "
@@ -551,7 +548,6 @@ LoginWindow::LoginWindow(QWidget* parent)
     loginButton->setStyleSheet(buttonStyle);
     registerButton->setStyleSheet(buttonStyle);
 
-    // Layout for content
     QVBoxLayout* contentLayout = new QVBoxLayout();
     contentLayout->addWidget(promptLabel);
     contentLayout->addWidget(clientInput);
@@ -560,26 +556,24 @@ LoginWindow::LoginWindow(QWidget* parent)
     contentLayout->setAlignment(Qt::AlignCenter);
     contentLayout->setSpacing(10);
 
-    // Main layout
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     mainLayout->addLayout(contentLayout);
     setLayout(mainLayout);
 
-    // Connect signals
     connect(loginButton, &QPushButton::clicked, this, &LoginWindow::onLogin);
     connect(registerButton, &QPushButton::clicked, this, &LoginWindow::onRegister);
 
     setWindowTitle("Logare");
     resize(800, 600);
 
-    // Initialize background using QPalette
     initializeBackground();
 }
 
 // Method to initialize background
 void LoginWindow::initializeBackground()
 {
-    QImage image(":/StartImage/resources/StartGame.jpg"); // Replace with your actual image path
+    QImage image(":/StartImage/resources/StartGame.jpg"); // Nu este incarcata corect 
+
     if (image.isNull()) {
         qDebug() << "Failed to load background image!";
         return;
@@ -591,11 +585,13 @@ void LoginWindow::initializeBackground()
     setAutoFillBackground(true);
 }
 
-// Resize event
+
 void LoginWindow::resizeEvent(QResizeEvent* event)
 {
-    QImage image(":/StartImage/resources/StartGame.jpg"); // Replace with your actual image path
-    if (!image.isNull()) {
+    QImage image(":/StartImage/resources/StartGame.jpg"); //In niciun caz nu e incarcata...
+
+    if (!image.isNull())
+    {
         QPalette palette;
         palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
         setPalette(palette);
@@ -603,7 +599,7 @@ void LoginWindow::resizeEvent(QResizeEvent* event)
     QWidget::resizeEvent(event);
 }
 
-// Slot for login button
+
 void LoginWindow::onLogin()
 {
     QString clientId = clientInput->text().trimmed();
@@ -614,11 +610,11 @@ void LoginWindow::onLogin()
         return;
     }
 
-    // Debugging login action
+    
     qDebug() << "Login clicked with name:" << clientId;
 }
 
-// Slot for register button
+
 void LoginWindow::onRegister()
 {
     QString clientId = clientInput->text().trimmed();
@@ -629,6 +625,5 @@ void LoginWindow::onRegister()
         return;
     }
 
-    // Debugging register action
     qDebug() << "Register clicked with name:" << clientId;
 }
