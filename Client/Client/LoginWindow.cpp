@@ -608,7 +608,6 @@ void LoginWindow::onLogin()
         QMessageBox::warning(this, "Eroare", "Vă rugăm să introduceți un nume!");
         return;
     }
-
     
     qDebug() << "Login clicked with name:" << clientId;
 }
