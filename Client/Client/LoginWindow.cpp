@@ -516,15 +516,15 @@ LoginWindow::LoginWindow(QWidget* parent)
     : QWidget(parent)
     , promptLabel(new QLabel("Introduceți numele dumneavoastră:", this))
     , clientInput(new QLineEdit(this))
-    , loginButton(new QPushButton("Log In", this))
-    , registerButton(new QPushButton("Register", this))
+    , loginButton(new QPushButton("Sign In", this))
+    , registerButton(new QPushButton("Sign Up", this))
 {
     qDebug() << "LoginWindow constructor called.";
 
     promptLabel->setAlignment(Qt::AlignCenter);
     promptLabel->setStyleSheet(
         "font-size: 18px; "
-        "color: black; "
+        "color: white; "
         "font-weight: bold;"
     );
 
