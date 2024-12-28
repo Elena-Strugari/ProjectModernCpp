@@ -81,13 +81,13 @@
     <ClInclude Include="GameEntity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MapCell.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DisplayElements.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NoGreenScreen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MapCell.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

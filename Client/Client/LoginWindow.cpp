@@ -569,7 +569,6 @@ LoginWindow::LoginWindow(QWidget* parent)
     initializeBackground();
 }
 
-// Method to initialize background
 void LoginWindow::initializeBackground()
 {
     QImage image(":/StartImage/resources/StartGame.jpg"); // Nu este incarcata corect 

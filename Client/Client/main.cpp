@@ -33,7 +33,8 @@ int main(int argc, char* argv[])
     QApplication app(argc, argv); 
 
     MainWindow mainWindow;
-
+    qDebug() << "Sunt imediat dupa initializarea lui MainWindow!";
+    qDebug() << "Afisez mainWindow!";
     mainWindow.show();
 
     return app.exec();
@@ -56,10 +57,11 @@ int main(int argc, char* argv[])
 //    QApplication app(argc, argv);
 //
 //    //QString resourcePath = ":/StartImage/resources/StartGame.jpg";
-//    //QImage image(resourcePath);
+//    QString resourcePath = ":/StartImage/StartGame.jpg";
+//    QImage image(resourcePath);
 //
 //    //Testare imagine locala
-//    QImage image("D:\\Facultate\\Anul_2\\Semestrul_1\\Modern_C++\\ProjectModernCpp\\Client\\Client\\resources\\StartGame.jpg");
+//    //QImage image("D:\\Facultate\\Anul_2\\Semestrul_1\\Modern_C++\\ProjectModernCpp\\Client\\Client\\resources\\StartGame.jpg");
 //    if (image.isNull()) 
 //    {
 //        qDebug() << "Failed to load image!";
