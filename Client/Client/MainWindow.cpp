@@ -1,5 +1,6 @@
 ﻿#include "MainWindow.h"
 #include "StartGameWindow.h"
+#include "ControlChoiceWindow.h"
 #include "LoginWindow.h"
 
 

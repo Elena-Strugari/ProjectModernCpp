@@ -23,19 +23,17 @@ ControlChoiceWindow::ControlChoiceWindow(const QString& clientId, QWidget* paren
     wasdButton->setStyleSheet(buttonStyle);
     arrowButton->setStyleSheet(buttonStyle);
 
-    QLabel* mainImage = new QLabel(this);
-    mainImage->setPixmap(QPixmap(":/images/directii.png").scaled(600, 400, Qt::KeepAspectRatio, Qt::SmoothTransformation));
-    mainImage->setAlignment(Qt::AlignCenter);
-
     QHBoxLayout* buttonLayout = new QHBoxLayout();
+    buttonLayout->addSpacing(100);
     buttonLayout->addWidget(wasdButton);
-    buttonLayout->addSpacing(50);
+    buttonLayout->addSpacing(330);
     buttonLayout->addWidget(arrowButton);
+    buttonLayout->addSpacing(150);
 
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
-    mainLayout->addWidget(mainImage); 
+    mainLayout->addStretch();
     mainLayout->addLayout(buttonLayout);
-    mainLayout->setAlignment(Qt::AlignCenter);
+    mainLayout->addSpacing(150);
 
     setLayout(mainLayout);
 
@@ -54,7 +52,7 @@ ControlChoiceWindow::~ControlChoiceWindow()
 
 void ControlChoiceWindow::initializeBackground()
 {
-    QImage image(":/StartImage/resources/StartGame.jpg");
+    QImage image(":/Direction/resources/directii.png");
 
     if (image.isNull())
     {

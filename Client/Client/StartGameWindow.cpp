@@ -298,7 +298,7 @@ StartGameWindow::StartGameWindow(QWidget* parent)
     textLabel->setAlignment(Qt::AlignCenter);
     textLabel->setStyleSheet(
         "font-size: 36px; "
-        "color: black; "
+        "color: white; "
         "font-weight: bold;"
     );
 

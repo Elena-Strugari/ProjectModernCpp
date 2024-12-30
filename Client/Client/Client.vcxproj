@@ -112,6 +112,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ControlChoiceWindow.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="MapCell.cpp" />
     <ClCompile Include="NoGreenScreen.cpp" />
@@ -137,6 +138,7 @@
   <ItemGroup>
     <ClInclude Include="ClientMap.h" />
     <ClInclude Include="ClientServer.h" />
+    <QtMoc Include="ControlChoiceWindow.h" />
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="MapCell.h" />
     <ClInclude Include="NoGreenScreen.h" />

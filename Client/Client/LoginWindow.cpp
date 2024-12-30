@@ -505,6 +505,7 @@ void LoginWindow::onRegister()
 
 #include "LoginWindow.h"
 #include "ClientServer.h"
+#include "ControlChoiceWindow.h"
 #include "Client.h"
 #include <QMessageBox>
 #include <QVBoxLayout>
@@ -523,7 +524,7 @@ LoginWindow::LoginWindow(QWidget* parent)
 
     promptLabel->setAlignment(Qt::AlignCenter);
     promptLabel->setStyleSheet(
-        "font-size: 18px; "
+        "font-size: 30px; "
         "color: white; "
         "font-weight: bold;"
     );
@@ -610,6 +611,8 @@ void LoginWindow::onLogin()
     }
     
     qDebug() << "Login clicked with name:" << clientId;
+
+    close();
 }
 
 
@@ -624,4 +627,7 @@ void LoginWindow::onRegister()
     }
 
     qDebug() << "Register clicked with name:" << clientId;
+    ControlChoiceWindow* controlWindow = new ControlChoiceWindow(clientId);
+    controlWindow->show();
+    close();
 }

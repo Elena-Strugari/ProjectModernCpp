@@ -47,4 +47,11 @@
     <qresource prefix="/SlowSpeedWall">
         <file>resources/praf1.png</file>
     </qresource>
+    <qresource prefix="/Direction">
+        <file>resources/directii.png</file>
+    </qresource>
+    <qresource prefix="/n"/>
+    <qresource prefix="/newdirection">
+        <file>resources/directii.png</file>
+    </qresource>
 </RCC>
