@@ -47,3 +47,23 @@ ControlChoiceWindow::ControlChoiceWindow(const QString& clientId, QWidget* paren
 
     initializeBackground();
 }
+ControlChoiceWindow::~ControlChoiceWindow()
+{
+    qDebug() << "ControlChoiceWindow destructor called.";
+}
+
+void ControlChoiceWindow::initializeBackground()
+{
+    QImage image(":/StartImage/resources/StartGame.jpg");
+
+    if (image.isNull())
+    {
+        qDebug() << "Failed to load background image!";
+        return;
+    }
+
+    QPalette palette;
+    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+    setPalette(palette);
+    setAutoFillBackground(true);
+}
