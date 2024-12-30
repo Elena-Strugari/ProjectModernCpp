@@ -71,16 +71,14 @@ void ControlChoiceWindow::onWasdChosen()
 {
     qDebug() << "WASD controls chosen by user:" << clientId;
 
-    // Aici poți salva alegerea utilizatorului pe server sau local
     QMessageBox::information(this, "Control Selectat", "Ați ales controalele WASD!");
-    close(); // Închidem fereastra
+    close(); 
 }
 
 void ControlChoiceWindow::onArrowChosen()
 {
     qDebug() << "Arrow keys controls chosen by user:" << clientId;
 
-    // Aici poți salva alegerea utilizatorului pe server sau local
     QMessageBox::information(this, "Control Selectat", "Ați ales controalele săgeți!");
-    close(); // Închidem fereastra
+    close();
 }
