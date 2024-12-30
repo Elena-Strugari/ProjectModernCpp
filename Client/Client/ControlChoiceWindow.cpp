@@ -1,0 +1,49 @@
+﻿#include "ControlChoiceWindow.h"
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QPixmap>
+#include <QMessageBox>
+#include <QPalette>
+#include <QDebug>
+#include <QResizeEvent>
+
+ControlChoiceWindow::ControlChoiceWindow(const QString& clientId, QWidget* parent)
+    : QWidget(parent), clientId(clientId), wasdButton(new QPushButton("Alege WASD", this)), arrowButton(new QPushButton("Alege Săgeți", this))
+{
+    qDebug() << "ControlChoiceWindow constructor called for user:" << clientId;
+
+    QString buttonStyle =
+        "font-size: 18px; "
+        "color: white; "
+        "background-color: rgba(0, 0, 128, 200); "
+        "border: 2px solid white; "
+        "border-radius: 10px; "
+        "padding: 5px;";
+    wasdButton->setStyleSheet(buttonStyle);
+    arrowButton->setStyleSheet(buttonStyle);
+
+    QLabel* mainImage = new QLabel(this);
+    mainImage->setPixmap(QPixmap(":/images/directii.png").scaled(600, 400, Qt::KeepAspectRatio, Qt::SmoothTransformation));
+    mainImage->setAlignment(Qt::AlignCenter);
+
+    QHBoxLayout* buttonLayout = new QHBoxLayout();
+    buttonLayout->addWidget(wasdButton);
+    buttonLayout->addSpacing(50);
+    buttonLayout->addWidget(arrowButton);
+
+    QVBoxLayout* mainLayout = new QVBoxLayout(this);
+    mainLayout->addWidget(mainImage); 
+    mainLayout->addLayout(buttonLayout);
+    mainLayout->setAlignment(Qt::AlignCenter);
+
+    setLayout(mainLayout);
+
+    connect(wasdButton, &QPushButton::clicked, this, &ControlChoiceWindow::onWasdChosen);
+    connect(arrowButton, &QPushButton::clicked, this, &ControlChoiceWindow::onArrowChosen);
+
+    setWindowTitle("Alege Control");
+    resize(800, 600);
+
+    initializeBackground();
+}
