@@ -2,9 +2,9 @@
 
 #include <QString>
 #include <QLabel>
-#include <QPixmap>
+#include <QImage>
 #include <QDebug>
-
+#include <QPixMap>
 class DisplayElements
 {
 public:

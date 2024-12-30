@@ -98,19 +98,19 @@ void DisplayElements::DisplayPlayerImage(int code, QLabel* imageLabel)
 
 void DisplayElements::DisplayBombImage(QLabel* imageLabel)
 {
-    QString imagePath = " :/ Bomb / resources / Extraterestru.png";
+    QString imagePath =":/Bomb/resources/Extraterestru.png";
     ShowImage(imagePath, imageLabel);
 }
 
 void DisplayElements::DisplayBonusLifeImage(QLabel* imageLabel)
 {
-    QString imagePath = " / BonusLife / resources / Oxygen.png";
+    QString imagePath = ":/BonusLife/resources/Oxygen.png";
     ShowImage(imagePath, imageLabel);
 }
 
 void DisplayElements::DisplayBorderImage(QLabel* imageLabel)
 {
-    QString imagePath = " :/Border/resources/Border.png";
+    QString imagePath = ":/Border/resources/Border.png";
     ShowImage(imagePath, imageLabel);
 }
 
@@ -121,17 +121,17 @@ void DisplayElements::DisplayWallImage(int code, QLabel* imageLabel)
     {
     case 1:
         {
-            imagePath = " :/Wall/resources/Asteroid.png";
+            imagePath = ":/Wall/resources/Asteroid.png";
             break;
         }
     case 2:
     {
-        imagePath = " :/Wall/resources/Asteroid.png";
+        imagePath = ":/Wall/resources/Asteroid.png";
         break;
     }
     case 3:
     {
-        imagePath = " :/SlowSpeedWall/resources/praf1.png";
+        imagePath = ":/SlowSpeedWall/resources/praf1.png";
         break;
     }
     default:
@@ -146,20 +146,20 @@ void DisplayElements::DisplayWallImage(int code, QLabel* imageLabel)
 
 void DisplayElements::ShowImage(const QString& imagePath, QLabel* imageLabel)
 {
-    QPixmap pixmap(imagePath);
-
-    if (pixmap.isNull())
-    {
+    QImage image;
+    if (!image.load(imagePath)) {
         qDebug() << "Imaginea nu a putut fi încărcată: " << imagePath;
         imageLabel->setText("Imaginea nu poate fi afișată!");
         return;
     }
-    QImage image = pixmap.toImage();
 
     // Aplicăm eliminarea green screen-ului
     QImage processedImage = removeGreenScreen(image);
 
-    // Convertim înapoi în QPixmap și afișăm imaginea procesată
+    // Convertim imaginea procesată pentru afișare
     QPixmap processedPixmap = QPixmap::fromImage(processedImage);
-    imageLabel->setPixmap(pixmap.scaled(imageLabel->size(), Qt::KeepAspectRatio));
+
+    // Setăm imaginea procesată în QLabel
+    imageLabel->setPixmap(processedPixmap.scaled(imageLabel->size(), Qt::KeepAspectRatio));
 }
+
