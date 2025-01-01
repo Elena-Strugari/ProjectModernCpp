@@ -79,3 +79,24 @@ int main(int argc, char* argv[])
 //
 //    return app.exec();
 //}
+
+//Main pentru testarea hartii
+
+//#include "MainWindow.h"
+//#include "ClientMap.h"
+//#include <QApplication>
+//
+//int main(int argc, char* argv[])
+//{
+//    QApplication app(argc, argv);
+//
+//    MainWindow mainWindow;
+//    ClientMap clientMap(10, 10);
+//
+//    clientMap.InitializeTestMap();
+//
+//    mainWindow.DisplayMap(clientMap);
+//    mainWindow.show();
+//
+//    return app.exec();
+//}

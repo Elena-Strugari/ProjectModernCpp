@@ -34,31 +34,34 @@ private:
 };
 
 #endif // MAINWINDOW_H
+//................................................................................................................................................
 
+//MAinWindow pentru harta
 
-//MainWindow pentru harta
-//
-//#pragma once
-//#ifndef MAINWINDOW_H
-//#define MAINWINDOW_H
-//
-//#include <QMainWindow>
+//#include <QPalette>
+//#include <QImage>
 //#include "ClientMap.h"
+//#include <QGridLayout>
+//#include <QMainWindow>
 //
-//class MainWindow : public QMainWindow {
+//class MainWindow : public QMainWindow 
+//{
 //    Q_OBJECT
 //
 //public:
 //    explicit MainWindow(QWidget* parent = nullptr);
-//    ~MainWindow();
+//    void DisplayMap(const ClientMap& clientMap);
 //
 //private:
-//    ClientMap* map; // Pointer to your map widget
+//    QWidget* centralWidget;
+//    QGridLayout* gridLayout;
+//
+//    void SetCellBackground(QWidget* cellWidget, const QString& imagePath);
 //};
-//
-//#endif // MAINWINDOW_H
 
-//
+
+//...................................................................................................................................................
+
 ////   TEST PLENTRU PLAYER 
 //#ifndef MAINWINDOW_H
 //#define MAINWINDOW_H

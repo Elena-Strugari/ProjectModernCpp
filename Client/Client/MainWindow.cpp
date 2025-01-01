@@ -1,4 +1,6 @@
-﻿#include "MainWindow.h"
+﻿//MainWindow pentru ferestrele principale.
+
+#include "MainWindow.h"
 #include "StartGameWindow.h"
 #include "ControlChoiceWindow.h"
 #include "LoginWindow.h"
@@ -72,7 +74,7 @@ void MainWindow::onStartGameClicked()
     close(); 
 }
 
-
+//................................................................................................................................................
 
 ////  TEST PENTRU PLAYER
 //
@@ -100,3 +102,67 @@ void MainWindow::onStartGameClicked()
 //
 //MainWindow::~MainWindow() = default;
 //
+
+//...............................................................................................................................................
+
+//MainWindow test pentru afisarea hartii.
+//#include "MainWindow.h"
+//
+//MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) 
+//{
+//    centralWidget = new QWidget(this);
+//    gridLayout = new QGridLayout(centralWidget);
+//    centralWidget->setLayout(gridLayout);
+//    setCentralWidget(centralWidget);
+//}
+//
+//void MainWindow::DisplayMap(const ClientMap& clientMap) 
+//{
+//    // Clear existing layout
+//    while (QLayoutItem* item = gridLayout->takeAt(0)) 
+//    {
+//        delete item->widget(); 
+//        delete item;           // Delete the layout item
+//    }
+//
+//    // Iterate through the map and add widgets
+//    for (int row = 0; row < clientMap.GetRows(); ++row) 
+//    {
+//        for (int col = 0; col < clientMap.GetColumns(); ++col) 
+//        {
+//            const MapCell& cell = clientMap.GetCell(row, col);
+//            QWidget* cellWidget = new QWidget(this);
+//
+//            
+//            switch (cell.GetType()) 
+//            {
+//            case MapCell::CellType::Wall:
+//                SetCellBackground(cellWidget, ":/resources/Asteroid.png");
+//                break;
+//            case MapCell::CellType::DestructibleWall:
+//                SetCellBackground(cellWidget, ":/resources/praf1.png");
+//                break;
+//            case MapCell::CellType::Tank:
+//                SetCellBackground(cellWidget, ":/resources/Astronaut_4_Right.png");
+//                break;
+//            case MapCell::CellType::Empty:
+//                SetCellBackground(cellWidget, ":/resources/StartGame.jpg");
+//                break;
+//            default:
+//                SetCellBackground(cellWidget, ":/resources/StartGame.jpg");
+//                break;
+//            }
+//
+//            gridLayout->addWidget(cellWidget, row, col);
+//        }
+//    }
+//}
+//
+//void MainWindow::SetCellBackground(QWidget* cellWidget, const QString& imagePath) 
+//{
+//    QPalette palette;
+//    QImage image(imagePath);
+//    palette.setBrush(QPalette::Window, QBrush(image));
+//    cellWidget->setAutoFillBackground(true);
+//    cellWidget->setPalette(palette);
+//}

@@ -30,3 +30,57 @@
 //};
 //
 //#endif // MAP_H
+
+//...........................................................................................................................
+//#pragma once
+//#ifndef CLIENTMAP_H
+//#define CLIENTMAP_H
+//
+//#include <vector>
+////#include "GameEntity.h"
+//#include "MapCell.h"
+//
+//class ClientMap
+//{
+//private:
+//    std::vector<std::vector<MapCell>> m_map; 
+//    int m_rows;                              
+//    int m_columns;                          
+//
+//public:
+//    ClientMap(int rows, int columns);
+//
+//    // Getters
+//    int GetRows() const;
+//    int GetColumns() const;
+//
+//    MapCell& GetCell(int row, int col);
+//    const MapCell& GetCell(int row, int col) const;
+//
+//    //Setters
+//    void SetCellType(int row, int col, MapCell::CellType type);
+//    void SetCellObject(int row, int col, std::shared_ptr<GameEntity> object);
+//
+//    
+//    void LoadMap(const std::vector<std::vector<MapCell::CellType>>& mapData);
+//
+//    bool IsValidCell(int row, int col) const;
+//
+//    void InitializeTestMap();
+//};
+//
+//#endif // CLIENTMAP_H
+//class ClientMap {
+//private:
+//    std::vector<std::vector<MapCell>> m_map;
+//    int m_rows, m_columns;
+//
+//public:
+//    ClientMap(int rows, int columns)
+//        : m_rows(rows), m_columns(columns), m_map(rows, std::vector<MapCell>(columns)) {
+//    }
+//
+//    int GetRows() const { return m_rows; }
+//    int GetColumns() const { return m_columns; }
+//    MapCell& GetCell(int row, int col) { return m_map[row][col]; }
+//};
