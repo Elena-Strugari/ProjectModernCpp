@@ -15,7 +15,7 @@ public:
 
     void SetPosition(uint16_t x, uint16_t y);
     void SetDirection(Direction direction);
-    void Move(Direction direction);
+    std::pair<uint16_t, uint16_t> Move(Direction direction);
 
     void print()const;
 

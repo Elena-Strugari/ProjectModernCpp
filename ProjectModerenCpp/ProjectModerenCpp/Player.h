@@ -12,7 +12,6 @@ public:
     int GetScore() const;
     GameObject& GetObject();
     MovementObject& GetMovementObject();
-    
     // Lives management
     void LoseLife();
     void GainLife();

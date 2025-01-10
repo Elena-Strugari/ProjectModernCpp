@@ -33,7 +33,7 @@ void MovementObject::SetDirection(Direction direction) {
 }
 
 // Movement Logic
-void MovementObject::Move(Direction direction) {
+std::pair<uint16_t, uint16_t> MovementObject::Move(Direction direction) {
     uint16_t newX = m_x;
     uint16_t newY = m_y;
 
@@ -51,8 +51,7 @@ void MovementObject::Move(Direction direction) {
         newX++;
         break;
     }
-    SetPosition(newX, newY);
-    SetDirection(direction);
+    return std::make_pair(newX, newY);
 }
 
 void MovementObject::print()const

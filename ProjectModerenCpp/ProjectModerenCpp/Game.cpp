@@ -108,16 +108,10 @@ void Game::MovePlayer(const std::shared_ptr<Player>& player, MovementObject::Dir
     auto& movement = player->GetMovementObject();
     auto [currentX, currentY] = movement.GetPosition();
 
-    uint16_t newX = currentX, newY = currentY;
+    movement.Move(direction);
+    auto [newX, newY] = movement.Move(direction);
 
-    switch (direction) {
-    case MovementObject::Direction::Up:    newY--; break;
-    case MovementObject::Direction::Down:  newY++; break;
-    case MovementObject::Direction::Left:  newX--; break;
-    case MovementObject::Direction::Right: newX++; break;
-    }
-
-    if (IsValidMove(newX, newY)) {
+    if (m_map.IsValidPosition(newX, newY)) {
         // Update the map
         m_map.SetCellContent(currentX, currentY, Map::Empty{}); // Clear the old position
         m_map.SetCellContent(newX, newY, Map::Tank{});          // Set the new position
@@ -131,42 +125,3 @@ void Game::MovePlayer(const std::shared_ptr<Player>& player, MovementObject::Dir
     }
 }
 
-bool Game::IsValidMove(uint16_t x, uint16_t y) const {
-    return m_map.IsValidPosition(x, y) && std::holds_alternative<Map::Empty>(m_map.GetCell(x, y).content);
-}
-
-
-/*
-void Game::MovePlayer(const std::shared_ptr<Player>& player, MovementObject::Direction direction) {
-    auto& movement = player->GetMovementObject();
-    auto [currentX, currentY] = movement.GetPosition();
-
-    uint16_t newX = currentX, newY = currentY;
-
-    switch (direction) {
-    case MovementObject::Direction::Up:    newY--; break;
-    case MovementObject::Direction::Down:  newY++; break;
-    case MovementObject::Direction::Left:  newX--; break;
-    case MovementObject::Direction::Right: newX++; break;
-    }
-
-    if (IsValidMove(newX, newY)) {
-        // Update the map
-        m_map.SetCellContent(currentX, currentY, Map::Empty{}); // Clear the old position
-        m_map.SetCellContent(newX, newY, Map::Tank{});          // Set the new position
-
-        // Update the player's movement object
-        movement.SetPosition(newX, newY);
-        std::cout << "Player " << player->GetName() << " moved to (" << newX << ", " << newY << ")." << std::endl;
-    }
-    else {
-        std::cout << "Invalid move for player " << player->GetName() << " to (" << newX << ", " << newY << ")." << std::endl;
-    }
-}
-
-bool Game::IsValidMove(uint16_t x, uint16_t y) const {
-    return m_map.IsValidPosition(x, y) && std::holds_alternative<Map::Empty>(m_map.GetCell(x, y).content);
-}
-
-
-*/

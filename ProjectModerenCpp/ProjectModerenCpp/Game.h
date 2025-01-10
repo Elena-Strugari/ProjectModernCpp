@@ -42,6 +42,4 @@ public:
 private:
     Map m_map;
     std::shared_ptr<PlayerManager> m_playerManager;
-
-    bool IsValidMove(uint16_t x, uint16_t y) const;
 };

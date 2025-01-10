@@ -290,6 +290,10 @@ int main()
 
     game.MovePlayer(player1, MovementObject::Direction::Right);
     game.MovePlayer(player2, MovementObject::Direction::Up);
+    game.Start();
+
+    game.MovePlayer(player1, MovementObject::Direction::Down);
+    game.MovePlayer(player2, MovementObject::Direction::Left);
     game.Start();*/
 
 
