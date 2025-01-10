@@ -9,12 +9,12 @@
 //#include "Game.h"
 //#include "PlayerGameObjectManager.h"
 
-#include "Map.h";
+//#include "Map.h";
 //#include "GameObject.h"
 //#include "MovementObject.h"
 //#include "Player.h"
 //#include "PlayerManager.h"
-//#include "Game.h"
+#include "Game.h"
 
 using namespace http;
 int main()
@@ -274,7 +274,23 @@ int main()
     //// Display the map again
     //game.Start();
 
+    // test 3
 
+    */
+    /*Database db("players.db");
+    Game game(1);
+
+    auto player1 = std::make_shared<Player>("Player1", db, GameObject(Tank(Tank::ColorTank::Red)));
+    auto player2 = std::make_shared<Player>("Player2", db, GameObject(Tank(Tank::ColorTank::Blue)));
+
+    game.AddPlayer(player1);
+    game.AddPlayer(player2);
+
+    game.Start();
+
+    game.MovePlayer(player1, MovementObject::Direction::Right);
+    game.MovePlayer(player2, MovementObject::Direction::Up);
+    game.Start();*/
 
 
 	/*Tank t(Tank::ColorTank::Blue);

@@ -1,24 +1,47 @@
-﻿#pragma once
-#include <vector>
+﻿//#pragma once
+//#include <vector>
+//#include <memory>
+//#include "Map.h"
+//#include "PlayerManager.h"
+////#include "Collision.h"
+//
+//class Game {
+//public:
+//    Game(uint8_t level);
+//
+//    void AddPlayer(const std::shared_ptr<Player>& player);
+//    void Start();
+//   
+//    void MovePlayer(const std::string& playerName, MovementObject::Direction direction);
+//    void PlacePlayerOnMap(const std::shared_ptr<Player>& player);
+//
+//
+//private:
+//    Map m_map;
+//    std::shared_ptr<PlayerManager> m_playerManager; // Player manager
+//    //Collision m_collision;
+//};
+//
+
+#pragma once
+
 #include <memory>
+#include <vector>
 #include "Map.h"
 #include "PlayerManager.h"
-//#include "Collision.h"
 
 class Game {
 public:
-    Game(uint8_t level);
+    explicit Game(uint8_t level);
 
     void AddPlayer(const std::shared_ptr<Player>& player);
     void Start();
-   
-    void MovePlayer(const std::string& playerName, MovementObject::Direction direction);
+    void MovePlayer(const std::shared_ptr<Player>& player, MovementObject::Direction direction);
     void PlacePlayerOnMap(const std::shared_ptr<Player>& player);
-
 
 private:
     Map m_map;
-    std::shared_ptr<PlayerManager> m_playerManager; // Player manager
-    //Collision m_collision;
-};
+    std::shared_ptr<PlayerManager> m_playerManager;
 
+    bool IsValidMove(uint16_t x, uint16_t y) const;
+};
