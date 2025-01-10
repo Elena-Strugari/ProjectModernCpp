@@ -13,7 +13,8 @@
 //#include "GameObject.h"
 //#include "MovementObject.h"
 //#include "Player.h"
-#include "PlayerManager.h"
+//#include "PlayerManager.h"
+#include "Game.h"
 
 using namespace http;
 int main()
@@ -165,6 +166,39 @@ int main()
     //manager.DisplayAllPlayers();
 
 
+
+// test game
+   // Database db("game_database.db");
+   // Game game(1);
+
+   // // Creează jucători și îi adaugă în joc
+   // auto tank1 = std::make_shared<Tank>(Tank::ColorTank::Red);
+   // auto tank2 = std::make_shared<Tank>(Tank::ColorTank::Blue);
+
+   // auto gameObject1 = GameObject(std::move(*tank1));
+   // auto gameObject2 = GameObject(std::move(*tank2));
+
+   // auto player1 = std::make_shared<Player>("Player1", db, std::move(gameObject1));
+   // auto player2 = std::make_shared<Player>("Player2", db, std::move(gameObject2));
+
+   // game.AddPlayer(player1);
+   // game.AddPlayer(player2);
+
+   // // Afișează starea inițială
+   // std::cout << "Initial Game State:\n";
+   // //game.Display();
+
+   // // Mută jucătorii
+   // std::cout << "\nMoving players:\n";
+   // game.MovePlayer("Player1", MovementObject::Direction::Up);
+   // game.MovePlayer("Player2", MovementObject::Direction::Right);
+
+   // // Actualizează starea jocului
+   // //game.Update();
+
+   // // Afișează starea finală
+   // std::cout << "\nFinal Game State:\n";
+   //// game.Display();
 
 
 

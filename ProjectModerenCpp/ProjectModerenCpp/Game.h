@@ -1,57 +1,46 @@
-﻿#pragma once
-#include "Map.h"
-#include "CollisionManeger.h"
-#include "Player.h"
-#include "MovementObject.h"
+﻿//#pragma once
+//#include <vector>
+//#include <memory>
+//#include "Map.h"
+//#include "PlayerManager.h"
+////#include "Collision.h"
+//
+//class Game {
+//public:
+//    Game(uint8_t level);
+//
+//    void AddPlayer(std::shared_ptr<Player> player);
+//    void MovePlayer(const std::string& playerName, MovementObject::Direction direction);
+//    //void Update();
+//    void Display() const;
+//
+//private:
+//    Map m_map;
+//    PlayerManager m_playerManager;
+//    //Collision m_collision;
+//};
+
+
+#pragma once
 #include <vector>
+#include <memory>
+#include "Map.h"
+#include "PlayerManager.h"
+//#include "Collision.h"
 
 class Game {
 public:
     Game(uint8_t level);
 
-    void addPlayer(Player* player, MovementObject* movement);
-    void update(); // Actualizează starea jocului
-    void movePlayer(Player* player, MovementObject::Direction direction);
+    void AddPlayer(const std::shared_ptr<Player>& player);
+    void Start();
+   
+    void MovePlayer(const std::string& playerName, MovementObject::Direction direction);
+
 
 private:
-    Map m_map; // Harta jocului
-    CollisionManager m_collisionManager; // Managerul de coliziuni
-    std::vector<std::pair<Player*, MovementObject*>> m_players; // Lista de jucători și mișcările lor
+    Map m_map;
+    std::shared_ptr<PlayerManager> m_playerManager; // Player manager
+    //Collision m_collision;
 };
 
-
-
-
-
-
-
-//server
-//#pragma once
-//#include "Map.h"
-//
-//class Game
-//{
-//public:
-//	void start();
-//	void update();
-//	void checkCollisions();
-//	void HandleInput();
-//
-//	//Functii test
-//	Game();
-//	void TestRun();
-//	void DisplayMap() const;
-//	void InitializeMap();
-//
-//	void Run();
-//private:
-//	/*Map  m_map;
-//	std::vector<Tank> m_tanks;
-//	std::vector<Bullet> m_bullets;
-//	Player m_player;*/
-//
-//	// Variabile de test
-//	Map m_map;
-//	//void InitializeMap();
-//};
-//

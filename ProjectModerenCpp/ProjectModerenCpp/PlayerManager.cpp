@@ -1,6 +1,8 @@
 #include "PlayerManager.h"
 #include <iostream>
 
+PlayerManager::PlayerManager() = default;
+
 void PlayerManager::AddPlayer(const std::shared_ptr<Player>& player) {
     m_players.push_back(player);
 }
@@ -34,4 +36,8 @@ void PlayerManager::DisplayAllPlayers() const {
             << ", Score: " << player->GetScore()
             << ", Lives: " << player->GetLives() << std::endl;
     }
+}
+
+size_t PlayerManager::GetPlayerCount() const {
+    return m_players.size();
 }
