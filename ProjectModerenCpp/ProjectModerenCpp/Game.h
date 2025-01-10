@@ -1,27 +1,4 @@
-﻿//#pragma once
-//#include <vector>
-//#include <memory>
-//#include "Map.h"
-//#include "PlayerManager.h"
-////#include "Collision.h"
-//
-//class Game {
-//public:
-//    Game(uint8_t level);
-//
-//    void AddPlayer(std::shared_ptr<Player> player);
-//    void MovePlayer(const std::string& playerName, MovementObject::Direction direction);
-//    //void Update();
-//    void Display() const;
-//
-//private:
-//    Map m_map;
-//    PlayerManager m_playerManager;
-//    //Collision m_collision;
-//};
-
-
-#pragma once
+﻿#pragma once
 #include <vector>
 #include <memory>
 #include "Map.h"
@@ -36,6 +13,7 @@ public:
     void Start();
    
     void MovePlayer(const std::string& playerName, MovementObject::Direction direction);
+    void PlacePlayerOnMap(const std::shared_ptr<Player>& player);
 
 
 private:

@@ -1,283 +1,199 @@
-﻿#pragma once
-#include "Map.h"
-#include <cstdlib>  
+﻿#include "Map.h"
+#include <cstdlib>
 #include <ctime>
-#include<vector>
 
-//sa verific daca trebuie get map si cum se transmite
+// Constructor
+Map::Map(uint8_t level) {
+    auto [minWidth, maxWidth, numBombs, numBonusLives] = GetLevelBounds(level);
 
-Map::Map(uint8_t level)
-{
-    auto [minVal, maxVal, nrBomb, nrLife] = getLevelBounds(level);
+    std::srand(static_cast<unsigned>(std::time(nullptr))); // Seed the random generator
 
-    std::srand(static_cast<unsigned>(std::time(nullptr)));
+    m_width = minWidth + std::rand() % (maxWidth - minWidth + 1);
+    m_height = minWidth + std::rand() % (maxWidth - minWidth + 1);
 
-    m_width = minVal + std::rand() % (maxVal - minVal + 1);
-    m_height = minVal + std::rand() % (maxVal - minVal + 1);
+    // Resize the map and initialize each cell
+    m_map.resize(m_height, std::vector<Cell>(m_width));
 
-    m_map.resize(m_width, std::vector<Map::Cell>(m_height));
-
-    for (size_t i = 0; i < m_width; ++i) {
-        for (size_t j = 0; j < m_height; ++j) {
-            if (i == 0 || i == m_width - 1 || j == 0 || j == m_height - 1) {
-                m_map[i][j] = { Wall::TypeWall::indestructible, ' ', 1};  
+    for (uint16_t y = 0; y < m_height; ++y) {
+        for (uint16_t x = 0; x < m_width; ++x) {
+            if (y == 0 || y == m_height - 1 || x == 0 || x == m_width - 1) {
+                m_map[y][x] = { Wall::TypeWall::indestructible, 1 }; // Borders
             }
             else {
-                m_map[i][j] = { Wall::TypeWall::destructible, '_', 0 };  
+                m_map[y][x] = { Empty{}, 0 }; // Inner cells start as empty
             }
         }
     }
+
     GenerateWalls(level);
-    initializeGameElements(nrBomb, nrLife);
+    InitializeGameElements(numBombs, numBonusLives);
 }
 
+// Getters
+uint16_t Map::GetWidth() const { return m_width; }
+uint16_t Map::GetHeight() const { return m_height; }
 
-std::tuple<uint16_t, uint16_t, uint16_t, uint16_t> Map::getLevelBounds(uint8_t level) const
-{
-    switch (level) {
-    case 1: return { 15, 20 ,1, 1};
-    case 2: return { 20, 25 , 2, 2};
-    case 3: return { 25, 30 , 3, 3};
-    default:
-        throw std::invalid_argument("Nivel invalid! Nivelul trebuie să fie 1, 2 sau 3.");
+const Map::Cell& Map::GetCell(uint16_t x, uint16_t y) const {
+    if (!IsValidPosition(x, y)) {
+        throw std::out_of_range("Invalid position on the map!");
     }
+    return m_map[y][x];
 }
 
-//Get 
-uint16_t Map::GetWidth() const
-{
-    return m_width;
-}
-uint16_t Map::GetHeight() const
-{
-    return m_height;
-}
-Map::Cell Map::GetType() const
-{
-    return m_cellType;
-}
-
-std::vector<std::vector<Map::Cell>> Map::GetMap() const
-{
-    return m_map;
-
-}
-
-//Add
-
-void Map::AddWall(uint16_t x, uint16_t y, Wall::TypeWall typeWall)
-{
-    if (IsValidPosition(x, y))
-    {
-        Wall wall(typeWall);
-        m_map[x][y].typeWall = typeWall;
-
-        // destructibil'@', altfel '#'
-        m_map[x][y].space = (typeWall == Wall::TypeWall::destructible) ? '@' : '#';
-        // m_wall.push_back(wall);
+// Setters
+void Map::SetCell(uint16_t x, uint16_t y, const Cell& value) {
+    if (!IsValidPosition(x, y)) {
+        throw std::out_of_range("Invalid position on the map!");
     }
+    m_map[y][x] = value;
 }
 
-// validation
+void Map::SetCellContent(uint16_t x, uint16_t y, CellContent content) {
+    if (!IsValidPosition(x, y)) {
+        throw std::out_of_range("Invalid position on the map!");
+    }
+    m_map[y][x].content = content;
+}
+
+// Validation
 bool Map::IsValidPosition(uint16_t x, uint16_t y) const {
-    return x >= 0 && x < m_width && y >= 0 && y < m_height;
+    return x < m_width && y < m_height; // Ensures the coordinates are within bounds
 }
 
+std::pair<uint16_t, uint16_t> Map::FindValidPosition() {
+    uint16_t x, y;
+    do {
+        x = std::rand() % m_width;
+        y = std::rand() % m_height;
+    } while (!IsValidPosition(x, y) || !std::holds_alternative<Empty>(m_map[y][x].content));
+    return { x, y };
+}
 
-
-
-//display 
+// Display
 void Map::DisplayMap() const {
     for (const auto& row : m_map) {
         for (const auto& cell : row) {
-            if (cell.border == 1) {
-                std::cout << "H";
-            }
-            else if (cell.space == '_') {
-                std::cout << "_";
-            }
-            else if (cell.space == 'B') {
-                std::cout << "B"; // Bomb
-            }
-            else if (cell.space == 'L') {
-                std::cout << "L"; // Bonus Life
-            }
-            else {
-                switch (cell.typeWall) {
-                case Wall::TypeWall::destructible:
-                    std::cout << "@";  // Destructible
-                    break;
-                case Wall::TypeWall::indestructible:
-                    std::cout << "#";  // Indestructible
-                    break;
+            std::visit([](const auto& content) {
+                using T = std::decay_t<decltype(content)>;
+                if constexpr (std::is_same_v<T, Empty>) {
+                    std::cout << "_";
                 }
-            }
+                else if constexpr (std::is_same_v<T, Bomb>) {
+                    std::cout << "B";
+                }
+                else if constexpr (std::is_same_v<T, BonusLife>) {
+                    std::cout << "L";
+                }
+                else if constexpr (std::is_same_v<T, Wall::TypeWall>) {
+                    std::cout << (content == Wall::TypeWall::destructible ? '@' : '#');
+                }
+                else if constexpr (std::is_same_v<T, Tank>) {
+                    std::cout << "T";
+                }
+                }, cell.content);
         }
-        std::cout << std::endl;
+        std::cout << '\n';
     }
 }
 
-
-
-std::vector<std::pair<uint16_t, uint16_t>> Map::RandomWall(uint16_t width, uint16_t height, int numberOfWalls)
-{
-    std::vector<std::pair<uint16_t, uint16_t>> randomWalls;
-
-    // Inițializăm generatorul de numere aleatoare cu time(0) pentru a obține rezultate diferite de fiecare dată
-    srand(static_cast<unsigned int>(time(0)));
-
-    // Generăm pereți aleatori
-    for (int i = 0; i < numberOfWalls; ++i)
-    {
-        uint16_t x = rand() % width;  // Coordonata X aleatoare în intervalul [0, width-1]
-        uint16_t y = rand() % height; // Coordonata Y aleatoare în intervalul [0, height-1]
-        randomWalls.push_back({ x, y });  // Adăugăm perechea (x, y) în vectorul de pereți
+// Game Element Initialization
+void Map::InitializeGameElements(uint8_t numBombs, uint8_t numBonusLives) {
+    for (uint8_t i = 0; i < numBombs; ++i) {
+        auto [x, y] = FindValidPosition();
+        SetCellContent(x, y, Bomb{});
     }
-    return randomWalls;
 
-
+    for (uint8_t i = 0; i < numBonusLives; ++i) {
+        auto [x, y] = FindValidPosition();
+        SetCellContent(x, y, BonusLife{});
+    }
 }
 
-void Map::GenerateWalls(uint8_t level)
-{
+// Wall Generation
+//void Map::GenerateWalls(uint8_t level) {
+//    // Example: Add destructible walls randomly
+//    for (uint16_t i = 0; i < level * 10; ++i) {
+//        auto [x, y] = FindValidPosition();
+//        SetCellContent(x, y, Wall::TypeWall::destructible);
+//    }
+//}
+
+// Level Bounds
+std::tuple<uint16_t, uint16_t, uint16_t, uint16_t> Map::GetLevelBounds(uint8_t level) const {
+    switch (level) {
+    case 1: return { 15, 20, 1, 1 }; // Width range and game elements for level 1
+    case 2: return { 20, 25, 2, 2 }; // Level 2
+    case 3: return { 25, 30, 3, 3 }; // Level 3
+    default:
+        throw std::invalid_argument("Invalid level! Levels must be 1, 2, or 3.");
+    }
+}
+
+// Placing Game Elements
+void Map::PlaceBomb(uint16_t x, uint16_t y) { SetCellContent(x, y, Bomb{}); }
+void Map::PlaceBonusLife(uint16_t x, uint16_t y) { SetCellContent(x, y, BonusLife{}); }
+void Map::PlaceTank(uint16_t x, uint16_t y, const Tank& tank) { SetCellContent(x, y, tank); }
+
+
+
+void Map::GenerateWalls(uint8_t level) {
     uint16_t height = GetHeight();
     uint16_t width = GetWidth();
 
-    // A helper function to add a list of walls
-    auto addWalls = [this](const std::vector<std::pair<uint16_t, uint16_t>>& coordinates, Wall::TypeWall type) {
-        for (const auto& coord : coordinates) {
-            AddWall(coord.first, coord.second, type);
-        }
-        };
+    // Predefined wall positions for each level
+    std::vector<std::pair<uint16_t, uint16_t>> predefinedIndestructibleWalls;
+    std::vector<std::pair<uint16_t, uint16_t>> predefinedDestructibleWalls;
 
-    // A helper function to generate random walls
-    auto generateRandomWalls = [this, width, height](int numWalls) {
-        return RandomWall(width, height, numWalls);
-        };
-
-    switch (level)
-    {
-    case 1: {
-        // Define fixed indestructible walls for level 1
-        std::vector<std::pair<uint16_t, uint16_t>> indestructibleWalls = {
+    switch (level) {
+    case 1:
+        predefinedIndestructibleWalls = {
             {0, 6}, {1, 6}, {1, 7}, {3, 8}, {4, 0}, {4, 1}, {4, 8},
             {5, 2}, {5, 8}, {5, 9}, {5, 10}, {5, 14}, {6, 6}, {6, 14},
             {7, 5}, {7, 6}, {7, 7}, {10, 0}, {10, 1}, {10, 2}, {10, 3},
             {10, 11}, {10, 12}, {12, 5}, {12, 9}, {12, 10}, {12, 11},
-            {12, 12}, {13, 5}, {13, 12}, {14, 5}, {12, 13}, {13, 14},
-            {14, 13}, {9, 5}, {8, 6}, {7, 8}, {6, 9}, {5, 11}, {4, 12},
-            {3, 13}, {2, 14}
+            {12, 12}, {13, 5}, {13, 12}, {14, 5}
         };
-        addWalls(indestructibleWalls, Wall::TypeWall::indestructible);
-
-        // Random indestructible walls
-        auto randomIndestructibleWalls = generateRandomWalls(15);
-        addWalls(randomIndestructibleWalls, Wall::TypeWall::indestructible);
-
-        // Destructible walls
-        std::vector<std::pair<uint16_t, uint16_t>> destructibleWalls = {
-            {2, 2}, {2, 6}, {2, 9}, {6, 9}, {8, 8}, {11, 4}, {11, 9}, {13, 7}, {14, 10}
+        predefinedDestructibleWalls = {
+            {2, 2}, {2, 6}, {2, 9}, {6, 9}, {8, 8}, {11, 4}, {11, 9},
+            {13, 7}, {14, 10}
         };
-        addWalls(destructibleWalls, Wall::TypeWall::destructible);
-
-        // Random destructible walls
-        auto randomDestructibleWalls = generateRandomWalls(40);
-        addWalls(randomDestructibleWalls, Wall::TypeWall::destructible);
-
         break;
-    }
-
-    case 2: {
-        // Define fixed indestructible walls for level 2
-        std::vector<std::pair<uint16_t, uint16_t>> indestructibleWalls = {
-            {2, 1}, {2, 2}, {2, 3}, {0, 7}, {0, 8}, {0, 9}, {1, 8}, {2, 8}, {3, 8},
-            {4, 12}, {1, 16}, {2, 16}, {6, 6}, {6, 7}, {6, 8}, {6, 9}, {7, 13}, {8, 13},
-            {9, 13}, {10, 11}, {10, 12}, {9, 19}, {7, 19}, {8, 19}, {8, 18}, {9, 4},
-            {10, 4}, {11, 4}, {13, 5}, {11, 1}, {11, 2}, {11, 3}, {11, 4}, {11, 7},
-            {12, 7}, {13, 7}, {14, 7}, {11, 4}, {14, 8}, {14, 9}, {15, 2}, {18, 4},
-            {19, 4}, {17, 12}, {17, 13}, {17, 14}, {16, 13}, {18, 14}, {15, 18}
+    case 2:
+        predefinedIndestructibleWalls = {
+            {2, 1}, {2, 2}, {2, 3}, {0, 7}, {0, 8}, {0, 9}, {1, 8}, {2, 8},
+            {3, 8}, {4, 12}, {1, 16}, {2, 16}, {6, 6}, {6, 7}, {6, 8},
+            {6, 9}, {7, 13}, {8, 13}, {9, 13}
         };
-        addWalls(indestructibleWalls, Wall::TypeWall::indestructible);
-
-        // Random indestructible walls
-        auto randomIndestructibleWalls = generateRandomWalls(15);
-        addWalls(randomIndestructibleWalls, Wall::TypeWall::indestructible);
-
-        // Random destructible walls
-        auto randomDestructibleWalls = generateRandomWalls(50);
-        addWalls(randomDestructibleWalls, Wall::TypeWall::destructible);
-
+        predefinedDestructibleWalls = {
+            {3, 7}, {3, 10}, {7, 10}, {8, 9}, {9, 8}, {10, 8}, {12, 8}
+        };
         break;
-    }
-    case 3: {
-        // Define fixed indestructible walls for level 3
-
-        std::vector<std::pair<uint16_t, uint16_t>> indestructibleWalls = {
-            {0, 2}, {0, 3}, {0, 4}, {2, 9}, {2, 10}, {2, 19}, {2, 20}, {2, 21},
-            {2, 22}, {2, 23}, {2, 24}, {3, 9}, {3, 10}, {3, 24}, {4, 11}, {4, 12},
-            {4, 24}, {5, 24}, {6, 24}, {7, 24}, {8, 3}, {8, 4}, {8, 24}, {9, 4},
-            {10, 4}, {10, 11}, {10, 12}, {10, 13}, {10, 14}, {11, 7}, {11, 10},
-            {11, 12}, {12, 5}, {12, 6}, {12, 12}, {13, 4}, {13, 5}, {13, 6}, {13, 12},
-            {14, 12}, {14, 19}, {15, 1}, {15, 19}, {16, 1}, {16, 19}, {17, 1},
-            {17, 18}, {17, 19}, {18, 1}, {18, 19}, {18, 20}, {18, 21}, {19, 1},
-            {19, 13}, {19, 21}, {19, 22}, {20, 8}, {21, 3}, {21, 12}, {21, 13},
-            {21, 14}, {22, 8}, {22, 14}, {22, 15}, {22, 16}, {23, 8}, {23, 16},
-            {24, 8}, {24, 16}
+    case 3:
+        predefinedIndestructibleWalls = {
+            {0, 2}, {0, 3}, {0, 4}, {2, 9}, {2, 10}, {2, 19}, {2, 20},
+            {2, 21}, {3, 9}, {3, 10}, {4, 11}, {4, 12}, {5, 24}, {6, 24},
+            {7, 24}, {8, 3}, {8, 4}, {9, 4}, {10, 4}
         };
-        addWalls(indestructibleWalls, Wall::TypeWall::indestructible);
-
-        // Random indestructible walls
-        auto randomIndestructibleWalls = generateRandomWalls(15);
-        addWalls(randomIndestructibleWalls, Wall::TypeWall::indestructible);
-
-        // Destructible walls
-        std::vector<std::pair<uint16_t, uint16_t>> destructibleWalls = {
-            {1, 9}, {2, 8}, {3, 7}, {3, 8}, {3, 20}, {3, 21}, {3, 22}, {3, 23},
-            {4, 6}, {4, 7}, {5, 6}, {5, 7}, {7, 17}, {7, 18}, {8, 17}, {8, 18},
-            {9, 17}, {9, 18}, {11, 4}, {12, 4}, {15, 12}, {16, 12}, {17, 12},
-            {17, 13}
+        predefinedDestructibleWalls = {
+            {6, 10}, {7, 9}, {8, 8}, {9, 7}, {10, 6}, {11, 5}, {12, 4}
         };
-        addWalls(destructibleWalls, Wall::TypeWall::destructible);
-
-        // Random destructible walls
-        auto randomDestructibleWalls = generateRandomWalls(40);
-        addWalls(randomDestructibleWalls, Wall::TypeWall::destructible);
-
         break;
-    }
-
     default:
-        break;
-    }
-}
-
-void Map::SetCell(uint16_t x, uint16_t y, Cell value) {
-    if (IsValidPosition(x, y)) {
-        m_map[x][y] = value;
-    }
-}
-Map::Cell Map::GetCell(uint16_t x, uint16_t y) const {
-        return m_map[x][y];
-}
-
-std::pair<uint16_t, uint16_t> Map::findValidPositionElements() {
-    uint16_t x, y;
-    do {
-        x = rand() % m_width;
-        y = rand() % m_height;
-    } while (!IsValidPosition(x, y) || m_map[y][x].typeWall != Wall::TypeWall::destructible);
-    return { x, y };
-}
-
-void Map::initializeGameElements(uint8_t numBombs, uint8_t numBonusLives) {
-    for (uint8_t i = 0; i < numBombs; ++i) {
-        auto [x, y] = findValidPositionElements();
-        m_map[y][x].space = 'B';
+        throw std::invalid_argument("Invalid level!");
     }
 
-    for (uint8_t i = 0; i < numBonusLives; ++i) {
-        auto [x, y] = findValidPositionElements();
-        m_map[y][x].space = 'L';
+    // Place predefined walls on the map
+    for (const auto& pos : predefinedIndestructibleWalls) {
+        SetCellContent(pos.first, pos.second, Wall::TypeWall::indestructible);
+    }
+    for (const auto& pos : predefinedDestructibleWalls) {
+        SetCellContent(pos.first, pos.second, Wall::TypeWall::destructible);
+    }
+
+    // Optionally, add random walls for additional variety
+    int additionalRandomWalls = 10; // Adjust as needed
+    for (int i = 0; i < additionalRandomWalls; ++i) {
+        auto [x, y] = FindValidPosition();
+        SetCellContent(x, y, Wall::TypeWall::destructible);
     }
 }
-

@@ -1,58 +1,62 @@
-#pragma once
+﻿#pragma once
 #include <cstdint>
 #include <iostream>
 #include <vector>
+#include <variant>
+#include <tuple>
+#include <stdexcept>
 #include "Wall.h"
-#include "Bomb.h"
-#include "BonusLife.h"
 
-class Map
-{
+class Map {
 public:
-	struct Cell {
-		Wall::TypeWall typeWall;
-		uint16_t space;
-		uint16_t border;
-	};
+    struct Empty {};
+    struct Bomb {};
+    struct BonusLife {};
+    struct Tank {}; // Placeholder, can be replaced with an actual Tank class
+
+    using CellContent = std::variant<Empty, Bomb, BonusLife, Wall::TypeWall, Tank>;
+
+    struct Cell {
+        CellContent content; // Stores the content of the cell
+        uint16_t border;
+
+        Cell() : content(Empty{}), border(0) {} // Default to an empty cell
+
+        Cell(CellContent content, uint16_t border)
+            : content(std::move(content)), border(border) {}
+    };
+
 public:
+    explicit Map(uint8_t level);
 
-	explicit Map(uint8_t level);
+    // Getters
+    uint16_t GetWidth() const;
+    uint16_t GetHeight() const;
+    const Cell& GetCell(uint16_t x, uint16_t y) const;
 
-	//Get
-	uint16_t GetWidth() const;
-	uint16_t GetHeight() const;
-	Cell GetType()const;
-	std::vector<std::vector<Map::Cell>>GetMap()const;
-	Map::Cell GetCell(uint16_t x, uint16_t y) const;
+    // Setters
+    void SetCell(uint16_t x, uint16_t y, const Cell& value);
+    void SetCellContent(uint16_t x, uint16_t y, CellContent content);
 
-	//set
-	void SetCell(uint16_t x, uint16_t y, Cell value);
+    // Validation
+    bool IsValidPosition(uint16_t x, uint16_t y) const;
 
-	//validation
-	bool IsValidPosition(uint16_t x, uint16_t y) const;
+    // Display
+    void DisplayMap() const;
 
-	//display 
-	void DisplayMap()const;
-
-	//Add
-	void GenerateWalls(uint8_t level);
-	void AddWall(uint16_t x, uint16_t y, Wall::TypeWall destructible);
-	/*void AddBomb(Bomb bomb);
-	void AddBonusLife(BonusLife bonusLife);*/
-
-
+    // Add specific elements
+    void PlaceBomb(uint16_t x, uint16_t y);
+    void PlaceBonusLife(uint16_t x, uint16_t y);
+    void PlaceTank(uint16_t x, uint16_t y, const Tank& tank);
 
 private:
-	uint16_t m_width;
-	uint16_t m_height;
-	//std::vector<Wall> m_wall;
-	std::vector<std::vector<Cell>> m_map;
+    uint16_t m_width;
+    uint16_t m_height;
+    std::vector<std::vector<Cell>> m_map;
 
-	Cell m_cellType;
+    std::tuple<uint16_t, uint16_t, uint16_t, uint16_t> GetLevelBounds(uint8_t level) const;
+    std::pair<uint16_t, uint16_t> FindValidPosition();
 
-	std::tuple<uint16_t, uint16_t,uint16_t, uint16_t> getLevelBounds(uint8_t level) const;
-	std::vector<std::pair<uint16_t, uint16_t>>RandomWall(uint16_t x, uint16_t y, int numberOfWalls);
-	void initializeGameElements(uint8_t numBombs, uint8_t numBonusLives);
-	std::pair<uint16_t, uint16_t> findValidPositionElements();
-
+    void InitializeGameElements(uint8_t numBombs, uint8_t numBonusLives);
+    void GenerateWalls(uint8_t level);
 };

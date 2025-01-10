@@ -9,19 +9,19 @@
 //#include "Game.h"
 //#include "PlayerGameObjectManager.h"
 
-//#include "Map.h";
+#include "Map.h";
 //#include "GameObject.h"
 //#include "MovementObject.h"
 //#include "Player.h"
 //#include "PlayerManager.h"
-#include "Game.h"
+//#include "Game.h"
 
 using namespace http;
 int main()
 {
 
     //testare map si tot ce are
-   /* Bomb bomb(5, 5);
+    /*Bomb bomb(5, 5);
     std::cout << bomb << std::endl;
 
     bomb.explode();
@@ -46,8 +46,59 @@ int main()
     std::cout << bonusLife2.isCollected() << std::endl;
     std::cout << bonusLife2 << std::endl;
 
-    Map map(3);
-    map.DisplayMap();*/
+    //test 2 - 
+    //try {
+    //    // Create a map at level 1
+    //    Map map(1);
+
+    //    std::cout << "Initial Map:" << std::endl;
+    //    map.DisplayMap();
+
+    //    // Place a tank on the map
+    //    uint16_t tankX = 3, tankY = 3;
+    //    map.PlaceTank(tankX, tankY, Map::Tank());
+    //    std::cout << "\nMap After Placing Tank at (" << tankX << ", " << tankY << "):" << std::endl;
+    //    map.DisplayMap();
+
+    //    // Place a bomb on the map
+    //    uint16_t bombX = 5, bombY = 5;
+    //    map.PlaceBomb(bombX, bombY);
+    //    std::cout << "\nMap After Placing Bomb at (" << bombX << ", " << bombY << "):" << std::endl;
+    //    map.DisplayMap();
+
+    //    // Place a bonus life on the map
+    //    uint16_t lifeX = 7, lifeY = 7;
+    //    map.PlaceBonusLife(lifeX, lifeY);
+    //    std::cout << "\nMap After Placing Bonus Life at (" << lifeX << ", " << lifeY << "):" << std::endl;
+    //    map.DisplayMap();
+
+    //    // Try accessing a valid cell
+    //    auto cell = map.GetCell(tankX, tankY);
+    //    std::cout << "\nCell at (" << tankX << ", " << tankY << ") contains: ";
+    //    std::visit([](const auto& content) {
+    //        using T = std::decay_t<decltype(content)>;
+    //        if constexpr (std::is_same_v<T, Map::Tank>) {
+    //            std::cout << "Tank";
+    //        }
+    //        else if constexpr (std::is_same_v<T, Map::Bomb>) {
+    //            std::cout << "Bomb";
+    //        }
+    //        else if constexpr (std::is_same_v<T, Map::BonusLife>) {
+    //            std::cout << "BonusLife";
+    //        }
+    //        else if constexpr (std::is_same_v<T, Wall::TypeWall>) {
+    //            std::cout << "Wall";
+    //        }
+    //        else {
+    //            std::cout << "Empty";
+    //        }
+    //        }, cell.content);
+    //    std::cout << std::endl;
+
+    //}
+    //catch (const std::exception& ex) {
+    //    std::cerr << "Error: " << ex.what() << std::endl;
+    //}
 
 
     // Test creating tanks with different colors
@@ -199,6 +250,29 @@ int main()
    // // Afișează starea finală
    // std::cout << "\nFinal Game State:\n";
    //// game.Display();
+
+// test 2 game
+    // Initialize game
+    //Database db("game_database.db");
+    //Game game(1);
+
+    //// Create players
+    //auto player1 = std::make_shared<Player>("Player1", db, GameObject(Tank(Tank::ColorTank::Red)));
+    //auto player2 = std::make_shared<Player>("Player2", db, GameObject(Tank(Tank::ColorTank::Blue)));
+
+    //// Add players to the game
+    //game.AddPlayer(player1);
+    //game.AddPlayer(player2);
+
+    //// Display the map with players
+    //game.Start();
+
+    //// Move Player1
+    //game.MovePlayer("Player1", MovementObject::Direction::Right);
+    //game.MovePlayer("Player1", MovementObject::Direction::Down);
+
+    //// Display the map again
+    //game.Start();
 
 
 
