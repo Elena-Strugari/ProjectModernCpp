@@ -4,16 +4,14 @@
 class Bullet
 {
 public:
-	Bullet() = default;
+	Bullet();
 
-	std::string Shoot() const {
-		return "pew pew, sunt in class Bullet";
-	}
+	void SetBullet(bool active);
+	bool IsActive() const; 
 
 	friend std::ostream& operator<<(std::ostream& os, const Bullet& bullet);
 
 
 private:
-	//uint8_t m_speed;
-
+	bool m_isActive;
 };

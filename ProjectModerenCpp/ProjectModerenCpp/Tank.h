@@ -16,10 +16,10 @@ public:
     ColorTank GetColor()const;
 
     // tank be mutable , not copyable
-    Tank(Tank&&) noexcept = default;            //def contructor mutable
-    Tank& operator=(Tank&&) noexcept = default;    //moving from one tank to another tank without copying
-    Tank(const Tank&) = delete;                     // delete copy constructor
-    Tank& operator=(const Tank&) = delete;          // delete op = copy constructor
+    Tank(Tank&&) noexcept = default;            
+    Tank& operator=(Tank&&) noexcept = default;    
+    Tank(const Tank&) = delete;                     
+    Tank& operator=(const Tank&) = delete;          
 
     friend std::ostream& operator<<(std::ostream& os, const Tank& tank);
 

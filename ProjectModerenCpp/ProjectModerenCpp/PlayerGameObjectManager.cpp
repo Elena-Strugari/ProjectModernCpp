@@ -22,7 +22,7 @@ void PlayerGameObjectManager::moveTank(MovementObject::Direction direction) {
 
 void PlayerGameObjectManager::shoot() {
     if (m_Movement) {
-        m_Movement->GetObject()->ShootObj();
+       // m_Movement->GetObject()->ShootObj();
         std::cout << "Player " << m_Player->getName() << " fired a bullet!" << std::endl;
     }
 }

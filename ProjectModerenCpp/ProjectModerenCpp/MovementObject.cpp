@@ -5,9 +5,9 @@ MovementObject::MovementObject(GameObject* gameObject)
     : m_GameObject(gameObject), m_MOx(1), m_MOy(1), m_direction(Direction::Up) {
     if (m_GameObject) {
         // Inițializează poziția tank-ului din GameObject
-        auto [x, y] = m_GameObject->GetPosition();
-        m_MOx = x;
-        m_MOy = y;
+        //auto [x, y] = m_GameObject->GetPosition();
+       // m_MOx = x;
+        //m_MOy = y;
     }
 }
 
@@ -47,7 +47,7 @@ void MovementObject::Move(Direction direction) {
 
     // Actualizează poziția doar dacă există un GameObject
     if (m_GameObject) {
-        m_GameObject->SetPosition(newX, newY);
+       // m_GameObject->SetPosition(newX, newY);
     }
 
     // Actualizează poziția internă
@@ -61,7 +61,7 @@ void MovementObject::SetPosition(uint16_t x, uint16_t y) {
     m_MOy = y;
 
     if (m_GameObject) {
-        m_GameObject->SetPosition(x, y);
+       // m_GameObject->SetPosition(x, y);
     }
 }
 

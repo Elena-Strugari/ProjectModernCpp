@@ -1,40 +1,59 @@
 ﻿#include "GameObject.h"
 
+GameObject::GameObject() : m_tank(), m_bullet() {}
 
-GameObject::GameObject() : m_PosX(0), m_PosY(0) {
-	std::cout << "Constructor default GameObject\n";
+// Constructor parametrizat (folosind move semantics)
+GameObject::GameObject(Tank&& tank, Bullet&& bullet)
+    : m_tank(std::move(tank)), m_bullet(std::move(bullet)) {}
+
+// Getters
+const Tank& GameObject::GetTank() const {
+    return m_tank;
 }
 
-GameObject::GameObject(Tank::ColorTank tank)
-	: m_GOTank(tank), m_PosX(0), m_PosY(0) {}
-
-const Tank& GameObject::GetTank() const
-{
-	return m_GOTank;
+Tank& GameObject::GetTank() {
+    return m_tank;
 }
 
-const Bullet& GameObject::GetBullet() const
-{
-	return m_GOBullet;
+const Bullet& GameObject::GetBullet() const {
+    return m_bullet;
 }
 
-void GameObject::ShootObj()
-{
-	m_GOBullet.Shoot();
+Bullet& GameObject::GetBullet() {
+    return m_bullet;
 }
 
-std::ostream& operator<<(std::ostream& os, const GameObject& go)
-{
-	os << "GameObject: " << go.m_GOTank << " and Bullet: " << go.m_GOBullet;
-	return os;
+void GameObject::ShootBullet() {
+    if (!m_bullet.IsActive()) {
+        m_bullet.SetBullet(true);
+    }
 }
 
-void GameObject::SetPosition(uint16_t x, uint16_t y) {
-	m_PosX = x;
-	m_PosY = y;
-	std::cout << "GameObject position set to (" << m_PosX << ", " << m_PosY << ")." << std::endl;
-}
 
-std::pair<uint16_t, uint16_t> GameObject::GetPosition() const {
-	return { m_PosX, m_PosY };
+
+
+std::ostream& operator<<(std::ostream& os, const GameObject& go) {
+    // Print Tank details
+    os << "GameObject contains:\n";
+    os << "Tank Color: ";
+    switch (go.m_tank.GetColor()) {
+    case Tank::ColorTank::Red:
+        os << "Red";
+        break;
+    case Tank::ColorTank::Blue:
+        os << "Blue";
+        break;
+    case Tank::ColorTank::Green:
+        os << "Green";
+        break;
+    case Tank::ColorTank::Yellow:
+        os << "Yellow";
+        break;
+    }
+    os << "\n";
+
+    // Print Bullet status
+    os << "Bullet is " << (go.m_bullet.IsActive() ? "active" : "inactive") << ".\n";
+
+    return os;
 }

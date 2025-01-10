@@ -9,16 +9,15 @@
 //#include "Game.h"
 //#include "PlayerGameObjectManager.h"
 
-//#include "Bomb.h";
-//#include "BonusLife.h"
 #include "Map.h";
+#include "GameObject.h"
 
 using namespace http;
 int main()
 {
 
     //testare map si tot ce are
-    Bomb bomb(5, 5);
+   /* Bomb bomb(5, 5);
     std::cout << bomb << std::endl;
 
     bomb.explode();
@@ -44,14 +43,58 @@ int main()
     std::cout << bonusLife2 << std::endl;
 
     Map map(3);
-    map.DisplayMap();
+    map.DisplayMap();*/
 
 
-    //Map map2 = map.GetMap();
+    // Test creating tanks with different colors
+    //Tank redTank(Tank::ColorTank::Red);
+    //Tank blueTank(Tank::ColorTank::Blue);
+    //Tank greenTank(Tank::ColorTank::Green);
+    //Tank yellowTank(Tank::ColorTank::Yellow);
 
-	/*Map map(3);
-	map.GenerateWalls(3);
-	map.DisplayMap();*/
+    //// Print tank colors
+    //std::cout << "Red Tank Color: " << static_cast<int>(redTank.GetColor()) << std::endl;
+    //std::cout << "Blue Tank Color: " << static_cast<int>(blueTank.GetColor()) << std::endl;
+    //std::cout << "Green Tank Color: " << static_cast<int>(greenTank.GetColor()) << std::endl;
+    //std::cout << "Yellow Tank Color: " << static_cast<int>(yellowTank.GetColor()) << std::endl;
+
+    //// Create GameObjects with tanks
+    //GameObject redGameObject(std::move(redTank));
+    //GameObject blueGameObject(std::move(blueTank)); // rvalue reference
+
+    //// Print GameObject tanks
+    //std::cout << redGameObject << std::endl;
+    //std::cout << blueGameObject << std::endl;
+
+    //// Test shooting bullets
+    //std::cout << "Shooting red tank's bullet:" << std::endl;
+    //redGameObject.ShootBullet();
+
+    //std::cout << "Shooting blue tank's bullet:" << std::endl;
+    //blueGameObject.ShootBullet();
+
+    //// Check if bullets are active
+    //std::cout << "Red tank bullet active? " << (redGameObject.GetBullet().IsActive() ? "Yes" : "No") << std::endl;
+    //std::cout << "Blue tank bullet active? " << (blueGameObject.GetBullet().IsActive() ? "Yes" : "No") << std::endl;
+
+    //// Deactivate bullets manually and test again
+    //std::cout << "Deactivating bullets..." << std::endl;
+    //redGameObject.GetBullet().SetBullet(false);
+    //blueGameObject.GetBullet().SetBullet(false);
+
+    //std::cout << "Red tank bullet active? " << (redGameObject.GetBullet().IsActive() ? "Yes" : "No") << std::endl;
+    //std::cout << "Blue tank bullet active? " << (blueGameObject.GetBullet().IsActive() ? "Yes" : "No") << std::endl;
+
+    //
+
+
+
+
+
+
+
+
+
 
 	/*Tank t(Tank::ColorTank::Blue);
 	std::cout<<t.GetColor();*/

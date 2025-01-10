@@ -4,6 +4,7 @@
 #include <ctime>
 #include<vector>
 
+//sa verific daca trebuie get map si cum se transmite
 
 Map::Map(uint8_t level)
 {
