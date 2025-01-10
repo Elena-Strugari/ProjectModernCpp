@@ -1,19 +1,44 @@
-﻿//#include "Bomb.h"
-//#include<cmath>
-//#include"Position.h"
-//#include"Map.h"
-//void Bomb::Explode(Position m_bombPosition,Map map)
-//{  
-//    for (int i = std::max(0, m_bombPosition.x - 5); i <= std::min(map.GetWidth()-1, m_bombPosition.x + 5);i++) 
-//    {
-//        for (int j = std::max(0, m_bombPosition.y - 5); j <= std::min(map.GetHeight()-1,m_bombPosition.y + 5); j++)
-//        {
-//            // Verifing if a point is in the bomb area
-//            if ((i - m_bombPosition.x) * (i - m_bombPosition.x) + (j - m_bombPosition.y) * (j - m_bombPosition.y) <= 25)  // in our case, radius=5
-//            {
-//                //pozitiile afectate de bomba se reseteaza la 0?
-//            }
-//        }
-//    }
-//   // Circle Area : pi*r*r  => to check is a point is in the circle area (i−x)*(i-x)+(j-y)*(j-y)<=r*r 
-//}
+﻿#include "Bomb.h"
+
+
+
+Bomb::Bomb(uint16_t x, uint16_t y)
+    : m_x(x), m_y(y){}
+
+uint16_t Bomb::getX() const {
+    return m_x;
+}
+
+uint16_t Bomb::getY() const {
+    return m_y;
+}
+
+void Bomb::setX(const uint16_t& x)
+{
+    m_x = x;
+}
+void Bomb::setY(const uint16_t& y)
+{
+    m_y = y;
+}
+
+
+void Bomb::explode() {
+    if (m_exploded == false) {
+        m_exploded = true;
+    }
+}
+
+bool Bomb::isExploded() const {
+    return m_exploded;
+}
+
+std::ostream& operator<<(std::ostream& os, const Bomb& bomb) {
+    os << "Bomb [Position: (" << bomb.m_x << ", " << bomb.m_y << "), State: ";
+    switch (bomb.m_exploded) {
+    case false: os << "Nu a explodat"; break;
+    case true: os << "A explodat"; break;
+    }
+    os << "]";
+    return os;
+}

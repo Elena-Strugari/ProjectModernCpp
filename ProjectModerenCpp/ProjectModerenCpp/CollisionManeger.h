@@ -1,4 +1,5 @@
-﻿#pragma once
+﻿//sa fac si daca in raza bombei , mai exista o bomba si ea se declanseaza 
+#pragma once
 #include "Map.h"
 #include <utility>
 

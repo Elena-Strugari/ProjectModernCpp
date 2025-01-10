@@ -6,12 +6,49 @@
 
 
 
-#include "Game.h"
+//#include "Game.h"
 //#include "PlayerGameObjectManager.h"
+
+//#include "Bomb.h";
+//#include "BonusLife.h"
+#include "Map.h";
 
 using namespace http;
 int main()
 {
+
+    //testare map si tot ce are
+    Bomb bomb(5, 5);
+    std::cout << bomb << std::endl;
+
+    bomb.explode();
+    bomb.isExploded();
+    std::cout << bomb << std::endl;
+    Bomb bomb2(5, 5);
+    bomb2.setX(6);
+    bomb2.explode();
+    std::cout<<bomb2.isExploded()<<std::endl;
+    std::cout << bomb2 << std::endl;
+
+
+    BonusLife bonusLife(5, 5);
+    std::cout << bonusLife << std::endl;
+
+    bonusLife.collected();
+    bonusLife.isCollected();
+    std::cout << bonusLife << std::endl;
+    BonusLife bonusLife2(5, 5);
+    bonusLife2.setX(6);
+    bonusLife2.collected();
+    std::cout << bonusLife2.isCollected() << std::endl;
+    std::cout << bonusLife2 << std::endl;
+
+    Map map(3);
+    map.DisplayMap();
+
+
+    //Map map2 = map.GetMap();
+
 	/*Map map(3);
 	map.GenerateWalls(3);
 	map.DisplayMap();*/
@@ -154,6 +191,9 @@ int main()
 
     //// Actualizează starea jocului (de exemplu, coliziuni)
     //game.update();
+    
+
+
 	return 0;
 }
 

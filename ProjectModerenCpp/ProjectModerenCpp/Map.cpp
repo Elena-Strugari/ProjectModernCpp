@@ -7,7 +7,7 @@
 
 Map::Map(uint8_t level)
 {
-    auto [minVal, maxVal] = getLevelBounds(level);
+    auto [minVal, maxVal, nrBomb, nrLife] = getLevelBounds(level);
 
     std::srand(static_cast<unsigned>(std::time(nullptr)));
 
@@ -19,22 +19,24 @@ Map::Map(uint8_t level)
     for (size_t i = 0; i < m_width; ++i) {
         for (size_t j = 0; j < m_height; ++j) {
             if (i == 0 || i == m_width - 1 || j == 0 || j == m_height - 1) {
-                m_map[i][j] = { Wall::TypeWall::indestructible, ' ', 1 }; // Border 
+                m_map[i][j] = { Wall::TypeWall::indestructible, ' ', 1};  
             }
             else {
-                m_map[i][j] = { Wall::TypeWall::destructible, '_', 0 };  // Space 
+                m_map[i][j] = { Wall::TypeWall::destructible, '_', 0 };  
             }
         }
     }
+    GenerateWalls(level);
+    initializeGameElements(nrBomb, nrLife);
 }
 
 
-std::pair<uint16_t, uint16_t> Map::getLevelBounds(uint8_t level) const
+std::tuple<uint16_t, uint16_t, uint16_t, uint16_t> Map::getLevelBounds(uint8_t level) const
 {
     switch (level) {
-    case 1: return { 15, 20 };
-    case 2: return { 20, 25 };
-    case 3: return { 25, 30 };
+    case 1: return { 15, 20 ,1, 1};
+    case 2: return { 20, 25 , 2, 2};
+    case 3: return { 25, 30 , 3, 3};
     default:
         throw std::invalid_argument("Nivel invalid! Nivelul trebuie să fie 1, 2 sau 3.");
     }
@@ -69,7 +71,7 @@ void Map::AddWall(uint16_t x, uint16_t y, Wall::TypeWall typeWall)
         Wall wall(typeWall);
         m_map[x][y].typeWall = typeWall;
 
-        // Dacă peretele este destructibil, setăm simbolul 'space' la '@', altfel la '#'
+        // destructibil'@', altfel '#'
         m_map[x][y].space = (typeWall == Wall::TypeWall::destructible) ? '@' : '#';
         // m_wall.push_back(wall);
     }
@@ -84,26 +86,31 @@ bool Map::IsValidPosition(uint16_t x, uint16_t y) const {
 
 
 //display 
-void Map::DisplayMap()const {
-
+void Map::DisplayMap() const {
     for (const auto& row : m_map) {
         for (const auto& cell : row) {
             if (cell.border == 1) {
                 std::cout << "H";
             }
-            else
-                if (cell.space == '_')
-                    std::cout << "_";
-                else {
-                    switch (cell.typeWall) {
-                    case Wall::TypeWall::destructible:
-                        std::cout << "@";  //destructible
-                        break;
-                    case Wall::TypeWall::indestructible:
-                        std::cout << "#";  // indestructible
-                        break;
-                    }
+            else if (cell.space == '_') {
+                std::cout << "_";
+            }
+            else if (cell.space == 'B') {
+                std::cout << "B"; // Bomb
+            }
+            else if (cell.space == 'L') {
+                std::cout << "L"; // Bonus Life
+            }
+            else {
+                switch (cell.typeWall) {
+                case Wall::TypeWall::destructible:
+                    std::cout << "@";  // Destructible
+                    break;
+                case Wall::TypeWall::indestructible:
+                    std::cout << "#";  // Indestructible
+                    break;
                 }
+            }
         }
         std::cout << std::endl;
     }
@@ -249,56 +256,27 @@ void Map::SetCell(uint16_t x, uint16_t y, Cell value) {
     }
 }
 Map::Cell Map::GetCell(uint16_t x, uint16_t y) const {
-    if (IsValidPosition(x, y)) {
         return m_map[x][y];
+}
+
+std::pair<uint16_t, uint16_t> Map::findValidPositionElements() {
+    uint16_t x, y;
+    do {
+        x = rand() % m_width;
+        y = rand() % m_height;
+    } while (!IsValidPosition(x, y) || m_map[y][x].typeWall != Wall::TypeWall::destructible);
+    return { x, y };
+}
+
+void Map::initializeGameElements(uint8_t numBombs, uint8_t numBonusLives) {
+    for (uint8_t i = 0; i < numBombs; ++i) {
+        auto [x, y] = findValidPositionElements();
+        m_map[y][x].space = 'B';
+    }
+
+    for (uint8_t i = 0; i < numBonusLives; ++i) {
+        auto [x, y] = findValidPositionElements();
+        m_map[y][x].space = 'L';
     }
 }
 
-
-
-
-//void Map::AddBomb(uint16_t x, uint16_t y)
-//{
-//	if (x >= 0 && x < m_width && y >= 0 && y < m_height)
-//		if (m_map[x][y] != '💣')
-//			m_map[x][y] = '💣';
-//}
-//std::vector<Wall::TypeWall> Map::GetWalls() const
-//{
-//	return m_wall;
-//}
-
-// 
-// 
-
-//std::vector<std::vector<Wall::TypeWall>> Map::GetMapWithBorder()const
-//{
-//	std::vector<std::vector<Wall::TypeWall>> mapWithBorder;
-//	int rows = m_map.size();
-//	int cols = m_map[0].size();
-//
-//	// Adăugarea unui border de sus
-//	std::vector<Wall::TypeWall> borderRow(cols + 2, Wall::TypeWall{ -1 });  // -1 sau orice alt indicator de border
-//	mapWithBorder.push_back(borderRow);
-//
-//	// Adăugarea rândurilor cu border
-//	for (const auto& row : m_map) {
-//		std::vector<Wall::TypeWall> newRow;
-//
-//		// Adăugăm border la începutul fiecărui rând
-//		newRow.push_back(Wall::TypeWall{ -1 });  // Adăugăm border pe stânga
-//
-//		// Adăugăm valorile rândului actual
-//		for (int val : row) {
-//			newRow.push_back(Wall::TypeWall{ val });
-//		}
-//
-//		// Adăugăm border la sfârșitul fiecărui rând
-//		newRow.push_back(Wall::TypeWall{ -1 });  // Adăugăm border pe dreapta
-//
-//		mapWithBorder.push_back(newRow);
-//	}
-//}
-
-//
-//
