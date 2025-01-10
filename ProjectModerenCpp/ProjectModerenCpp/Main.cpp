@@ -12,8 +12,8 @@
 //#include "Map.h";
 //#include "GameObject.h"
 //#include "MovementObject.h"
-#include "Player.h"
-
+//#include "Player.h"
+#include "PlayerManager.h"
 
 using namespace http;
 int main()
@@ -137,7 +137,32 @@ int main()
    // // Save the player's state
    // player.SaveState();
 
+//playerManager
+    //Database db("clients.db");
+    //PlayerManager manager;
 
+    //// Create players using shared_ptr
+    //auto player1 = std::make_shared<Player>("Player1", db, GameObject(Tank(Tank::ColorTank::Red)));
+    //auto player2 = std::make_shared<Player>("Player2", db, GameObject(Tank(Tank::ColorTank::Blue)));
+
+    //// Add players to the manager
+    //manager.AddPlayer(player1);
+    //manager.AddPlayer(player2);
+
+    //// Display all players
+    //std::cout << "All players:" << std::endl;
+    //manager.DisplayAllPlayers();
+
+    //// Get a specific player
+    //auto retrievedPlayer = manager.GetPlayer("Player1");
+    //if (retrievedPlayer) {
+    //    std::cout << "Retrieved Player: " << retrievedPlayer->GetName() << std::endl;
+    //}
+
+    //// Remove a player
+    //manager.RemovePlayer("Player2");
+    //std::cout << "After removing Player2:" << std::endl;
+    //manager.DisplayAllPlayers();
 
 
 

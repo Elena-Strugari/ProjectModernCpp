@@ -142,6 +142,7 @@
     <ClInclude Include="MovementObject.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerGameObjectManager.h" />
+    <ClInclude Include="PlayerManager.h" />
     <ClInclude Include="PowerUp.h" />
     <ClInclude Include="routing.h" />
     <ClInclude Include="ServerObject.h" />
@@ -162,6 +163,7 @@
     <ClCompile Include="MovementObject.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerGameObjectManager.cpp" />
+    <ClCompile Include="PlayerManager.cpp" />
     <ClCompile Include="PowerUp.cpp" />
     <ClCompile Include="routing.cpp" />
     <ClCompile Include="ServerObject.cpp" />
