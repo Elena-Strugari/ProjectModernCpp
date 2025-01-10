@@ -7,7 +7,7 @@ Database::Database(const std::string& dbName) : databaseName(dbName), db(nullptr
         std::cerr << "Failed to open database: " << sqlite3_errmsg(db) << std::endl;
     }
     else {
-        initializeDatabase();
+        InitializeDatabase();
     }
 }
 
@@ -17,7 +17,7 @@ Database::~Database() {
     }
 }
 
-void Database::initializeDatabase() {
+void Database::InitializeDatabase() {
     const char* createTableSQL = R"(
         CREATE TABLE IF NOT EXISTS clients (
             id TEXT PRIMARY KEY,
@@ -36,7 +36,7 @@ void Database::initializeDatabase() {
     }
 }
 
-bool Database::addClient(const std::string& clientId, int score) {
+bool Database::AddClient(const std::string& clientId, int score) {
     const char* insertSQL = "INSERT INTO clients (id, score) VALUES (?, ?);";
 
     sqlite3_stmt* stmt = nullptr;
@@ -54,7 +54,7 @@ bool Database::addClient(const std::string& clientId, int score) {
     return success;
 }
 
-bool Database::updateScore(const std::string& clientId, int newScore) {
+bool Database::UpdateScore(const std::string& clientId, int newScore) {
     const char* updateSQL = "UPDATE clients SET score = ? WHERE id = ?;";
 
     sqlite3_stmt* stmt = nullptr;
@@ -72,7 +72,7 @@ bool Database::updateScore(const std::string& clientId, int newScore) {
     return success;
 }
 
-int Database::getScore(const std::string& clientId) {
+int Database::GetScore(const std::string& clientId) {
     const char* selectSQL = "SELECT score FROM clients WHERE id = ?;";
     sqlite3_stmt* stmt = nullptr;
 
@@ -92,7 +92,7 @@ int Database::getScore(const std::string& clientId) {
     return score;
 }
 
-bool Database::deleteClient(const std::string& clientId) {
+bool Database::DeleteClient(const std::string& clientId) {
     const char* deleteSQL = "DELETE FROM clients WHERE id = ?;";
 
     sqlite3_stmt* stmt = nullptr;
@@ -116,7 +116,7 @@ bool Database::deleteClient(const std::string& clientId) {
     return success;
 }
 
-bool Database::clientExists(const std::string& clientId) {
+bool Database::ClientExists(const std::string& clientId) {
     const char* existsSQL = "SELECT 1 FROM clients WHERE id = ? LIMIT 1;";
 
     sqlite3_stmt* stmt = nullptr;
@@ -133,7 +133,7 @@ bool Database::clientExists(const std::string& clientId) {
     return exists;
 }
 
-bool Database::saveKeyBindings(const std::string& clientId, const std::string& up, const std::string& down, const std::string& left, const std::string& right) {
+bool Database::SaveKeyBindings(const std::string& clientId, const std::string& up, const std::string& down, const std::string& left, const std::string& right) {
     const char* updateSQL = R"(
         UPDATE clients 
         SET key_up = ?, key_down = ?, key_left = ?, key_right = ? 

@@ -42,3 +42,27 @@ private:
     Bullet,
     Base
 }; */
+
+
+
+//CollisionType CheckCollision(int x, int y) {
+//    // Poți implementa logica de coliziune
+//    // De exemplu, verifică dacă poziția (x, y) este pe un perete sau în afacerea unei alte entități
+//    if (m_map->IsWall(x, y)) {
+//        return CollisionType::Wall;
+//    }
+//
+//    // Dacă există alt obiect (tank, bază, etc.) pe acea poziție
+//    if (m_map->IsTankAt(x, y)) {
+//        return CollisionType::Tank;
+//    }
+//
+//    // Dacă există un proiectil pe acea poziție
+//    if (m_map->IsBulletAt(x, y)) {
+//        return CollisionType::Bullet;
+//    }
+//
+//    return CollisionType::None;
+//}
+//
+//*/

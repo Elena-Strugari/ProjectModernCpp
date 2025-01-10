@@ -1,65 +1,72 @@
 ﻿#include "Player.h"
 #include <iostream>
 
-Player::Player(const std::string& name, Database& db, bool isRegistering) : name(name), lives(3), score(0), database(db) {
-    if (isRegistering) {
-        // Înregistrare: Verifică dacă numele există deja
-        if (database.clientExists(name)) {
-            throw std::runtime_error("Error: The username '" + name + "' is already taken.");
-        }
-        // Adaugă jucătorul în baza de date cu scorul inițial 0
-        database.addClient(name, score);
+Player::Player(const std::string& name, Database& db, GameObject&& object)
+    : m_name(name), m_score(0), m_lives(3), m_database(db), m_object(std::move(object)), m_moveObject(m_object) {
+    if (!m_database.ClientExists(m_name)) {
+        m_database.AddClient(m_name, m_score);
     }
     else {
-        // Logare: Verifică dacă jucătorul există în baza de date
-        if (!database.clientExists(name)) {
-            throw std::runtime_error("Error: The username '" + name + "' does not exist. Please register first.");
-        }
-        // Preia scorul din baza de date
-        score = database.getScore(name);
+        m_score = m_database.GetScore(m_name);
     }
 }
 
-const std::string& Player::getName() const {
-    return name;
+const std::string& Player::GetName() const {
+    return m_name;
 }
 
-int Player::getLives() const {
-    return lives;
+int Player::GetLives() const {
+    return m_lives;
 }
 
-int Player::getScore() const {
-    return score;
+int Player::GetScore() const {
+    return m_score;
 }
 
-void Player::loseLife() {
-    if (lives > 0) {
-        lives--;
-        std::cout << "Player " << name << " lost a life. Remaining lives: " << lives << std::endl;
+GameObject& Player::GetObject()
+{
+    return m_object;
+}
+
+MovementObject& Player::GetMovementObject()
+{
+    return m_moveObject;
+}
+
+void Player::LoseLife() {
+    if (m_lives > 0) {
+        m_lives--;
     }
     else {
-        std::cout << "Player " << name << " has no lives left." << std::endl;
+        m_hasLife = false;
     }
 }
 
-void Player::gainLife() {
-    lives++;
-    std::cout << "Player " << name << " gained a life. Total lives: " << lives << std::endl;
+void Player::GainLife() {
+    m_lives++;
 }
 
-void Player::saveState() {
-    // Salvăm scorul și alte informații relevante în baza de date
-    int currentScore = database.getScore(name);
-    database.updateScore(name, currentScore + score);   
-    std::cout << "Player " << name << " state saved to database." << std::endl;
+bool Player::HasLife() const
+{
+    return m_hasLife;
 }
 
-void Player::chooseKeyBindings(const std::string& up, const std::string& down, const std::string& left, const std::string& right) {
+
+void Player::SaveState() {
+    m_database.UpdateScore(m_name, m_score);
+}
+
+void Player::AddScore(int points)
+{
+    m_score += points;
+}
+
+void Player::ChooseKeyBindings(const std::string& up, const std::string& down, const std::string& left, const std::string& right) {
     // Salvează tastele în baza de date
-    if (database.saveKeyBindings(name, up, down, left, right)) {
-        std::cout << "Key bindings saved for player " << name << "." << std::endl;
+    if (m_database.SaveKeyBindings(m_name, up, down, left, right)) {
+        std::cout << "Key bindings saved for player " << m_name << "." << std::endl;
     }
     else {
-        std::cerr << "Failed to save key bindings for player " << name << "." << std::endl;
+        std::cerr << "Failed to save key bindings for player " << m_name << "." << std::endl;
     }
 }

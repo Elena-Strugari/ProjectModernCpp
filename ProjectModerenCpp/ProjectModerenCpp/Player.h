@@ -1,29 +1,35 @@
 ﻿#pragma once
 #include <string>
 #include "Database.h"
+#include "MovementObject.h"
 
 class Player {
 public:
-    Player(const std::string& name, Database& db, bool isRegistering);
+    Player(const std::string& name, Database& db , GameObject&& object);
     // Getters
-    const std::string& getName() const;
-    int getLives() const;
-    int getScore() const;
-
+    const std::string& GetName() const;
+    int GetLives() const;
+    int GetScore() const;
+    GameObject& GetObject();
+    MovementObject& GetMovementObject();
 
     // Lives management
-    void loseLife();
-    void gainLife();
+    void LoseLife();
+    void GainLife();
+    bool HasLife()const;
 
     // Save state to database
-    void saveState();
-
-    void chooseKeyBindings(const std::string& up, const std::string& down, const std::string& left, const std::string& right);
+    void SaveState();
+    void AddScore(int points);
+    void ChooseKeyBindings(const std::string& up, const std::string& down, const std::string& left, const std::string& right);
 
 
 private:
-    std::string name;   // Numele jucătorului
-    int lives;          // Numărul de vieți
-    int score;
-    Database& database; // Referință la baza de date pentru salvarea stării
+    std::string m_name;
+    int m_score;
+    int m_lives;
+    Database& m_database;
+    bool m_hasLife=true;
+    GameObject m_object;
+    MovementObject m_moveObject;
 };

@@ -9,8 +9,11 @@
 //#include "Game.h"
 //#include "PlayerGameObjectManager.h"
 
-#include "Map.h";
-#include "GameObject.h"
+//#include "Map.h";
+//#include "GameObject.h"
+//#include "MovementObject.h"
+#include "Player.h"
+
 
 using namespace http;
 int main()
@@ -86,8 +89,53 @@ int main()
     //std::cout << "Blue tank bullet active? " << (blueGameObject.GetBullet().IsActive() ? "Yes" : "No") << std::endl;
 
     //
+    //testare move
+        //Tank redTank(Tank::ColorTank::Red);
+        //Bullet bullet;
 
+        //GameObject gameObject(std::move(redTank), std::move(bullet));
+        //MovementObject movement(gameObject);
 
+        //movement.SetPosition(5, 5); // Initial position
+        //movement.Move(MovementObject::Direction::Up);    // Move up
+        //movement.print();
+        //movement.Move(MovementObject::Direction::Right); // Move right
+        //movement.print();
+      
+//pt player 
+    // Initialize database
+   // Database db("clients.db");
+
+   // // Create a tank and a bullet
+   // Tank redTank(Tank::ColorTank::Red);
+   // Bullet bullet;
+
+   // // Create a game object with the tank and bullet
+   // GameObject gameObject(std::move(redTank), std::move(bullet));
+
+   // // Create a player using the game object
+   // Player player("Player1", db, std::move(gameObject));
+
+   // // Display player information
+   // std::cout << "Player name: " << player.GetName() << std::endl;
+   // std::cout << "Player score: " << player.GetScore() << std::endl;
+   // std::cout << "Player lives: " << player.GetLives() << std::endl;
+
+   // player.LoseLife();
+   // std::cout << "Player lives: " << player.GetLives() << std::endl;
+   // player.GainLife();
+   // std::cout << "Player lives after get: " << player.GetLives() << std::endl;
+   //// player.AddScore(2);
+   // //std::cout << "Player score: " << player.GetScore() << std::endl;
+
+   // // Test player actions
+   // player.GetMovementObject().Move(MovementObject::Direction::Up);
+   // player.GetMovementObject().Move(MovementObject::Direction::Right);
+   // //player.GetObject().ShootBullet();
+   // 
+
+   // // Save the player's state
+   // player.SaveState();
 
 
 

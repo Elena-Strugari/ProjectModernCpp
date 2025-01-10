@@ -13,8 +13,8 @@ void Game::update() {
     for (const auto& [player, movement] : m_players) {
         auto [x, y] = movement->GetPosition();
         if (m_collisionManager.checkCollision(x, y)) {
-            std::cout << "Collision detected for player " << player->getName() << " at (" << x << ", " << y << ")." << std::endl;
-            player->loseLife(); // Pierde o viață dacă există coliziune
+           // std::cout << "Collision detected for player " << player->getName() << " at (" << x << ", " << y << ")." << std::endl;
+           // player->loseLife(); // Pierde o viață dacă există coliziune
         }
     }
 }
@@ -35,10 +35,10 @@ void Game::movePlayer(Player* player, MovementObject::Direction direction) {
             if (m_collisionManager.isPositionValid(newX, newY) &&
                 !m_collisionManager.checkCollision(newX, newY)) {
                 movement->Move(direction);
-                std::cout << "Player " << player->getName() << " moved to (" << newX << ", " << newY << ")." << std::endl;
+                //std::cout << "Player " << player->getName() << " moved to (" << newX << ", " << newY << ")." << std::endl;
             }
             else {
-                std::cout << "Player " << player->getName() << " hit an obstacle at (" << newX << ", " << newY << ")." << std::endl;
+               // std::cout << "Player " << player->getName() << " hit an obstacle at (" << newX << ", " << newY << ")." << std::endl;
             }
         }
     }
