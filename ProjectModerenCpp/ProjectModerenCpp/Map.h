@@ -11,10 +11,11 @@ class Map {
 public:
     struct Empty {};
     struct Bomb {};
+    struct Bullet{};
     struct BonusLife {};
     struct Tank {}; // Placeholder, can be replaced with an actual Tank class
 
-    using CellContent = std::variant<Empty, Bomb, BonusLife, Wall::TypeWall, Tank>;
+    using CellContent = std::variant<Empty, Bomb, BonusLife, Wall::TypeWall, Tank, Bullet>;
 
     struct Cell {
         CellContent content; // Stores the content of the cell
@@ -40,6 +41,7 @@ public:
 
     // Validation
     bool IsValidPosition(uint16_t x, uint16_t y) const;
+
 
     // Display
     void DisplayMap() const;

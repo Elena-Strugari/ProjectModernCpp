@@ -27,6 +27,11 @@ Map::Map(uint8_t level) {
 
     GenerateWalls(level);
     InitializeGameElements(numBombs, numBonusLives);
+
+    /*m_map[1][1]= { Empty{}, 0 };
+    m_map[1][m_height-2]= { Empty{}, 0 };
+    m_map[m_width-2][1] = {Empty{}, 0};
+    m_map[m_width-2][m_height-2]= { Empty{}, 0 };*/
 }
 
 // Getters
@@ -62,10 +67,18 @@ bool Map::IsValidPosition(uint16_t x, uint16_t y) const {
 
 std::pair<uint16_t, uint16_t> Map::FindValidPosition() {
     uint16_t x, y;
+    auto isCorner = [this](uint16_t x, uint16_t y) {
+        return (x == 1 && y == 1) ||                                    
+            (x == 1 && y == m_width - 2) ||                          
+            (x == m_height - 2 && y == 1) ||                         
+            (x == m_height - 2 && y == m_width - 2);                 
+        };
+
     do {
         x = std::rand() % m_width;
         y = std::rand() % m_height;
-    } while (!IsValidPosition(x, y) || !std::holds_alternative<Empty>(m_map[y][x].content));
+    } while (!IsValidPosition(x, y) || !std::holds_alternative<Empty>(m_map[y][x].content) || isCorner(x, y));
+
     return { x, y };
 }
 
@@ -89,6 +102,9 @@ void Map::DisplayMap() const {
                 }
                 else if constexpr (std::is_same_v<T, Tank>) {
                     std::cout << "T";
+                }
+                else if constexpr (std::is_same_v<T, Bullet>) {
+                    std::cout << "->";
                 }
                 }, cell.content);
         }
@@ -133,6 +149,7 @@ std::tuple<uint16_t, uint16_t, uint16_t, uint16_t> Map::GetLevelBounds(uint8_t l
 void Map::PlaceBomb(uint16_t x, uint16_t y) { SetCellContent(x, y, Bomb{}); }
 void Map::PlaceBonusLife(uint16_t x, uint16_t y) { SetCellContent(x, y, BonusLife{}); }
 void Map::PlaceTank(uint16_t x, uint16_t y, const Tank& tank) { SetCellContent(x, y, tank); }
+
 
 
 

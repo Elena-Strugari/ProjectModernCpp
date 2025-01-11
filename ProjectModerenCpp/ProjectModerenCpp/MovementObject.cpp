@@ -3,59 +3,83 @@
 
 // Constructor
 MovementObject::MovementObject(GameObject& gameObject)
-    : m_gameObject(gameObject), m_x(0), m_y(0), m_direction(Direction::Up) {}
+    : m_gameObject(gameObject), m_tankX(0), m_tankY(0), m_tankDirection(Direction::Up),
+    m_bulletActive(false), m_bulletX(0), m_bulletY(0), m_bulletDirection(Direction::Up) {}
 
-// Getters
-uint16_t MovementObject::GetX() const {
-    return m_x;
+// Common position and direction logic
+std::pair<uint16_t, uint16_t> MovementObject::GetPosition(bool forBullet) const {
+    return forBullet ? std::make_pair(m_bulletX, m_bulletY) : std::make_pair(m_tankX, m_tankY);
 }
 
-uint16_t MovementObject::GetY() const {
-    return m_y;
+void MovementObject::SetPosition(uint16_t x, uint16_t y, bool forBullet) {
+    if (forBullet) {
+        m_bulletX = x;
+        m_bulletY = y;
+    }
+    else {
+        m_tankX = x;
+        m_tankY = y;
+    }
 }
 
-std::pair<uint16_t, uint16_t> MovementObject::GetPosition() const {
-    return { m_x, m_y };
+MovementObject::Direction MovementObject::GetDirection(bool forBullet) const {
+    return forBullet ? m_bulletDirection : m_tankDirection;
 }
 
-MovementObject::Direction MovementObject::GetDirection() const {
-    return m_direction;
+void MovementObject::SetDirection(Direction direction, bool forBullet) {
+    if (forBullet) {
+        m_bulletDirection = direction;
+    }
+    else {
+        m_tankDirection = direction;
+    }
 }
 
-// Setters
-void MovementObject::SetPosition(uint16_t x, uint16_t y) {
-    m_x = x;
-    m_y = y;
-}
-
-void MovementObject::SetDirection(Direction direction) {
-    m_direction = direction;
-}
-
-// Movement Logic
-std::pair<uint16_t, uint16_t> MovementObject::Move(Direction direction) {
-    uint16_t newX = m_x;
-    uint16_t newY = m_y;
+std::pair<uint16_t, uint16_t> MovementObject::Move(Direction direction, bool forBullet) {
+    uint16_t& x = forBullet ? m_bulletX : m_tankX;
+    uint16_t& y = forBullet ? m_bulletY : m_tankY;
 
     switch (direction) {
-    case Direction::Up:
-        newY--;
-        break;
-    case Direction::Down:
-        newY++;
-        break;
-    case Direction::Left:
-        newX--;
-        break;
-    case Direction::Right:
-        newX++;
-        break;
+    case Direction::Up:    --y; break;
+    case Direction::Down:  ++y; break;
+    case Direction::Left:  --x; break;
+    case Direction::Right: ++x; break;
     }
-    return std::make_pair(newX, newY);
+
+    if (forBullet) {
+        m_bulletDirection = direction;
+    }
+    else {
+        m_tankDirection = direction;
+    }
+
+    return { x, y };
 }
 
-void MovementObject::print()const
-{
-    std::cout << "Moved to (" << m_x << ", " << m_y << ") in direction "
-        << static_cast<int>(m_direction) << ".\n";
+// Bullet-specific logic
+void MovementObject::Shoot() {
+    if (!m_bulletActive) {
+        m_bulletActive = true;
+        m_bulletX = m_tankX;
+        m_bulletY = m_tankY;
+        m_bulletDirection = m_tankDirection;
+    }
+}
+
+bool MovementObject::IsBulletActive() const {
+    return m_bulletActive;
+}
+
+void MovementObject::DeactivateBullet() {
+    m_bulletActive = false;
+}
+
+void MovementObject::print() const {
+    std::cout << "Tank at (" << m_tankX << ", " << m_tankY << ") facing " << static_cast<int>(m_tankDirection) << ".\n";
+    if (m_bulletActive) {
+        std::cout << "Bullet at (" << m_bulletX << ", " << m_bulletY << ") moving " << static_cast<int>(m_bulletDirection) << ".\n";
+    }
+    else {
+        std::cout << "Bullet is inactive.\n";
+    }
 }

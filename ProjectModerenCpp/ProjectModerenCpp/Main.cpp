@@ -297,6 +297,69 @@ int main()
     game.Start();*/
 
 
+//testare bullet 
+    //Database db("players.db");
+
+    //Game game(1);
+
+    //auto player1 = std::make_shared<Player>("Player1", db, GameObject(Tank(Tank::ColorTank::Red)));
+    //game.AddPlayer(player1);
+
+    //game.ShootBulletS(player1);
+
+    //for (int i = 0; i < 5; ++i) {
+    //    game.MoveBullets();
+    //    game.Start();
+    //  //  game.m_map.DisplayMap();
+    //    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+    //}
+
+//test 2
+//Database db("players.db");
+//Game game(1);
+//
+//// Create players
+//auto player1 = std::make_shared<Player>("Player1", db, GameObject(Tank(Tank::ColorTank::Red)));
+//auto player2 = std::make_shared<Player>("Player2", db, GameObject(Tank(Tank::ColorTank::Blue)));
+//auto player3 = std::make_shared<Player>("Player3", db, GameObject(Tank(Tank::ColorTank::Green)));
+//auto player4 = std::make_shared<Player>("Player4", db, GameObject(Tank(Tank::ColorTank::Yellow)));
+//
+//// Add players to the game
+//game.AddPlayer(player1);
+//game.AddPlayer(player2);
+//game.AddPlayer(player3);
+//game.AddPlayer(player4);
+//
+//// Start the game
+//game.Start();
+//
+//     //Players move their tanks
+//    game.MovePlayer(player1, MovementObject::Direction::Right);
+//    //game.MovePlayer(player2, MovementObject::Direction::Up);
+//
+//    // Player1 shoots a bullet
+//    /*std::cout << "Player1 shoots a bullet!\n";
+//    player1->GetMovementObject().Shoot();*/
+//
+//    // Move Player2
+//    game.MovePlayer(player2, MovementObject::Direction::Up);
+//    game.MovePlayer(player3, MovementObject::Direction::Left);
+//    game.MovePlayer(player4, MovementObject::Direction::Up);
+//    game.Start();
+//
+//
+//    // Move Player1's bullet until it deactivates
+//    //while (player1->GetMovementObject().IsBulletActive()) {
+//    //    player1->GetMovementObject().Move(player1->GetMovementObject().GetDirection(), 1);
+//    //    game.Start();
+//
+//    //    // Check for bullet collision or boundary (dummy condition here)
+//    //    game.MoveBullets();
+//   
+//    //}
+//
+
+
 	/*Tank t(Tank::ColorTank::Blue);
 	std::cout<<t.GetColor();*/
 	//Routing r;
