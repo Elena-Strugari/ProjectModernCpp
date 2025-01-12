@@ -16,15 +16,17 @@ public:
     ~LevelSelectionWindow();
 
 signals:
-    void levelSelected(const QString& level); // Semnal pentru nivelul selectat
+    void levelSelected(const QString& level); 
 
 private:
-    QLabel* titleLabel;         // Titlul ferestrei
-    QPushButton* easyButton;    // Buton pentru nivel "Easy"
-    QPushButton* mediumButton;  // Buton pentru nivel "Medium"
-    QPushButton* hardButton;    // Buton pentru nivel "Hard"
+    QLabel* titleLabel;        
+    QPushButton* easyButton;    
+    QPushButton* mediumButton;  
+    QPushButton* hardButton;    
 
-    void initializeBackground(); // Funcție pentru a seta fundalul
+    void initializeBackground(); 
+protected:
+    void resizeEvent(QResizeEvent* event)override;
 };
 
 #endif // LEVELSELECTIONWINDOW_H

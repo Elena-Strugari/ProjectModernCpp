@@ -66,7 +66,8 @@ private slots:
     void OnSaveControls();
     void OnResetControls();
     void HandleForwardedKeyEvent(QKeyEvent* event);
-
+protected:
+    void resizeEvent(QResizeEvent* event)override;
 private:
     void InitializeBackground();
     void HandleKeyEvent(const QString& keyText);

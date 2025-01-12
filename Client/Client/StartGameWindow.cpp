@@ -295,12 +295,7 @@ StartGameWindow::StartGameWindow(QWidget* parent)
     qDebug() << "StartGameWindow constructor called.";
     qDebug() << "Current working directory:" << QDir::currentPath();
 
-    QImage image(":/StartImage/resources/StartGame.jpg");
-    if (!image.isNull()) {
-        QPalette palette;
-        palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
-        setPalette(palette);
-    }
+    InitializeBackground();
 
     setAutoFillBackground(true);
     textLabel->setAlignment(Qt::AlignCenter);
@@ -325,31 +320,27 @@ StartGameWindow::StartGameWindow(QWidget* parent)
     mainLayout->setAlignment(Qt::AlignCenter);
     mainLayout->setSpacing(20);
     setLayout(mainLayout);
-    //initializeBackground();
     setWindowTitle("Start Game");
     resize(800, 600);
     connect(startGameButton, &QPushButton::clicked, this, &StartGameWindow::triggerStartGame);
 }
 
 
-//void StartGameWindow::initializeBackground()
-//{
-//    QImage image(":/StartImage/resources/StartGame.jpg"); 
-//
-//    //P.S. Am pus calea absoluta pentru testarea locala a imaginii de fundal, pana la rezolvarea problemei cu fisierul de resurse.
-//
-//   // QImage image("D:\\Facultate\\Anul_2\\Semestrul_1\\Modern_C++\\ProjectModernCpp\\Client\\Client\\resources\\StartGame.jpg");
-//    if (image.isNull()) 
-//    {
-//        qDebug() << "Failed to load background image!";
-//        return;
-//    }
-//
-//    QPalette palette;
-//    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
-//    setPalette(palette);
-//    setAutoFillBackground(true);
-//}
+void StartGameWindow::InitializeBackground()
+{
+    QImage image(":/StartImage/resources/StartGame.jpg"); 
+
+    if (image.isNull()) 
+    {
+        qDebug() << "Failed to load background image!";
+        return;
+    }
+
+    QPalette palette;
+    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+    setPalette(palette);
+    setAutoFillBackground(true);
+}
 
 
 void StartGameWindow::triggerStartGame()

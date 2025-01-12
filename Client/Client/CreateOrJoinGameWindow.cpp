@@ -1,4 +1,9 @@
 #include "CreateOrJoinGameWindow.h"
+#include <QPalette>
+#include <QBrush>
+#include <QImage>
+#include <QDebug>
+
 CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
     : QWidget(parent)
     , titleLabel(new QLabel("Create Game or Join Game", this))
@@ -42,16 +47,13 @@ CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
     typeCode->setFixedSize(200, 40);
     checkCodeButton->setFixedSize(100, 40);
 
-   
     typeCode->setPlaceholderText("Type code ...");
 
-    
     QHBoxLayout* generateLayout = new QHBoxLayout();
     generateLayout->addStretch();
     generateLayout->addWidget(generateCodeButton);
     generateLayout->addStretch();
 
-    
     QHBoxLayout* inputLayout = new QHBoxLayout();
     inputLayout->addStretch();
     inputLayout->addWidget(typeCode);
@@ -68,24 +70,21 @@ CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
 
     setLayout(mainLayout);
 
-    
     connect(generateCodeButton, &QPushButton::clicked, this, [this]() {
         emit Generate("Generate code");
         this->close();
         });
 
     connect(checkCodeButton, &QPushButton::clicked, this, [this]() {
-        emit CheckCode("Check the code");
+        emit CheckCode(typeCode->text()); // Trimite textul din câmpul typeCode
         this->close();
         });
 }
 
-void CreateOrJoinGameWindow::InitializeBackground()
-{
-    QImage image(":/StartImage/resources/StartGame.jpg"); // Calea ta pentru fundal
+void CreateOrJoinGameWindow::InitializeBackground() {
+    QImage image(":/StartImage/resources/StartGame.jpg");
 
-    if (image.isNull())
-    {
+    if (image.isNull()) {
         qDebug() << "Failed to load background image!";
         return;
     }

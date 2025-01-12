@@ -546,3 +546,15 @@ void ControlChoiceWindow::InitializeBackground()
     setPalette(palette);
     setAutoFillBackground(true);
 }
+void ControlChoiceWindow::resizeEvent(QResizeEvent* event)
+{
+    QImage image(":/StartImage/resources/StartGame.jpg");
+
+    if (!image.isNull())
+    {
+        QPalette palette;
+        palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+        setPalette(palette);
+    }
+    QWidget::resizeEvent(event);
+}

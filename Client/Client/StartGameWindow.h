@@ -14,13 +14,11 @@ public:
     explicit StartGameWindow(QWidget* parent = nullptr);
     ~StartGameWindow();
 
-    //void initializeBackground();
-
 signals:
-    void startGame(); // Signal emitted to transition to the next window
+    void startGame(); 
 
 private slots:
-    void triggerStartGame(); // Shared action for button and Enter key
+    void triggerStartGame(); 
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;
@@ -29,6 +27,7 @@ protected:
 private:
     QLabel* textLabel;
     QPushButton* startGameButton;
+    void InitializeBackground();
 };
 
 #endif // STARTGAMEWINDOW_H
