@@ -4,6 +4,6 @@
 
 #include <QImage>
 
-QImage removeGreenScreen(const QImage& inputImage, int threshold = 30);
+QImage RemoveGreenScreen(const QString& imagePath, int threshold = 30);
 
 #endif // NOGREENSCREEN_H

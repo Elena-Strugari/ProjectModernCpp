@@ -84,3 +84,29 @@
 //    int GetColumns() const { return m_columns; }
 //    MapCell& GetCell(int row, int col) { return m_map[row][col]; }
 //};
+
+#ifndef CLIENTMAP_H
+#define CLIENTMAP_H
+
+#include <QWidget>
+#include <QPixmap>
+#include <QJsonObject>
+#include "NoGreenScreen.h"
+
+class ClientMap : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit ClientMap(QWidget* parent);
+
+    void DisplayMap(const QJsonObject& mapObject);
+protected:
+    void resizeEvent(QResizeEvent* event)override;
+private:
+    QWidget* parentWidget;
+    QString GetImagePath(QString type);
+    void InitializeBackground();
+};
+
+#endif // CLIENTMAP_H
