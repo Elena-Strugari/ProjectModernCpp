@@ -177,6 +177,7 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonValue>
+#include <QJsonArray>
 
 
 #include "ClientServer.h"
@@ -245,6 +246,7 @@ void MainWindow::HandleLogin(const QString& username)
 
     if (ClientServer::LoginClient(stdUsername)) {
         QMessageBox::information(this, "Login", "Welcome, " + username + "!");
+        DisplayMap();
     }
     else {
         QMessageBox::warning(this, "Error", "Login failed. This name does not exist.");
@@ -290,3 +292,30 @@ void MainWindow::HandleControlsSet(const QMap<QString, QString>& controls)//, co
 
 
 }
+void MainWindow::DisplayMap() {
+    try {
+        QJsonDocument response = ClientServer::GetMap();
+        if (response.isNull()) {
+            throw std::runtime_error("Empty response from server");
+        }
+
+        QJsonObject mapObject = response.object();
+        int width = mapObject["width"].toInt();
+        int height = mapObject["height"].toInt();
+        QJsonArray cells = mapObject["cells"].toArray();
+
+        for (int y = 0; y < height; ++y) {
+            QJsonArray row = cells[y].toArray();
+            for (int x = 0; x < width; ++x) {
+                QJsonObject cell = row[x].toObject();
+                QString type = cell["type"].toString();
+
+                qDebug() << "Cell (" << x << "," << y << "):" << type;
+            }
+        }
+    }
+    catch (const std::exception& e) {
+        QMessageBox::critical(this, "Error", e.what());
+    }
+}
+

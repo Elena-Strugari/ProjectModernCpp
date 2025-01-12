@@ -120,6 +120,70 @@ void http::Routing::Run()
         });
 
 
+    CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
+        try {
+            Map gameMap(1); // Creează o instanță a clasei Map
+
+            // Crearea structurii JSON
+            crow::json::wvalue jsonMap;
+            jsonMap["width"] = gameMap.GetWidth();
+            jsonMap["height"] = gameMap.GetHeight();
+
+            // Crearea matricei de celule
+            const auto& mapData = gameMap.GetMap();
+            crow::json::wvalue::list cellsArray;
+
+            for (const auto& row : mapData) {
+                crow::json::wvalue::list rowArray;
+
+                for (const auto& cell : row) {
+                    crow::json::wvalue cellJson;
+
+                    // Setăm tipul celulei folosind `std::visit`
+                    std::visit([&](const auto& content) {
+                        using T = std::decay_t<decltype(content)>;
+                        if constexpr (std::is_same_v<T, Map::Empty>) {
+                            cellJson["type"] = "Empty";
+                        }
+                        else if constexpr (std::is_same_v<T, Map::Bomb>) {
+                            cellJson["type"] = "Bomb";
+                        }
+                        else if constexpr (std::is_same_v<T, Map::BonusLife>) {
+                            cellJson["type"] = "BonusLife";
+                        }
+                        else if constexpr (std::is_same_v<T, Wall::TypeWall>) {
+                            cellJson["type"] = content == Wall::TypeWall::indestructible
+                                ? "Wall_Indestructible"
+                                : "Wall_Destructible";
+                        }
+                        else if constexpr (std::is_same_v<T, Map::Tank>) {
+                            cellJson["type"] = "Tank";
+                        }
+                        else if constexpr (std::is_same_v<T, Map::Bullet>) {
+                            cellJson["type"] = "Bullet";
+                        }
+                        }, cell.content);
+
+                    rowArray.push_back(cellJson); // Folosim push_back pentru a adăuga în array
+                }
+
+                cellsArray.push_back(rowArray); // Folosim push_back pentru rânduri
+            }
+
+            jsonMap["cells"] = std::move(cellsArray);
+
+
+            // Returnăm JSON-ul ca răspuns
+            return crow::response(200, jsonMap);
+        }
+        catch (const std::exception& e) {
+            return crow::response(500, "Server error: " + std::string(e.what()));
+        }
+        });
+
+
+
+
     //CROW_ROUTE(m_app, "/choose_level").methods(crow::HTTPMethod::POST)([&](const crow::request& req) {
     //    try {
     //        std::string levelType = req.body;

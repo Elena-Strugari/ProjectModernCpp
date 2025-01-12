@@ -7,21 +7,22 @@
 #include <stdexcept>
 #include "Wall.h"
 
+
 class Map {
 public:
     struct Empty {};
     struct Bomb {};
     struct Bullet{};
     struct BonusLife {};
-    struct Tank {}; // Placeholder, can be replaced with an actual Tank class
+    struct Tank {};
 
     using CellContent = std::variant<Empty, Bomb, BonusLife, Wall::TypeWall, Tank, Bullet>;
 
     struct Cell {
-        CellContent content; // Stores the content of the cell
+        CellContent content; 
         uint16_t border;
 
-        Cell() : content(Empty{}), border(0) {} // Default to an empty cell
+        Cell() : content(Empty{}), border(0) {}
 
         Cell(CellContent content, uint16_t border)
             : content(std::move(content)), border(border) {}
@@ -34,6 +35,8 @@ public:
     uint16_t GetWidth() const;
     uint16_t GetHeight() const;
     const Cell& GetCell(uint16_t x, uint16_t y) const;
+    const std::vector<std::vector<Cell>>& GetMap() const;
+
 
     // Setters
     void SetCell(uint16_t x, uint16_t y, const Cell& value);

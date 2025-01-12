@@ -15,6 +15,10 @@ public:
 	static bool LoginClient(const std::string& clientId);
 
 	static bool RegisterClient(const std::string& clientId);
+
+
+	static QJsonDocument GetMap();
+
 	//static bool ControlsClient(const std::string& client, const std::string& controlsClient);
 	static bool ControlsClient( const std::string& controlsClient);
 	static bool verificare();

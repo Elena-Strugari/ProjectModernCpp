@@ -28,15 +28,14 @@ Map::Map(uint8_t level) {
     GenerateWalls(level);
     InitializeGameElements(numBombs, numBonusLives);
 
-    /*m_map[1][1]= { Empty{}, 0 };
-    m_map[1][m_height-2]= { Empty{}, 0 };
-    m_map[m_width-2][1] = {Empty{}, 0};
-    m_map[m_width-2][m_height-2]= { Empty{}, 0 };*/
 }
 
 // Getters
 uint16_t Map::GetWidth() const { return m_width; }
 uint16_t Map::GetHeight() const { return m_height; }
+const std::vector<std::vector<Map::Cell>>& Map::GetMap() const {
+    return m_map;
+}
 
 const Map::Cell& Map::GetCell(uint16_t x, uint16_t y) const {
     if (!IsValidPosition(x, y)) {

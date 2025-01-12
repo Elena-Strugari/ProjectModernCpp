@@ -1,5 +1,10 @@
 ﻿#pragma once
 #include "ClientServer.h"
+#include <stdexcept>
+#include <QDebug>
+#include <QJsonDocument>
+#include <QString>
+
 #include <iostream>
 
 constexpr auto SERVER_URL = "http://localhost:8080";
@@ -152,6 +157,21 @@ bool ClientServer::ControlsClient(const std::string& controlsClient)
     }
 }
 
+ QJsonDocument ClientServer::GetMap() {
+      auto response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_map" });
+      if (response.status_code == 200) {
+          QJsonDocument jsonDoc = QJsonDocument::fromJson(QString::fromStdString(response.text).toUtf8());
+          if (!jsonDoc.isNull()) {
+               return jsonDoc;
+          }
+          else {
+              throw std::runtime_error("Invalid JSON received");
+          }
+      }
+      else {
+        throw std::runtime_error("Failed to fetch map from server");
+      }
+ }
 
 
 //void Client::onChooseLevel(const std::string& clientId, const std::string& level) {
