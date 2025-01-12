@@ -148,7 +148,7 @@ ControlChoiceWindow::ControlChoiceWindow(const QString& clientId, QWidget* paren
 
     setLayout(mainLayout);
 
-    connect(saveButton, &QPushButton::clicked, this, &ControlChoiceWindow::onSaveControls);
+    connect(saveButton, &QPushButton::clicked, this, &ControlChoiceWindow::OnSaveControls);
 }
 
 //void ControlChoiceWindow::onSaveControls()

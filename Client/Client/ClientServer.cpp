@@ -129,7 +129,26 @@ bool ClientServer::RegisterClient(const std::string& username) {
 
 bool ClientServer::ControlsClient(const std::string& controlsClient)
 {
-    return false;
+    try {
+        cpr::Response response = cpr::Post(
+            cpr::Url{ std::string(SERVER_URL) + "/controls" },
+            cpr::Body{ "{\"controls\":\"" + controlsClient + "\"}" },
+            cpr::Header{ {"Content-Type", "application/json"} }
+        );
+
+        if (response.status_code == 200) {
+            qDebug() << "Success: " << QString::fromStdString(response.text);
+            return true;
+        }
+        else {
+            qDebug() << "Error: " << response.status_code;
+            return false;
+        }
+    }
+    catch (const std::exception& ex) {
+        qDebug() << "Exception during registration: " << ex.what();
+        return false;
+    }
 }
 
 

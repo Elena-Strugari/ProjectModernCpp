@@ -67,6 +67,45 @@ void http::Routing::Run()
         }
         });
 
+    CROW_ROUTE(m_app, "/set_controls").methods("POST"_method)([](const crow::request& req) {
+        try {
+            // Parsează corpul cererii
+            auto json = crow::json::load(req.body);
+            if (!json) {
+                return crow::response(400, "Invalid JSON");
+            }
+
+            // Verifică dacă toate direcțiile sunt prezente
+            if (!json.has("Up") || !json.has("Down") || !json.has("Left") || !json.has("Right")) {
+                return crow::response(400, "Missing control keys");
+            }
+
+            // Obține tastele de control
+            std::string up = json["Up"].s();
+            std::string down = json["Down"].s();
+            std::string left = json["Left"].s();
+            std::string right = json["Right"].s();
+
+            // Aici poți adăuga validări sau salva tastele în baza de date
+            // Exemplu: verifică dacă tastele sunt unice
+            if (up == down || up == left || up == right ||
+                down == left || down == right || left == right) {
+                return crow::response(400, "Keys must be unique");
+            }
+
+            // Exemplu de salvare în baza de date (pseudo-cod)
+            // database.saveControls(user_id, up, down, left, right);
+
+            // Răspuns de succes
+            return crow::response(200, "Controls set successfully");
+
+        }
+        catch (const std::exception& e) {
+            // În caz de eroare, întoarce un răspuns 500
+            return crow::response(500, "Server error: " + std::string(e.what()));
+        }
+        });
+
 
     //CROW_ROUTE(m_app, "/choose_level").methods(crow::HTTPMethod::POST)([&](const crow::request& req) {
     //    try {

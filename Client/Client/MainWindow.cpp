@@ -278,7 +278,11 @@ void MainWindow::HandleControlsSet(const QMap<QString, QString>& controls)
     QString jsonString = jsonDoc.toJson(QJsonDocument::Compact);
 
     qDebug() << "Sending controls to server: " << jsonString;
-    std::string controls= jsonString.toUtf8().constData();
-    //MainWindow::ControlsClient(controls);
+    std::string controlsStr= jsonString.toUtf8().constData();
+    if(ClientServer::ControlsClient(controlsStr))
+        QMessageBox::information(this, "Success", "Controls have been successfully set!");
+    else
+        QMessageBox::warning(this, "Error", "Failed to set controls: ");
+
 
 }
