@@ -115,35 +115,16 @@
 //	return 0;
 //}
 
-//#include "MainWindow.h"
-//#include <QApplication>
-//
-//
-//int main(int argc, char* argv[])
-//{
-//    QApplication app(argc, argv);
-//
-//    MainWindow mainWindow;
-//    mainWindow.show();
-//
-//    return app.exec();
-//}
-
-
+#include "MainWindow.h"
 #include <QApplication>
-#include "LevelSelectionWindow.h"
+
 
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
-    // Creează și afișează fereastra pentru selectarea nivelului
-    LevelSelectionWindow levelSelectionWindow;
-    QObject::connect(&levelSelectionWindow, &LevelSelectionWindow::levelSelected, [](const QString& level) {
-        qDebug() << "Selected Level:" << level;
-        });
-
-    levelSelectionWindow.show();
+    MainWindow mainWindow;
+    mainWindow.show();
 
     return app.exec();
 }
