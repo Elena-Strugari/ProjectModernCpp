@@ -23,22 +23,22 @@
  
 
 
-#include <QApplication>
-#include "MainWindow.h"
-
-int main(int argc, char* argv[]) 
-{
-    qDebug() << "Sunt in main!";
-
-    QApplication app(argc, argv); 
-
-    MainWindow mainWindow;
-    qDebug() << "Sunt imediat dupa initializarea lui MainWindow!";
-    qDebug() << "Afisez mainWindow!";
-    mainWindow.show();
-
-    return app.exec();
-}
+//#include <QApplication>
+//#include "MainWindow.h"
+//
+//int main(int argc, char* argv[]) 
+//{
+//    qDebug() << "Sunt in main!";
+//
+//    QApplication app(argc, argv); 
+//
+//    MainWindow mainWindow;
+//    qDebug() << "Sunt imediat dupa initializarea lui MainWindow!";
+//    qDebug() << "Afisez mainWindow!";
+//    mainWindow.show();
+//
+//    return app.exec();
+//}
 
 
 //Main pentru testarea imaginilor
@@ -100,3 +100,31 @@ int main(int argc, char* argv[])
 //
 //    return app.exec();
 //}
+
+
+
+//Server
+
+//#include "ClientServer.h"
+//#include <iostream>
+//
+//int main() {
+//
+//	ClientServer::connectServer();
+//
+//	return 0;
+//}
+
+#include "MainWindow.h"
+#include <QApplication>
+
+
+int main(int argc, char* argv[])
+{
+    QApplication app(argc, argv);
+
+    MainWindow mainWindow;
+    mainWindow.show();
+
+    return app.exec();
+}

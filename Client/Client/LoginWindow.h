@@ -23,17 +23,22 @@ class LoginWindow :public QWidget
 
 public:
     explicit LoginWindow(QWidget* parent = nullptr);
-    void initializeBackground();
-
-protected:
-    void resizeEvent(QResizeEvent* event) override;
+    void InitializeBackground();
+signals:
+    void Login(const QString& username); 
+   // void RegisterUser(const QString& username); 
 
 private slots:
-    void onLogin();
-    void onRegister();
+    void OnLoginClicked();
+    void OnRegisterClicked();
+
+protected:
+    void resizeEvent(QResizeEvent* event)override;
+
 
 private:
-    QLabel* textLabel;
+    //QLabel* textLabel;
+    //QLineEdit* usernameInput;
     QLineEdit* clientInput;
     QPushButton* loginButton;
     QPushButton* registerButton;

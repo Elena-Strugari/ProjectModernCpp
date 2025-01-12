@@ -1,12 +1,10 @@
 ﻿#pragma once
 #include <crow.h>
-//#include "ServerObject.h"
-
+#include "Game.h"
 
 
 namespace http {
 
-	//class Routing : public ServerObject
 	class Routing 
 	{
 	public:

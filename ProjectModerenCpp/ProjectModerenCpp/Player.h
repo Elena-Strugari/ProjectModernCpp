@@ -6,6 +6,7 @@
 class Player {
 public:
     Player(const std::string& name, Database& db , GameObject&& object);
+    bool ExistPlayer(const std::string& name, Database& db)const;
     // Getters
     const std::string& GetName() const;
     int GetLives() const;

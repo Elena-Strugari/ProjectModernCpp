@@ -11,6 +11,13 @@ Player::Player(const std::string& name, Database& db, GameObject&& object)
     }
 }
 
+bool Player::ExistPlayer(const std::string& name, Database& db) const
+{
+    if (m_database.ClientExists(name))
+        return true;
+    return false;
+}
+
 const std::string& Player::GetName() const {
     return m_name;
 }

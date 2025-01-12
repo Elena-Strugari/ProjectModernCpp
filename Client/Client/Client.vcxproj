@@ -134,6 +134,7 @@
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="LoginWindow.cpp" />
     <ClCompile Include="main.cpp" />
+    <QtUic Include="MainWindow.ui" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientMap.h" />

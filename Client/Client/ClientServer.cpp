@@ -2,12 +2,12 @@
 #include "ClientServer.h"
 #include <iostream>
 
-
+constexpr auto SERVER_URL = "http://localhost:8080";
+ 
 void ClientServer::connectServer() {
-    std::string server_url = "http://localhost:8080/connect";
 
     try {
-        cpr::Response response = cpr::Get(cpr::Url{ server_url });
+        cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL)+ "/connect"});
 
         if (response.status_code == 200) {
             std::cout << "Mesaj de la server: " << response.text << std::endl;
@@ -21,29 +21,138 @@ void ClientServer::connectServer() {
     }
 }
 
-
-bool ClientServer::loginClient(const std::string& clientId) {
+void ClientServer::StartGameWindow()
+{
     try {
+        cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/startGame" });
 
-        cpr::Response response = cpr::Post(
-            cpr::Url{ "http://localhost:8080/login" },
-            cpr::Payload{ {"client_id", clientId} }
+        if (response.status_code == 200) {
+            std::cout << "Mesaj de la server: " << response.text << std::endl;
+        }
+        else {
+            std::cerr << "Eroare la conectare. Cod răspuns: " << response.status_code << std::endl;
+        }
+    }
+    catch (const std::exception& ex) {
+        std::cerr << "Excepție la conectare: " << ex.what() << std::endl;
+    }
+
+}
+
+void ClientServer::UserWindow()
+{
+    try {
+        cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/user" });
+
+        if (response.status_code == 200) {
+            std::cout << "Mesaj de la server: " << response.text << std::endl;
+        }
+        else {
+            std::cerr << "Eroare la conectare. Cod răspuns: " << response.status_code << std::endl;
+        }
+    }
+    catch (const std::exception& ex) {
+        std::cerr << "Excepție la conectare: " << ex.what() << std::endl;
+    }
+
+}
+bool ClientServer::LoginClient(const std::string& username) {
+    try {
+        if (username.empty()) {
+            std::cerr << "Error: Username is empty!" << std::endl;
+            return false;
+        }
+
+        auto response = cpr::Post(
+            cpr::Url{ std::string(SERVER_URL) + "/login" },
+            cpr::Body{ "{\"username\":\"" + username + "\"}" },
+            cpr::Header{ {"Content-Type", "application/json"} }
         );
 
         if (response.status_code == 200) {
-            qDebug() << "Login successful: " << QString::fromStdString(response.text);
+            std::cout << "Login successful: " << response.text << std::endl;
             return true;
         }
         else {
-            qDebug() << "Login failed. Status code: " << response.status_code;
+            std::cerr << "Login failed: " << response.text << " (Code: " << response.status_code << ")" << std::endl;
             return false;
         }
     }
     catch (const std::exception& ex) {
-        qDebug() << "Exception during login: " << ex.what();
+        std::cerr << "Exception during login: " << ex.what() << std::endl;
         return false;
     }
 }
+bool ClientServer::verificare()
+{
+    QString name = "John";
+    std::string nameS = name.toUtf8().constData();
+
+    // Trimite cererea POST către server
+    cpr::Response r = cpr::Post(
+        cpr::Url{ std::string(SERVER_URL) + "/sendName" },
+        cpr::Body{ nameS },
+        cpr::Header{ {"Content-Type", "text/plain"} }
+    );
+
+    // Afișează răspunsul serverului
+    if (r.status_code == 200) {
+        qDebug() << "Registration successful: " << QString::fromStdString(r.text);
+        return true;
+    }
+    else {
+        qDebug() << "Registration failed. Status code: " << r.status_code;
+        return false;
+    }
+
+}
+
+
+//bool ClientServer::LoginClient(const std::string& username) {
+//    
+//    // Trimite cererea POST către server
+//    auto response = cpr::Post(
+//        cpr::Url{ std::string(SERVER_URL) + "/login" },
+//        cpr::Payload{ {"client_id", username} }
+//
+//        /*cpr::Body{ "{\"username\":\"" + username + "\"}" },
+//        cpr::Header{ {"Content-Type", "application/json"} }*/
+//    );
+//
+//    // Verifică răspunsul serverului
+//    if (response.status_code == 200) {
+//        std::cout << "Login successful: " << response.text << std::endl;
+//        return true; // Login reușit
+//    }
+//    else {
+//        std::cerr << "Login failed: " << response.text << " (Code: " << response.status_code << ")" << std::endl;
+//        return false; // Login eșuat
+//    }
+//}
+
+
+//bool ClientServer::loginClient(const std::string& clientId) {
+//    try {
+//
+//        cpr::Response response = cpr::Post(
+//            cpr::Url{ "http://localhost:8080/login" },
+//            cpr::Payload{ {"client_id", clientId} }
+//        );
+//
+//        if (response.status_code == 200) {
+//            qDebug() << "Login successful: " << QString::fromStdString(response.text);
+//            return true;
+//        }
+//        else {
+//            qDebug() << "Login failed. Status code: " << response.status_code;
+//            return false;
+//        }
+//    }
+//    catch (const std::exception& ex) {
+//        qDebug() << "Exception during login: " << ex.what();
+//        return false;
+//    }
+//}
 
 bool ClientServer::registerClient(const std::string& clientId) {
     try {
@@ -66,6 +175,7 @@ bool ClientServer::registerClient(const std::string& clientId) {
         return false;
     }
 }
+
 
 
 //void Client::onChooseLevel(const std::string& clientId, const std::string& level) {

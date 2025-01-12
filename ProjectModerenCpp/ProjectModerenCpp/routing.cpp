@@ -9,51 +9,92 @@ namespace http {
 
 void http::Routing::Run()
 {
-    /*CROW_ROUTE(m_app, "/incerc")([]() {
-        return "sunt aici ";
-        });
-    */
-
     CROW_ROUTE(m_app, "/connect")([]() {
-        return crow::response(200, "Server: Conectare reușită!");
+        return crow::response(200, "Server: Conectare reusita!");
      });
+    CROW_ROUTE(m_app, "/startGame")([]() {
+        return crow::response(200, "Server: Conectare reusita la start!");
+        });
+    CROW_ROUTE(m_app, "/user")([]() {
+        return crow::response(200, "Server: Conectare reusita la user!");
+        });
 
-    CROW_ROUTE(m_app, "/login").methods(crow::HTTPMethod::POST)([](const crow::request& req) {
-        auto body = crow::json::load(req.body);
-        std::string clientId = body["client_id"].s();
-        std::cout << "sunt aici";
-        if (!body || clientId.empty()) {
-            return crow::response(400, "Bad Request: Missing client_id");
+   
+    CROW_ROUTE(m_app, "/login").methods("POST"_method)([](const crow::request& req) {
+        auto json = crow::json::load(req.body);
+        if (!json) {
+            return crow::response(400, "Invalid JSON");
         }
 
-
-        // Verificăm dacă utilizatorul există
-        if (m_users.find(clientId) != m_users.end()) {
+        std::string username = json["username"].s();
+        //if (users.find(username) != users.end()) {
+        if (username=="Player1") {
             return crow::response(200, "Login successful");
         }
         else {
-            return crow::response(401, "Login failed: User not found");
+            return crow::response(401, "Invalid username");
         }
-     });
-
-    CROW_ROUTE(m_app, "/register").methods(crow::HTTPMethod::POST)([](const crow::request& req) {
-        auto body = crow::json::load(req.body);
-
-        std::string clientId = body["client_id"].s();
-        if (!body || clientId.empty()) {
-            return crow::response(400, "Bad Request: Missing client_id");
-        }
-
-
-        // Verificăm dacă utilizatorul există deja
-        if (m_users.find(clientId) != m_users.end()) {
-            return crow::response(409, "Registration failed: User already exists");
-        }
-
-        // Adăugăm utilizatorul în sistem
-        m_users[clientId] = "placeholder_password"; // Parola poate fi gestionată separat
-        return crow::response(200, "Registration successful");
         });
+
+    CROW_ROUTE(m_app, "/sendName").methods(crow::HTTPMethod::Post)([](const crow::request& req) {
+        auto body = req.body; // Obține corpul cererii
+        std::string response;
+        if (body == "John") {
+            response = "Server: Hello, John! Your name is recognized.";
+            return crow::response(200, response);
+        }
+        else {
+            response = "Server: Hello, " + body + "! Your name is not John, but it's still nice.";
+            return crow::response(401,response);
+        }       
+        });
+
+   /* CROW_ROUTE(m_app, "/login")([]() {
+        return crow::response(200, "Server: Conectare reusita la login!");
+        });*/
+   /* CROW_ROUTE(m_app, "/register")([]() {
+        return crow::response(200, "Server: Conectare reusita la register!");
+        });*/
+
+    //CROW_ROUTE(m_app, "/login").methods(crow::HTTPMethod::POST)([](const crow::request& req) {
+    //    auto body = crow::json::load(req.body);
+    //    std::string clientId = body["client_id"].s();
+    //    std::cout << "sunt aici";
+    //    if (!body || clientId.empty()) {
+    //        return crow::response(400, "Bad Request: Missing client_id");
+    //    }
+
+
+    //    // Verificăm dacă utilizatorul există
+    //    if (m_users.find(clientId) != m_users.end()) {
+    //        return crow::response(200, "Login successful");
+    //    }
+    //    else {
+    //        return crow::response(401, "Login failed: User not found");
+    //    }
+    // });
+
+    //CROW_ROUTE(m_app, "/register").methods(crow::HTTPMethod::POST)([](const crow::request& req) {
+    //    auto body = crow::json::load(req.body);
+
+    //    std::string clientId = body["client_id"].s();
+    //    if (!body || clientId.empty()) {
+    //        return crow::response(400, "Bad Request: Missing client_id");
+    //    }
+
+
+    //    // Verificăm dacă utilizatorul există deja
+    //   /* if (m_users.find(clientId) != m_users.end()) {
+    //        return crow::response(409, "Registration failed: User already exists");
+    //    }*/
+    //    if (clientId!="Player1") {
+    //        return crow::response(409, "Registration failed: User already exists");
+    //    }
+
+    //    // Adăugăm utilizatorul în sistem
+    //   // m_users[clientId] = "placeholder_password"; // Parola poate fi gestionată separat
+    //    return crow::response(200, "Registration successful");
+    //    });
 
 
     //CROW_ROUTE(m_app, "/choose_level").methods(crow::HTTPMethod::POST)([&](const crow::request& req) {
@@ -238,6 +279,9 @@ void http::Routing::Run()
    // m_app.port(8080).concurrency(numThreads).run();
     m_app.port(8080).run();
 }
+
+
+
 
 
 //if (clientId) {

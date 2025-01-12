@@ -9,10 +9,14 @@ class ClientServer
 public:
 
 	static void connectServer();
-	static bool loginClient(const std::string& clientId);
+	static void StartGameWindow();
+	static void UserWindow();
+
+	static bool LoginClient(const std::string& clientId);
 
 	static bool registerClient(const std::string& clientId);
 
+	static bool verificare();
 
 private:
 
