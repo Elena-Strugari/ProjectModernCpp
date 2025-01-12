@@ -127,12 +127,13 @@ bool ClientServer::RegisterClient(const std::string& username) {
     }
 }
 
+//bool ClientServer::ControlsClient(const std::string& client, const std::string& controlsClient)
 bool ClientServer::ControlsClient(const std::string& controlsClient)
 {
     try {
         cpr::Response response = cpr::Post(
             cpr::Url{ std::string(SERVER_URL) + "/controls" },
-            cpr::Body{ "{\"controls\":\"" + controlsClient + "\"}" },
+            cpr::Body{ "{\"controls\":\"" + controlsClient + "\"}"},
             cpr::Header{ {"Content-Type", "application/json"} }
         );
 

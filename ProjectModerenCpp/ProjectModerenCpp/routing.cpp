@@ -5,7 +5,9 @@
 using namespace http;
 Database db("players.db");
 namespace http {
-    std::unordered_map<std::string, std::string> Routing::m_users;
+    //std::unordered_map<std::string, std::string> Routing::m_users;
+    std::unordered_map<std::string, Player> players;
+
 } 
 
 
@@ -42,6 +44,7 @@ void http::Routing::Run()
 
         std::string username = json["username"].s();
         if (db.ClientExists(username)) {
+            
             Player player(username, db);
             return crow::response(200, "Login successful");
         }
@@ -58,11 +61,14 @@ void http::Routing::Run()
         }
 
         std::string username = json["username"].s();
+
         if (db.ClientExists(username)) {
             return crow::response(409, "Registration failed: User already exists");
         }
         else {
             db.AddClient(username, 0);
+            Player player(username, db);
+            //players[username] = std::move(player);
             return crow::response(200, "Registration successful");
         }
         });
@@ -81,6 +87,7 @@ void http::Routing::Run()
             }
 
             // Obține tastele de control
+            std::string name = json[""].s();
             std::string up = json["Up"].s();
             std::string down = json["Down"].s();
             std::string left = json["Left"].s();
@@ -97,6 +104,12 @@ void http::Routing::Run()
             // database.saveControls(user_id, up, down, left, right);
 
             // Răspuns de succes
+            /*if (players.find(name) == players.end()) {
+                return crow::response(404, "User not found");
+            }*/
+
+           // Player& player = players[name];
+           // player.ChooseKeyBindings(up, down, left, right);
             return crow::response(200, "Controls set successfully");
 
         }

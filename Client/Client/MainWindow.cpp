@@ -268,17 +268,21 @@ void MainWindow::HandleRegister(const QString& username)
     }
 }
 
-void MainWindow::HandleControlsSet(const QMap<QString, QString>& controls)
+void MainWindow::HandleControlsSet(const QMap<QString, QString>& controls)//, const QString& username)
 {
     QJsonObject jsonObject;
     for (auto it = controls.begin(); it != controls.end(); ++it) {
         jsonObject.insert(it.key(), it.value());
     }
     QJsonDocument jsonDoc(jsonObject);
+   // QString jsonString = username;
+    //jsonString = jsonDoc.toJson(QJsonDocument::Compact);
     QString jsonString = jsonDoc.toJson(QJsonDocument::Compact);
 
-    qDebug() << "Sending controls to server: " << jsonString;
+    //qDebug() << "Sending controls to server: " << jsonString;
     std::string controlsStr= jsonString.toUtf8().constData();
+    //std::string usernameStr=username.toUtf8().constData();
+    //if(ClientServer::ControlsClient(usernameStr, controlsStr))
     if(ClientServer::ControlsClient(controlsStr))
         QMessageBox::information(this, "Success", "Controls have been successfully set!");
     else

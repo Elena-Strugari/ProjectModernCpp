@@ -10,13 +10,48 @@
 //        m_score = m_database.GetScore(m_name);
 //    }
 //}
+//Player::Player() : m_name(""), m_score(0), m_lives(3), m_database() {}
 Player::Player(const std::string& name, Database& db)
     : m_name(name), m_score(0), m_lives(3), m_database(db){
     if (m_database.ClientExists(m_name)) {
          m_score = m_database.GetScore(m_name);
     }
 }
-
+//Player::Player(Player&& other) : m_name(other.m_name),
+//m_score(other.m_score),
+//m_lives(other.m_lives),
+//m_database(other.m_database) {}
+//
+//// Constructor de copiere
+//Player::Player(const Player& other)
+//    : m_name(other.m_name),
+//    m_score(other.m_score),
+//    m_lives(other.m_lives),
+//    m_database(other.m_database) {}
+//
+//// Operator de atribuire prin mutare
+//Player& Player::operator=(Player&& other) noexcept {
+//    if (this != &other) { // Evită auto-atribuirea
+//        m_name = std::move(other.m_name);
+//        m_score = other.m_score;
+//        m_lives = other.m_lives;
+//        m_database = other.m_database;
+//    }
+//    return *this;
+//}
+//
+//// Operator de atribuire prin copiere
+//Player& Player::operator=(const Player& other) {
+//    if (this != &other) { // Evită auto-atribuirea
+//        m_name = other.m_name;
+//        m_score = other.m_score;
+//        m_lives = other.m_lives;
+//        m_database = other.m_database;
+//    }
+//    return *this;
+//}
+//
+//Player::~Player() {}
 void Player::AddPlayerObject(GameObject&& object)
 {
     

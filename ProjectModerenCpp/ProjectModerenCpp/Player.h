@@ -7,7 +7,15 @@
 class Player {
 public:
     //Player(const std::string& name, Database& db , GameObject&& object);
+  //  Player();
     Player(const std::string& name, Database& db);
+    //Player(Player&& other) noexcept;         // Constructor de mutare
+    //Player(const Player& other);             // Constructor de copiere
+    //~Player();
+    //// Operatori de atribuire
+    //Player& operator=(Player&& other) noexcept; // Operator de atribuire prin mutare
+    //Player& operator=(const Player& other);
+
     void AddPlayerObject(GameObject&& object);
     // Getters
     const std::string& GetName() const;

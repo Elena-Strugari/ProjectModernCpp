@@ -11,7 +11,7 @@ namespace http {
 
 	private:
 		crow::SimpleApp m_app;
-		static std::unordered_map<std::string, std::string> m_users;
+		//std::unordered_map<std::string, Player> m_players;
 
 	};
 
