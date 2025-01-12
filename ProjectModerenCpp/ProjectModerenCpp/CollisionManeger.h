@@ -1,19 +1,29 @@
 ﻿//sa fac si daca in raza bombei , mai exista o bomba si ea se declanseaza 
 #pragma once
+#include <vector>
+#include <memory>
+#include <map>
+#include "Bullet.h"
+#include "Tank.h"
 #include "Map.h"
-#include <utility>
+#include "PlayerManager.h"
+#include "Wall.h"
 
-class CollisionManager {
+class Collision {
 public:
-    CollisionManager(const Map& map);
+    Collision(std::shared_ptr<Map> map, std::shared_ptr<PlayerManager> playerManager);
 
-    bool isPositionValid(uint16_t x, uint16_t y) const;                // Verifică dacă poziția este validă
-    bool checkCollision(uint16_t x, uint16_t y) const;                 // Verifică dacă există o coliziune la poziția specificată
-    bool isWall(uint16_t x, uint16_t y) const;                         // Verifică dacă poziția este un perete
-    bool isTankCollision(uint16_t x, uint16_t y, uint16_t tankX, uint16_t tankY) const; // Coliziune între două tank-uri
+    void HandleBulletCollisions(std::vector<Bullet>& bullets);
+
+    void HandleTankCollisions(std::vector<std::shared_ptr<Tank>>& tanks);
+
+    void HandleBulletTankCollisions(std::vector<Bullet>& bullets, std::vector<std::shared_ptr<Tank>>& tanks);
+
+    void HandleMultipleBulletWallCollisions(std::vector<Bullet>& bullets);
 
 private:
-    const Map& m_map; // Referință la hartă
+    std::shared_ptr<Map> m_map;
+    std::shared_ptr<PlayerManager> m_playerManager;
 };
 
 
