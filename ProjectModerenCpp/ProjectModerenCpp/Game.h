@@ -4,6 +4,8 @@
 #include <vector>
 #include "Map.h"
 #include "PlayerManager.h"
+#include "CollisionManager.h"
+
 
 class Game {
 public:
@@ -21,4 +23,5 @@ public:
 private:
     Map m_map;
     std::shared_ptr<PlayerManager> m_playerManager;
+    std::shared_ptr<CollisionManager> m_collision;
 };

@@ -15,13 +15,14 @@ int main() {
 
 //#include "Game.h"
 //#include "PlayerGameObjectManager.h"
-
+//
 //#include "Map.h";
 //#include "GameObject.h"
 //#include "MovementObject.h"
 //#include "Player.h"
 //#include "PlayerManager.h"
 //#include "Game.h"
+//#include "CollisionManager.h"
 //
 //using namespace http;
 //int main()
@@ -439,7 +440,7 @@ int main() {
 
     //// Afișăm starea inițială
     //std::cout << player1.getName() << " starts with " << player1.getLives() << " lives." << std::endl;
-    //std::cout << player2.getName() << " starts with " << player2.getLives() << " lives." << std::endl;
+   // std::cout << player2.getName() << " starts with " << player2.getLives() << " lives." << std::endl;
 
     //// Simulăm pierderi și câștiguri de vieți
     //player1.loseLife();
@@ -514,4 +515,3 @@ int main() {
 
 	/*return 0;
 }*/
-

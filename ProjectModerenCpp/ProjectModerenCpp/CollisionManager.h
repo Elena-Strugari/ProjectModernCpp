@@ -9,23 +9,18 @@
 #include "PlayerManager.h"
 #include "Wall.h"
 
-class Collision {
-public:
-    Collision(std::shared_ptr<Map> map, std::shared_ptr<PlayerManager> playerManager);
-
-    void HandleBulletCollisions(std::vector<Bullet>& bullets);
-
-    void HandleTankCollisions(std::vector<std::shared_ptr<Tank>>& tanks);
-
-    void HandleBulletTankCollisions(std::vector<Bullet>& bullets, std::vector<std::shared_ptr<Tank>>& tanks);
-
-    void HandleMultipleBulletWallCollisions(std::vector<Bullet>& bullets);
-
-private:
+class CollisionManager {
     std::shared_ptr<Map> m_map;
     std::shared_ptr<PlayerManager> m_playerManager;
-};
 
+public:
+    CollisionManager(std::shared_ptr<Map> map, std::shared_ptr<PlayerManager> playerManager);
+
+    bool IsValidPosition(uint16_t x, uint16_t y) const;
+    void HandleBulletCollisions();
+    void HandleTankCollisions();
+    void HandleBulletTankCollisions();
+};
 
 
 
@@ -75,4 +70,5 @@ private:
 //    return CollisionType::None;
 //}
 //
-//*/
+//
+// */

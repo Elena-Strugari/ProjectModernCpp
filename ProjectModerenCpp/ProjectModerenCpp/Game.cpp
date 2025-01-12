@@ -1,9 +1,11 @@
 ﻿#include "Game.h"
+#include "CollisionManager.h"
 #include <iostream>
 #include <stdexcept>
 
 Game::Game(uint8_t level)
-    : m_map(level), m_playerManager(std::make_shared<PlayerManager>()) {
+    : m_map(level), m_playerManager(std::make_shared<PlayerManager>()),
+    m_collision(std::make_shared<CollisionManager>(std::make_shared<Map>(m_map), m_playerManager)) {
 }
 
 void Game::AddPlayer(const std::shared_ptr<Player>& player) {
@@ -54,6 +56,7 @@ void Game::MovePlayer(const std::shared_ptr<Player>& player, MovementObject::Dir
     auto [newX, newY] = movement.Move(direction);
 
     if (m_map.IsValidPosition(newX, newY)) {
+        m_collision->HandleTankCollisions();
         m_map.SetCellContent(currentX, currentY, Map::Empty{}); 
         m_map.SetCellContent(newX, newY, Map::Tank{});          
 
@@ -74,15 +77,19 @@ void Game::MoveBullets() {
 
         if (movement.IsBulletActive()) {
             auto [newX, newY] = movement.Move(movement.GetDirection(), 1);
+            if (m_map.IsValidPosition(newX, newY)) {
+                m_collision->HandleBulletCollisions();
 
-            if (m_map.IsValidPosition(newX, newY) && std::holds_alternative<Map::Empty>(m_map.GetCell(newX, newY).content)) {
-                m_map.SetCellContent(currentX, currentY, Map::Empty{}); // Clear old position
-                m_map.SetCellContent(newX, newY, Map::Bullet{});          // Set new position
-            }
-            else {
-                movement.DeactivateBullet();
-                m_map.SetCellContent(currentX, currentY, Map::Empty{}); // Clear bullet
+                if (std::holds_alternative<Map::Empty>(m_map.GetCell(newX, newY).content)) {
+                    m_map.SetCellContent(currentX, currentY, Map::Empty{}); // Clear old position
+                    m_map.SetCellContent(newX, newY, Map::Bullet{});
+                }
+                else {
+                    movement.DeactivateBullet();
+                    m_map.SetCellContent(currentX, currentY, Map::Empty{}); // Clear bullet
+                }
             }
         }
     }
+
 }
