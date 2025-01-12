@@ -243,7 +243,7 @@ void MainWindow::HandleLogin(const QString& username)
         QMessageBox::information(this, "Login", "Welcome, " + username + "!");
     }
     else {
-        QMessageBox::warning(this, "Error", "Login failed. Please try again.");
+        QMessageBox::warning(this, "Error", "Login failed. This name does not exist.");
     }
 
 }
@@ -253,9 +253,9 @@ void MainWindow::HandleRegister(const QString& username)
     std::string stdUsername = username.toUtf8().constData();
 
     if (ClientServer::RegisterClient(stdUsername)) {
-        QMessageBox::information(this, "Login", "Welcome, " + username + "!");
+        QMessageBox::information(this, "Joined", "Welcome, " + username + "!");
     }
     else {
-        QMessageBox::warning(this, "Error", "Login failed. Please try again.");
+        QMessageBox::warning(this, "Error", "Registration failed. Please try again.");
     }
 }
