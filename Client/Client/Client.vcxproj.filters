@@ -76,6 +76,9 @@
     <ClCompile Include="LevelSelectionWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CreateOrJoinGameWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientServer.h">
@@ -111,6 +114,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="LevelSelectionWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CreateOrJoinGameWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

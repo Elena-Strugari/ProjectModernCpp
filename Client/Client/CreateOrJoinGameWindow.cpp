@@ -1,0 +1,99 @@
+#include "CreateOrJoinGameWindow.h"
+CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
+    : QWidget(parent)
+    , titleLabel(new QLabel("Create Game or Join Game", this))
+    , generateCodeButton(new QPushButton("Generate Code", this))
+    , checkCodeButton(new QPushButton("Check Code", this))
+    , typeCode(new QLineEdit(this))
+{
+    setWindowTitle("Create Game or Join Game");
+    resize(600, 400);
+
+    InitializeBackground();
+
+    titleLabel->setAlignment(Qt::AlignCenter);
+    titleLabel->setStyleSheet(
+        "font-size: 24px; "
+        "color: white; "
+        "font-weight: bold; "
+        "margin-bottom: 20px;"
+    );
+
+    QString buttonStyle =
+        "font-size: 16px; "
+        "color: black; "
+        "background-color: white; "
+        "border: 2px solid black; "
+        "border-radius: 5px; "
+        "padding: 5px;";
+
+    generateCodeButton->setStyleSheet(buttonStyle);
+    checkCodeButton->setStyleSheet(buttonStyle);
+    typeCode->setStyleSheet(
+        "font-size: 16px; "
+        "color: black; "
+        "background-color: white; "
+        "border: 2px solid black; "
+        "border-radius: 5px; "
+        "padding: 5px;"
+    );
+
+    generateCodeButton->setFixedSize(150, 50);
+    typeCode->setFixedSize(200, 40);
+    checkCodeButton->setFixedSize(100, 40);
+
+   
+    typeCode->setPlaceholderText("Type code ...");
+
+    
+    QHBoxLayout* generateLayout = new QHBoxLayout();
+    generateLayout->addStretch();
+    generateLayout->addWidget(generateCodeButton);
+    generateLayout->addStretch();
+
+    
+    QHBoxLayout* inputLayout = new QHBoxLayout();
+    inputLayout->addStretch();
+    inputLayout->addWidget(typeCode);
+    inputLayout->addWidget(checkCodeButton);
+    inputLayout->addStretch();
+
+    QVBoxLayout* mainLayout = new QVBoxLayout(this);
+    mainLayout->addStretch();
+    mainLayout->addWidget(titleLabel);
+    mainLayout->addLayout(generateLayout);
+    mainLayout->addSpacing(20);
+    mainLayout->addLayout(inputLayout);
+    mainLayout->addStretch();
+
+    setLayout(mainLayout);
+
+    
+    connect(generateCodeButton, &QPushButton::clicked, this, [this]() {
+        emit Generate("Generate code");
+        this->close();
+        });
+
+    connect(checkCodeButton, &QPushButton::clicked, this, [this]() {
+        emit CheckCode("Check the code");
+        this->close();
+        });
+}
+
+void CreateOrJoinGameWindow::InitializeBackground()
+{
+    QImage image(":/StartImage/resources/StartGame.jpg"); // Calea ta pentru fundal
+
+    if (image.isNull())
+    {
+        qDebug() << "Failed to load background image!";
+        return;
+    }
+
+    QPalette palette;
+    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+    setPalette(palette);
+    setAutoFillBackground(true);
+}
+
+CreateOrJoinGameWindow::~CreateOrJoinGameWindow() = default;
