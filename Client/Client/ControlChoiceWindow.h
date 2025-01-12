@@ -60,7 +60,7 @@ private:
     QLineEdit* downInput;
     QLineEdit* leftInput;
     QLineEdit* rightInput;
-    QLineEdit* ShootInput;
+    QLineEdit* shootInput;
     QPushButton* saveButton;
     QMap<QString, QString> controls;
 };

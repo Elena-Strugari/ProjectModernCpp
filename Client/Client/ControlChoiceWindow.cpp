@@ -95,7 +95,7 @@ ControlChoiceWindow::ControlChoiceWindow(const QString& clientId, QWidget* paren
     , downInput(new QLineEdit(this))
     , leftInput(new QLineEdit(this))
     , rightInput(new QLineEdit(this))
-    , ShootInput(new QLineEdit(this))
+    , shootInput(new QLineEdit(this))
     , saveButton(new QPushButton("Save Controls", this))
 {
     qDebug() << "ControlChoiceWindow constructor called for user:" << clientId;
@@ -116,13 +116,13 @@ ControlChoiceWindow::ControlChoiceWindow(const QString& clientId, QWidget* paren
     downInput->setStyleSheet(inputStyle);
     leftInput->setStyleSheet(inputStyle);
     rightInput->setStyleSheet(inputStyle);
-    ShootInput->setStyleSheet(inputStyle);
+    shootInput->setStyleSheet(inputStyle);
 
     upInput->setPlaceholderText("Up");
     downInput->setPlaceholderText("Down");
     leftInput->setPlaceholderText("Left");
     rightInput->setPlaceholderText("Right");
-    ShootInput->setPlaceholderText("Shoot");
+    shootInput->setPlaceholderText("Shoot");
 
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     QHBoxLayout* inputsLayout = new QHBoxLayout();
@@ -144,7 +144,7 @@ ControlChoiceWindow::ControlChoiceWindow(const QString& clientId, QWidget* paren
 
     QVBoxLayout* shootLayout = new QVBoxLayout();  // Layout pentru ShootInput
     shootLayout->addStretch();
-    shootLayout->addWidget(ShootInput);
+    shootLayout->addWidget(shootInput);
     shootLayout->addStretch();
 
     inputsLayout->addLayout(leftLayout);
@@ -197,7 +197,7 @@ void ControlChoiceWindow::OnSaveControls()
     controls["Down"] = downInput->text().trimmed();
     controls["Left"] = leftInput->text().trimmed();
     controls["Right"] = rightInput->text().trimmed();
-    controls["Shoot"] = ShootInput->text().trimmed();
+    controls["Shoot"] = shootInput->text().trimmed();
 
 
     qDebug() << "Controls collected: " << controls;
@@ -215,13 +215,7 @@ void ControlChoiceWindow::OnSaveControls()
     //}
     emit ControlsSet(controls);
 
-    qDebug() << "Controls validated successfully!";
-    QMessageBox::information(this, "Success", "Controls have been saved!");
-
-    // Închide fereastra fără a emite semnal
-    close();
 }
-
 
 ControlChoiceWindow::~ControlChoiceWindow()
 {
@@ -249,22 +243,18 @@ void ControlChoiceWindow::keyPressEvent(QKeyEvent* event)
     QString keyText;
 
     switch (event->key()) {
-    case Qt::Key_Up: keyText = "ArrowUp"; break;
-    case Qt::Key_Down: keyText = "ArrowDown"; break;
-    case Qt::Key_Left: keyText = "ArrowLeft"; break;
-    case Qt::Key_Right: keyText = "ArrowRight"; break;
+    case Qt::Key_Up: keyText = "ArrowUp"; event->accept(); break;
+    case Qt::Key_Down: keyText = "ArrowDown"; event->accept(); break;
+    case Qt::Key_Left: keyText = "ArrowLeft"; event->accept(); break;
+    case Qt::Key_Right: keyText = "ArrowRight"; event->accept(); break;
 
-    case Qt::Key_Enter: keyText = "Enter"; break;
-    case Qt::Key_Alt: keyText = "Alt"; break;
+    case Qt::Key_Enter: keyText = "Enter"; event->accept(); break;
+    case Qt::Key_Alt: keyText = "Alt"; event->accept(); break;
     case Qt::Key_Shift: keyText = "Shift"; break;
     case Qt::Key_Control: keyText = "Ctrl"; break;
     case Qt::Key_Space: keyText = "Space"; break;
-    case Qt::Key_Tab: keyText = "Tab"; break;
-    case Qt::Key_CapsLock: keyText = "Caps"; break;
-    case Qt::Key_Backspace: keyText = "Backspace"; break;
-    case Qt::Key_Delete:keyText = "Delete"; break;
 
-    case Qt::Key_F1: keyText = "F1"; break;
+    /*case Qt::Key_F1: keyText = "F1"; break;
     case Qt::Key_F2: keyText = "F2"; break;
     case Qt::Key_F3: keyText = "F3"; break;
     case Qt::Key_F4: keyText = "F4"; break;
@@ -275,7 +265,7 @@ void ControlChoiceWindow::keyPressEvent(QKeyEvent* event)
     case Qt::Key_F9: keyText = "F9"; break;
     case Qt::Key_F10: keyText = "F10"; break;
     case Qt::Key_F11: keyText = "F11"; break;
-    case Qt::Key_F12: keyText = "F12"; break;
+    case Qt::Key_F12: keyText = "F12"; break;*/
 
     
     default: keyText = QKeySequence(event->key()).toString(); break;  // Pentru litere, cifre și alte taste
@@ -295,6 +285,9 @@ void ControlChoiceWindow::keyPressEvent(QKeyEvent* event)
         }
         else if (rightInput->hasFocus()) {
             rightInput->setText(keyText);
+        }
+        else if (shootInput->hasFocus()) {
+            shootInput->setText(keyText);
         }
     }
 
