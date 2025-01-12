@@ -184,6 +184,7 @@
 #include "StartGameWindow.h"
 #include "LoginWindow.h"
 #include "ControlChoiceWindow.h"
+#include "CreateOrJoinGameWindow.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -240,13 +241,22 @@ void MainWindow::LogUserWindow()
         QMessageBox::critical(this, "Error", e.what());
     }
 }
+void MainWindow::CreateJoinWindow()
+{
+    CreateOrJoinGameWindow* createJoinWindow = new CreateOrJoinGameWindow();
+    createJoinWindow->show();
+    connect(createJoinWindow, &CreateOrJoinGameWindow::Generate, this, &MainWindow::HandleCreateCode);
+    connect(createJoinWindow, &CreateOrJoinGameWindow::CheckCode, this, &MainWindow::HandleCheckCode);
+}
 void MainWindow::HandleLogin(const QString& username)
 {
     std::string stdUsername = username.toUtf8().constData();
 
     if (ClientServer::LoginClient(stdUsername)) {
         QMessageBox::information(this, "Login", "Welcome, " + username + "!");
-        DisplayMap();
+        CreateJoinWindow();
+        close();
+        //DisplayMap();
     }
     else {
         QMessageBox::warning(this, "Error", "Login failed. This name does not exist.");
@@ -291,6 +301,18 @@ void MainWindow::HandleControlsSet(const QMap<QString, QString>& controls)//, co
         QMessageBox::warning(this, "Error", "Failed to set controls: ");
 
 
+}
+void MainWindow::HandleCreateCode()
+{
+    QMessageBox::information(this, "Success", "Generate Code");
+    ClientServer::GenerateCode();
+
+
+}
+void MainWindow::HandleCheckCode()
+{
+    QMessageBox::information(this, "Success", "Check Code");
+    ClientServer::CheckCode();
 }
 void MainWindow::DisplayMap() {
     try {

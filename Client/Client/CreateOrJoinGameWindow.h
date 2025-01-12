@@ -16,8 +16,8 @@ public:
     ~CreateOrJoinGameWindow();
 
 signals:
-    void Generate(const QString& code);
-    void CheckCode(const QString& code); 
+    void Generate();
+    void CheckCode(); 
 
 private:
     void InitializeBackground();

@@ -73,7 +73,7 @@ void http::Routing::Run()
         }
         });
 
-    CROW_ROUTE(m_app, "/set_controls").methods("POST"_method)([](const crow::request& req) {
+    CROW_ROUTE(m_app, "/controls").methods("POST"_method)([](const crow::request& req) {
         try {
             // Parsează corpul cererii
             auto json = crow::json::load(req.body);
@@ -83,21 +83,27 @@ void http::Routing::Run()
 
             // Verifică dacă toate direcțiile sunt prezente
             if (!json.has("Up") || !json.has("Down") || !json.has("Left") || !json.has("Right")) {
-                return crow::response(400, "Missing control keys");
+                return crow::response(401, "Missing control keys");
             }
 
             // Obține tastele de control
-            std::string name = json[""].s();
+          //  std::string name = json[""].s();
             std::string up = json["Up"].s();
             std::string down = json["Down"].s();
             std::string left = json["Left"].s();
             std::string right = json["Right"].s();
+            std::string shoot = json["Shoot"].s();
+
+            std::cout<<std::endl;
+            std::cout << up << " " << down << " " << left << " " << right << " " << shoot;
+            std::cout << std::endl;
 
             // Aici poți adăuga validări sau salva tastele în baza de date
             // Exemplu: verifică dacă tastele sunt unice
-            if (up == down || up == left || up == right ||
-                down == left || down == right || left == right) {
-                return crow::response(400, "Keys must be unique");
+            if (up == down || up == left || up == right || up == shoot ||
+                down == left || down == right || down ==shoot || 
+                left == right || left == shoot || right == shoot) {
+                return crow::response(402, "Keys must be unique");
             }
 
             // Exemplu de salvare în baza de date (pseudo-cod)
@@ -181,7 +187,12 @@ void http::Routing::Run()
         }
         });
 
-
+    CROW_ROUTE(m_app, "/generate_code")([]() {
+        return crow::response(200, "Server: Generate code");
+        });
+    CROW_ROUTE(m_app, "/check_code")([]() {
+        return crow::response(200, "Server: check coded!");
+        });
 
 
     //CROW_ROUTE(m_app, "/choose_level").methods(crow::HTTPMethod::POST)([&](const crow::request& req) {

@@ -173,6 +173,47 @@ bool ClientServer::ControlsClient(const std::string& controlsClient)
       }
  }
 
+ void ClientServer::GenerateCode()
+ {
+     try {
+         cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/generate_code" });
+
+         if (response.status_code == 200) {
+             std::cout << "Mesaj de la server: " << response.text << std::endl;
+         }
+         else {
+             std::cerr << "Eroare la conectare. Cod răspuns: " << response.status_code << std::endl;
+         }
+     }
+     catch (const std::exception& ex) {
+         std::cerr << "Excepție la conectare: " << ex.what() << std::endl;
+     }
+ }
+
+ bool ClientServer::CheckCode()
+ {
+     try {
+         auto response = cpr::Post(
+             cpr::Url{ std::string(SERVER_URL) + "/check_code" }//,
+             /*cpr::Body{ "{\"username\":\"" + username + "\"}" },
+             cpr::Header{ {"Content-Type", "application/json"} }*/
+         );
+
+         if (response.status_code == 200) {
+             std::cout << "Login successful: " << response.text << std::endl;
+             return true;
+         }
+         else {
+             std::cerr << "Login failed: " << response.text << " (Code: " << response.status_code << ")" << std::endl;
+             return false;
+         }
+     }
+     catch (const std::exception& ex) {
+         std::cerr << "Exception during login: " << ex.what() << std::endl;
+         return false;
+     }
+ }
+
 
 //void Client::onChooseLevel(const std::string& clientId, const std::string& level) {
 //    // std::string clientId = clientIdInput->text().toStdString();

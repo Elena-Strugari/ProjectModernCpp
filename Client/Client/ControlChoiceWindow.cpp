@@ -509,8 +509,7 @@ void ControlChoiceWindow::OnSaveControls()
     }*/
 
     emit ControlsSet(controls);
-    QMessageBox::information(this, "Success", "Controls have been saved!");
-    this->close();
+    //this->close();
 }
 
 

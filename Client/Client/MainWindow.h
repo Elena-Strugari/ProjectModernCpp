@@ -112,6 +112,10 @@ private slots:
     void HandleRegister(const QString& username);
     void HandleControlsSet(const QMap<QString, QString>& controls);// , const QString& username);
 
+
+    void HandleCreateCode();
+    void HandleCheckCode();
+
     void DisplayMap();
 
 private:
@@ -121,7 +125,7 @@ private:
     void connectServer();
     void StartGameWindoww();
     void LogUserWindow();
-
+    void CreateJoinWindow();
 
 };
 
