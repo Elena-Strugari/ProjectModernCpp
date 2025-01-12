@@ -127,6 +127,11 @@ bool ClientServer::RegisterClient(const std::string& username) {
     }
 }
 
+bool ClientServer::ControlsClient(const std::string& controlsClient)
+{
+    return false;
+}
+
 
 
 //void Client::onChooseLevel(const std::string& clientId, const std::string& level) {

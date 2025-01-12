@@ -43,13 +43,13 @@ public:
     ~ControlChoiceWindow();
 
 signals:
-    void controlsSet(const QMap<QString, QString>& controls);
+    void ControlsSet(const QMap<QString, QString>& controls);
 
 private slots:
-    void onSaveControls();
+    void OnSaveControls();
 
 private:
-    void initializeBackground();
+    void InitializeBackground();
 
     QString clientId; // Salvează clientId pentru referință
     QLineEdit* upInput;

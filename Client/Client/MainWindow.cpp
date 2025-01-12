@@ -174,11 +174,15 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include <QMessageBox>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QJsonValue>
+
 
 #include "ClientServer.h"
 #include "StartGameWindow.h"
 #include "LoginWindow.h"
-
+#include "ControlChoiceWindow.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -254,8 +258,27 @@ void MainWindow::HandleRegister(const QString& username)
 
     if (ClientServer::RegisterClient(stdUsername)) {
         QMessageBox::information(this, "Joined", "Welcome, " + username + "!");
+        ControlChoiceWindow* controlWindow = new ControlChoiceWindow(username);
+        controlWindow->show();
+        connect(controlWindow, &ControlChoiceWindow::ControlsSet, this, &MainWindow::HandleControlsSet);
+
     }
     else {
         QMessageBox::warning(this, "Error", "Registration failed. Please try again.");
     }
+}
+
+void MainWindow::HandleControlsSet(const QMap<QString, QString>& controls)
+{
+    QJsonObject jsonObject;
+    for (auto it = controls.begin(); it != controls.end(); ++it) {
+        jsonObject.insert(it.key(), it.value());
+    }
+    QJsonDocument jsonDoc(jsonObject);
+    QString jsonString = jsonDoc.toJson(QJsonDocument::Compact);
+
+    qDebug() << "Sending controls to server: " << jsonString;
+    std::string controls= jsonString.toUtf8().constData();
+    //MainWindow::ControlsClient(controls);
+
 }

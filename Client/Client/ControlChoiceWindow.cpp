@@ -102,7 +102,7 @@ ControlChoiceWindow::ControlChoiceWindow(const QString& clientId, QWidget* paren
     setWindowTitle("Set Controls");
     resize(600, 400);
 
-    initializeBackground();
+    InitializeBackground();
 
     // Configurare stil și layout
     QString inputStyle =
@@ -180,7 +180,7 @@ ControlChoiceWindow::ControlChoiceWindow(const QString& clientId, QWidget* paren
 //}
 
 
-void ControlChoiceWindow::onSaveControls()
+void ControlChoiceWindow::OnSaveControls()
 {
     qDebug() << "Saving controls...";
 
@@ -202,6 +202,7 @@ void ControlChoiceWindow::onSaveControls()
     //    QMessageBox::warning(this, "Invalid Controls", "Please ensure all directions have unique keys!");
     //    return;
     //}
+    emit ControlsSet(controls);
 
     qDebug() << "Controls validated successfully!";
     QMessageBox::information(this, "Success", "Controls have been saved!");
@@ -216,7 +217,7 @@ ControlChoiceWindow::~ControlChoiceWindow()
     qDebug() << "ControlChoiceWindow destructor called.";
 }
 
-void ControlChoiceWindow::initializeBackground()
+void ControlChoiceWindow::InitializeBackground()
 {
     QImage image(":/StartImage/resources/StartGame.jpg"); // Calea ta din fișierul de resurse
 
