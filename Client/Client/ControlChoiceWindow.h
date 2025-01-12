@@ -34,9 +34,25 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QMap>
+#include <QString>
 #include <QKeyEvent>
 
-class ControlChoiceWindow : public QWidget {
+class CustomLineEdit : public QLineEdit
+{
+    Q_OBJECT
+
+public:
+    explicit CustomLineEdit(QWidget* parent = nullptr);
+
+protected:
+    void keyPressEvent(QKeyEvent* event) override;
+
+signals:
+    void ForwardKeyEvent(QKeyEvent* event);
+};
+
+class ControlChoiceWindow : public QWidget
+{
     Q_OBJECT
 
 public:
@@ -49,19 +65,18 @@ signals:
 private slots:
     void OnSaveControls();
     void OnResetControls();
-
-protected:
-    void keyPressEvent(QKeyEvent* event) override;
+    void HandleForwardedKeyEvent(QKeyEvent* event);
 
 private:
     void InitializeBackground();
+    void HandleKeyEvent(const QString& keyText);
 
-    QString clientId; // Salvează clientId pentru referință
-    QLineEdit* upInput;
-    QLineEdit* downInput;
-    QLineEdit* leftInput;
-    QLineEdit* rightInput;
-    QLineEdit* shootInput;
+    QString clientId;
+    CustomLineEdit* upInput;
+    CustomLineEdit* downInput;
+    CustomLineEdit* leftInput;
+    CustomLineEdit* rightInput;
+    CustomLineEdit* shootInput;
     QPushButton* saveButton;
     QPushButton* resetButton;
     QMap<QString, QString> controls;
