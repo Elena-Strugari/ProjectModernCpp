@@ -14,7 +14,7 @@ public:
     explicit StartGameWindow(QWidget* parent = nullptr);
     ~StartGameWindow();
 
-    void initializeBackground();
+    //void initializeBackground();
 
 signals:
     void startGame(); // Signal emitted to transition to the next window
@@ -24,6 +24,7 @@ private slots:
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;
+    void resizeEvent(QResizeEvent* event)override;
 
 private:
     QLabel* textLabel;

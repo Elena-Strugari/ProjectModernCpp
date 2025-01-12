@@ -205,7 +205,7 @@ void MainWindow::connectServer() {
 void MainWindow::StartGameWindoww() {
     try {
         StartGameWindow* startGameWindow = new StartGameWindow(this);
-        startGameWindow->initializeBackground();
+        //startGameWindow->initializeBackground();
         setCentralWidget(startGameWindow);
         connect(startGameWindow, &StartGameWindow::startGame, this, &MainWindow::onStartGameClicked);
         ClientServer::StartGameWindow();
