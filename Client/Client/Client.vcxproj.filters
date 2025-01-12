@@ -73,6 +73,9 @@
     <ClCompile Include="ControlChoiceWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="LevelSelectionWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientServer.h">
@@ -105,6 +108,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ControlChoiceWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="LevelSelectionWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
