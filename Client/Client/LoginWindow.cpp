@@ -1,22 +1,148 @@
-﻿#include "LoginWindow.h"
+﻿//#include "LoginWindow.h"
+//#include "ClientServer.h"
+//#include "ControlChoiceWindow.h"
+//#include "Client.h"
+//#include <QMessageBox>
+//#include <QVBoxLayout>
+//#include <QPalette>
+//#include <QImage>
+//
+//
+//LoginWindow::LoginWindow(QWidget* parent)
+//    : QWidget(parent)
+//    , promptLabel(new QLabel("Introduceți numele dumneavoastră:", this))
+//    , clientInput(new QLineEdit(this))
+//    , loginButton(new QPushButton("Sign In", this))
+//    , registerButton(new QPushButton("Sign Up", this))
+//{
+//    qDebug() << "LoginWindow constructor called.";
+//
+//    promptLabel->setAlignment(Qt::AlignCenter);
+//    promptLabel->setStyleSheet(
+//        "font-size: 30px; "
+//        "color: white; "
+//        "font-weight: bold;"
+//    );
+//
+//    clientInput->setPlaceholderText("Numele dvs.");
+//    clientInput->setStyleSheet(
+//        "font-size: 16px; "
+//        "color: black; "
+//        "padding: 5px; "
+//        "border: 2px solid white; "
+//        "border-radius: 5px; "
+//        "background-color: rgba(255, 255, 255, 200);"
+//    );
+//
+//    QString buttonStyle =
+//        "font-size: 18px; "
+//        "color: white; "
+//        "background-color: rgba(0, 0, 128, 200); "
+//        "border: 2px solid white; "
+//        "border-radius: 10px; "
+//        "padding: 5px;";
+//    loginButton->setStyleSheet(buttonStyle);
+//    registerButton->setStyleSheet(buttonStyle);
+//
+//    QVBoxLayout* contentLayout = new QVBoxLayout();
+//    contentLayout->addWidget(promptLabel);
+//    contentLayout->addWidget(clientInput);
+//    contentLayout->addWidget(loginButton);
+//    contentLayout->addWidget(registerButton);
+//    contentLayout->setAlignment(Qt::AlignCenter);
+//    contentLayout->setSpacing(10);
+//
+//    QVBoxLayout* mainLayout = new QVBoxLayout(this);
+//    mainLayout->addLayout(contentLayout);
+//    setLayout(mainLayout);
+//
+//    connect(loginButton, &QPushButton::clicked, this, &LoginWindow::OnLoginClicked);
+//    connect(registerButton, &QPushButton::clicked, this, &LoginWindow::OnRegisterClicked);
+//
+//    setWindowTitle("Logare");
+//    resize(800, 600);
+//
+//    InitializeBackground();
+//}
+//
+//void LoginWindow::InitializeBackground()
+//{
+//    QImage image(":/StartImage/resources/StartGame.jpg"); 
+//
+//    if (image.isNull()) {
+//        qDebug() << "Failed to load background image!";
+//        return;
+//    }
+//
+//    QPalette palette;
+//    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+//    setPalette(palette);
+//    setAutoFillBackground(true);
+//}
+//
+//
+//void LoginWindow::resizeEvent(QResizeEvent* event)
+//{
+//    QImage image(":/StartImage/resources/StartGame.jpg"); 
+//
+//    if (!image.isNull())
+//    {
+//        QPalette palette;
+//        palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+//        setPalette(palette);
+//    }
+//    QWidget::resizeEvent(event);
+//}
+//
+//
+//void LoginWindow::OnLoginClicked()
+//{
+//    QString clientId = clientInput->text().trimmed();
+//    if (clientId.isEmpty())
+//    {
+//        QMessageBox::warning(this, "Error", "Please enter a name!");
+//        return;
+//    }
+//    emit Login(clientId); // Emitem semnalul pentru succes
+//}
+//
+//
+//void LoginWindow::OnRegisterClicked()
+//{
+//    QString clientId = clientInput->text().trimmed();
+//
+//    if (clientId.isEmpty())
+//    {
+//        QMessageBox::warning(this, "Error", "Please enter a name!");
+//        return;
+//    }
+//    emit RegisterUser(clientId);
+//    //close();
+//    deleteLater();
+//}
+
+// UPDATED LoginWindow
+
+#include "LoginWindow.h"
 #include "ClientServer.h"
 #include "ControlChoiceWindow.h"
 #include "Client.h"
 #include <QMessageBox>
 #include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QPalette>
 #include <QImage>
 
-
 LoginWindow::LoginWindow(QWidget* parent)
     : QWidget(parent)
-    , promptLabel(new QLabel("Introduceți numele dumneavoastră:", this))
+    , promptLabel(new QLabel("Enter your name:", this))
     , clientInput(new QLineEdit(this))
     , loginButton(new QPushButton("Sign In", this))
     , registerButton(new QPushButton("Sign Up", this))
 {
     qDebug() << "LoginWindow constructor called.";
 
+   
     promptLabel->setAlignment(Qt::AlignCenter);
     promptLabel->setStyleSheet(
         "font-size: 30px; "
@@ -24,7 +150,7 @@ LoginWindow::LoginWindow(QWidget* parent)
         "font-weight: bold;"
     );
 
-    clientInput->setPlaceholderText("Numele dvs.");
+    clientInput->setPlaceholderText("Your name");
     clientInput->setStyleSheet(
         "font-size: 16px; "
         "color: black; "
@@ -33,6 +159,7 @@ LoginWindow::LoginWindow(QWidget* parent)
         "border-radius: 5px; "
         "background-color: rgba(255, 255, 255, 200);"
     );
+    clientInput->setFixedSize(300, 40);
 
     QString buttonStyle =
         "font-size: 18px; "
@@ -40,20 +167,31 @@ LoginWindow::LoginWindow(QWidget* parent)
         "background-color: rgba(0, 0, 128, 200); "
         "border: 2px solid white; "
         "border-radius: 10px; "
-        "padding: 5px;";
+        "padding: 10px;";
     loginButton->setStyleSheet(buttonStyle);
     registerButton->setStyleSheet(buttonStyle);
 
-    QVBoxLayout* contentLayout = new QVBoxLayout();
-    contentLayout->addWidget(promptLabel);
-    contentLayout->addWidget(clientInput);
-    contentLayout->addWidget(loginButton);
-    contentLayout->addWidget(registerButton);
-    contentLayout->setAlignment(Qt::AlignCenter);
-    contentLayout->setSpacing(10);
+    loginButton->setFixedSize(150, 50);
+    registerButton->setFixedSize(150, 50);
+
+    QVBoxLayout* inputLayout = new QVBoxLayout();
+    inputLayout->addWidget(promptLabel, 0, Qt::AlignCenter);
+    inputLayout->addWidget(clientInput, 0, Qt::AlignCenter);
+    inputLayout->setSpacing(20);
+
+    QHBoxLayout* buttonLayout = new QHBoxLayout();
+    buttonLayout->addStretch();
+    buttonLayout->addWidget(loginButton);
+    buttonLayout->addSpacing(20); 
+    buttonLayout->addWidget(registerButton);
+    buttonLayout->addStretch();
 
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
-    mainLayout->addLayout(contentLayout);
+    mainLayout->addLayout(inputLayout);
+    mainLayout->addLayout(buttonLayout);
+    mainLayout->setAlignment(Qt::AlignCenter);
+    mainLayout->setSpacing(30); 
+
     setLayout(mainLayout);
 
     connect(loginButton, &QPushButton::clicked, this, &LoginWindow::OnLoginClicked);
@@ -67,7 +205,7 @@ LoginWindow::LoginWindow(QWidget* parent)
 
 void LoginWindow::InitializeBackground()
 {
-    QImage image(":/StartImage/resources/StartGame.jpg"); 
+    QImage image(":/StartImage/resources/StartGame.jpg");
 
     if (image.isNull()) {
         qDebug() << "Failed to load background image!";
@@ -80,10 +218,9 @@ void LoginWindow::InitializeBackground()
     setAutoFillBackground(true);
 }
 
-
 void LoginWindow::resizeEvent(QResizeEvent* event)
 {
-    QImage image(":/StartImage/resources/StartGame.jpg"); 
+    QImage image(":/StartImage/resources/StartGame.jpg");
 
     if (!image.isNull())
     {
@@ -94,7 +231,6 @@ void LoginWindow::resizeEvent(QResizeEvent* event)
     QWidget::resizeEvent(event);
 }
 
-
 void LoginWindow::OnLoginClicked()
 {
     QString clientId = clientInput->text().trimmed();
@@ -103,9 +239,8 @@ void LoginWindow::OnLoginClicked()
         QMessageBox::warning(this, "Error", "Please enter a name!");
         return;
     }
-    emit Login(clientId); // Emitem semnalul pentru succes
+    emit Login(clientId); 
 }
-
 
 void LoginWindow::OnRegisterClicked()
 {
@@ -117,6 +252,5 @@ void LoginWindow::OnRegisterClicked()
         return;
     }
     emit RegisterUser(clientId);
-    //close();
     deleteLater();
 }
