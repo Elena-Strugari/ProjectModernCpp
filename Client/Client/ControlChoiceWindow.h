@@ -34,6 +34,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QMap>
+#include <QKeyEvent>
 
 class ControlChoiceWindow : public QWidget {
     Q_OBJECT
@@ -48,6 +49,9 @@ signals:
 private slots:
     void OnSaveControls();
 
+protected:
+    void keyPressEvent(QKeyEvent* event) override;
+
 private:
     void InitializeBackground();
 
@@ -56,6 +60,7 @@ private:
     QLineEdit* downInput;
     QLineEdit* leftInput;
     QLineEdit* rightInput;
+    QLineEdit* ShootInput;
     QPushButton* saveButton;
     QMap<QString, QString> controls;
 };
