@@ -120,5 +120,6 @@ void LoginWindow::OnRegisterClicked()
     qDebug() << "Register clicked with name:" << clientId;
     ControlChoiceWindow* controlWindow = new ControlChoiceWindow(clientId);
     controlWindow->show();
-    close();
+    //close();
+    deleteLater();
 }
