@@ -16,7 +16,9 @@ public:
     ~LevelSelectionWindow();
 
 signals:
-    void levelSelected(const QString& level); 
+    void LevelEasy(); 
+    void LevelMediu(); 
+    void LevelHard(); 
 
 private:
     QLabel* titleLabel;        

@@ -193,6 +193,9 @@ void http::Routing::Run()
     CROW_ROUTE(m_app, "/check_code")([]() {
         return crow::response(200, "Server: check coded!");
         });
+    CROW_ROUTE(m_app, "/level")([]() {
+        return crow::response(200, "Server: level corect!");
+        });
 
 
     //CROW_ROUTE(m_app, "/choose_level").methods(crow::HTTPMethod::POST)([&](const crow::request& req) {

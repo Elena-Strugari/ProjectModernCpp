@@ -22,6 +22,8 @@ public:
 	static void GenerateCode();
 	static bool CheckCode();
 
+	static void Level();
+
 	//static bool ControlsClient(const std::string& client, const std::string& controlsClient);
 	static bool ControlsClient( const std::string& controlsClient);
 	static bool verificare();

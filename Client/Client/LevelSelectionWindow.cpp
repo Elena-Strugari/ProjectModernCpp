@@ -59,17 +59,17 @@ LevelSelectionWindow::LevelSelectionWindow(QWidget* parent)
     setLayout(mainLayout);
 
     connect(easyButton, &QPushButton::clicked, this, [this]() {
-        emit levelSelected("Easy");
+        emit LevelEasy();
         this->close(); 
         });
 
     connect(mediumButton, &QPushButton::clicked, this, [this]() {
-        emit levelSelected("Medium");
-        this->close(); 
+        emit LevelMediu();
+        this->close();
         });
 
     connect(hardButton, &QPushButton::clicked, this, [this]() {
-        emit levelSelected("Hard");
+        emit LevelHard();
         this->close();
         });
 }

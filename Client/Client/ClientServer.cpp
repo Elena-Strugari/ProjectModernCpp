@@ -214,6 +214,23 @@ bool ClientServer::ControlsClient(const std::string& controlsClient)
      }
  }
 
+ void ClientServer::Level()
+ {
+     try {
+         cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/level" });
+
+         if (response.status_code == 200) {
+             std::cout << "Mesaj de la server: " << response.text << std::endl;
+         }
+         else {
+             std::cerr << "Eroare la conectare. Cod răspuns: " << response.status_code << std::endl;
+         }
+     }
+     catch (const std::exception& ex) {
+         std::cerr << "Excepție la conectare: " << ex.what() << std::endl;
+     }
+ }
+
 
 //void Client::onChooseLevel(const std::string& clientId, const std::string& level) {
 //    // std::string clientId = clientIdInput->text().toStdString();

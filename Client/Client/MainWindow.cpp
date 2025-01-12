@@ -185,6 +185,7 @@
 #include "LoginWindow.h"
 #include "ControlChoiceWindow.h"
 #include "CreateOrJoinGameWindow.h"
+#include "LevelSelectionWindow.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -305,6 +306,12 @@ void MainWindow::HandleControlsSet(const QMap<QString, QString>& controls)//, co
 void MainWindow::HandleCreateCode()
 {
     QMessageBox::information(this, "Success", "Generate Code");
+    LevelSelectionWindow* levelWindow = new LevelSelectionWindow();
+    levelWindow->show();
+
+    connect(levelWindow, &LevelSelectionWindow::LevelEasy, this, &MainWindow::HandleLevel);
+    connect(levelWindow, &LevelSelectionWindow::LevelMediu, this, &MainWindow::HandleLevel);
+    connect(levelWindow, &LevelSelectionWindow::LevelHard, this, &MainWindow::HandleLevel);
     ClientServer::GenerateCode();
 
 
@@ -313,6 +320,12 @@ void MainWindow::HandleCheckCode()
 {
     QMessageBox::information(this, "Success", "Check Code");
     ClientServer::CheckCode();
+}
+void MainWindow::HandleLevel()
+{
+    QMessageBox::information(this, "Success", "Level");
+    ClientServer::Level();
+
 }
 void MainWindow::DisplayMap() {
     try {

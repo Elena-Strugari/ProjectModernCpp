@@ -115,7 +115,7 @@ private slots:
 
     void HandleCreateCode();
     void HandleCheckCode();
-
+    void HandleLevel();
     void DisplayMap();
 
 private:
