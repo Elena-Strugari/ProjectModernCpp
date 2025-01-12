@@ -6,6 +6,11 @@ public:
     enum class Direction { Up, Down, Left, Right };
 
     explicit MovementObject(GameObject& gameObject);
+    MovementObject(const MovementObject& other);            // Constructor de copiere
+    MovementObject(MovementObject&& other) noexcept;        // Constructor de mutare
+    MovementObject& operator=(const MovementObject& other); // Operator de atribuire prin copiere
+    MovementObject& operator=(MovementObject&& other) noexcept; // Operator de atribuire prin mutare
+
 
     // Common movement logic
     std::pair<uint16_t, uint16_t> GetPosition(bool forBullet = false) const;

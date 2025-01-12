@@ -1,12 +1,14 @@
 ﻿#pragma once
 #include <string>
+#include <optional>
 #include "Database.h"
 #include "MovementObject.h"
 
 class Player {
 public:
-    Player(const std::string& name, Database& db , GameObject&& object);
-    bool ExistPlayer(const std::string& name, Database& db)const;
+    //Player(const std::string& name, Database& db , GameObject&& object);
+    Player(const std::string& name, Database& db);
+    void AddPlayerObject(GameObject&& object);
     // Getters
     const std::string& GetName() const;
     int GetLives() const;
@@ -28,8 +30,11 @@ private:
     std::string m_name;
     int m_score;
     int m_lives;
-    Database& m_database;
     bool m_hasLife=true;
+    Database& m_database;
+
     GameObject m_object;
-    MovementObject m_moveObject;
+    std::optional<MovementObject> m_moveObject;
+    bool m_objectInitialized = false;
+
 };

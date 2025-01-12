@@ -109,7 +109,7 @@ public:
 private slots:
     void onStartGameClicked();
     void HandleLogin(const QString& username);
-   // void HandleRegister(const QString& username);
+    void HandleRegister(const QString& username);
 
 private:
     Ui::MainWindow* ui;

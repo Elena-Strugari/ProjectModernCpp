@@ -100,19 +100,10 @@ void LoginWindow::OnLoginClicked()
     QString clientId = clientInput->text().trimmed();
     if (clientId.isEmpty())
     {
-        QMessageBox::warning(this, "Eroare", "Vă rugăm să introduceți un nume!");
+        QMessageBox::warning(this, "Error", "Please enter a name!");
         return;
     }
     emit Login(clientId); // Emitem semnalul pentru succes
-
-    //if (ClientServer::LoginClient(clientId.toStdString())) {
-    //    emit Login(clientId); // Emitem semnalul pentru succes
-    //    QMessageBox::information(this, "Succes", "Autentificare reușită!");
-    //    close(); // Închide fereastra curentă
-    //}
-    //else {
-    //    QMessageBox::warning(this, "Eroare", "Autentificare eșuată. Verificați numele.");
-    //}
 }
 
 
@@ -122,10 +113,10 @@ void LoginWindow::OnRegisterClicked()
 
     if (clientId.isEmpty())
     {
-        QMessageBox::warning(this, "Eroare", "Vă rugăm să introduceți un nume!");
+        QMessageBox::warning(this, "Error", "Please enter a name!");
         return;
     }
-
+    emit RegisterUser(clientId);
     qDebug() << "Register clicked with name:" << clientId;
     ControlChoiceWindow* controlWindow = new ControlChoiceWindow(clientId);
     controlWindow->show();

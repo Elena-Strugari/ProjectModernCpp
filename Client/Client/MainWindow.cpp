@@ -227,6 +227,7 @@ void MainWindow::LogUserWindow()
         ClientServer::verificare();
 
         connect(loginWindow, &LoginWindow::Login, this, &MainWindow::HandleLogin);
+        connect(loginWindow, &LoginWindow::RegisterUser, this, &MainWindow::HandleRegister);
         close();
         ClientServer::UserWindow();
     }
@@ -245,4 +246,16 @@ void MainWindow::HandleLogin(const QString& username)
         QMessageBox::warning(this, "Error", "Login failed. Please try again.");
     }
 
+}
+
+void MainWindow::HandleRegister(const QString& username)
+{
+    std::string stdUsername = username.toUtf8().constData();
+
+    if (ClientServer::RegisterClient(stdUsername)) {
+        QMessageBox::information(this, "Login", "Welcome, " + username + "!");
+    }
+    else {
+        QMessageBox::warning(this, "Error", "Login failed. Please try again.");
+    }
 }

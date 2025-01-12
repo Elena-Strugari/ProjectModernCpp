@@ -26,7 +26,7 @@ public:
     void InitializeBackground();
 signals:
     void Login(const QString& username); 
-   // void RegisterUser(const QString& username); 
+    void RegisterUser(const QString& username); 
 
 private slots:
     void OnLoginClicked();

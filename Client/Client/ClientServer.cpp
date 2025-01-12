@@ -56,33 +56,7 @@ void ClientServer::UserWindow()
     }
 
 }
-bool ClientServer::LoginClient(const std::string& username) {
-    try {
-        if (username.empty()) {
-            std::cerr << "Error: Username is empty!" << std::endl;
-            return false;
-        }
 
-        auto response = cpr::Post(
-            cpr::Url{ std::string(SERVER_URL) + "/login" },
-            cpr::Body{ "{\"username\":\"" + username + "\"}" },
-            cpr::Header{ {"Content-Type", "application/json"} }
-        );
-
-        if (response.status_code == 200) {
-            std::cout << "Login successful: " << response.text << std::endl;
-            return true;
-        }
-        else {
-            std::cerr << "Login failed: " << response.text << " (Code: " << response.status_code << ")" << std::endl;
-            return false;
-        }
-    }
-    catch (const std::exception& ex) {
-        std::cerr << "Exception during login: " << ex.what() << std::endl;
-        return false;
-    }
-}
 bool ClientServer::verificare()
 {
     QString name = "John";
@@ -106,59 +80,36 @@ bool ClientServer::verificare()
     }
 
 }
+bool ClientServer::LoginClient(const std::string& username) {
+    try {
+        auto response = cpr::Post(
+            cpr::Url{ std::string(SERVER_URL) + "/login" },
+            cpr::Body{ "{\"username\":\"" + username + "\"}" },
+            cpr::Header{ {"Content-Type", "application/json"} }
+        );
+
+        if (response.status_code == 200) {
+            std::cout << "Login successful: " << response.text << std::endl;
+            return true;
+        }
+        else {
+            std::cerr << "Login failed: " << response.text << " (Code: " << response.status_code << ")" << std::endl;
+            return false;
+        }
+    }
+    catch (const std::exception& ex) {
+        std::cerr << "Exception during login: " << ex.what() << std::endl;
+        return false;
+    }
+}
 
 
-//bool ClientServer::LoginClient(const std::string& username) {
-//    
-//    // Trimite cererea POST către server
-//    auto response = cpr::Post(
-//        cpr::Url{ std::string(SERVER_URL) + "/login" },
-//        cpr::Payload{ {"client_id", username} }
-//
-//        /*cpr::Body{ "{\"username\":\"" + username + "\"}" },
-//        cpr::Header{ {"Content-Type", "application/json"} }*/
-//    );
-//
-//    // Verifică răspunsul serverului
-//    if (response.status_code == 200) {
-//        std::cout << "Login successful: " << response.text << std::endl;
-//        return true; // Login reușit
-//    }
-//    else {
-//        std::cerr << "Login failed: " << response.text << " (Code: " << response.status_code << ")" << std::endl;
-//        return false; // Login eșuat
-//    }
-//}
-
-
-//bool ClientServer::loginClient(const std::string& clientId) {
-//    try {
-//
-//        cpr::Response response = cpr::Post(
-//            cpr::Url{ "http://localhost:8080/login" },
-//            cpr::Payload{ {"client_id", clientId} }
-//        );
-//
-//        if (response.status_code == 200) {
-//            qDebug() << "Login successful: " << QString::fromStdString(response.text);
-//            return true;
-//        }
-//        else {
-//            qDebug() << "Login failed. Status code: " << response.status_code;
-//            return false;
-//        }
-//    }
-//    catch (const std::exception& ex) {
-//        qDebug() << "Exception during login: " << ex.what();
-//        return false;
-//    }
-//}
-
-bool ClientServer::registerClient(const std::string& clientId) {
+bool ClientServer::RegisterClient(const std::string& username) {
     try {
         cpr::Response response = cpr::Post(
-            cpr::Url{ "http://localhost:8080/register" },
-            cpr::Payload{ {"client_id", clientId} }
+            cpr::Url{ std::string(SERVER_URL) + "/register" },
+            cpr::Body{ "{\"username\":\"" + username + "\"}" },
+            cpr::Header{ {"Content-Type", "application/json"} }
         );
 
         if (response.status_code == 200) {

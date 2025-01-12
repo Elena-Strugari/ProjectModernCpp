@@ -14,7 +14,7 @@ public:
 
 	static bool LoginClient(const std::string& clientId);
 
-	static bool registerClient(const std::string& clientId);
+	static bool RegisterClient(const std::string& clientId);
 
 	static bool verificare();
 
