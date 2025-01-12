@@ -88,6 +88,13 @@
 #include <QDebug>
 #include <QLabel>
 
+#include "ControlChoiceWindow.h"
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QMessageBox>
+#include <QDebug>
+#include <QLabel>
+
 ControlChoiceWindow::ControlChoiceWindow(const QString& clientId, QWidget* parent)
     : QWidget(parent) // Setăm parent pentru ca Qt să gestioneze memoria
     , clientId(clientId)
@@ -97,6 +104,7 @@ ControlChoiceWindow::ControlChoiceWindow(const QString& clientId, QWidget* paren
     , rightInput(new QLineEdit(this))
     , shootInput(new QLineEdit(this))
     , saveButton(new QPushButton("Save Controls", this))
+    , resetButton(new QPushButton("Reset Controls", this)) // Adăugăm butonul Reset
 {
     qDebug() << "ControlChoiceWindow constructor called for user:" << clientId;
 
@@ -142,7 +150,7 @@ ControlChoiceWindow::ControlChoiceWindow(const QString& clientId, QWidget* paren
     centerLayout->addWidget(new QLabel("Set Your Controls", this), 0, Qt::AlignCenter);
     centerLayout->addWidget(downInput, 0, Qt::AlignCenter);
 
-    QVBoxLayout* shootLayout = new QVBoxLayout();  // Layout pentru ShootInput
+    QVBoxLayout* shootLayout = new QVBoxLayout(); // Layout pentru ShootInput
     shootLayout->addStretch();
     shootLayout->addWidget(shootInput);
     shootLayout->addStretch();
@@ -153,11 +161,36 @@ ControlChoiceWindow::ControlChoiceWindow(const QString& clientId, QWidget* paren
     inputsLayout->addLayout(shootLayout);
 
     mainLayout->addLayout(inputsLayout);
-    mainLayout->addWidget(saveButton, 0, Qt::AlignCenter);
+
+    // Layout pentru butoanele Save și Reset
+    QHBoxLayout* buttonLayout = new QHBoxLayout();
+    buttonLayout->addStretch();
+    buttonLayout->addWidget(resetButton); // Adăugăm Reset Button
+    buttonLayout->addWidget(saveButton);  // Adăugăm Save Button
+    mainLayout->addLayout(buttonLayout); // Adăugăm butoanele în layout-ul principal
 
     setLayout(mainLayout);
 
     connect(saveButton, &QPushButton::clicked, this, &ControlChoiceWindow::OnSaveControls);
+    connect(resetButton, &QPushButton::clicked, this, &ControlChoiceWindow::OnResetControls); // Conectăm butonul Reset
+}
+
+void ControlChoiceWindow::OnResetControls()
+{
+    // Resetăm câmpurile de input și reactivăm widget-urile
+    upInput->clear();
+    downInput->clear();
+    leftInput->clear();
+    rightInput->clear();
+    shootInput->clear();
+
+    upInput->setEnabled(true);
+    downInput->setEnabled(true);
+    leftInput->setEnabled(true);
+    rightInput->setEnabled(true);
+    shootInput->setEnabled(true);
+
+    qDebug() << "Controls have been reset.";
 }
 
 //void ControlChoiceWindow::onSaveControls()
@@ -243,54 +276,45 @@ void ControlChoiceWindow::keyPressEvent(QKeyEvent* event)
     QString keyText;
 
     switch (event->key()) {
-    case Qt::Key_Up: keyText = "ArrowUp"; event->accept(); break;
-    case Qt::Key_Down: keyText = "ArrowDown"; event->accept(); break;
-    case Qt::Key_Left: keyText = "ArrowLeft"; event->accept(); break;
-    case Qt::Key_Right: keyText = "ArrowRight"; event->accept(); break;
-
-    case Qt::Key_Enter: keyText = "Enter"; event->accept(); break;
-    case Qt::Key_Alt: keyText = "Alt"; event->accept(); break;
+    case Qt::Key_Up: keyText = "ArrowUp"; break;
+    case Qt::Key_Down: keyText = "ArrowDown"; break;
+    case Qt::Key_Left: keyText = "ArrowLeft"; break;
+    case Qt::Key_Right: keyText = "ArrowRight"; break;
+    case Qt::Key_Enter: keyText = "Enter"; break;
+    case Qt::Key_Alt: keyText = "Alt"; break;
     case Qt::Key_Shift: keyText = "Shift"; break;
     case Qt::Key_Control: keyText = "Ctrl"; break;
     case Qt::Key_Space: keyText = "Space"; break;
-
-    /*case Qt::Key_F1: keyText = "F1"; break;
-    case Qt::Key_F2: keyText = "F2"; break;
-    case Qt::Key_F3: keyText = "F3"; break;
-    case Qt::Key_F4: keyText = "F4"; break;
-    case Qt::Key_F5: keyText = "F5"; break;
-    case Qt::Key_F6: keyText = "F6"; break;
-    case Qt::Key_F7: keyText = "F7"; break;
-    case Qt::Key_F8: keyText = "F8"; break;
-    case Qt::Key_F9: keyText = "F9"; break;
-    case Qt::Key_F10: keyText = "F10"; break;
-    case Qt::Key_F11: keyText = "F11"; break;
-    case Qt::Key_F12: keyText = "F12"; break;*/
-
-    
-    default: keyText = QKeySequence(event->key()).toString(); break;  // Pentru litere, cifre și alte taste
+    default: keyText = QKeySequence(event->key()).toString(); break; // Pentru alte taste
     }
+
+    qDebug() << "Key pressed:" << event->key();
 
     if (!keyText.isEmpty()) {
-        // Afișăm tasta apăsată în linia de editare
-        // În funcție de focus-ul pe care îl are linia de editare, setăm textul respectiv
-        if (upInput->hasFocus()) {
+        // Verificăm dacă tasta nu este deja setată și dacă linia de editare are focus
+        if (upInput->hasFocus() && upInput->text().isEmpty()) {
             upInput->setText(keyText);
+            upInput->setEnabled(false); // Blochează câmpul
         }
-        else if (downInput->hasFocus()) {
+        else if (downInput->hasFocus() && downInput->text().isEmpty()) {
             downInput->setText(keyText);
+            downInput->setEnabled(false); // Blochează câmpul
         }
-        else if (leftInput->hasFocus()) {
+        else if (leftInput->hasFocus() && leftInput->text().isEmpty()) {
             leftInput->setText(keyText);
+            leftInput->setEnabled(false); // Blochează câmpul
         }
-        else if (rightInput->hasFocus()) {
+        else if (rightInput->hasFocus() && rightInput->text().isEmpty()) {
             rightInput->setText(keyText);
+            rightInput->setEnabled(false); // Blochează câmpul
         }
-        else if (shootInput->hasFocus()) {
+        else if (shootInput->hasFocus() && shootInput->text().isEmpty()) {
             shootInput->setText(keyText);
+            shootInput->setEnabled(false); // Blochează câmpul
         }
     }
 
-    event->accept();  // Prevenim comportamentul implicit (de exemplu, setarea textului)
+    event->accept(); // Prevenim comportamentul implicit
 }
+
 

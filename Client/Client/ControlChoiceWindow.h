@@ -48,6 +48,7 @@ signals:
 
 private slots:
     void OnSaveControls();
+    void OnResetControls();
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;
@@ -62,6 +63,7 @@ private:
     QLineEdit* rightInput;
     QLineEdit* shootInput;
     QPushButton* saveButton;
+    QPushButton* resetButton;
     QMap<QString, QString> controls;
 };
 
