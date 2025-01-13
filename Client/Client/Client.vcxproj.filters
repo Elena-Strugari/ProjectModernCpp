@@ -79,6 +79,9 @@
     <ClCompile Include="CreateOrJoinGameWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="InGameSettingsWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientServer.h">
@@ -97,6 +100,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ClientMap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InGameSettingsWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
