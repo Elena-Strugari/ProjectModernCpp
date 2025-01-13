@@ -71,8 +71,14 @@
 #include <QPalette>
 
 
+//ClientMap::ClientMap(QWidget* parent)
+//    : parentWidget(parent) {}
+
 ClientMap::ClientMap(QWidget* parent)
-    : parentWidget(parent) {}
+    : QWidget(parent), parentWidget(parent)
+{
+    InitializeBackground();
+}
 
 void ClientMap::DisplayMap(const QJsonObject& mapObject) {
     int width = mapObject["width"].toInt();

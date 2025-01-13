@@ -115,19 +115,36 @@
 //	return 0;
 //}
 
-#include "MainWindow.h"
-#include <QApplication>
+//#include "MainWindow.h"
+//#include <QApplication>
+//
+//
+//int main(int argc, char* argv[])
+//{
+//    QApplication app(argc, argv);
+//
+//    MainWindow mainWindow;
+//    mainWindow.show();
+//
+//    return app.exec();
+//}
 
+
+#include <QApplication>
+#include <QDebug>
+#include "GameMapWindow.h"
 
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
-    MainWindow mainWindow;
-    mainWindow.show();
+    // Creăm fereastra GameMapWindow
+    GameMapWindow* gameMapWindow = new GameMapWindow();
 
+    // Afișăm fereastra
+    gameMapWindow->show();
+
+    // Rulăm aplicația
     return app.exec();
 }
-
-
 

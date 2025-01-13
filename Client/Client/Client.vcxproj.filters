@@ -82,6 +82,9 @@
     <ClCompile Include="InGameSettingsWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GameMapWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientServer.h">
@@ -97,9 +100,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MapCell.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ClientMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="InGameSettingsWindow.h">
@@ -123,6 +123,12 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="CreateOrJoinGameWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ClientMap.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="GameMapWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

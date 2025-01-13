@@ -98,7 +98,8 @@ class ClientMap : public QWidget
     Q_OBJECT
 
 public:
-    explicit ClientMap(QWidget* parent);
+    //explicit ClientMap(QWidget* parent);
+    explicit ClientMap(QWidget* parent = nullptr);
 
     void DisplayMap(const QJsonObject& mapObject);
 protected:
