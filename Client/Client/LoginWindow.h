@@ -13,7 +13,7 @@
 //#include <QLabel>
 #include <QPalette>
 #include <QResizeEvent>
-
+#include "BackgroundHelper.h"
 
 class Client; // Forward declaration
 
@@ -23,7 +23,7 @@ class LoginWindow :public QWidget
 
 public:
     explicit LoginWindow(QWidget* parent = nullptr);
-    void InitializeBackground();
+    //void InitializeBackground();
 signals:
     void Login(const QString& username); 
     void RegisterUser(const QString& username); 

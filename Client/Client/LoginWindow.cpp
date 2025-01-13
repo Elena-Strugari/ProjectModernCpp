@@ -142,7 +142,7 @@ LoginWindow::LoginWindow(QWidget* parent)
 {
     qDebug() << "LoginWindow constructor called.";
 
-   
+   BackgroundHelper::InitializeBackground(this);
     promptLabel->setAlignment(Qt::AlignCenter);
     promptLabel->setStyleSheet(
         "font-size: 30px; "
@@ -200,23 +200,9 @@ LoginWindow::LoginWindow(QWidget* parent)
     setWindowTitle("Logare");
     resize(800, 600);
 
-    InitializeBackground();
+    
 }
 
-void LoginWindow::InitializeBackground()
-{
-    QImage image(":/StartImage/resources/StartGame.jpg");
-
-    if (image.isNull()) {
-        qDebug() << "Failed to load background image!";
-        return;
-    }
-
-    QPalette palette;
-    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
-    setPalette(palette);
-    setAutoFillBackground(true);
-}
 
 void LoginWindow::resizeEvent(QResizeEvent* event)
 {

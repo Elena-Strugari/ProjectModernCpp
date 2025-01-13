@@ -6,6 +6,7 @@
 #include <QPushButton>
 #include <QKeyEvent>
 #include <QDir>
+#include "BackgroundHelper.h"
 class StartGameWindow : public QWidget
 {
     Q_OBJECT
@@ -27,7 +28,7 @@ protected:
 private:
     QLabel* textLabel;
     QPushButton* startGameButton;
-    void InitializeBackground();
+    //void InitializeBackground();
 };
 
 #endif // STARTGAMEWINDOW_H

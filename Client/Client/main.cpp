@@ -115,45 +115,39 @@
 //	return 0;
 //}
 
-//#include "MainWindow.h"
+#include "MainWindow.h"
+#include <QApplication>
+
+
+int main(int argc, char* argv[])
+{
+    QApplication app(argc, argv);
+
+    MainWindow mainWindow;
+    mainWindow.show();
+
+    return app.exec();
+}
+
 //#include <QApplication>
+//#include "StartGameWindow.h"
+//#include <QDebug>
 //
-//
-//int main(int argc, char* argv[])
-//{
+//int main(int argc, char* argv[]) {
 //    QApplication app(argc, argv);
 //
-//    MainWindow mainWindow;
-//    mainWindow.show();
+//    StartGameWindow startGameWindow;
+//
+//    // Conectează semnalul startGame pentru a afișa un mesaj de debug
+//    QObject::connect(&startGameWindow, &StartGameWindow::startGame, []() {
+//        qDebug() << "Start Game triggered!";
+//        });
+//
+//    startGameWindow.show();
 //
 //    return app.exec();
 //}
 
-#include <QApplication>
-#include "LevelSelectionWindow.h"
-
-int main(int argc, char* argv[]) {
-    QApplication app(argc, argv);
-
-    LevelSelectionWindow levelSelectionWindow;
-
-    // Conectează semnalele la mesaje informative pentru testare
-    QObject::connect(&levelSelectionWindow, &LevelSelectionWindow::LevelEasy, []() {
-        qDebug() << "Easy level selected!";
-        });
-
-    QObject::connect(&levelSelectionWindow, &LevelSelectionWindow::LevelMediu, []() {
-        qDebug() << "Medium level selected!";
-        });
-
-    QObject::connect(&levelSelectionWindow, &LevelSelectionWindow::LevelHard, []() {
-        qDebug() << "Hard level selected!";
-        });
-
-    levelSelectionWindow.show();
-
-    return app.exec();
-}
 
 
 

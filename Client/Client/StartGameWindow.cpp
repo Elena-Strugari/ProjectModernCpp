@@ -295,7 +295,7 @@ StartGameWindow::StartGameWindow(QWidget* parent)
     qDebug() << "StartGameWindow constructor called.";
     qDebug() << "Current working directory:" << QDir::currentPath();
 
-    InitializeBackground();
+   BackgroundHelper:: InitializeBackground(this);
 
     setAutoFillBackground(true);
     textLabel->setAlignment(Qt::AlignCenter);
@@ -326,21 +326,21 @@ StartGameWindow::StartGameWindow(QWidget* parent)
 }
 
 
-void StartGameWindow::InitializeBackground()
-{
-    QImage image(":/StartImage/resources/StartGame.jpg"); 
-
-    if (image.isNull()) 
-    {
-        qDebug() << "Failed to load background image!";
-        return;
-    }
-
-    QPalette palette;
-    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
-    setPalette(palette);
-    setAutoFillBackground(true);
-}
+//void StartGameWindow::InitializeBackground()
+//{
+//    QImage image(":/StartImage/resources/StartGame.jpg"); 
+//
+//    if (image.isNull()) 
+//    {
+//        qDebug() << "Failed to load background image!";
+//        return;
+//    }
+//
+//    QPalette palette;
+//    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+//    setPalette(palette);
+//    setAutoFillBackground(true);
+//}
 
 
 void StartGameWindow::triggerStartGame()
