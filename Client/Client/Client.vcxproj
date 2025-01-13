@@ -121,6 +121,7 @@
     <ClCompile Include="ControlChoiceWindow.cpp" />
     <ClCompile Include="CreateOrJoinGameWindow.cpp" />
     <ClCompile Include="GameMapWindow.cpp" />
+    <ClCompile Include="GameOverWindow.cpp" />
     <ClCompile Include="GeneralSettingsWindow.cpp" />
     <ClCompile Include="InGameSettingsWindow.cpp" />
     <ClCompile Include="LevelSelectionWindow.cpp" />
@@ -133,6 +134,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="VictoryWindow.cpp" />
     <QtRcc Include="Client.qrc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
@@ -148,6 +150,7 @@
     <QtUic Include="MainWindow.ui" />
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="VictoryWindow.h" />
     <QtMoc Include="ClientMap.h" />
     <ClInclude Include="BackgroundHelper.h" />
     <ClInclude Include="ClientServer.h" />
@@ -158,6 +161,7 @@
     <QtMoc Include="GameMapWindow.h" />
     <QtMoc Include="GeneralSettingsWindow.h" />
     <QtMoc Include="InGameSettingsWindow.h" />
+    <QtMoc Include="GameOverWindow.h" />
     <ClInclude Include="MapCell.h" />
     <ClInclude Include="NoGreenScreen.h" />
     <ClInclude Include="DisplayElements.h" />
