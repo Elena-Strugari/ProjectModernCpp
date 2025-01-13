@@ -15,7 +15,7 @@ LevelSelectionWindow::LevelSelectionWindow(QWidget* parent)
     setWindowTitle("Select Level");
     resize(600, 400);
 
-    initializeBackground();
+    BackgroundHelper::InitializeBackground(this);
 
     titleLabel->setAlignment(Qt::AlignCenter);
     titleLabel->setStyleSheet(
@@ -76,21 +76,21 @@ LevelSelectionWindow::LevelSelectionWindow(QWidget* parent)
 
 LevelSelectionWindow::~LevelSelectionWindow() = default;
 
-void LevelSelectionWindow::initializeBackground()
-{
-    QImage image(":/StartImage/resources/StartGame.jpg"); 
-
-    if (image.isNull())
-    {
-        qDebug() << "Failed to load background image!";
-        return;
-    }
-
-    QPalette palette;
-    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
-    setPalette(palette);
-    setAutoFillBackground(true);
-}
+//void LevelSelectionWindow::initializeBackground()
+//{
+//    QImage image(":/StartImage/resources/StartGame.jpg"); 
+//
+//    if (image.isNull())
+//    {
+//        qDebug() << "Failed to load background image!";
+//        return;
+//    }
+//
+//    QPalette palette;
+//    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+//    setPalette(palette);
+//    setAutoFillBackground(true);
+//}
 void LevelSelectionWindow::resizeEvent(QResizeEvent* event)
 {
     QImage image(":/StartImage/resources/StartGame.jpg");

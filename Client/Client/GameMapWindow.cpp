@@ -15,7 +15,7 @@ GameMapWindow::GameMapWindow(QWidget* parent)
     resize(1000, 700);
 
     // Initializează fundalul
-    InitializeBackground();
+    BackgroundHelper::InitializeBackground(this);
 
     // Configurare titlu
     titleLabel->setAlignment(Qt::AlignCenter);
@@ -59,29 +59,30 @@ GameMapWindow::GameMapWindow(QWidget* parent)
 
 GameMapWindow::~GameMapWindow() = default;
 
-void GameMapWindow::InitializeBackground()
+void GameMapWindow::resizeEvent(QResizeEvent* event)
 {
+    // Ajustează fundalul
     QImage image(":/StartImage/resources/StartGame.jpg");
 
-    if (image.isNull()) {
-        qDebug() << "Failed to load background image!";
-        return;
+    if (!image.isNull())
+    {
+        QPalette palette;
+        palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+        setPalette(palette);
     }
 
-    QPalette palette;
-    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
-    setPalette(palette);
-    setAutoFillBackground(true);
+    // Ajustează dimensiunea widget-ului map
+    adjustMapWidgetSize(event);
+
+    QWidget::resizeEvent(event);
 }
 
-void GameMapWindow::resizeEvent(QResizeEvent* event)
+void GameMapWindow::adjustMapWidgetSize(QResizeEvent* event)
 {
     // Ajustăm dimensiunea mapWidget proporțional cu fereastra
     int widgetWidth = width() * 0.8;  // 80% din lățimea ferestrei
     int widgetHeight = height() * 0.6; // 60% din înălțimea ferestrei
     mapWidget->setFixedSize(widgetWidth, widgetHeight);
-
-    QWidget::resizeEvent(event);
 }
 
 void GameMapWindow::onSettingsClicked()

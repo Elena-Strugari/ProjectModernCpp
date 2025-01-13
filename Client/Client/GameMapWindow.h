@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QLabel>
-
+#include "BackgroundHelper.h"
 class GameMapWindow : public QWidget
 {
     Q_OBJECT
@@ -15,11 +15,13 @@ public:
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
+private:
+    void adjustMapWidgetSize(QResizeEvent* event);
 
 private:
-    void InitializeBackground();
+    //void InitializeBackground();
 
-private slots:
+public slots:
     void onSettingsClicked();
 
 private:

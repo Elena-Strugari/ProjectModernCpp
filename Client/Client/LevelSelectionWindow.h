@@ -6,7 +6,7 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QString>
-
+#include "BackgroundHelper.h"
 class LevelSelectionWindow : public QWidget
 {
     Q_OBJECT
@@ -26,7 +26,7 @@ private:
     QPushButton* mediumButton;  
     QPushButton* hardButton;    
 
-    void initializeBackground(); 
+    //void initializeBackground(); 
 protected:
     void resizeEvent(QResizeEvent* event)override;
 };

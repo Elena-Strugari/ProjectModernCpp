@@ -128,54 +128,33 @@
 //
 //    return app.exec();
 //}
-// 
-// 
-//#include <QApplication>
-//#include "ControlChoiceWindow.h"
-//#include <QDebug>
-//
-//int main(int argc, char* argv[])
-//{
-//    QApplication app(argc, argv);
-//
-//    QString clientId = "TestUser";
-//
-//    // Creăm fereastra ControlChoiceWindow
-//    ControlChoiceWindow* controlWindow = new ControlChoiceWindow(clientId);
-//
-//    // Conectăm semnalul controlsSet pentru a verifica dacă controalele sunt salvate corect
-//    QObject::connect(controlWindow, &ControlChoiceWindow::ControlsSet, [](const QMap<QString, QString>& controls) {
-//        qDebug() << "Controls saved:" << controls;
-//        });
-//
-//    controlWindow->show();
-//
-//    return app.exec();
-//}
+
 #include <QApplication>
-#include <QDebug>
-#include "CreateOrJoinGameWindow.h"
+#include "LevelSelectionWindow.h"
 
 int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
 
-    // Creează instanța ferestrei CreateOrJoinGameWindow
-    CreateOrJoinGameWindow* window = new CreateOrJoinGameWindow();
+    LevelSelectionWindow levelSelectionWindow;
 
-    // Conectează semnalele pentru a testa acțiunile butoanelor
-    QObject::connect(window, &CreateOrJoinGameWindow::Generate, []() {
-        qDebug() << "Generate Code button clicked.";
+    // Conectează semnalele la mesaje informative pentru testare
+    QObject::connect(&levelSelectionWindow, &LevelSelectionWindow::LevelEasy, []() {
+        qDebug() << "Easy level selected!";
         });
 
-    QObject::connect(window, &CreateOrJoinGameWindow::CheckCode, []() {
-        qDebug() << "Check Code button clicked.";
+    QObject::connect(&levelSelectionWindow, &LevelSelectionWindow::LevelMediu, []() {
+        qDebug() << "Medium level selected!";
         });
 
-    // Afișează fereastra
-    window->show();
+    QObject::connect(&levelSelectionWindow, &LevelSelectionWindow::LevelHard, []() {
+        qDebug() << "Hard level selected!";
+        });
+
+    levelSelectionWindow.show();
 
     return app.exec();
 }
+
 
 
 

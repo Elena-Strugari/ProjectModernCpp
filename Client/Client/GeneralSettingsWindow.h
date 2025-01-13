@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QSlider>
-
+#include "BackgroundHelper.h"
 class GeneralSettingsWindow : public QWidget
 {
     Q_OBJECT
@@ -16,9 +16,10 @@ private slots:
     void onSaveSettings();
     void onEditControls();
     void onLogout();
-
+protected:
+    void resizeEvent(QResizeEvent* event) override;
 private:
-    void InitializeBackground();
+    //void InitializeBackground();
 
     QSlider* musicVolumeSlider;
     QPushButton* controlSettingsButton;

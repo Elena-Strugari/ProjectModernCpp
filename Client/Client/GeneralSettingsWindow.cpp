@@ -16,7 +16,7 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
     resize(800, 600);
 
     // Initializează fundalul
-    InitializeBackground();
+   BackgroundHelper:: InitializeBackground(this);
 
     // Configurare slider de volum
     musicVolumeSlider->setRange(0, 100);
@@ -83,20 +83,20 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
     connect(logoutButton, &QPushButton::clicked, this, &GeneralSettingsWindow::onLogout);
 }
 
-void GeneralSettingsWindow::InitializeBackground()
-{
-    QImage image(":/StartImage/resources/StartGame.jpg");
-
-    if (image.isNull()) {
-        qDebug() << "Failed to load background image!";
-        return;
-    }
-
-    QPalette palette;
-    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
-    setPalette(palette);
-    setAutoFillBackground(true);
-}
+//void GeneralSettingsWindow::InitializeBackground()
+//{
+//    QImage image(":/StartImage/resources/StartGame.jpg");
+//
+//    if (image.isNull()) {
+//        qDebug() << "Failed to load background image!";
+//        return;
+//    }
+//
+//    QPalette palette;
+//    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+//    setPalette(palette);
+//    setAutoFillBackground(true);
+//}
 
 void GeneralSettingsWindow::onSaveSettings()
 {
@@ -111,4 +111,16 @@ void GeneralSettingsWindow::onEditControls()
 void GeneralSettingsWindow::onLogout()
 {
     QMessageBox::information(this, "Delete Account", "Delete Account button clicked.");
+}
+void GeneralSettingsWindow::resizeEvent(QResizeEvent* event)
+{
+    QImage image(":/StartImage/resources/StartGame.jpg");
+
+    if (!image.isNull())
+    {
+        QPalette palette;
+        palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+        setPalette(palette);
+    }
+    QWidget::resizeEvent(event);
 }
