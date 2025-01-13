@@ -85,6 +85,9 @@
     <ClCompile Include="GameMapWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneralSettingsWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientServer.h">
@@ -129,6 +132,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="GameMapWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="GeneralSettingsWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

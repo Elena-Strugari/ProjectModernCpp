@@ -121,6 +121,7 @@
     <ClCompile Include="ControlChoiceWindow.cpp" />
     <ClCompile Include="CreateOrJoinGameWindow.cpp" />
     <ClCompile Include="GameMapWindow.cpp" />
+    <ClCompile Include="GeneralSettingsWindow.cpp" />
     <ClCompile Include="InGameSettingsWindow.cpp" />
     <ClCompile Include="LevelSelectionWindow.cpp" />
     <ClCompile Include="MainWindow.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="GameEntity.h" />
     <QtMoc Include="LevelSelectionWindow.h" />
     <QtMoc Include="GameMapWindow.h" />
+    <QtMoc Include="GeneralSettingsWindow.h" />
     <ClInclude Include="InGameSettingsWindow.h" />
     <ClInclude Include="MapCell.h" />
     <ClInclude Include="NoGreenScreen.h" />

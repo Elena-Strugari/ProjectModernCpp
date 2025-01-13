@@ -132,19 +132,15 @@
 
 #include <QApplication>
 #include <QDebug>
-#include "GameMapWindow.h"
+#include "GeneralSettingsWindow.h"
 
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
-    // Creăm fereastra GameMapWindow
-    GameMapWindow* gameMapWindow = new GameMapWindow();
+    GeneralSettingsWindow generalSettingsWindow;
+    generalSettingsWindow.show();
 
-    // Afișăm fereastra
-    gameMapWindow->show();
-
-    // Rulăm aplicația
     return app.exec();
 }
 
