@@ -105,9 +105,6 @@
     <ClInclude Include="MapCell.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InGameSettingsWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BackgroundHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -138,6 +135,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="GeneralSettingsWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="InGameSettingsWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
