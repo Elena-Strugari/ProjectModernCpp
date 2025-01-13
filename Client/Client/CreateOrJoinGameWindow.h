@@ -7,7 +7,7 @@
 #include <QLineEdit>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
-
+#include "BackgroundHelper.h"
 class CreateOrJoinGameWindow : public QWidget {
     Q_OBJECT
 
@@ -18,9 +18,10 @@ public:
 signals:
     void Generate();
     void CheckCode(); 
-
+protected:
+    void resizeEvent(QResizeEvent* event);
 private:
-    void InitializeBackground();
+    //void InitializeBackground();
 
     QLabel* titleLabel;
     QPushButton* generateCodeButton;

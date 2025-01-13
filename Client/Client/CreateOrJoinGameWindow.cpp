@@ -9,7 +9,7 @@ CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
     setWindowTitle("Create Game or Join Game");
     resize(600, 400);
 
-    InitializeBackground();
+   BackgroundHelper:: InitializeBackground(this);
 
     titleLabel->setAlignment(Qt::AlignCenter);
     titleLabel->setStyleSheet(
@@ -80,20 +80,31 @@ CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
         });
 }
 
-void CreateOrJoinGameWindow::InitializeBackground()
+//void CreateOrJoinGameWindow::InitializeBackground()
+//{
+//    QImage image(":/StartImage/resources/StartGame.jpg"); // Calea ta pentru fundal
+//
+//    if (image.isNull())
+//    {
+//        qDebug() << "Failed to load background image!";
+//        return;
+//    }
+//
+//    QPalette palette;
+//    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+//    setPalette(palette);
+//    setAutoFillBackground(true);
+//}
+void CreateOrJoinGameWindow::resizeEvent(QResizeEvent* event)
 {
-    QImage image(":/StartImage/resources/StartGame.jpg"); // Calea ta pentru fundal
+    QImage image(":/StartImage/resources/StartGame.jpg");
 
-    if (image.isNull())
+    if (!image.isNull())
     {
-        qDebug() << "Failed to load background image!";
-        return;
+        QPalette palette;
+        palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+        setPalette(palette);
     }
-
-    QPalette palette;
-    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
-    setPalette(palette);
-    setAutoFillBackground(true);
+    QWidget::resizeEvent(event);
 }
-
 CreateOrJoinGameWindow::~CreateOrJoinGameWindow() = default;

@@ -361,7 +361,7 @@ ControlChoiceWindow::ControlChoiceWindow(const QString& clientId, QWidget* paren
     setWindowTitle("Set Controls");
     resize(600, 400);
 
-    InitializeBackground();
+    BackgroundHelper::InitializeBackground(this);
 
     QString inputStyle =
         "font-size: 20px; "
@@ -530,21 +530,21 @@ void ControlChoiceWindow::OnResetControls()
     qDebug() << "Controls have been reset.";
 }
 
-void ControlChoiceWindow::InitializeBackground()
-{
-    QImage image(":/StartImage/resources/StartGame.jpg");
-
-    if (image.isNull())
-    {
-        qDebug() << "Failed to load background image!";
-        return;
-    }
-
-    QPalette palette;
-    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
-    setPalette(palette);
-    setAutoFillBackground(true);
-}
+//void ControlChoiceWindow::InitializeBackground()
+//{
+//    QImage image(":/StartImage/resources/StartGame.jpg");
+//
+//    if (image.isNull())
+//    {
+//        qDebug() << "Failed to load background image!";
+//        return;
+//    }
+//
+//    QPalette palette;
+//    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+//    setPalette(palette);
+//    setAutoFillBackground(true);
+//}
 void ControlChoiceWindow::resizeEvent(QResizeEvent* event)
 {
     QImage image(":/StartImage/resources/StartGame.jpg");

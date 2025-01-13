@@ -36,7 +36,7 @@
 #include <QMap>
 #include <QString>
 #include <QKeyEvent>
-
+#include "BackgroundHelper.h";
 class CustomLineEdit : public QLineEdit
 {
     Q_OBJECT
@@ -69,7 +69,7 @@ private slots:
 protected:
     void resizeEvent(QResizeEvent* event)override;
 private:
-    void InitializeBackground();
+   // void InitializeBackground();
     void HandleKeyEvent(const QString& keyText);
 
     QString clientId;

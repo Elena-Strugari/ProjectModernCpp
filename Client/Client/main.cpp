@@ -128,19 +128,55 @@
 //
 //    return app.exec();
 //}
-
-
+// 
+// 
+//#include <QApplication>
+//#include "ControlChoiceWindow.h"
+//#include <QDebug>
+//
+//int main(int argc, char* argv[])
+//{
+//    QApplication app(argc, argv);
+//
+//    QString clientId = "TestUser";
+//
+//    // Creăm fereastra ControlChoiceWindow
+//    ControlChoiceWindow* controlWindow = new ControlChoiceWindow(clientId);
+//
+//    // Conectăm semnalul controlsSet pentru a verifica dacă controalele sunt salvate corect
+//    QObject::connect(controlWindow, &ControlChoiceWindow::ControlsSet, [](const QMap<QString, QString>& controls) {
+//        qDebug() << "Controls saved:" << controls;
+//        });
+//
+//    controlWindow->show();
+//
+//    return app.exec();
+//}
 #include <QApplication>
 #include <QDebug>
-#include "GeneralSettingsWindow.h"
+#include "CreateOrJoinGameWindow.h"
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
     QApplication app(argc, argv);
 
-    GeneralSettingsWindow generalSettingsWindow;
-    generalSettingsWindow.show();
+    // Creează instanța ferestrei CreateOrJoinGameWindow
+    CreateOrJoinGameWindow* window = new CreateOrJoinGameWindow();
+
+    // Conectează semnalele pentru a testa acțiunile butoanelor
+    QObject::connect(window, &CreateOrJoinGameWindow::Generate, []() {
+        qDebug() << "Generate Code button clicked.";
+        });
+
+    QObject::connect(window, &CreateOrJoinGameWindow::CheckCode, []() {
+        qDebug() << "Check Code button clicked.";
+        });
+
+    // Afișează fereastra
+    window->show();
 
     return app.exec();
 }
+
+
+
 

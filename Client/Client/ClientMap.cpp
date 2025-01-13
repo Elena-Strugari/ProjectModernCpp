@@ -77,7 +77,7 @@
 ClientMap::ClientMap(QWidget* parent)
     : QWidget(parent), parentWidget(parent)
 {
-    InitializeBackground();
+    //InitializeBackground();
 }
 
 void ClientMap::DisplayMap(const QJsonObject& mapObject) {
@@ -90,7 +90,7 @@ void ClientMap::DisplayMap(const QJsonObject& mapObject) {
         delete parentWidget->layout();
     }
 
-    InitializeBackground();
+    //InitializeBackground();
     QGridLayout* gridLayout = new QGridLayout();
     QWidget* centralWidget = new QWidget(parentWidget);
     centralWidget->setLayout(gridLayout);
@@ -171,18 +171,18 @@ void ClientMap::resizeEvent(QResizeEvent* event)
     QWidget::resizeEvent(event);
 }
 
-void ClientMap::InitializeBackground()
-{
-    QImage image(":/StartImage/resources/StartGame.jpg");
-
-    if (image.isNull())
-    {
-        qDebug() << "Failed to load background image!";
-        return;
-    }
-
-    QPalette palette;
-    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
-    setPalette(palette);
-    setAutoFillBackground(true);
-}
+//void ClientMap::InitializeBackground()
+//{
+//    QImage image(":/StartImage/resources/StartGame.jpg");
+//
+//    if (image.isNull())
+//    {
+//        qDebug() << "Failed to load background image!";
+//        return;
+//    }
+//
+//    QPalette palette;
+//    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+//    setPalette(palette);
+//    setAutoFillBackground(true);
+//}

@@ -107,7 +107,7 @@ protected:
 private:
     QWidget* parentWidget;
     QString GetImagePath(QString type);
-    void InitializeBackground();
+    //void InitializeBackground();
 };
 
 #endif // CLIENTMAP_H
