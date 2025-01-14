@@ -94,6 +94,9 @@
     <ClCompile Include="GameOverWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DisplayCodeWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientServer.h">
@@ -150,6 +153,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="ClientMap.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="DisplayCodeWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

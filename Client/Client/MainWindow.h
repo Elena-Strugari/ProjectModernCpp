@@ -39,6 +39,7 @@ private:
     void LogUserWindow();
     void CreateJoinWindow();
     void GameWindow();
+    void DisplayCode(const QString& message);
 
 };
 

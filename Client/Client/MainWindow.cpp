@@ -16,7 +16,7 @@
 #include "GameMapWindow.h"
 #include "InGameSettingsWindow.h"
 #include "GeneralSettingsWindow.h"
-
+#include "DisplayCodeWindow.h"
 
 
 MainWindow::MainWindow(QWidget* parent)
@@ -181,7 +181,7 @@ void MainWindow::HandleLevel1()
     else {
         QMessageBox::information(this, "Success", "Generated Game Code: " + QString(gameCode.c_str()));
     }
-
+    DisplayCode(QString(gameCode.c_str()));
     GameWindow();
 }
 
@@ -195,6 +195,7 @@ void MainWindow::HandleLevel2()
     else {
         QMessageBox::information(this, "Success", "Generated Game Code: " + QString(gameCode.c_str()));
     }
+    DisplayCode(QString(gameCode.c_str()));
     GameWindow();
 }
 void MainWindow::HandleLevel3()
@@ -207,6 +208,7 @@ void MainWindow::HandleLevel3()
     else {
         QMessageBox::information(this, "Success", "Generated Game Code: " + QString(gameCode.c_str()));
     }
+    DisplayCode(QString(gameCode.c_str()));
     GameWindow();
 }
 
@@ -216,6 +218,13 @@ void MainWindow::GameWindow()
     gameMapWindow->show();
     connect(gameMapWindow, &GameMapWindow::SettingsClicked, this, &MainWindow::HandleInGameSettings);
     DisplayMap();
+}
+
+void MainWindow::DisplayCode(const QString& message)
+{
+    DisplayCodeWindow* displayCode = new DisplayCodeWindow();
+    displayCode->setMessage(message);
+    displayCode->show();
 }
 
 // 

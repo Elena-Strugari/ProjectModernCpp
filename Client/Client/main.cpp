@@ -131,21 +131,6 @@ int main(int argc, char* argv[])
 
 
 
-//#include <QApplication>
-//#include "InGameSettingsWindow.h"
-//
-//int main(int argc, char* argv[]) {
-//    QApplication app(argc, argv); // Inițializează aplicația Qt
-//
-//    // Creăm fereastra de setări
-//    InGameSettingsWindow settingsWindow;
-//
-//    // Afișăm fereastra de setări
-//    settingsWindow.show();
-//
-//    // Lăsăm aplicația să ruleze
-//    return app.exec();
-//}
 
 
 
