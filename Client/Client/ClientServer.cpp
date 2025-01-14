@@ -566,74 +566,159 @@ bool ClientServer::ControlsClient(const std::string& controls)
 //    }
 //}
 
-void ClientServer::FetchAndProcessMap() {
+//void ClientServer::FetchAndProcessMap() {
+//    try {
+//        // Perform GET request
+//        auto response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_map" });
+//
+//        // Debugging - Log response status and content
+//        qDebug() << "Response Status Code:" << response.status_code;
+//        qDebug() << "Raw Response Text:" << QString::fromStdString(response.text);  // Log the raw response text
+//
+//        // Verifică dacă răspunsul este gol
+//        if (response.text.empty()) {
+//            qDebug() << "Server returned an empty response.";
+//            QMessageBox::critical(nullptr, "Error", "The server returned an empty response.");
+//            return;
+//        }
+//
+//        // Verify if the content is in JSON format
+//        if (response.text.find("{") != std::string::npos) {
+//            qDebug() << "Server returned a valid JSON response.";
+//        }
+//        else {
+//            qDebug() << "The response is not a valid JSON.";
+//            QMessageBox::critical(nullptr, "Error", "The server did not return a valid JSON.");
+//            return;
+//        }
+//
+//        // Parse JSON response
+//        QJsonParseError jsonError;
+//        QJsonDocument jsonDoc = QJsonDocument::fromJson(QString::fromStdString(response.text).toUtf8(), &jsonError);
+//
+//        // Check for JSON parsing errors
+//        if (jsonDoc.isNull()) {
+//            QMessageBox::critical(nullptr, "JSON Parsing Error", "Error: " + jsonError.errorString());
+//            qDebug() << "JSON Parsing Error:" << jsonError.errorString();
+//            return;
+//        }
+//
+//        // Debugging - Log parsed JSON
+//        qDebug() << "Parsed JSON:" << jsonDoc.toJson(QJsonDocument::Indented);
+//
+//        // Extract JSON data
+//        QJsonObject rootObj = jsonDoc.object();
+//        int width = rootObj["width"].toInt();
+//        int height = rootObj["height"].toInt();
+//        QJsonArray mapArray = rootObj["map"].toArray();
+//
+//        // Debugging - Log map dimensions
+//        qDebug() << "Map Dimensions: " << width << "x" << height;
+//
+//        // Process the map array
+//        for (int i = 0; i < mapArray.size(); ++i) {
+//            QJsonArray row = mapArray[i].toArray();
+//            QString rowString;
+//            for (int j = 0; j < row.size(); ++j) {
+//                int cell = row[j].toInt();
+//                rowString += QString::number(cell) + " ";
+//            }
+//            // Debugging - Log each row
+//            qDebug() << "Row " << i << ": " << rowString;
+//        }
+//
+//    }
+//    catch (const std::exception& e) {
+//        // Handle exceptions
+//        QMessageBox::critical(nullptr, "Error", e.what());
+//        qDebug() << "Exception: " << e.what();
+//    }
+//}
+
+//void ClientServer::FetchAndProcessMap()
+//{
+//    qDebug() << "Am intrat in metoda FetchAndProcessMap.";
+//    try {
+//        // Trimite cererea GET către server pentru a obține harta
+//        cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:8080/get_map" });
+//        // qDebug() << "Am intrat in clasa FetchAndProcessMap";
+//
+//        if (response.status_code == 200) {
+//            // Parsează răspunsul JSON folosind biblioteca nlohmann::json
+//            json mapData = json::parse(response.text);
+//
+//            // Afișează dimensiunile hărții
+//            int width = mapData["width"];
+//            int height = mapData["height"];
+//            std::cout << "Map Dimensions: " << width << " x " << height << std::endl;
+//            qDebug() << "Dimensiunile hartii sunt " << width << " x " << height;
+//
+//            // Afișează harta în formatul unui tablou
+//            json mapArray = mapData["map"];
+//
+//            // Convertește `mapArray` din json la `QJsonArray` pentru a-l folosi în Qt
+//            QJsonArray qMapArray;
+//            for (const auto& row : mapArray) {
+//                QJsonArray qRow;
+//                for (const auto& cell : row) {
+//                    qRow.append(QJsonValue(static_cast<int>(cell)));  // Adaugă celula ca QJsonValue
+//                }
+//                qMapArray.append(qRow);
+//            }
+//
+//            // Salvează qMapArray într-o variabilă globală sau membru pentru utilizare ulterioară
+//            this->mapData = qMapArray;  // Presupunând că ai definit `QJsonArray mapData` în ClientServer
+//        }
+//        else {
+//            std::cout << "Failed to fetch map: " << response.status_code << std::endl;
+//        }
+//    }
+//    catch (const std::exception& ex) {
+//        std::cerr << "Exception: " << ex.what() << std::endl;
+//    }
+//}
+void ClientServer::FetchAndProcessMap()
+{
+    qDebug() << "Am intrat in metoda FetchAndProcessMap.";
     try {
-        // Perform GET request
-        auto response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_map" });
+        // Trimite cererea GET către server pentru a obține harta
+        cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:8080/get_map" });
 
-        // Debugging - Log response status and content
-        qDebug() << "Response Status Code:" << response.status_code;
-        qDebug() << "Raw Response Text:" << QString::fromStdString(response.text);  // Log the raw response text
+        if (response.status_code == 200) {
+            // Parsează răspunsul JSON folosind biblioteca nlohmann::json
+            json mapData = json::parse(response.text);
 
-        // Verifică dacă răspunsul este gol
-        if (response.text.empty()) {
-            qDebug() << "Server returned an empty response.";
-            QMessageBox::critical(nullptr, "Error", "The server returned an empty response.");
-            return;
-        }
+            // Afișează dimensiunile hărții
+            int width = mapData["width"];
+            int height = mapData["height"];
+            std::cout << "Map Dimensions: " << width << " x " << height << std::endl;
+            qDebug() << "Dimensiunile hartii sunt " << width << " x " << height;
 
-        // Verify if the content is in JSON format
-        if (response.text.find("{") != std::string::npos) {
-            qDebug() << "Server returned a valid JSON response.";
+            // Afișează harta în formatul unui tablou
+            json mapArray = mapData["map"];
+
+            // Convertește `mapArray` din json la `QJsonArray` pentru a-l folosi în Qt
+            QJsonArray qMapArray;
+            for (const auto& row : mapArray) {
+                QJsonArray qRow;
+                for (const auto& cell : row) {
+                    qRow.append(QJsonValue(static_cast<int>(cell)));  // Adaugă celula ca QJsonValue
+                }
+                qMapArray.append(qRow);
+            }
+
+            // Emit semnalul cu harta procesată
+            //emit mapDataReady(qMapArray);
         }
         else {
-            qDebug() << "The response is not a valid JSON.";
-            QMessageBox::critical(nullptr, "Error", "The server did not return a valid JSON.");
-            return;
+            std::cout << "Failed to fetch map: " << response.status_code << std::endl;
         }
-
-        // Parse JSON response
-        QJsonParseError jsonError;
-        QJsonDocument jsonDoc = QJsonDocument::fromJson(QString::fromStdString(response.text).toUtf8(), &jsonError);
-
-        // Check for JSON parsing errors
-        if (jsonDoc.isNull()) {
-            QMessageBox::critical(nullptr, "JSON Parsing Error", "Error: " + jsonError.errorString());
-            qDebug() << "JSON Parsing Error:" << jsonError.errorString();
-            return;
-        }
-
-        // Debugging - Log parsed JSON
-        qDebug() << "Parsed JSON:" << jsonDoc.toJson(QJsonDocument::Indented);
-
-        // Extract JSON data
-        QJsonObject rootObj = jsonDoc.object();
-        int width = rootObj["width"].toInt();
-        int height = rootObj["height"].toInt();
-        QJsonArray mapArray = rootObj["map"].toArray();
-
-        // Debugging - Log map dimensions
-        qDebug() << "Map Dimensions: " << width << "x" << height;
-
-        // Process the map array
-        for (int i = 0; i < mapArray.size(); ++i) {
-            QJsonArray row = mapArray[i].toArray();
-            QString rowString;
-            for (int j = 0; j < row.size(); ++j) {
-                int cell = row[j].toInt();
-                rowString += QString::number(cell) + " ";
-            }
-            // Debugging - Log each row
-            qDebug() << "Row " << i << ": " << rowString;
-        }
-
     }
-    catch (const std::exception& e) {
-        // Handle exceptions
-        QMessageBox::critical(nullptr, "Error", e.what());
-        qDebug() << "Exception: " << e.what();
+    catch (const std::exception& ex) {
+        std::cerr << "Exception: " << ex.what() << std::endl;
     }
 }
+
 
 //bool ClientServer::CheckCode()
 //{

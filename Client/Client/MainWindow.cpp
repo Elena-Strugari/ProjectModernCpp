@@ -82,7 +82,7 @@ void MainWindow::HandleLogin(const QString& username)
         QMessageBox::information(this, "Login", "Welcome, " + username + "!");
         CreateJoinWindow();
         close();
-        //DisplayMap();
+      //  DisplayMap();
     }
     else {
         QMessageBox::warning(this, "Error", "Login failed. This name does not exist.");
@@ -193,7 +193,7 @@ void MainWindow::HandleLevel2()
         QMessageBox::information(this, "Error", "Failed to generate code.");
     }
     else {
-        QMessageBox::information(this, "Success", "Generated Game Code: " + QString::fromStdString(gameCode));
+        QMessageBox::information(this, "Success", "Generated Game Code: " + QString(gameCode.c_str()));
     }
     GameWindow();
 }
@@ -205,7 +205,7 @@ void MainWindow::HandleLevel3()
         QMessageBox::information(this, "Error", "Failed to generate code.");
     }
     else {
-        QMessageBox::information(this, "Success", "Generated Game Code: " + QString::fromStdString(gameCode));
+        QMessageBox::information(this, "Success", "Generated Game Code: " + QString(gameCode.c_str()));
     }
     GameWindow();
 }
@@ -215,6 +215,7 @@ void MainWindow::GameWindow()
     GameMapWindow* gameMapWindow = new GameMapWindow();
     gameMapWindow->show();
     connect(gameMapWindow, &GameMapWindow::SettingsClicked, this, &MainWindow::HandleInGameSettings);
+    DisplayMap();
 }
 
 // 
