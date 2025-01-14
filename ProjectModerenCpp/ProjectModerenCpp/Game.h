@@ -11,7 +11,6 @@ class Game {
 public:
     explicit Game(uint8_t level=1, const std::string& code=GenerateGameCode());
     static std::string GenerateGameCode();
-
     void AddPlayer(const std::shared_ptr<Player>& player);
     void Start();
     void MovePlayer(const std::shared_ptr<Player>& player, MovementObject::Direction direction);

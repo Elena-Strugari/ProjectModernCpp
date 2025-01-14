@@ -1,10 +1,8 @@
 ﻿#include "Tank.h"
 #include <format>
 
-Tank::Tank(){}
 
-Tank::Tank(ColorTank color)
-    :m_color(color)
+Tank::Tank() :m_color(GetNextColor())
 {
 }
 

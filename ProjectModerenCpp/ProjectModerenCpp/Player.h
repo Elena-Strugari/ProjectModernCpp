@@ -17,7 +17,8 @@ public:
     Player& operator=(const Player& other);     // Copy assignment operator
 
 
-    void AddPlayerObject(GameObject&& object);
+    //void AddPlayerObject(GameObject&& object);
+    void AddPlayerObject();
     // Getters
     const std::string& GetName() const;
     int GetLives() const;

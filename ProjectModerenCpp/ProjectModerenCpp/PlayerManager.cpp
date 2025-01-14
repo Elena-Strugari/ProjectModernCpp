@@ -14,7 +14,7 @@ std::shared_ptr<Player> PlayerManager::GetPlayer(const std::string& name) const 
             return player;
         }
     }
-    return nullptr; 
+    return nullptr;
 }
 
 void PlayerManager::RemovePlayer(const std::string& name) {

@@ -136,6 +136,7 @@ bool Database::ClientExists(const std::string& clientId) {
     return exists;
 }
 
+
 bool Database::SaveKeyBindings(const std::string& clientId, const std::string& up, const std::string& down, const std::string& left, const std::string& right, const std::string& shoot) {
     const char* updateSQL = R"(
         UPDATE clients 

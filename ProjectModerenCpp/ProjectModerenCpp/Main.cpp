@@ -12,6 +12,123 @@ int main() {
 }
 
 
+//test denisa 
+ 
+
+//#include <iostream>
+//#include <memory>
+//#include "Game.h"
+//#include "Player.h"
+//#include "CollisionManager.h"
+//
+//int main() {
+//    try {
+//        Database db("testDatabase2.db");
+//
+//        // Generate game code for the game (assume level 1)
+//        uint8_t level = 1;
+//        std::string gameCode = "game1"; 
+//        Game game(level, gameCode);
+//
+//
+//        // Step 3: Create players
+//        std::shared_ptr<Player> player1 = std::make_shared<Player>("Player1", db);
+//        std::shared_ptr<Player> player2 = std::make_shared<Player>("Player2", db);
+//
+//        // Step 4: Add players to the game
+//        game.AddPlayer(player1);
+//        game.AddPlayer(player2);
+//
+//        // Step 5: Start the game (this would show the map and start gameplay)
+//        game.Start();
+//
+//        // Step 6: Simulate player movements (this could be triggered by user input in a real game)
+//        game.MovePlayer(player1, MovementObject::Direction::Down);
+//        game.MovePlayer(player2, MovementObject::Direction::Up);
+//
+//        game.Start();
+//
+//        // Step 7: Simulate shooting bullets
+//        game.ShootBulletS(player1);
+//
+//        // Step 8: Move bullets and handle collisions
+//        game.MoveBullets();
+//
+//        // Step 9: Check for tank collisions
+//        game.MovePlayer(player2, MovementObject::Direction::Right);
+//        game.MovePlayer(player1, MovementObject::Direction::Right);
+//
+//        game.Start();
+//        // Step 10: Handle bullet collisions with tanks
+//        game.MoveBullets();  // This would detect bullet collisions
+//
+//        std::cout << "Game simulation complete." << std::endl;
+//
+//    }
+//    catch (const std::exception& e) {
+//        std::cerr << "Error during game simulation: " << e.what() << std::endl;
+//    }
+//
+//    return 0;
+//}
+//
+
+
+
+
+
+//#include "Game.h"
+//#include "CollisionManager.h"
+//
+//    int main()
+//    {
+//    Database db("players.db");
+//    Game game(1);
+//
+//    // Create players
+//    auto player1 = std::make_shared<Player>("Player1", db);
+//    auto player2 = std::make_shared<Player>("Player2", db);
+//    auto player3 = std::make_shared<Player>("Player3", db);
+//    auto player4 = std::make_shared<Player>("Player4", db);
+//
+//    // Add players to the game
+//    game.AddPlayer(player1);
+//    game.AddPlayer(player2);
+//    game.AddPlayer(player3);
+//    game.AddPlayer(player4);
+//
+//
+//    // Start the game
+//    game.Start();
+//
+//    //Players move their tanks
+//    game.MovePlayer(player1, MovementObject::Direction::Right);
+//    //game.MovePlayer(player2, MovementObject::Direction::Up);
+//
+//     //Player1 shoots a bullet
+//    std::cout << "Player1 shoots a bullet!\n";
+//    player1->GetMovementObject().Shoot();
+//
+//    // Move Player2
+//    game.MovePlayer(player2, MovementObject::Direction::Up);
+//    game.MovePlayer(player3, MovementObject::Direction::Left);
+//    game.MovePlayer(player4, MovementObject::Direction::Up);
+//    game.Start();
+//
+//
+//    //  Move Player1's bullet until it deactivates
+//    while (player1->GetMovementObject().IsBulletActive()) {
+//        player1->GetMovementObject().Move(player1->GetMovementObject().GetDirection(), 1);
+//        game.Start();
+//
+//        // Check for bullet collision or boundary (dummy condition here)
+//        game.MoveBullets();
+//
+//    }
+//    return 0;
+//
+//}
+
 
 //#include "Game.h"
 //#include "PlayerGameObjectManager.h"
@@ -372,10 +489,10 @@ int main() {
 //}
 //
 
-	/*Tank t(Tank::ColorTank::Blue);
-	std::cout<<t.GetColor();*/
-	//Routing r;
-	//r.Run();
+    /*Tank t(Tank::ColorTank::Blue);
+    std::cout<<t.GetColor();*/
+    //Routing r;
+    //r.Run();
     // 
     // for database 
         // Inițializăm baza de date
@@ -510,8 +627,8 @@ int main() {
 
     //// Actualizează starea jocului (de exemplu, coliziuni)
     //game.update();
-    
 
 
-	/*return 0;
+
+    /*return 0;
 }*/

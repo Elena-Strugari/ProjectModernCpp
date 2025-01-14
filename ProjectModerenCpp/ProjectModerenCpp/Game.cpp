@@ -3,10 +3,10 @@
 #include <iostream>
 #include <stdexcept>
 
-Game::Game(uint8_t level,  const std::string& code)
+Game::Game(uint8_t level, const std::string& code)
     : m_map(level), m_playerManager(std::make_shared<PlayerManager>()),
     m_collision(std::make_shared<CollisionManager>(std::make_shared<Map>(m_map), m_playerManager)),
-    m_gameCode(code), m_gameStarted(false){
+    m_gameCode(code), m_gameStarted(false) {
 }
 
 std::string Game::GenerateGameCode()
@@ -17,9 +17,11 @@ std::string Game::GenerateGameCode()
         code += alphanum[rand() % (sizeof(alphanum) - 1)];
     }
     return code;
+   
 }
 
 void Game::AddPlayer(const std::shared_ptr<Player>& player) {
+    player->AddPlayerObject();
     m_playerManager->AddPlayer(player);
     PlacePlayerOnMap(player);
 }
@@ -31,10 +33,10 @@ void Game::Start() {
 
 void Game::PlacePlayerOnMap(const std::shared_ptr<Player>& player) {
     static std::vector<std::pair<uint16_t, uint16_t>> cornerPositions = {
-        {1, 1},                       
-        {1, m_map.GetHeight() - 2},    
-        {m_map.GetWidth() - 2, 1},   
-        {m_map.GetWidth() - 2, m_map.GetHeight() - 2} 
+        {1, 1},
+        {1, m_map.GetHeight() - 2},
+        {m_map.GetWidth() - 2, 1},
+        {m_map.GetWidth() - 2, m_map.GetHeight() - 2}
     };
 
     static size_t nextCornerIndex = 0;
@@ -49,8 +51,8 @@ void Game::PlacePlayerOnMap(const std::shared_ptr<Player>& player) {
     }*/
     if (!m_map.IsValidPosition(startX, startY))
         std::cout << "erroare la valid";
-       if( !std::holds_alternative<Map::Empty>(m_map.GetCell(startX, startY).content)) {
-           std::cout << "eroare la cell";
+    if (!std::holds_alternative<Map::Empty>(m_map.GetCell(startX, startY).content)) {
+        std::cout << "eroare la cell";
     }
 
     auto& movement = player->GetMovementObject();
@@ -68,8 +70,8 @@ void Game::MovePlayer(const std::shared_ptr<Player>& player, MovementObject::Dir
 
     if (m_map.IsValidPosition(newX, newY)) {
         m_collision->HandleTankCollisions();
-        m_map.SetCellContent(currentX, currentY, Map::Empty{}); 
-        m_map.SetCellContent(newX, newY, Map::Tank{});          
+        m_map.SetCellContent(currentX, currentY, Map::Empty{});
+        m_map.SetCellContent(newX, newY, Map::Tank{});
 
         movement.SetPosition(newX, newY);
         movement.SetDirection(direction);
