@@ -255,9 +255,9 @@ void MainWindow::HandleLogin(const QString& username)
 
     if (ClientServer::LoginClient(stdUsername)) {
         QMessageBox::information(this, "Login", "Welcome, " + username + "!");
-       // CreateJoinWindow();
+       CreateJoinWindow();
         close();
-        DisplayMap();
+        //DisplayMap();
     }
     else {
         QMessageBox::warning(this, "Error", "Login failed. This name does not exist.");
@@ -299,10 +299,7 @@ void MainWindow::HandleControlsSet(const QMap<QString, QString>& controls)//, co
     if (ClientServer::ControlsClient(controlsStr))
     {
         QMessageBox::information(this, "Success", "Controls have been successfully set!");
-        CreateOrJoinGameWindow* createJoinWindow = new CreateOrJoinGameWindow();
-        createJoinWindow->show();
-        connect(createJoinWindow, &CreateOrJoinGameWindow::Generate, this, &MainWindow::HandleCreateCode);
-        connect(createJoinWindow, &CreateOrJoinGameWindow::CheckCode, this, &MainWindow::HandleCheckCode);
+        CreateJoinWindow();
     }
     else
         QMessageBox::warning(this, "Error", "Failed to set controls: ");
@@ -338,7 +335,7 @@ void MainWindow::HandleCheckCode()
 void MainWindow::HandleLevel()
 {
     QMessageBox::information(this, "Success", "Level");
-    //ClientServer::Level();
+    ClientServer::Level();
     GameMapWindow* gameMapWindow = new GameMapWindow();
     gameMapWindow->show();
 }
