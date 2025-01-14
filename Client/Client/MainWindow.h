@@ -28,6 +28,12 @@ private slots:
     void DisplayMap();
     void HandleInGameSettings();
     void HandleGeneralSettings();
+    void HandleBackToGameSetting();
+    void HandleExitGameSetting();
+    void HandleEditControls();
+    void HandleLogOut();
+    void HandleDeleteAccount();
+    void HandleSaveSettings();
 
 private:
     Ui::MainWindow* ui;

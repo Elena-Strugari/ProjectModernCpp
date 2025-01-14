@@ -202,11 +202,43 @@ void MainWindow::HandleInGameSettings()
     InGameSettingsWindow* settingsWindow = new InGameSettingsWindow(this);
     settingsWindow->positionInTopRight(this); 
     settingsWindow->show();
+    connect(settingsWindow, &InGameSettingsWindow::backToGame, this, &MainWindow::HandleBackToGameSetting);
+    connect(settingsWindow, &InGameSettingsWindow::exitGame, this, &MainWindow::HandleExitGameSetting);
+    connect(settingsWindow, &InGameSettingsWindow::editControls, this, &MainWindow::HandleEditControls);
+    connect(settingsWindow, &InGameSettingsWindow::SaveSettings, this, &MainWindow::HandleSaveSettings);
 }
 void MainWindow::HandleGeneralSettings()
 {
     GeneralSettingsWindow* generalSettings = new GeneralSettingsWindow(this);
     generalSettings->show();
+    connect(generalSettings, &GeneralSettingsWindow::SaveSettings, this, &MainWindow::HandleSaveSettings);
+    connect(generalSettings, &GeneralSettingsWindow::EditControls, this, &MainWindow::HandleEditControls);
+    connect(generalSettings, &GeneralSettingsWindow::Logout, this, &MainWindow::HandleLogOut);
+    connect(generalSettings, &GeneralSettingsWindow::Delete, this, &MainWindow::HandleDeleteAccount);
+}
+void MainWindow::HandleBackToGameSetting()
+{
+    /*settingsWindow->close(); 
+    gameMapWindow->show();  
+    gameMapWindow->raise(); */
+}
+void MainWindow::HandleExitGameSetting()
+{
+    CreateJoinWindow();
+}
+void MainWindow::HandleEditControls()
+{
+  
+}
+void MainWindow::HandleLogOut()
+{
+    LogUserWindow();
+}
+void MainWindow::HandleDeleteAccount()
+{
+}
+void MainWindow::HandleSaveSettings()
+{
 }
 void MainWindow::DisplayMap() {
     try {

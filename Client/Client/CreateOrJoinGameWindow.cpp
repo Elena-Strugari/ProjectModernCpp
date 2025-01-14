@@ -85,9 +85,7 @@ CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
         emit CheckCode();
         this->close();
         });
-    connect(generalSettingsButton, &QPushButton::clicked, this, [this]() {
-        emit GeneralSettings();
-        });
+    connect(generalSettingsButton, &QPushButton::clicked, this, &CreateOrJoinGameWindow::onGeneralSettingsButton);
 }
 
 void CreateOrJoinGameWindow::resizeEvent(QResizeEvent* event)
@@ -103,3 +101,8 @@ void CreateOrJoinGameWindow::resizeEvent(QResizeEvent* event)
     QWidget::resizeEvent(event);
 }
 CreateOrJoinGameWindow::~CreateOrJoinGameWindow() = default;
+
+void CreateOrJoinGameWindow::onGeneralSettingsButton()
+{
+    emit GeneralSettings();
+}

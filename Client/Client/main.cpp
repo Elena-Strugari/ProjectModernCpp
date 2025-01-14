@@ -132,23 +132,21 @@ int main(int argc, char* argv[])
 
 
 //#include <QApplication>
-//#include "StartGameWindow.h"
-//#include <QDebug>
+//#include "InGameSettingsWindow.h"
 //
 //int main(int argc, char* argv[]) {
-//    QApplication app(argc, argv);
+//    QApplication app(argc, argv); // Inițializează aplicația Qt
 //
-//    StartGameWindow startGameWindow;
+//    // Creăm fereastra de setări
+//    InGameSettingsWindow settingsWindow;
 //
-//    // Conectează semnalul startGame pentru a afișa un mesaj de debug
-//    QObject::connect(&startGameWindow, &StartGameWindow::startGame, []() {
-//        qDebug() << "Start Game triggered!";
-//        });
+//    // Afișăm fereastra de setări
+//    settingsWindow.show();
 //
-//    startGameWindow.show();
-//
+//    // Lăsăm aplicația să ruleze
 //    return app.exec();
 //}
+
 
 
 

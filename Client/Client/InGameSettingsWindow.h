@@ -18,14 +18,13 @@ signals:
     void backToGame();   // Semnal pentru întoarcerea la joc
     void editControls(); // Semnal pentru schimbarea controalelor
     void exitGame();     // Semnal pentru ieșirea din joc
+    void SaveSettings();    
 
 private slots:
     void onBackToGame();   // Slot pentru butonul "Back to Game"
     void onEditControls(); // Slot pentru butonul "Edit Controls"
     void onExitGame();     // Slot pentru butonul "Exit Game"
-
-protected:
-    void resizeEvent(QResizeEvent* event) override;
+    void onSaveSettings();
 private:
     //void InitializeBackground(); // Metodă pentru setarea fundalului
 
@@ -33,6 +32,7 @@ private:
     QPushButton* backToGameButton;
     QPushButton* editControlsButton;
     QPushButton* exitGameButton;
+    QPushButton* saveSettingsButton;
 };
 
 #endif // INGAMESETTINGSWINDOW_H

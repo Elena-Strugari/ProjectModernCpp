@@ -9,8 +9,9 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
     : QWidget(parent),
     musicVolumeSlider(new QSlider(Qt::Horizontal, this)),
     controlSettingsButton(new QPushButton("Edit Controls", this)),
-    logoutButton(new QPushButton("Delete Account", this)),
-    saveButton(new QPushButton("Save Settings", this))
+    logoutButton(new QPushButton("Logout", this)),
+    saveButton(new QPushButton("Save Settings", this)),
+    deleteButton(new QPushButton("Delete Account", this))
 {
     setWindowTitle("General Settings");
     resize(800, 600);
@@ -34,12 +35,14 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
     controlSettingsButton->setStyleSheet(buttonStyle);
     logoutButton->setStyleSheet(buttonStyle);
     saveButton->setStyleSheet(buttonStyle);
+    deleteButton->setStyleSheet(buttonStyle);
 
     // Setăm dimensiuni fixe pentru butoane
     QSize buttonSize(150, 40);
     controlSettingsButton->setFixedSize(buttonSize);
     logoutButton->setFixedSize(buttonSize);
     saveButton->setFixedSize(buttonSize);
+    deleteButton->setFixedSize(buttonSize);
 
     // Layout pentru slider-ul de volum
     QVBoxLayout* slidersLayout = new QVBoxLayout();
@@ -57,6 +60,8 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
     buttonLayout->addWidget(controlSettingsButton);
     buttonLayout->addSpacing(50);
     buttonLayout->addWidget(logoutButton);
+    buttonLayout->addSpacing(50);
+    buttonLayout->addWidget(deleteButton);
     buttonLayout->addSpacing(50);
     buttonLayout->addWidget(saveButton);
     buttonLayout->addStretch();
@@ -81,36 +86,31 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
     connect(saveButton, &QPushButton::clicked, this, &GeneralSettingsWindow::onSaveSettings);
     connect(controlSettingsButton, &QPushButton::clicked, this, &GeneralSettingsWindow::onEditControls);
     connect(logoutButton, &QPushButton::clicked, this, &GeneralSettingsWindow::onLogout);
+    connect(deleteButton, &QPushButton::clicked, this, &GeneralSettingsWindow::onDelete);
 }
-
-//void GeneralSettingsWindow::InitializeBackground()
-//{
-//    QImage image(":/StartImage/resources/StartGame.jpg");
-//
-//    if (image.isNull()) {
-//        qDebug() << "Failed to load background image!";
-//        return;
-//    }
-//
-//    QPalette palette;
-//    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
-//    setPalette(palette);
-//    setAutoFillBackground(true);
-//}
 
 void GeneralSettingsWindow::onSaveSettings()
 {
     QMessageBox::information(this, "Save Settings", "Settings saved successfully!");
+    emit SaveSettings();
+
 }
 
 void GeneralSettingsWindow::onEditControls()
 {
     QMessageBox::information(this, "Edit Controls", "Edit Controls button clicked.");
+    emit EditControls();
 }
 
 void GeneralSettingsWindow::onLogout()
 {
+    QMessageBox::information(this, "Log out", "Log out button clicked.");
+    emit Logout();
+}
+void GeneralSettingsWindow::onDelete()
+{
     QMessageBox::information(this, "Delete Account", "Delete Account button clicked.");
+    emit Delete();
 }
 void GeneralSettingsWindow::resizeEvent(QResizeEvent* event)
 {

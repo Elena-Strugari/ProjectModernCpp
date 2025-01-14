@@ -12,19 +12,17 @@ InGameSettingsWindow::InGameSettingsWindow(QWidget* parent)
     musicVolumeSlider(new QSlider(Qt::Horizontal, this)),
     backToGameButton(new QPushButton("Back to Game", this)),
     editControlsButton(new QPushButton("Edit Controls", this)),
-    exitGameButton(new QPushButton("Exit Game", this))
+    exitGameButton(new QPushButton("Exit Game", this)),
+    saveSettingsButton(new QPushButton("Save Settings", this))
 {
     setWindowTitle("In-Game Settings");
     resize(300, 200);
 
     setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
-    setAttribute(Qt::WA_TranslucentBackground);
-    setStyleSheet("background-color: rgba(0, 0, 0, 150); border-radius: 10px;");
+    setStyleSheet("background-color: rgba(0, 0, 0, 155); border-radius: 20px;");
+    //setAttribute(Qt::WA_TranslucentBackground);
+    setAutoFillBackground("background_color: rgba(0,0,0,155); border-radius: 20px;");
 
-    // Initializează fundalul
-    BackgroundHelper::InitializeBackground(this);
-
-    // Configurare slider de volum
     musicVolumeSlider->setRange(0, 100);
     musicVolumeSlider->setValue(50);
     musicVolumeSlider->setFixedWidth(400);
@@ -40,12 +38,14 @@ InGameSettingsWindow::InGameSettingsWindow(QWidget* parent)
     backToGameButton->setStyleSheet(buttonStyle);
     editControlsButton->setStyleSheet(buttonStyle);
     exitGameButton->setStyleSheet(buttonStyle);
+    saveSettingsButton->setStyleSheet(buttonStyle);
 
     // Setăm dimensiuni fixe pentru butoane
     QSize buttonSize(150, 40);
     backToGameButton->setFixedSize(buttonSize);
     editControlsButton->setFixedSize(buttonSize);
     exitGameButton->setFixedSize(buttonSize);
+    saveSettingsButton->setFixedSize(buttonSize);
 
     // Layout pentru slider-ul de volum
     QVBoxLayout* slidersLayout = new QVBoxLayout();
@@ -65,6 +65,8 @@ InGameSettingsWindow::InGameSettingsWindow(QWidget* parent)
     buttonLayout->addWidget(editControlsButton);
     buttonLayout->addSpacing(50);
     buttonLayout->addWidget(exitGameButton);
+    buttonLayout->addSpacing(50);
+    buttonLayout->addWidget(saveSettingsButton);
     buttonLayout->addStretch();
 
     // Layout principal
@@ -87,26 +89,12 @@ InGameSettingsWindow::InGameSettingsWindow(QWidget* parent)
     connect(backToGameButton, &QPushButton::clicked, this, &InGameSettingsWindow::onBackToGame);
     connect(editControlsButton, &QPushButton::clicked, this, &InGameSettingsWindow::onEditControls);
     connect(exitGameButton, &QPushButton::clicked, this, &InGameSettingsWindow::onExitGame);
+    connect(saveSettingsButton, &QPushButton::clicked, this, &InGameSettingsWindow::onSaveSettings);
 }
 
 InGameSettingsWindow::~InGameSettingsWindow()
 {
 }
-
-//void InGameSettingsWindow::InitializeBackground()
-//{
-//    QImage image(":/StartImage/resources/StartGame.jpg"); // Calea către imagine
-//
-//    if (image.isNull()) {
-//        qDebug() << "Failed to load background image!";
-//        return;
-//    }
-//
-//    QPalette palette;
-//    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
-//    setPalette(palette);
-//    setAutoFillBackground(true);
-//}
 
 void InGameSettingsWindow::onBackToGame()
 {
@@ -128,20 +116,27 @@ void InGameSettingsWindow::onExitGame()
     QMessageBox::information(this, "Exit", "Exit button clicked.");
     emit exitGame(); // Emiterea semnalului
 }
-void InGameSettingsWindow::resizeEvent(QResizeEvent* event)
+void InGameSettingsWindow::onSaveSettings()
 {
-    // Ajustează fundalul
-    QImage image(":/StartImage/resources/StartGame.jpg");
-
-    if (!image.isNull())
-    {
-        QPalette palette;
-        palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
-        setPalette(palette);
-    }
-
-    QWidget::resizeEvent(event);
+    qDebug() << "Save settings clicked.";
+    QMessageBox::information(this, "Save", "Save Settings clicked.");
+    emit SaveSettings(); // Emiterea semnalului
 }
+//void InGameSettingsWindow::resizeEvent(QResizeEvent* event)
+//{
+//    // Setează fundalul semi-transparent
+//  //  QImage image(":/StartImage/resources/StartGame.jpg");
+//        QPalette palette;
+//
+//        // Setăm culoarea semi-transparentă pentru fundal
+//        QColor semiTransparentColor(0, 0, 0, 200); // Negru semi-transparent
+//        QBrush brush(semiTransparentColor);
+//        palette.setBrush(QPalette::Window, brush);
+//        // Aplicăm fundalul
+//        setPalette(palette);
+//    QWidget::resizeEvent(event);
+//}
+
 void InGameSettingsWindow::positionInTopRight(QWidget* parent) {
     if (parent) {
         int x = parent->x() + parent->width() - width() - 20;

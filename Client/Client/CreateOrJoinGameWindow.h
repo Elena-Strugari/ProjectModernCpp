@@ -19,6 +19,8 @@ signals:
     void Generate();
     void CheckCode();
     void GeneralSettings();
+private slots:
+    void onGeneralSettingsButton();
 protected:
     void resizeEvent(QResizeEvent* event) override;
 private:
