@@ -11,7 +11,7 @@ CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
     setWindowTitle("Create Game or Join Game");
     resize(600, 400);
 
-   BackgroundHelper:: InitializeBackground(this);
+    BackgroundHelper::InitializeBackground(this);
 
     titleLabel->setAlignment(Qt::AlignCenter);
     titleLabel->setStyleSheet(
@@ -45,7 +45,7 @@ CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
     typeCode->setFixedSize(200, 40);
     checkCodeButton->setFixedSize(100, 40);
     generalSettingsButton->setFixedSize(80, 30);
-   
+
     typeCode->setPlaceholderText("Type code ...");
 
     QHBoxLayout* settingsLayout = new QHBoxLayout();
@@ -57,7 +57,7 @@ CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
     generateLayout->addWidget(generateCodeButton);
     generateLayout->addStretch();
 
-    
+
     QHBoxLayout* inputLayout = new QHBoxLayout();
     inputLayout->addStretch();
     inputLayout->addWidget(typeCode);
@@ -75,17 +75,19 @@ CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
 
     setLayout(mainLayout);
 
-    
+
     connect(generateCodeButton, &QPushButton::clicked, this, [this]() {
         emit Generate();
         this->close();
         });
 
     connect(checkCodeButton, &QPushButton::clicked, this, [this]() {
-        emit CheckCode();
+       // emit CheckCode(typeCode->text());
         this->close();
         });
-    connect(generalSettingsButton, &QPushButton::clicked, this, &CreateOrJoinGameWindow::onGeneralSettingsButton);
+    connect(generalSettingsButton, &QPushButton::clicked, this, [this]() {
+        emit GeneralSettings();
+        });
 }
 
 void CreateOrJoinGameWindow::resizeEvent(QResizeEvent* event)
@@ -101,8 +103,3 @@ void CreateOrJoinGameWindow::resizeEvent(QResizeEvent* event)
     QWidget::resizeEvent(event);
 }
 CreateOrJoinGameWindow::~CreateOrJoinGameWindow() = default;
-
-void CreateOrJoinGameWindow::onGeneralSettingsButton()
-{
-    emit GeneralSettings();
-}

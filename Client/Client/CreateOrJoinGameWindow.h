@@ -17,12 +17,12 @@ public:
 
 signals:
     void Generate();
-    void CheckCode();
+   // void CheckCode(const QString& code);
     void GeneralSettings();
-private slots:
-    void onGeneralSettingsButton();
 protected:
     void resizeEvent(QResizeEvent* event) override;
+private slots:
+    //void OnCheckCode();
 private:
 
     QLabel* titleLabel;
@@ -30,6 +30,10 @@ private:
     QPushButton* checkCodeButton;
     QLineEdit* typeCode;
     QPushButton* generalSettingsButton;
+
+    QString m_username;
+    QString m_code;
 };
 
 #endif // CREATEORJOINGAMEWINDOW_H
+

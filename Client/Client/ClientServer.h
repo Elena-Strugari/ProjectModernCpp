@@ -18,24 +18,24 @@ public:
 
 
 	static QJsonDocument GetMap();
+	static bool JoinGame(const std::string& gameCode, const std::string& username);
 
 	static std::string GenerateCode(uint8_t level);
-	//static bool GenerateCode(uint8_t level);
-	static bool CheckCode();
+	//static bool CheckCode();
 
-	//static void Level();
 	static void ProcessMap(const QJsonDocument& jsonDoc);
 	static void FetchAndProcessMap();
 
-	static bool ControlsClient( const std::string& controlsClient);
+	static bool ControlsClient(const std::string& controlsClient);
 	static bool verificare();
 
-	static void GetGeneralSettings();  
+	static void GetGeneralSettings();
 	static bool SetGeneralSettings(const std::string& settingsJson);
 
-	static void GetInGameSettings();  
+	static void GetInGameSettings();
 	static bool SetInGameSettings(const std::string& settingsJson);
 
 private:
 
 };
+

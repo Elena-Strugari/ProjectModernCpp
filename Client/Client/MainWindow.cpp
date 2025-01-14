@@ -70,21 +70,14 @@ void MainWindow::LogUserWindow()
         QMessageBox::critical(this, "Error", e.what());
     }
 }
-void MainWindow::CreateJoinWindow()
-{
-    CreateOrJoinGameWindow* createJoinWindow = new CreateOrJoinGameWindow();
-    createJoinWindow->show();
-    connect(createJoinWindow, &CreateOrJoinGameWindow::GeneralSettings, this, &MainWindow::HandleGeneralSettings);
-    connect(createJoinWindow, &CreateOrJoinGameWindow::Generate, this, &MainWindow::HandleCreateCode);
-    connect(createJoinWindow, &CreateOrJoinGameWindow::CheckCode, this, &MainWindow::HandleCheckCode);
-}
+
 void MainWindow::HandleLogin(const QString& username)
 {
     std::string stdUsername = username.toUtf8().constData();
 
     if (ClientServer::LoginClient(stdUsername)) {
         QMessageBox::information(this, "Login", "Welcome, " + username + "!");
-       CreateJoinWindow();
+        CreateJoinWindow();
         close();
         //DisplayMap();
     }
@@ -122,7 +115,7 @@ void MainWindow::HandleControlsSet(const QMap<QString, QString>& controls, const
     QMessageBox::information(this, "JSON Sent to Server", "The following JSON was sent:\n\n" + jsonString);
 
 
-    std::string controlsStr= jsonString.toUtf8().constData();
+    std::string controlsStr = jsonString.toUtf8().constData();
     if (ClientServer::ControlsClient(controlsStr))
     {
         QMessageBox::information(this, "Success", "Controls have been successfully set!");
@@ -130,9 +123,19 @@ void MainWindow::HandleControlsSet(const QMap<QString, QString>& controls, const
     }
     else
         QMessageBox::warning(this, "Error", "Failed to set controls: ");
-   
+
 
 }
+
+void MainWindow::CreateJoinWindow()
+{
+    CreateOrJoinGameWindow* createJoinWindow = new CreateOrJoinGameWindow();
+    createJoinWindow->show();
+    connect(createJoinWindow, &CreateOrJoinGameWindow::GeneralSettings, this, &MainWindow::HandleGeneralSettings);
+    connect(createJoinWindow, &CreateOrJoinGameWindow::Generate, this, &MainWindow::HandleCreateCode);
+    //connect(createJoinWindow, &CreateOrJoinGameWindow::CheckCode, this, &MainWindow::HandleCheckCode);
+}
+
 void MainWindow::HandleCreateCode()
 {
     LevelSelectionWindow* levelWindow = new LevelSelectionWindow();
@@ -143,116 +146,74 @@ void MainWindow::HandleCreateCode()
     connect(levelWindow, &LevelSelectionWindow::LevelHard, this, &MainWindow::HandleLevel3);
 
 }
-void MainWindow::GameWindow()
+
+void MainWindow::HandleCheckCode(const QString& gameCode, const QString& username)
 {
-    GameMapWindow* gameMapWindow = new GameMapWindow();
-    gameMapWindow->show();
-    connect(gameMapWindow, &GameMapWindow::SettingsClicked, this, &MainWindow::HandleInGameSettings);
-}
-void MainWindow::HandleCheckCode()
-{
-    if (ClientServer::CheckCode()) {
+    GameWindow();
+
+    /*if (ClientServer::JoinGame(gameCode.toUtf8().constData(), username.toUtf8().constData())) {
         QMessageBox::information(this, "Success", "Code verified. Loading game map...");
 
-        // Creează și afișează fereastra GameMapWindow
         GameWindow();
     }
     else {
         QMessageBox::warning(this, "Error", "Invalid code. Please try again.");
+    }*/
+    /*if (ClientServer::CheckCode()) {
+        QMessageBox::information(this, "Success", "Code verified. Loading game map...");
+
+        GameWindow();
     }
+    else {
+        QMessageBox::warning(this, "Error", "Invalid code. Please try again.");
+    }*/
 }
 void MainWindow::HandleLevel1()
 {
-    // Call GenerateCode and store the returned game code
     std::string gameCode = ClientServer::GenerateCode(1);
 
     if (gameCode.empty()) {
         QMessageBox::information(this, "Error", "Failed to generate code.");
     }
     else {
-        // Show the generated game code in a message box
         QMessageBox::information(this, "Success", "Generated Game Code: " + QString(gameCode.c_str()));
     }
 
-    // Proceed with other logic
-    QMessageBox::information(this, "Success", "Level 1");
     GameWindow();
 }
 
 void MainWindow::HandleLevel2()
 {
-    // Call GenerateCode and store the returned game code
     std::string gameCode = ClientServer::GenerateCode(2);
 
     if (gameCode.empty()) {
         QMessageBox::information(this, "Error", "Failed to generate code.");
     }
     else {
-        // Show the generated game code in a message box
         QMessageBox::information(this, "Success", "Generated Game Code: " + QString::fromStdString(gameCode));
     }
-
-    // Proceed with other logic
-    QMessageBox::information(this, "Success", "Level 1");
     GameWindow();
 }
 void MainWindow::HandleLevel3()
 {
-    // Call GenerateCode and store the returned game code
     std::string gameCode = ClientServer::GenerateCode(3);
 
     if (gameCode.empty()) {
         QMessageBox::information(this, "Error", "Failed to generate code.");
     }
     else {
-        // Show the generated game code in a message box
         QMessageBox::information(this, "Success", "Generated Game Code: " + QString::fromStdString(gameCode));
     }
-
-    // Proceed with other logic
-    QMessageBox::information(this, "Success", "Level 1");
     GameWindow();
 }
 
+void MainWindow::GameWindow()
+{
+    GameMapWindow* gameMapWindow = new GameMapWindow();
+    gameMapWindow->show();
+    connect(gameMapWindow, &GameMapWindow::SettingsClicked, this, &MainWindow::HandleInGameSettings);
+}
 
-//void MainWindow::HandleLevel1()
-//{
-//
-//    if (!ClientServer::GenerateCode(1))
-//        QMessageBox::information(this, "Error", "Not Generate Code");
-//
-//    QMessageBox::information(this, "Success", "Generate Code");
-//
-//    QMessageBox::information(this, "Success", "Level");
-//    //ClientServer::Level();
-//    GameWindow();
-//}
-//void MainWindow::HandleLevel2()
-//{
-//
-//    if (!ClientServer::GenerateCode(2))
-//        QMessageBox::information(this, "Error", "Not Generate Code");
-//
-//    QMessageBox::information(this, "Success", "Generate Code");
-//
-//    QMessageBox::information(this, "Success", "Level");
-//    //ClientServer::Level();
-//    GameWindow();
-//}
-//void MainWindow::HandleLevel3()
-//{
-//
-//    if (!ClientServer::GenerateCode(3))
-//        QMessageBox::information(this, "Error", "Not Generate Code");
-//
-//    QMessageBox::information(this, "Success", "Generate Code");
-//
-//    QMessageBox::information(this, "Success", "Level");
-//   // ClientServer::Level();
-//    GameWindow();
-//}
-// 
-// 
 // 
 //void MainWindow::DisplayMap() {
 //    try {
@@ -284,45 +245,13 @@ void MainWindow::HandleLevel3()
 void MainWindow::HandleInGameSettings()
 {
     InGameSettingsWindow* settingsWindow = new InGameSettingsWindow(this);
-    settingsWindow->positionInTopRight(this); 
+    settingsWindow->positionInTopRight(this);
     settingsWindow->show();
-    connect(settingsWindow, &InGameSettingsWindow::backToGame, this, &MainWindow::HandleBackToGameSetting);
-    connect(settingsWindow, &InGameSettingsWindow::exitGame, this, &MainWindow::HandleExitGameSetting);
-    connect(settingsWindow, &InGameSettingsWindow::editControls, this, &MainWindow::HandleEditControls);
-    connect(settingsWindow, &InGameSettingsWindow::SaveSettings, this, &MainWindow::HandleSaveSettings);
 }
 void MainWindow::HandleGeneralSettings()
 {
     GeneralSettingsWindow* generalSettings = new GeneralSettingsWindow(this);
     generalSettings->show();
-    connect(generalSettings, &GeneralSettingsWindow::SaveSettings, this, &MainWindow::HandleSaveSettings);
-    connect(generalSettings, &GeneralSettingsWindow::EditControls, this, &MainWindow::HandleEditControls);
-    connect(generalSettings, &GeneralSettingsWindow::Logout, this, &MainWindow::HandleLogOut);
-    connect(generalSettings, &GeneralSettingsWindow::Delete, this, &MainWindow::HandleDeleteAccount);
-}
-void MainWindow::HandleBackToGameSetting()
-{
-    /*settingsWindow->close(); 
-    gameMapWindow->show();  
-    gameMapWindow->raise(); */
-}
-void MainWindow::HandleExitGameSetting()
-{
-    CreateJoinWindow();
-}
-void MainWindow::HandleEditControls()
-{
-  
-}
-void MainWindow::HandleLogOut()
-{
-    LogUserWindow();
-}
-void MainWindow::HandleDeleteAccount()
-{
-}
-void MainWindow::HandleSaveSettings()
-{
 }
 void MainWindow::DisplayMap() {
     try {
@@ -333,4 +262,5 @@ void MainWindow::DisplayMap() {
         QMessageBox::critical(this, "Error", e.what());
     }
 }
+
 

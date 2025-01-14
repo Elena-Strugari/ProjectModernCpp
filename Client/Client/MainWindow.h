@@ -21,21 +21,15 @@ private slots:
     void onStartGameClicked();
     void HandleLogin(const QString& username);
     void HandleRegister(const QString& username);
-    void HandleControlsSet(const QMap<QString, QString>& controls , const QString& username);
+    void HandleControlsSet(const QMap<QString, QString>& controls, const QString& username);
     void HandleCreateCode();
-    void HandleCheckCode();
+    void HandleCheckCode(const QString& gameCode, const QString& username);
     void HandleLevel1();
     void HandleLevel2();
     void HandleLevel3();
     void DisplayMap();
     void HandleInGameSettings();
     void HandleGeneralSettings();
-    void HandleBackToGameSetting();
-    void HandleExitGameSetting();
-    void HandleEditControls();
-    void HandleLogOut();
-    void HandleDeleteAccount();
-    void HandleSaveSettings();
 
 private:
     Ui::MainWindow* ui;

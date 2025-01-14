@@ -17,32 +17,32 @@ using json = nlohmann::json;
 
 
 constexpr auto SERVER_URL = "http://localhost:8080";
- 
 
-void ClientServer::connectServer() 
+
+void ClientServer::connectServer()
 {
     qDebug() << "Am intrat in functia de conectare la server din ClientServer.";
     try
     {
         cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/connect" });
 
-        if (response.status_code == 200) 
+        if (response.status_code == 200)
         {
             std::cout << "Mesaj de la server: " << response.text << std::endl;
         }
-        else 
+        else
         {
             std::cerr << "Eroare la conectare. Cod răspuns: " << response.status_code << std::endl;
         }
     }
-    catch (const std::exception& ex) 
+    catch (const std::exception& ex)
     {
         std::cerr << "Excepție la conectare: " << ex.what() << std::endl;
     }
 }
 
 
-void ClientServer::StartGameWindow() 
+void ClientServer::StartGameWindow()
 {
     qDebug() << "Am intrat in functia StartGameWindow din ClientServer.";
     try {
@@ -81,7 +81,7 @@ void ClientServer::UserWindow()
 }
 
 
-bool ClientServer::verificare() 
+bool ClientServer::verificare()
 {
     qDebug() << "Am intrat in noua functie de verificare din ClientServer.";
     try {
@@ -184,21 +184,21 @@ bool ClientServer::ControlsClient(const std::string& controls)
 }
 
 
- /*QJsonDocument ClientServer::GetMap() {
-      auto response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_map" });
-      if (response.status_code == 200) {
-          QJsonDocument jsonDoc = QJsonDocument::fromJson(QString::fromStdString(response.text).toUtf8());
-          if (!jsonDoc.isNull()) {
-               return jsonDoc;
-          }
-          else {
-              throw std::runtime_error("Invalid JSON received");
-          }
-      }
-      else {
-        throw std::runtime_error("Failed to fetch map from server");
-      }
- }*/
+/*QJsonDocument ClientServer::GetMap() {
+     auto response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_map" });
+     if (response.status_code == 200) {
+         QJsonDocument jsonDoc = QJsonDocument::fromJson(QString::fromStdString(response.text).toUtf8());
+         if (!jsonDoc.isNull()) {
+              return jsonDoc;
+         }
+         else {
+             throw std::runtime_error("Invalid JSON received");
+         }
+     }
+     else {
+       throw std::runtime_error("Failed to fetch map from server");
+     }
+}*/
 
 
 
@@ -635,241 +635,196 @@ void ClientServer::FetchAndProcessMap() {
     }
 }
 
- void ClientServer::GenerateCode()
- {
-     try {
-         cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/generate_code" });
+//bool ClientServer::CheckCode()
+//{
+//    try {
+//        auto response = cpr::Post(
+//            cpr::Url{ std::string(SERVER_URL) + "/check_code" }//,
+//            /*cpr::Body{ "{\"username\":\"" + username + "\"}" },
+//            cpr::Header{ {"Content-Type", "application/json"} }*/
+//        );
 
-         if (response.status_code == 200) {
-             std::cout << "Mesaj de la server: " << response.text << std::endl;
-         }
-         else {
-             std::cerr << "Eroare la conectare. Cod răspuns: " << response.status_code << std::endl;
-         }
-     }
-     catch (const std::exception& ex) {
-         std::cerr << "Excepție la conectare: " << ex.what() << std::endl;
-     }
- }
+//        if (response.status_code == 200) {
+//            std::cout << "Login successful: " << response.text << std::endl;
+//            return true;
+//        }
+//        else {
+//            std::cerr << "Login failed: " << response.text << " (Code: " << response.status_code << ")" << std::endl;
+//            return false;
+//        }
+//    }
+//    catch (const std::exception& ex) {
+//        std::cerr << "Exception during login: " << ex.what() << std::endl;
+//        return false;
+//    }
+//}
+bool ClientServer::JoinGame(const std::string& gameCode, const std::string& username)
+{
+    try {
+        // Create a JSON object with the game code and username
+        nlohmann::json jsonBody;
+        jsonBody["game_code"] = gameCode;
+        jsonBody["username"] = username;
 
- bool ClientServer::CheckCode()
- {
-     try {
-         auto response = cpr::Post(
-             cpr::Url{ std::string(SERVER_URL) + "/check_code" }//,
-             /*cpr::Body{ "{\"username\":\"" + username + "\"}" },
-             cpr::Header{ {"Content-Type", "application/json"} }*/
-         );
+        // Convert the JSON object to a string
+        std::string jsonString = jsonBody.dump();
 
-         if (response.status_code == 200) {
-             std::cout << "Login successful: " << response.text << std::endl;
-             return true;
-         }
-         else {
-             std::cerr << "Login failed: " << response.text << " (Code: " << response.status_code << ")" << std::endl;
-             return false;
-         }
-     }
-     catch (const std::exception& ex) {
-         std::cerr << "Exception during login: " << ex.what() << std::endl;
-         return false;
-     }
- }
+        // Send a POST request to the server to join the game
+        cpr::Response response = cpr::Post(
+            cpr::Url{ std::string(SERVER_URL) + "/join_game" },
+            cpr::Body{ jsonString },
+            cpr::Header{ {"Content-Type", "application/json"} }
+        );
 
-
- /*void ClientServer::Level()
- {
-     try {
-         cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/level" });
-
-         if (response.status_code == 200) {
-             std::cout << "Mesaj de la server: " << response.text << std::endl;
-         }
-         else {
-             std::cerr << "Eroare la conectare. Cod răspuns: " << response.status_code << std::endl;
-         }
-     }
-     catch (const std::exception& ex) {
-         std::cerr << "Excepție la conectare: " << ex.what() << std::endl;
-     }
- }*/
+        if (response.status_code == 200) {
+            std::cout << "Successfully joined the game: " << response.text << std::endl;
+            return true;
+        }
+        else {
+            std::cerr << "Failed to join the game. Server response: " << response.status_code << " " << response.text << std::endl;
+            return false;
+        }
+    }
+    catch (const std::exception& ex) {
+        std::cerr << "Exception during joining the game: " << ex.what() << std::endl;
+        return false;
+    }
+}
 
 
- /*bool ClientServer::GenerateCode(uint8_t level)
- {
-     try {
-         cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/generate_code" });
 
-         if (response.status_code == 200) {
-             std::cout << "Generated Game Code: " << response.text << std::endl;
-             return true;
-         }
-         else {
-             std::cerr << "Error: " << response.status_code << " " << response.text << std::endl;
-             return false;
-         }
-     }
-     catch (const std::exception& ex) {
-         std::cerr << "Exception during generating game code: " << ex.what() << std::endl;
-         return false;
-     }
- }*/
+std::string ClientServer::GenerateCode(uint8_t level)
+{
+    try {
+        // Include the level in the request URL or as a query parameter
+        cpr::Response response = cpr::Get(
+            cpr::Url{ std::string(SERVER_URL) + "/generate_code" },
+            cpr::Parameters{ {"level", std::to_string(level)} }  // Send the level as a query parameter
+        );
 
- //bool ClientServer::GenerateCode(uint8_t level)
- //{
- //    try {
- //        // Include the level in the request URL or as a query parameter
- //        cpr::Response response = cpr::Get(
- //            cpr::Url{ std::string(SERVER_URL) + "/generate_code" },
- //            cpr::Parameters{ {"level", std::to_string(level)} }  // Send the level as a query parameter
- //        );
-
- //        if (response.status_code == 200) {
- //            std::cout << "Generated Game Code: " << response.text << std::endl;
- //            return true;
- //        }
- //        else {
- //            std::cerr << "Error: " << response.status_code << " " << response.text << std::endl;
- //            return false;
- //        }
- //    }
- //    catch (const std::exception& ex) {
- //        std::cerr << "Exception during generating game code: " << ex.what() << std::endl;
- //        return false;
- //    }
- //}
- std::string ClientServer::GenerateCode(uint8_t level)
- {
-     try {
-         // Include the level in the request URL or as a query parameter
-         cpr::Response response = cpr::Get(
-             cpr::Url{ std::string(SERVER_URL) + "/generate_code" },
-             cpr::Parameters{ {"level", std::to_string(level)} }  // Send the level as a query parameter
-         );
-
-         if (response.status_code == 200) {
-             std::cout << "Generated Game Code: " << response.text << std::endl;
-             return response.text;  // Return the generated game code
-         }
-         else {
-             std::cerr << "Error: " << response.status_code << " " << response.text << std::endl;
-             return "";  // Return an empty string if there was an error
-         }
-     }
-     catch (const std::exception& ex) {
-         std::cerr << "Exception during generating game code: " << ex.what() << std::endl;
-         return "";  // Return an empty string on exception
-     }
- }
+        if (response.status_code == 200) {
+            std::cout << "Generated Game Code: " << response.text << std::endl;
+            return response.text;  // Return the generated game code
+        }
+        else {
+            std::cerr << "Error: " << response.status_code << " " << response.text << std::endl;
+            return "";  // Return an empty string if there was an error
+        }
+    }
+    catch (const std::exception& ex) {
+        std::cerr << "Exception during generating game code: " << ex.what() << std::endl;
+        return "";  // Return an empty string on exception
+    }
+}
 
 
- //bool ClientServer::JoinGame(const std::string& gameCode, const std::string& username)
- //{
- //    try {
- //        nlohmann::json jsonBody;
- //        jsonBody["game_code"] = gameCode;
- //        jsonBody["username"] = username;
+//bool ClientServer::JoinGame(const std::string& gameCode, const std::string& username)
+//{
+//    try {
+//        nlohmann::json jsonBody;
+//        jsonBody["game_code"] = gameCode;
+//        jsonBody["username"] = username;
 
- //        std::string jsonString = jsonBody.dump();  // Convert JSON to string
+//        std::string jsonString = jsonBody.dump();  // Convert JSON to string
 
- //        cpr::Response response = cpr::Post(
- //            cpr::Url{ std::string(SERVER_URL) + "/join_game" },
- //            cpr::Body{ jsonString },
- //            cpr::Header{ {"Content-Type", "application/json"} }
- //        );
+//        cpr::Response response = cpr::Post(
+//            cpr::Url{ std::string(SERVER_URL) + "/join_game" },
+//            cpr::Body{ jsonString },
+//            cpr::Header{ {"Content-Type", "application/json"} }
+//        );
 
- //        if (response.status_code == 200) {
- //            std::cout << "Joined the game successfully: " << response.text << std::endl;
- //            return true;
- //        }
- //        else {
- //            std::cerr << "Failed to join game: " << response.status_code << " " << response.text << std::endl;
- //            return false;
- //        }
- //    }
- //    catch (const std::exception& ex) {
- //        std::cerr << "Exception during joining game: " << ex.what() << std::endl;
- //        return false;
- //    }
- //}
+//        if (response.status_code == 200) {
+//            std::cout << "Joined the game successfully: " << response.text << std::endl;
+//            return true;
+//        }
+//        else {
+//            std::cerr << "Failed to join game: " << response.status_code << " " << response.text << std::endl;
+//            return false;
+//        }
+//    }
+//    catch (const std::exception& ex) {
+//        std::cerr << "Exception during joining game: " << ex.what() << std::endl;
+//        return false;
+//    }
+//}
 
 
- void ClientServer::GetGeneralSettings() {
-     try {
-         cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_general_settings" });
+void ClientServer::GetGeneralSettings() {
+    try {
+        cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_general_settings" });
 
-         if (response.status_code == 200) {
-             std::cout << "General settings retrieved: " << response.text << std::endl;
-            
-         }
-         else {
-             std::cerr << "Failed to retrieve general settings. Response code: " << response.status_code << std::endl;
-         }
-     }
-     catch (const std::exception& ex) {
-         std::cerr << "Exception while getting general settings: " << ex.what() << std::endl;
-     }
- }
- bool ClientServer::SetGeneralSettings(const std::string& settingsJson) {
-     try {
-         cpr::Response response = cpr::Post(
-             cpr::Url{ std::string(SERVER_URL) + "/set_general_settings" },
-             cpr::Body{ settingsJson },
-             cpr::Header{ {"Content-Type", "application/json"} }
-         );
+        if (response.status_code == 200) {
+            std::cout << "General settings retrieved: " << response.text << std::endl;
 
-         if (response.status_code == 200) {
-             std::cout << "General settings updated: " << response.text << std::endl;
-             return true;
-         }
-         else {
-             std::cerr << "Failed to update general settings. Response code: " << response.status_code << std::endl;
-             return false;
-         }
-     }
-     catch (const std::exception& ex) {
-         std::cerr << "Exception while setting general settings: " << ex.what() << std::endl;
-         return false;
-     }
- }
- void ClientServer::GetInGameSettings() {
-     try {
-         cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_in_game_settings" });
+        }
+        else {
+            std::cerr << "Failed to retrieve general settings. Response code: " << response.status_code << std::endl;
+        }
+    }
+    catch (const std::exception& ex) {
+        std::cerr << "Exception while getting general settings: " << ex.what() << std::endl;
+    }
+}
+bool ClientServer::SetGeneralSettings(const std::string& settingsJson) {
+    try {
+        cpr::Response response = cpr::Post(
+            cpr::Url{ std::string(SERVER_URL) + "/set_general_settings" },
+            cpr::Body{ settingsJson },
+            cpr::Header{ {"Content-Type", "application/json"} }
+        );
 
-         if (response.status_code == 200) {
-             std::cout << "In game settings retrieved: " << response.text << std::endl;
-            
-         }
-         else {
-             std::cerr << "Failed to retrieve in game settings. Response code: " << response.status_code << std::endl;
-         }
-     }
-     catch (const std::exception& ex) {
-         std::cerr << "Exception while getting in game settings: " << ex.what() << std::endl;
-     }
- }
- bool ClientServer::SetInGameSettings(const std::string& settingsJson) {
-     try {
-         cpr::Response response = cpr::Post(
-             cpr::Url{ std::string(SERVER_URL) + "/set_in_game_settings" },
-             cpr::Body{ settingsJson },
-             cpr::Header{ {"Content-Type", "application/json"} }
-         );
+        if (response.status_code == 200) {
+            std::cout << "General settings updated: " << response.text << std::endl;
+            return true;
+        }
+        else {
+            std::cerr << "Failed to update general settings. Response code: " << response.status_code << std::endl;
+            return false;
+        }
+    }
+    catch (const std::exception& ex) {
+        std::cerr << "Exception while setting general settings: " << ex.what() << std::endl;
+        return false;
+    }
+}
+void ClientServer::GetInGameSettings() {
+    try {
+        cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_in_game_settings" });
 
-         if (response.status_code == 200) {
-             std::cout << "In game settings updated: " << response.text << std::endl;
-             return true;
-         }
-         else {
-             std::cerr << "Failed to update in game settings. Response code: " << response.status_code << std::endl;
-             return false;
-         }
-     }
-     catch (const std::exception& ex) {
-         std::cerr << "Exception while setting in game settings: " << ex.what() << std::endl;
-         return false;
-     }
- }
+        if (response.status_code == 200) {
+            std::cout << "In game settings retrieved: " << response.text << std::endl;
+
+        }
+        else {
+            std::cerr << "Failed to retrieve in game settings. Response code: " << response.status_code << std::endl;
+        }
+    }
+    catch (const std::exception& ex) {
+        std::cerr << "Exception while getting in game settings: " << ex.what() << std::endl;
+    }
+}
+bool ClientServer::SetInGameSettings(const std::string& settingsJson) {
+    try {
+        cpr::Response response = cpr::Post(
+            cpr::Url{ std::string(SERVER_URL) + "/set_in_game_settings" },
+            cpr::Body{ settingsJson },
+            cpr::Header{ {"Content-Type", "application/json"} }
+        );
+
+        if (response.status_code == 200) {
+            std::cout << "In game settings updated: " << response.text << std::endl;
+            return true;
+        }
+        else {
+            std::cerr << "Failed to update in game settings. Response code: " << response.status_code << std::endl;
+            return false;
+        }
+    }
+    catch (const std::exception& ex) {
+        std::cerr << "Exception while setting in game settings: " << ex.what() << std::endl;
+        return false;
+    }
+}
 
 
 
