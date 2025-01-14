@@ -9,12 +9,14 @@ public:
     //Player(const std::string& name, Database& db , GameObject&& object);
   //  Player();
     Player(const std::string& name, Database& db);
-    //Player(Player&& other) noexcept;         // Constructor de mutare
-    //Player(const Player& other);             // Constructor de copiere
-    //~Player();
-    //// Operatori de atribuire
-    //Player& operator=(Player&& other) noexcept; // Operator de atribuire prin mutare
-    //Player& operator=(const Player& other);
+    Player(Player&& other) noexcept;         // Move constructor
+    Player(const Player& other);             // Copy constructor
+    ~Player();                               // Destructor
+
+    // Assignment operators
+    Player& operator=(Player&& other) noexcept; // Move assignment operator
+    Player& operator=(const Player& other);     // Copy assignment operator
+
 
     void AddPlayerObject(GameObject&& object);
     // Getters
@@ -31,7 +33,7 @@ public:
     // Save state to database
     void SaveState();
     void AddScore(int points);
-    void ChooseKeyBindings(const std::string& up, const std::string& down, const std::string& left, const std::string& right);
+    void ChooseKeyBindings(const std::string& up, const std::string& down, const std::string& left, const std::string& right, const std::string& shoot);
 
 
 private:

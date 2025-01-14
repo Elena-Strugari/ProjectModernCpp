@@ -19,6 +19,12 @@ public:
     void ShootBulletS(const std::shared_ptr<Player>& player);
     void MoveBullets();
 
+    /*void GameLoop() {
+        while (true) {
+            MoveBullets();
+            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        }
+    }*/
 
 private:
     Map m_map;

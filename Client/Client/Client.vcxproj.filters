@@ -79,19 +79,19 @@
     <ClCompile Include="CreateOrJoinGameWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GeneralSettingsWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="InGameSettingsWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VictoryWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GameMapWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GeneralSettingsWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="GameOverWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VictoryWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -109,6 +109,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MapCell.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ClientMap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="BackgroundHelper.h">
@@ -134,22 +137,19 @@
     <QtMoc Include="CreateOrJoinGameWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="ClientMap.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="GameMapWindow.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="GeneralSettingsWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="InGameSettingsWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="GameOverWindow.h">
+    <QtMoc Include="VictoryWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="VictoryWindow.h">
+    <QtMoc Include="GameMapWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="GameOverWindow.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

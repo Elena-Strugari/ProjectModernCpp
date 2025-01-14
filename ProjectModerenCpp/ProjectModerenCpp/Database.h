@@ -15,7 +15,7 @@ public:
     int GetScore(const std::string& clientId);
     bool DeleteClient(const std::string& clientId);
     bool ClientExists(const std::string& clientId);
-    bool SaveKeyBindings(const std::string& clientId, const std::string& up, const std::string& down, const std::string& left, const std::string& right);
+    bool SaveKeyBindings(const std::string& clientId, const std::string& up, const std::string& down, const std::string& left, const std::string& right, const std::string& shoot);
 
 
 private:

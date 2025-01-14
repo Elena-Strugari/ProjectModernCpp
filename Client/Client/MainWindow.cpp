@@ -255,7 +255,7 @@ void MainWindow::HandleLogin(const QString& username)
 
     if (ClientServer::LoginClient(stdUsername)) {
         QMessageBox::information(this, "Login", "Welcome, " + username + "!");
-        //CreateJoinWindow();
+       // CreateJoinWindow();
         close();
         DisplayMap();
     }

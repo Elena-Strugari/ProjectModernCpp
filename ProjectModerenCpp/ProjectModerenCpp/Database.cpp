@@ -26,6 +26,7 @@ void Database::InitializeDatabase() {
             key_down TEXT,
             key_left TEXT,
             key_right TEXT
+            key_shoot TEXT
         );
     )";
 
@@ -133,10 +134,10 @@ bool Database::ClientExists(const std::string& clientId) {
     return exists;
 }
 
-bool Database::SaveKeyBindings(const std::string& clientId, const std::string& up, const std::string& down, const std::string& left, const std::string& right) {
+bool Database::SaveKeyBindings(const std::string& clientId, const std::string& up, const std::string& down, const std::string& left, const std::string& right, const std::string& shoot) {
     const char* updateSQL = R"(
         UPDATE clients 
-        SET key_up = ?, key_down = ?, key_left = ?, key_right = ? 
+        SET key_up = ?, key_down = ?, key_left = ?, key_right = ?, key_shoot = ? 
         WHERE id = ?;
     )";
 
@@ -150,7 +151,8 @@ bool Database::SaveKeyBindings(const std::string& clientId, const std::string& u
     sqlite3_bind_text(stmt, 2, down.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 3, left.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 4, right.c_str(), -1, SQLITE_TRANSIENT);
-    sqlite3_bind_text(stmt, 5, clientId.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 5, shoot.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 6, clientId.c_str(), -1, SQLITE_TRANSIENT);
 
     bool success = sqlite3_step(stmt) == SQLITE_DONE;
     sqlite3_finalize(stmt);

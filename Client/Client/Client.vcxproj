@@ -36,12 +36,12 @@
     <Import Project="$(QtMsBuild)\qt_defaults.props" />
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
-    <QtInstall>Qt6.5</QtInstall>
+    <QtInstall>QT_fin</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
-    <QtInstall>Qt6.5</QtInstall>
+    <QtInstall>QT_fin</QtInstall>
     <QtModules>core;gui;widgets</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
@@ -66,27 +66,21 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
       <AdditionalDependencies>Qt6Core.lib;Qt6Widgets.lib;Qt6Gui.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\Documents\QTCreator\6.7.3\msvc2022_64\lib;D:\qt\6.7.3\msvc2022_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\elena\OneDrive\Documente\QT\6.7.3\msvc2022_64\lib;D:\qt\6.7.3\msvc2022_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ShowProgress>LinkVerbose</ShowProgress>
     </Link>
     <ClCompile>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
-      <EnableModules>true</EnableModules>
-      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
       <AdditionalDependencies>Qt6Core.lib;Qt6Widgets.lib;Qt6Gui.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\Documents\QTCreator\6.7.3\msvc2022_64\lib;D:\qt\6.7.3\msvc2022_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\elena\OneDrive\Documente\QT\6.7.3\msvc2022_64\lib;D:\qt\6.7.3\msvc2022_64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ShowProgress>LinkVerbose</ShowProgress>
     </Link>
     <ClCompile>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <ScanSourceForModuleDependencies>true</ScanSourceForModuleDependencies>
-      <EnableModules>true</EnableModules>
-      <BuildStlModules>true</BuildStlModules>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
@@ -150,17 +144,17 @@
     <QtUic Include="MainWindow.ui" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="VictoryWindow.h" />
-    <QtMoc Include="ClientMap.h" />
     <ClInclude Include="BackgroundHelper.h" />
+    <ClInclude Include="ClientMap.h" />
     <ClInclude Include="ClientServer.h" />
+    <QtMoc Include="VictoryWindow.h" />
     <QtMoc Include="ControlChoiceWindow.h" />
     <QtMoc Include="CreateOrJoinGameWindow.h" />
     <ClInclude Include="GameEntity.h" />
     <QtMoc Include="LevelSelectionWindow.h" />
-    <QtMoc Include="GameMapWindow.h" />
     <QtMoc Include="GeneralSettingsWindow.h" />
     <QtMoc Include="InGameSettingsWindow.h" />
+    <QtMoc Include="GameMapWindow.h" />
     <QtMoc Include="GameOverWindow.h" />
     <ClInclude Include="MapCell.h" />
     <ClInclude Include="NoGreenScreen.h" />
