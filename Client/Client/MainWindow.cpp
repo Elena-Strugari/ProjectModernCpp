@@ -186,7 +186,7 @@
 #include "ControlChoiceWindow.h"
 #include "CreateOrJoinGameWindow.h"
 #include "LevelSelectionWindow.h"
-
+#include "GameMapWindow.h"
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -296,11 +296,17 @@ void MainWindow::HandleControlsSet(const QMap<QString, QString>& controls)//, co
     std::string controlsStr= jsonString.toUtf8().constData();
     //std::string usernameStr=username.toUtf8().constData();
     //if(ClientServer::ControlsClient(usernameStr, controlsStr))
-    if(ClientServer::ControlsClient(controlsStr))
+    if (ClientServer::ControlsClient(controlsStr))
+    {
         QMessageBox::information(this, "Success", "Controls have been successfully set!");
+        CreateOrJoinGameWindow* createJoinWindow = new CreateOrJoinGameWindow();
+        createJoinWindow->show();
+        connect(createJoinWindow, &CreateOrJoinGameWindow::Generate, this, &MainWindow::HandleCreateCode);
+        connect(createJoinWindow, &CreateOrJoinGameWindow::CheckCode, this, &MainWindow::HandleCheckCode);
+    }
     else
         QMessageBox::warning(this, "Error", "Failed to set controls: ");
-
+   
 
 }
 void MainWindow::HandleCreateCode()
@@ -318,14 +324,23 @@ void MainWindow::HandleCreateCode()
 }
 void MainWindow::HandleCheckCode()
 {
-    QMessageBox::information(this, "Success", "Check Code");
-    ClientServer::CheckCode();
+    if (ClientServer::CheckCode()) {
+        QMessageBox::information(this, "Success", "Code verified. Loading game map...");
+
+        // Creează și afișează fereastra GameMapWindow
+        GameMapWindow* gameMapWindow = new GameMapWindow();
+        gameMapWindow->show();
+    }
+    else {
+        QMessageBox::warning(this, "Error", "Invalid code. Please try again.");
+    }
 }
 void MainWindow::HandleLevel()
 {
     QMessageBox::information(this, "Success", "Level");
-    ClientServer::Level();
-
+    //ClientServer::Level();
+    GameMapWindow* gameMapWindow = new GameMapWindow();
+    gameMapWindow->show();
 }
 //void MainWindow::DisplayMap() {
 //    try {

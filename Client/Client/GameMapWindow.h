@@ -21,6 +21,8 @@ private:
 private:
     //void InitializeBackground();
 
+signals:
+void SettingsClicked();
 public slots:
     void onSettingsClicked();
 

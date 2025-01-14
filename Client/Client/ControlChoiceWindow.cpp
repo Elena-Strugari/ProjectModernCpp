@@ -556,4 +556,5 @@ void ControlChoiceWindow::resizeEvent(QResizeEvent* event)
         setPalette(palette);
     }
     QWidget::resizeEvent(event);
+
 }

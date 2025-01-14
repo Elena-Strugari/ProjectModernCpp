@@ -88,4 +88,5 @@ void GameMapWindow::adjustMapWidgetSize(QResizeEvent* event)
 void GameMapWindow::onSettingsClicked()
 {
     QMessageBox::information(this, "Settings Clicked", "The Settings button was clicked!");
+    emit SettingsClicked();
 }
