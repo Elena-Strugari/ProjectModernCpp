@@ -1,14 +1,14 @@
 ﻿#pragma once
 #include "routing.h"
-
+#include "libs/nlohmann/json.hpp"
 #include "Game.h"
 
-
+using json = nlohmann::json;
 
 #include <sstream>
 
 using namespace http;
-Database db("playersTest.db");
+Database db("DataTest.db");
 namespace http {
     //std::unordered_map<std::string, std::string> Routing::m_users;
     std::unordered_map<std::string, Player> playersActive;
@@ -82,33 +82,114 @@ void http::Routing::Run()
         }
         });
 
-    CROW_ROUTE(m_app, "/controls").methods("POST"_method)([](const crow::request& req) {
-        try {
-            // Parse JSON body
-            auto json = crow::json::load(req.body);
-            if (!json || !json.has("username") || !json.has("Up") || !json.has("Down") ||
-                !json.has("Left") || !json.has("Right") || !json.has("Shoot")) {
+    //CROW_ROUTE(m_app, "/controls").methods("POST"_method)([](const crow::request& req) {
+    //    try {
+
+    //        // Print the raw body
+    //        std::cout << "Raw Body: " << req.body << std::endl;
+
+    //        // Check if the body is empty
+    //        if (req.body.empty()) {
+    //            return crow::response(400, "Request body is empty");
+    //        }
+
+    //        // Parse the JSON body
+    //        auto json = crow::json::load(req.body);
+    //        if (!json) {
+    //            std::cout << "error JSON: ";
+    //            return crow::response(400, "Invalid JSON");
+    //        }
+    //        else {
+    //            std::cout << "Successfully loaded JSON: ";
+    //        }
+
+    //        // Check if necessary fields exist in the JSON
+    //        if (!json.has("username") || !json.has("Up") || !json.has("Down") ||
+    //            !json.has("Left") || !json.has("Right") || !json.has("Shoot")) {
+    //            return crow::response(400, "Invalid JSON or missing fields");
+    //        }
+    //        // Parse JSON body
+    //       // auto json = crow::json::load(req.body);
+
+    //       // std::cout << "Received JSON: " << req.body << std::endl;
+
+    //       ///* if (!json || !json.has("username") || !json.has("Up") || !json.has("Down") ||
+    //       //     !json.has("Left") || !json.has("Right") || !json.has("Shoot")) {
+    //       //     return crow::response(400, "Invalid JSON or missing fields");
+    //       // }*/
+
+    //       // if (!json) {
+    //       //     return crow::response(400, "Invalid JSON or missing 'controls' field");
+    //       // }
+
+    //       // // Parse the inner 'controls' JSON
+    //       // auto controlsJson = crow::json::load(json["controls"].s());
+    //       // if (!controlsJson || !controlsJson.has("username") || !controlsJson.has("Up") || !controlsJson.has("Down") ||
+    //       //     !controlsJson.has("Left") || !controlsJson.has("Right") || !controlsJson.has("Shoot")) {
+    //       //     return crow::response(401, "Invalid JSON or missing fields in controls");
+    //       // }
+
+    //        std::string username = json["username"].s();
+    //        std::string up = json["Up"].s();
+    //        std::string down = json["Down"].s();
+    //        std::string left = json["Left"].s();
+    //        std::string right = json["Right"].s();
+    //        std::string shoot = json["Shoot"].s();
+
+    //        // Validate uniqueness of keys
+    //        if (up == down || up == left || up == right || up == shoot ||
+    //            down == left || down == right || down == shoot ||
+    //            left == right || left == shoot || right == shoot) {
+    //            return crow::response(402, "Keys must be unique");
+    //        }
+
+    //        // Check if user exists in the database
+    //        /*if (!db.ClientExists(username)) {
+    //            return crow::response(404, "User not found");
+    //        } */
+    //        if (playersActive.find(username) == playersActive.end()) {
+    //            return crow::response(404, "User is not Active");
+    //        }
+
+    //        // Save key bindings
+    //        bool success = db.SaveKeyBindings(username, up, down, left, right, shoot);
+    //        if (!success) {
+    //            return crow::response(500, "Failed to save key bindings");
+    //        }
+
+    //        return crow::response(200, "Controls set successfully");
+    //    }
+    //    catch (const std::exception& e) {
+    //        return crow::response(500, "Server error: " + std::string(e.what()));
+    //    }
+    //    });
+
+        CROW_ROUTE(m_app, "/controls").methods("POST"_method)([](const crow::request& req) {
+            // Parse the JSON request body
+            nlohmann::json json;
+            try {
+                json = nlohmann::json::parse(req.body);
+            }
+            catch (const std::exception& e) {
+                return crow::response(400, "Invalid JSON format: " + std::string(e.what()));
+            }
+
+            // Validate that all necessary fields are present in the JSON
+            if (!json.contains("username") || !json.contains("Up") || !json.contains("Down") ||
+                !json.contains("Left") || !json.contains("Right") || !json.contains("Shoot")) {
                 return crow::response(400, "Invalid JSON or missing fields");
             }
 
-            std::string username = json["username"].s();
-            std::string up = json["Up"].s();
-            std::string down = json["Down"].s();
-            std::string left = json["Left"].s();
-            std::string right = json["Right"].s();
-            std::string shoot = json["Shoot"].s();
+            std::string username = json["username"];
+            std::string up = json["Up"];
+            std::string down = json["Down"];
+            std::string left = json["Left"];
+            std::string right = json["Right"];
+            std::string shoot = json["Shoot"];
 
-            // Validate uniqueness of keys
-            if (up == down || up == left || up == right || up == shoot ||
-                down == left || down == right || down == shoot ||
-                left == right || left == shoot || right == shoot) {
-                return crow::response(402, "Keys must be unique");
-            }
-
-            // Check if user exists in the database
-            /*if (!db.ClientExists(username)) {
-                return crow::response(404, "User not found");
-            } */
+            // Further processing (e.g., saving controls or updating the player settings)
+            std::cout << "Received controls for " << username << ": " << "Up = " << up << ", Down = " << down
+                << ", Left = " << left << ", Right = " << right << ", Shoot = " << shoot << std::endl;
             if (playersActive.find(username) == playersActive.end()) {
                 return crow::response(404, "User is not Active");
             }
@@ -118,13 +199,10 @@ void http::Routing::Run()
             if (!success) {
                 return crow::response(500, "Failed to save key bindings");
             }
+            // Return a success response
+            return crow::response(200, "Controls successfully set for user: " + username);
+            });
 
-            return crow::response(200, "Controls set successfully");
-        }
-        catch (const std::exception& e) {
-            return crow::response(500, "Server error: " + std::string(e.what()));
-        }
-        });
 
 
     //CROW_ROUTE(m_app, "/controls").methods("POST"_method)([](const crow::request& req) {

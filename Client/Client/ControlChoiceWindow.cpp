@@ -348,8 +348,7 @@ void CustomLineEdit::keyPressEvent(QKeyEvent* event)
 
 
 ControlChoiceWindow::ControlChoiceWindow(const QString& clientId, QWidget* parent)
-    : QWidget(parent)
-    , clientId(clientId)
+    : QWidget(parent), m_username(clientId)
     , upInput(new CustomLineEdit(this))
     , downInput(new CustomLineEdit(this))
     , leftInput(new CustomLineEdit(this))
@@ -497,18 +496,7 @@ void ControlChoiceWindow::OnSaveControls()
 
     qDebug() << "Controls collected:" << controls;
 
-    // Validate keys
-    /*QSet<QString> uniqueKeys;
-    for (const QString& value : controls.values()) {
-        uniqueKeys.insert(value);
-    }
-
-    if (uniqueKeys.contains("") || uniqueKeys.size() != controls.size()) {
-        QMessageBox::warning(this, "Invalid Controls", "Ensure all controls are unique and non-empty!");
-        return;
-    }*/
-
-    emit ControlsSet(controls);
+    emit ControlsSet(controls, m_username);
     //this->close();
 }
 

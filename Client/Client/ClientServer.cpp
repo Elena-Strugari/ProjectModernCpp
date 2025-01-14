@@ -137,29 +137,32 @@ bool ClientServer::RegisterClient(const std::string& username) {
 }
 
 //bool ClientServer::ControlsClient(const std::string& client, const std::string& controlsClient)
-bool ClientServer::ControlsClient(const std::string& controlsClient)
+bool ClientServer::ControlsClient(const std::string& controls)
 {
     try {
+        // Send the POST request with JSON data
         cpr::Response response = cpr::Post(
             cpr::Url{ std::string(SERVER_URL) + "/controls" },
-            cpr::Body{ "{\"controls\":\"" + controlsClient + "\"}"},
+            cpr::Body{ controls },
             cpr::Header{ {"Content-Type", "application/json"} }
         );
 
+        // Check for a successful response
         if (response.status_code == 200) {
-            qDebug() << "Success: " << QString::fromStdString(response.text);
+            std::cout << "Success: " << response.text << std::endl;
             return true;
         }
         else {
-            qDebug() << "Error: " << response.status_code;
+            std::cerr << "Error: " << response.status_code << " " << response.text << std::endl;
             return false;
         }
     }
     catch (const std::exception& ex) {
-        qDebug() << "Exception during registration: " << ex.what();
+        std::cerr << "Exception during controls submission: " << ex.what() << std::endl;
         return false;
     }
 }
+
 
  /*QJsonDocument ClientServer::GetMap() {
       auto response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_map" });

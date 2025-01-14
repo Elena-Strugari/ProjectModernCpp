@@ -60,7 +60,7 @@ public:
     ~ControlChoiceWindow();
 
 signals:
-    void ControlsSet(const QMap<QString, QString>& controls);
+    void ControlsSet(const QMap<QString, QString>& controls, const QString& username);
 
 private slots:
     void OnSaveControls();
@@ -72,7 +72,7 @@ private:
    // void InitializeBackground();
     void HandleKeyEvent(const QString& keyText);
 
-    QString clientId;
+    //QString clientId;
     CustomLineEdit* upInput;
     CustomLineEdit* downInput;
     CustomLineEdit* leftInput;
@@ -80,6 +80,8 @@ private:
     CustomLineEdit* shootInput;
     QPushButton* saveButton;
     QPushButton* resetButton;
+
+    QString m_username;
     QMap<QString, QString> controls;
 };
 

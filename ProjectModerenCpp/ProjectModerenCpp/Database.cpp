@@ -8,6 +8,7 @@ Database::Database(const std::string& dbName) : databaseName(dbName), db(nullptr
     }
     else {
         InitializeDatabase();
+
     }
 }
 
@@ -25,7 +26,7 @@ void Database::InitializeDatabase() {
             key_up TEXT,
             key_down TEXT,
             key_left TEXT,
-            key_right TEXT
+            key_right TEXT,
             key_shoot TEXT
         );
     )";
@@ -36,6 +37,7 @@ void Database::InitializeDatabase() {
         sqlite3_free(errMsg);
     }
 }
+
 
 bool Database::AddClient(const std::string& clientId, int score) {
     const char* insertSQL = "INSERT INTO clients (id, score) VALUES (?, ?);";
@@ -133,6 +135,83 @@ bool Database::ClientExists(const std::string& clientId) {
 
     return exists;
 }
+
+//bool Database::SaveKeyBindings(const std::string& clientId, const std::string& up, const std::string& down, const std::string& left, const std::string& right, const std::string& shoot) {
+//    const char* updateSQL = R"(
+//        UPDATE clients 
+//        SET key_up = ?, key_down = ?, key_left = ?, key_right = ?, key_shoot = ? 
+//        WHERE id = ?;
+//    )";
+//
+//    sqlite3_stmt* stmt = nullptr;
+//    if (sqlite3_prepare_v2(db, updateSQL, -1, &stmt, nullptr) != SQLITE_OK) {
+//        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+//        return false;
+//    }
+//
+//    sqlite3_bind_text(stmt, 1, up.c_str(), -1, SQLITE_TRANSIENT);
+//    sqlite3_bind_text(stmt, 2, down.c_str(), -1, SQLITE_TRANSIENT);
+//    sqlite3_bind_text(stmt, 3, left.c_str(), -1, SQLITE_TRANSIENT);
+//    sqlite3_bind_text(stmt, 4, right.c_str(), -1, SQLITE_TRANSIENT);
+//    sqlite3_bind_text(stmt, 5, shoot.c_str(), -1, SQLITE_TRANSIENT);
+//    sqlite3_bind_text(stmt, 6, clientId.c_str(), -1, SQLITE_TRANSIENT);
+//
+//    bool success = sqlite3_step(stmt) == SQLITE_DONE;
+//    sqlite3_finalize(stmt);
+//
+//    if (success) {
+//        std::cout << "Key bindings for client '" << clientId << "' saved successfully." << std::endl;
+//    }
+//    else {
+//        std::cerr << "Failed to save key bindings for client '" << clientId << "'. Error: " << sqlite3_errmsg(db) << std::endl;
+//    }
+//
+//    return success;
+//}
+
+//bool Database::SaveKeyBindings(const std::string& clientId, const std::string& up, const std::string& down, const std::string& left, const std::string& right, const std::string& shoot) {
+//    const char* updateSQL = R"(
+//        UPDATE clients 
+//        SET key_up = ?, key_down = ?, key_left = ?, key_right = ?, key_shoot = ? 
+//        WHERE id = ?;
+//    )";
+//
+//    sqlite3_stmt* stmt = nullptr;
+//    if (sqlite3_prepare_v2(db, updateSQL, -1, &stmt, nullptr) != SQLITE_OK) {
+//        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+//        return false;
+//    }
+//
+//    // Debug: Check if values are correct
+//    std::cout << "Binding values: " << up << ", " << down << ", " << left << ", " << right << ", " << shoot << ", " << clientId << std::endl;
+//
+//    // Bind the values to the SQL query
+//    if (sqlite3_bind_text(stmt, 1, up.c_str(), -1, SQLITE_TRANSIENT) != SQLITE_OK ||
+//        sqlite3_bind_text(stmt, 2, down.c_str(), -1, SQLITE_TRANSIENT) != SQLITE_OK ||
+//        sqlite3_bind_text(stmt, 3, left.c_str(), -1, SQLITE_TRANSIENT) != SQLITE_OK ||
+//        sqlite3_bind_text(stmt, 4, right.c_str(), -1, SQLITE_TRANSIENT) != SQLITE_OK ||
+//        sqlite3_bind_text(stmt, 5, shoot.c_str(), -1, SQLITE_TRANSIENT) != SQLITE_OK ||
+//        sqlite3_bind_text(stmt, 6, clientId.c_str(), -1, SQLITE_TRANSIENT) != SQLITE_OK) {
+//        std::cerr << "Failed to bind values: " << sqlite3_errmsg(db) << std::endl;
+//        sqlite3_finalize(stmt);
+//        return false;
+//    }
+//
+//    // Execute the query
+//    int result = sqlite3_step(stmt);
+//    if (result != SQLITE_DONE) {
+//        std::cerr << "Failed to save key bindings for client '" << clientId << "'. Error: "
+//            << sqlite3_errmsg(db) << ", Result code: " << result << std::endl;
+//        sqlite3_finalize(stmt);
+//        return false;
+//    }
+//
+//    sqlite3_finalize(stmt);
+//
+//    std::cout << "Key bindings for client '" << clientId << "' saved successfully." << std::endl;
+//    return true;
+//}
+//
 
 bool Database::SaveKeyBindings(const std::string& clientId, const std::string& up, const std::string& down, const std::string& left, const std::string& right, const std::string& shoot) {
     const char* updateSQL = R"(
