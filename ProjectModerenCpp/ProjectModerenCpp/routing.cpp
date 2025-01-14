@@ -10,7 +10,6 @@ using json = nlohmann::json;
 using namespace http;
 Database db("testDatabase2.db");
 namespace http {
-    //std::unordered_map<std::string, std::string> Routing::m_users;
     std::unordered_map<std::string, Player> playersActive;
 
 }

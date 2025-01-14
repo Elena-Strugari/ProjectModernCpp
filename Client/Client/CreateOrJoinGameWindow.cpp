@@ -90,21 +90,6 @@ CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
         });
 }
 
-//void CreateOrJoinGameWindow::InitializeBackground()
-//{
-//    QImage image(":/StartImage/resources/StartGame.jpg"); // Calea ta pentru fundal
-//
-//    if (image.isNull())
-//    {
-//        qDebug() << "Failed to load background image!";
-//        return;
-//    }
-//
-//    QPalette palette;
-//    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
-//    setPalette(palette);
-//    setAutoFillBackground(true);
-//}
 void CreateOrJoinGameWindow::resizeEvent(QResizeEvent* event)
 {
     QImage image(":/StartImage/resources/StartGame.jpg");

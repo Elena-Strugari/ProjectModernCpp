@@ -22,7 +22,6 @@ signals:
 protected:
     void resizeEvent(QResizeEvent* event) override;
 private:
-    //void InitializeBackground();
 
     QLabel* titleLabel;
     QPushButton* generateCodeButton;

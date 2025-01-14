@@ -11,67 +11,35 @@
 #include <QMessageBox>
 #include <iostream>
 
+
+#include "libs/nlohmann/json.hpp"
+using json = nlohmann::json;
+
+
 constexpr auto SERVER_URL = "http://localhost:8080";
  
-//void ClientServer::connectServer() {
-//
-//    try {
-//        cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL)+ "/connect"});
-//
-//        if (response.status_code == 200) {
-//            std::cout << "Mesaj de la server: " << response.text << std::endl;
-//        }
-//        else {
-//            std::cerr << "Eroare la conectare. Cod răspuns: " << response.status_code << std::endl;
-//        }
-//    }
-//    catch (const std::exception& ex) {
-//        std::cerr << "Excepție la conectare: " << ex.what() << std::endl;
-//    }
-//}
+
 void ClientServer::connectServer() 
 {
     qDebug() << "Am intrat in functia de conectare la server din ClientServer.";
     try
     {
-        // Trimite cererea GET către server pentru a testa conexiunea
         cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/connect" });
 
         if (response.status_code == 200) 
         {
-            // Dacă serverul răspunde cu codul 200, afișăm mesajul de succes
             std::cout << "Mesaj de la server: " << response.text << std::endl;
         }
         else 
         {
-            // Dacă serverul răspunde cu alt cod, afișăm eroarea
             std::cerr << "Eroare la conectare. Cod răspuns: " << response.status_code << std::endl;
         }
     }
     catch (const std::exception& ex) 
     {
-        // Capturăm orice excepție care ar putea apărea și o afișăm
         std::cerr << "Excepție la conectare: " << ex.what() << std::endl;
     }
 }
-
-//void ClientServer::StartGameWindow()
-//{
-//    try {
-//        cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/startGame" });
-//
-//        if (response.status_code == 200) {
-//            std::cout << "Mesaj de la server: " << response.text << std::endl;
-//        }
-//        else {
-//            std::cerr << "Eroare la conectare. Cod răspuns: " << response.status_code << std::endl;
-//        }
-//    }
-//    catch (const std::exception& ex) {
-//        std::cerr << "Excepție la conectare: " << ex.what() << std::endl;
-//    }
-//
-//}
 
 
 void ClientServer::StartGameWindow() 
@@ -84,7 +52,6 @@ void ClientServer::StartGameWindow()
             std::cout << "Mesaj de la server: " << response.text << std::endl;
         }
         else {
-            // Detaliem eroarea în cazul unui status diferit de 200
             std::cerr << "Eroare la conectare. Cod răspuns: " << response.status_code << " - " << response.text << std::endl;
         }
     }
@@ -113,99 +80,7 @@ void ClientServer::UserWindow()
 
 }
 
-//bool ClientServer::verificare()
-//{
-//    QString name = "John";
-//    std::string nameS = name.toUtf8().constData();
-//
-//    // Trimite cererea POST către server
-//    cpr::Response r = cpr::Post(
-//        cpr::Url{ std::string(SERVER_URL) + "/sendName" },
-//        cpr::Body{ nameS },
-//        cpr::Header{ {"Content-Type", "text/plain"} }
-//    );
-//
-//    // Afișează răspunsul serverului
-//    if (r.status_code == 200) {
-//        qDebug() << "Registration successful: " << QString::fromStdString(r.text);
-//        return true;
-//    }
-//    else {
-//        qDebug() << "Registration failed. Status code: " << r.status_code;
-//        return false;
-//    }
-//
-//}
 
-//bool ClientServer::verificare()
-//{
-//    qDebug() << "Am intrat in noua functie de verificare din ClientServer.";
-//    try {
-//        QString name = "John";
-//        std::string nameS = name.toUtf8().constData();
-//
-//        // Trimite cererea POST către server
-//        cpr::Response r = cpr::Post(
-//            cpr::Url{ std::string(SERVER_URL) + "/sendName" },
-//            cpr::Body{ nameS },
-//            cpr::Header{ {"Content-Type", "text/plain"} }
-//        );
-//
-//        // Afișează răspunsul serverului
-//        if (r.status_code == 200) {
-//            qDebug() << "Registration successful: " << QString::fromStdString(r.text);
-//            return true;
-//        }
-//        else {
-//            qDebug() << "Registration failed. Status code: " << r.status_code;
-//            qDebug() << "Server response: " << QString::fromStdString(r.text); // Afișează și textul de răspuns
-//            return false;
-//        }
-//    }
-//    catch (const std::exception& ex) {
-//        qDebug() << "Error during verification: " << ex.what();
-//        return false;
-//    }
-//}
-//bool ClientServer::verificare()
-//{
-//    qDebug() << "Am intrat in noua functie de verificare din ClientServer.";
-//    try {
-//        QString name = "John";
-//        std::string nameS = name.toUtf8().constData();
-//
-//        // Trimite cererea POST către server
-//        cpr::Response r = cpr::Post(
-//            cpr::Url{ std::string(SERVER_URL) + "/sendName" },
-//            cpr::Body{ nameS },
-//            cpr::Header{ {"Content-Type", "text/plain"} }
-//        );
-//
-//        // Verifică statusul răspunsului
-//        if (r.status_code == 200) {
-//            qDebug() << "Registration successful. Server response: " << QString::fromStdString(r.text);
-//
-//            // Dacă serverul trimite un mesaj gol, confirmăm că datele au fost procesate corect.
-//            if (r.text.empty()) {
-//                qDebug() << "Server returned an empty response.";
-//            }
-//            else {
-//                qDebug() << "Server returned data: " << QString::fromStdString(r.text);
-//            }
-//
-//            return true;
-//        }
-//        else {
-//            qDebug() << "Registration failed. Status code: " << r.status_code;
-//            qDebug() << "Server response: " << QString::fromStdString(r.text); // Afișează și textul de răspuns
-//            return false;
-//        }
-//    }
-//    catch (const std::exception& ex) {
-//        qDebug() << "Error during verification: " << ex.what();
-//        return false;
-//    }
-//}
 bool ClientServer::verificare() 
 {
     qDebug() << "Am intrat in noua functie de verificare din ClientServer.";
@@ -213,17 +88,12 @@ bool ClientServer::verificare()
         QString name = "John";
         std::string nameS = name.toUtf8().constData();
 
-        // Trimite cererea POST către server
         cpr::Response r = cpr::Post(
             cpr::Url{ std::string(SERVER_URL) + "/sendName" },
             cpr::Body{ nameS },
             cpr::Header{ {"Content-Type", "text/plain"} }
         );
-
-        // Verifică statusul răspunsului
         if (r.status_code == 200) {
-            // Dacă serverul trimite un mesaj de tip text simplu
-            //qDebug() << "Server returned message: " << QString::fromStdString(r.text);
             qDebug() << "Server returned message: " << r.text.c_str();
 
             return true;
@@ -289,18 +159,15 @@ bool ClientServer::RegisterClient(const std::string& username) {
     }
 }
 
-//bool ClientServer::ControlsClient(const std::string& client, const std::string& controlsClient)
 bool ClientServer::ControlsClient(const std::string& controls)
 {
     try {
-        // Send the POST request with JSON data
         cpr::Response response = cpr::Post(
             cpr::Url{ std::string(SERVER_URL) + "/controls" },
             cpr::Body{ controls },
             cpr::Header{ {"Content-Type", "application/json"} }
         );
 
-        // Check for a successful response
         if (response.status_code == 200) {
             std::cout << "Success: " << response.text << std::endl;
             return true;

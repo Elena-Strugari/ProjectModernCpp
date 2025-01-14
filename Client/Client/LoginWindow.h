@@ -5,12 +5,6 @@
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QLabel>
-
-//biblioteci de test
-//#include <QVBoxLayout>
-//#include <QPushButton>
-//#include <QLineEdit>
-//#include <QLabel>
 #include <QPalette>
 #include <QResizeEvent>
 #include "BackgroundHelper.h"
@@ -23,7 +17,6 @@ class LoginWindow :public QWidget
 
 public:
     explicit LoginWindow(QWidget* parent = nullptr);
-    //void InitializeBackground();
 signals:
     void Login(const QString& username); 
     void RegisterUser(const QString& username); 
@@ -37,8 +30,7 @@ protected:
 
 
 private:
-    //QLabel* textLabel;
-    //QLineEdit* usernameInput;
+    
     QLineEdit* clientInput;
     QPushButton* loginButton;
     QPushButton* registerButton;

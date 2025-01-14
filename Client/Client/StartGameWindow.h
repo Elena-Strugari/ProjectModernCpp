@@ -28,7 +28,6 @@ protected:
 private:
     QLabel* textLabel;
     QPushButton* startGameButton;
-    //void InitializeBackground();
 };
 
 #endif // STARTGAMEWINDOW_H
