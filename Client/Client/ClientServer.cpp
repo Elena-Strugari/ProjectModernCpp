@@ -8,30 +8,75 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QString>
-
+#include <QMessageBox>
 #include <iostream>
 
 constexpr auto SERVER_URL = "http://localhost:8080";
  
-void ClientServer::connectServer() {
+//void ClientServer::connectServer() {
+//
+//    try {
+//        cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL)+ "/connect"});
+//
+//        if (response.status_code == 200) {
+//            std::cout << "Mesaj de la server: " << response.text << std::endl;
+//        }
+//        else {
+//            std::cerr << "Eroare la conectare. Cod răspuns: " << response.status_code << std::endl;
+//        }
+//    }
+//    catch (const std::exception& ex) {
+//        std::cerr << "Excepție la conectare: " << ex.what() << std::endl;
+//    }
+//}
+void ClientServer::connectServer() 
+{
+    qDebug() << "Am intrat in functia de conectare la server din ClientServer.";
+    try
+    {
+        // Trimite cererea GET către server pentru a testa conexiunea
+        cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/connect" });
 
-    try {
-        cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL)+ "/connect"});
-
-        if (response.status_code == 200) {
+        if (response.status_code == 200) 
+        {
+            // Dacă serverul răspunde cu codul 200, afișăm mesajul de succes
             std::cout << "Mesaj de la server: " << response.text << std::endl;
         }
-        else {
+        else 
+        {
+            // Dacă serverul răspunde cu alt cod, afișăm eroarea
             std::cerr << "Eroare la conectare. Cod răspuns: " << response.status_code << std::endl;
         }
     }
-    catch (const std::exception& ex) {
+    catch (const std::exception& ex) 
+    {
+        // Capturăm orice excepție care ar putea apărea și o afișăm
         std::cerr << "Excepție la conectare: " << ex.what() << std::endl;
     }
 }
 
-void ClientServer::StartGameWindow()
+//void ClientServer::StartGameWindow()
+//{
+//    try {
+//        cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/startGame" });
+//
+//        if (response.status_code == 200) {
+//            std::cout << "Mesaj de la server: " << response.text << std::endl;
+//        }
+//        else {
+//            std::cerr << "Eroare la conectare. Cod răspuns: " << response.status_code << std::endl;
+//        }
+//    }
+//    catch (const std::exception& ex) {
+//        std::cerr << "Excepție la conectare: " << ex.what() << std::endl;
+//    }
+//
+//}
+
+
+void ClientServer::StartGameWindow() 
 {
+    qDebug() << "Am intrat in functia StartGameWindow din ClientServer.";
     try {
         cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/startGame" });
 
@@ -39,14 +84,16 @@ void ClientServer::StartGameWindow()
             std::cout << "Mesaj de la server: " << response.text << std::endl;
         }
         else {
-            std::cerr << "Eroare la conectare. Cod răspuns: " << response.status_code << std::endl;
+            // Detaliem eroarea în cazul unui status diferit de 200
+            std::cerr << "Eroare la conectare. Cod răspuns: " << response.status_code << " - " << response.text << std::endl;
         }
     }
-    catch (const std::exception& ex) {
+    catch (const std::exception& ex)
+    {
         std::cerr << "Excepție la conectare: " << ex.what() << std::endl;
     }
-
 }
+
 
 void ClientServer::UserWindow()
 {
@@ -66,29 +113,135 @@ void ClientServer::UserWindow()
 
 }
 
-bool ClientServer::verificare()
+//bool ClientServer::verificare()
+//{
+//    QString name = "John";
+//    std::string nameS = name.toUtf8().constData();
+//
+//    // Trimite cererea POST către server
+//    cpr::Response r = cpr::Post(
+//        cpr::Url{ std::string(SERVER_URL) + "/sendName" },
+//        cpr::Body{ nameS },
+//        cpr::Header{ {"Content-Type", "text/plain"} }
+//    );
+//
+//    // Afișează răspunsul serverului
+//    if (r.status_code == 200) {
+//        qDebug() << "Registration successful: " << QString::fromStdString(r.text);
+//        return true;
+//    }
+//    else {
+//        qDebug() << "Registration failed. Status code: " << r.status_code;
+//        return false;
+//    }
+//
+//}
+
+//bool ClientServer::verificare()
+//{
+//    qDebug() << "Am intrat in noua functie de verificare din ClientServer.";
+//    try {
+//        QString name = "John";
+//        std::string nameS = name.toUtf8().constData();
+//
+//        // Trimite cererea POST către server
+//        cpr::Response r = cpr::Post(
+//            cpr::Url{ std::string(SERVER_URL) + "/sendName" },
+//            cpr::Body{ nameS },
+//            cpr::Header{ {"Content-Type", "text/plain"} }
+//        );
+//
+//        // Afișează răspunsul serverului
+//        if (r.status_code == 200) {
+//            qDebug() << "Registration successful: " << QString::fromStdString(r.text);
+//            return true;
+//        }
+//        else {
+//            qDebug() << "Registration failed. Status code: " << r.status_code;
+//            qDebug() << "Server response: " << QString::fromStdString(r.text); // Afișează și textul de răspuns
+//            return false;
+//        }
+//    }
+//    catch (const std::exception& ex) {
+//        qDebug() << "Error during verification: " << ex.what();
+//        return false;
+//    }
+//}
+//bool ClientServer::verificare()
+//{
+//    qDebug() << "Am intrat in noua functie de verificare din ClientServer.";
+//    try {
+//        QString name = "John";
+//        std::string nameS = name.toUtf8().constData();
+//
+//        // Trimite cererea POST către server
+//        cpr::Response r = cpr::Post(
+//            cpr::Url{ std::string(SERVER_URL) + "/sendName" },
+//            cpr::Body{ nameS },
+//            cpr::Header{ {"Content-Type", "text/plain"} }
+//        );
+//
+//        // Verifică statusul răspunsului
+//        if (r.status_code == 200) {
+//            qDebug() << "Registration successful. Server response: " << QString::fromStdString(r.text);
+//
+//            // Dacă serverul trimite un mesaj gol, confirmăm că datele au fost procesate corect.
+//            if (r.text.empty()) {
+//                qDebug() << "Server returned an empty response.";
+//            }
+//            else {
+//                qDebug() << "Server returned data: " << QString::fromStdString(r.text);
+//            }
+//
+//            return true;
+//        }
+//        else {
+//            qDebug() << "Registration failed. Status code: " << r.status_code;
+//            qDebug() << "Server response: " << QString::fromStdString(r.text); // Afișează și textul de răspuns
+//            return false;
+//        }
+//    }
+//    catch (const std::exception& ex) {
+//        qDebug() << "Error during verification: " << ex.what();
+//        return false;
+//    }
+//}
+bool ClientServer::verificare() 
 {
-    QString name = "John";
-    std::string nameS = name.toUtf8().constData();
+    qDebug() << "Am intrat in noua functie de verificare din ClientServer.";
+    try {
+        QString name = "John";
+        std::string nameS = name.toUtf8().constData();
 
-    // Trimite cererea POST către server
-    cpr::Response r = cpr::Post(
-        cpr::Url{ std::string(SERVER_URL) + "/sendName" },
-        cpr::Body{ nameS },
-        cpr::Header{ {"Content-Type", "text/plain"} }
-    );
+        // Trimite cererea POST către server
+        cpr::Response r = cpr::Post(
+            cpr::Url{ std::string(SERVER_URL) + "/sendName" },
+            cpr::Body{ nameS },
+            cpr::Header{ {"Content-Type", "text/plain"} }
+        );
 
-    // Afișează răspunsul serverului
-    if (r.status_code == 200) {
-        qDebug() << "Registration successful: " << QString::fromStdString(r.text);
-        return true;
+        // Verifică statusul răspunsului
+        if (r.status_code == 200) {
+            // Dacă serverul trimite un mesaj de tip text simplu
+            //qDebug() << "Server returned message: " << QString::fromStdString(r.text);
+            qDebug() << "Server returned message: " << r.text.c_str();
+
+            return true;
+        }
+        else {
+            qDebug() << "Registration failed. Status code: " << r.status_code;
+            qDebug() << "Server response: " << QString::fromStdString(r.text);
+            return false;
+        }
     }
-    else {
-        qDebug() << "Registration failed. Status code: " << r.status_code;
+    catch (const std::exception& ex) {
+        qDebug() << "Error during verification: " << ex.what();
         return false;
     }
-
 }
+
+
+
 bool ClientServer::LoginClient(const std::string& username) {
     try {
         auto response = cpr::Post(
@@ -180,8 +333,8 @@ bool ClientServer::ControlsClient(const std::string& controls)
       }
  }*/
 
-#include <QMessageBox>
-#include <QDebug>
+
+
 
 //QJsonDocument ClientServer::GetMap() {
 //    auto response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_map" });
@@ -329,46 +482,273 @@ bool ClientServer::ControlsClient(const std::string& controls)
 //}
 
 
+//......................................................................................................................
+//void ClientServer::FetchAndProcessMap() {
+//    try {
+//        // Perform GET request
+//        auto response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_map" });
 //
+//        // Log raw response for debugging
+//        if (response.text.empty()) {
+//            QMessageBox::information(nullptr, "Error", "The server returned an empty response 111111.");
+//        }
+//
+//        QString responseText = QString::fromStdString(response.text);
+//        qDebug() << "Raw Response:" << responseText;
+//
+//        // Check if response is empty
+//        if (responseText.isEmpty()) {
+//            QMessageBox::information(nullptr, "Error", "The server returned an empty response.");
+//            return;
+//        }
+//        responseText = responseText.trimmed();
+//
+//
+//        // Parse JSON response
+//        QJsonParseError jsonError;
+//        QJsonDocument jsonDoc = QJsonDocument::fromJson(responseText.toUtf8(), &jsonError);
+//
+//        // Check if JSON parsing failed
+//        if (jsonDoc.isNull()) {
+//            QMessageBox::critical(nullptr, "Error", "Invalid JSON received from server.");
+//            qDebug() << "JSON Parsing Error:" << jsonError.errorString();
+//            return;
+//        }
+//
+//        // Process the JSON document
+//        QJsonObject rootObj = jsonDoc.object();
+//        int width = rootObj["width"].toInt();
+//        int height = rootObj["height"].toInt();
+//        QJsonArray mapArray = rootObj["map"].toArray();
+//
+//        qDebug() << "Map Dimensions:" << width << "x" << height;
+//        for (int i = 0; i < mapArray.size(); ++i) {
+//            QJsonArray row = mapArray[i].toArray();
+//            QString rowString;
+//            for (int j = 0; j < row.size(); ++j) {
+//                int cell = row[j].toInt();
+//                rowString += QString::number(cell) + " ";
+//            }
+//            qDebug() << "Row" << i << ":" << rowString;
+//        }
+//    }
+//    catch (const std::exception& e) {
+//        QMessageBox::critical(nullptr, "Error", e.what());
+//    }
+//}
+//..............................................................................................................................
+//void ClientServer::FetchAndProcessMap() {
+//    try {
+//        // Perform GET request
+//        auto response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_map" });
+//
+//        // Log raw response for debugging
+//        QString responseText = QString::fromStdString(response.text);
+//        qDebug() << "Raw JSON Response:" << responseText;
+//
+//        if (responseText.trimmed().isEmpty()) {
+//            QMessageBox::critical(nullptr, "Error", "The server returned an empty response.");
+//            return;
+//        }
+//
+//        // Parse JSON response
+//        QJsonParseError jsonError;
+//        QJsonDocument jsonDoc = QJsonDocument::fromJson(responseText.toUtf8(), &jsonError);
+//
+//        if (jsonDoc.isNull()) {
+//            QMessageBox::critical(nullptr, "JSON Parsing Error", "Error: " + jsonError.errorString());
+//            qDebug() << "JSON Parsing Error:" << jsonError.errorString();
+//            return;
+//        }
+//
+//        // Extract JSON data
+//        QJsonObject rootObj = jsonDoc.object();
+//        int width = rootObj["width"].toInt();
+//        int height = rootObj["height"].toInt();
+//        QJsonArray mapArray = rootObj["map"].toArray();
+//
+//        qDebug() << "Map Dimensions: " << width << "x" << height;
+//
+//        // Process the map array
+//        for (int i = 0; i < mapArray.size(); ++i) {
+//            QJsonArray row = mapArray[i].toArray();
+//            QString rowString;
+//            for (int j = 0; j < row.size(); ++j) {
+//                int cell = row[j].toInt();
+//                rowString += QString::number(cell) + " ";
+//            }
+//            qDebug() << "Row " << i << ": " << rowString;
+//        }
+//
+//    }
+//    catch (const std::exception& e) {
+//        QMessageBox::critical(nullptr, "Error", e.what());
+//        qDebug() << "Exception: " << e.what();
+//    }
+//}
+
+//void ClientServer::FetchAndProcessMap() {
+//    try {
+//        // Perform GET request
+//        auto response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_map" });
+//
+//        qDebug() << "Response Status Code:" << response.status_code;
+//        qDebug() << "Raw Response Text:" << QString::fromStdString(response.text);
+//        qDebug() << "Raw JSON Response:" << QString::fromStdString(response.text);
+//
+//        // Check for empty response
+//        if (response.text.empty()) {
+//            QMessageBox::critical(nullptr, "Error", "The server returned an empty response.");
+//            return;
+//        }
+//
+//        // Parse JSON response
+//        QJsonParseError jsonError;
+//        QJsonDocument jsonDoc = QJsonDocument::fromJson(QString::fromStdString(response.text).toUtf8(), &jsonError);
+//
+//        if (jsonDoc.isNull()) {
+//            QMessageBox::critical(nullptr, "JSON Parsing Error", "Error: " + jsonError.errorString());
+//            qDebug() << "JSON Parsing Error:" << jsonError.errorString();
+//            return;
+//        }
+//
+//        // Extract JSON data
+//        QJsonObject rootObj = jsonDoc.object();
+//        int width = rootObj["width"].toInt();
+//        int height = rootObj["height"].toInt();
+//        QJsonArray mapArray = rootObj["map"].toArray();
+//
+//        qDebug() << "Map Dimensions: " << width << "x" << height;
+//
+//        // Process the map array
+//        for (int i = 0; i < mapArray.size(); ++i) {
+//            QJsonArray row = mapArray[i].toArray();
+//            QString rowString;
+//            for (int j = 0; j < row.size(); ++j) {
+//                int cell = row[j].toInt();
+//                rowString += QString::number(cell) + " ";
+//            }
+//            qDebug() << "Row " << i << ": " << rowString;
+//        }
+//
+//    }
+//    catch (const std::exception& e) {
+//        QMessageBox::critical(nullptr, "Error", e.what());
+//        qDebug() << "Exception: " << e.what();
+//    }
+//}
+//void ClientServer::FetchAndProcessMap() {
+//    try {
+//        // Perform GET request
+//        auto response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_map" });
+//
+//        // Debugging - Log response status and content
+//        qDebug() << "Response Status Code:" << response.status_code;
+//        qDebug() << "Raw Response Text:" << QString::fromStdString(response.text);
+//        //Alte testari
+//        qDebug() << "Status Code:" << response.status_code;
+//        qDebug() << "Error Message (if any):" << QString::fromStdString(response.error.message);
+//        qDebug() << "Raw Response Text:" << QString::fromStdString(response.text);
+//
+//        // Check for empty response
+//        if (response.text.empty()) {
+//            QMessageBox::critical(nullptr, "Error", "The server returned an empty response.");
+//            return;
+//        }
+//
+//        // Parse JSON response
+//        QJsonParseError jsonError;
+//        QJsonDocument jsonDoc = QJsonDocument::fromJson(QString::fromStdString(response.text).toUtf8(), &jsonError);
+//
+//        // Check for JSON parsing errors
+//        if (jsonDoc.isNull()) {
+//            QMessageBox::critical(nullptr, "JSON Parsing Error", "Error: " + jsonError.errorString());
+//            qDebug() << "JSON Parsing Error:" << jsonError.errorString();
+//            return;
+//        }
+//
+//        // Debugging - Log parsed JSON
+//        qDebug() << "Parsed JSON:" << jsonDoc.toJson(QJsonDocument::Indented);
+//
+//        // Extract JSON data
+//        QJsonObject rootObj = jsonDoc.object();
+//        int width = rootObj["width"].toInt();
+//        int height = rootObj["height"].toInt();
+//        QJsonArray mapArray = rootObj["map"].toArray();
+//
+//        // Debugging - Log map dimensions
+//        qDebug() << "Map Dimensions: " << width << "x" << height;
+//
+//        // Process the map array
+//        for (int i = 0; i < mapArray.size(); ++i) {
+//            QJsonArray row = mapArray[i].toArray();
+//            QString rowString;
+//            for (int j = 0; j < row.size(); ++j) {
+//                int cell = row[j].toInt();
+//                rowString += QString::number(cell) + " ";
+//            }
+//            // Debugging - Log each row
+//            qDebug() << "Row " << i << ": " << rowString;
+//        }
+//
+//    }
+//    catch (const std::exception& e) {
+//        // Handle exceptions
+//        QMessageBox::critical(nullptr, "Error", e.what());
+//        qDebug() << "Exception: " << e.what();
+//    }
+//}
+
 void ClientServer::FetchAndProcessMap() {
     try {
         // Perform GET request
         auto response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_map" });
 
-        // Log raw response for debugging
+        // Debugging - Log response status and content
+        qDebug() << "Response Status Code:" << response.status_code;
+        qDebug() << "Raw Response Text:" << QString::fromStdString(response.text);  // Log the raw response text
+
+        // Verifică dacă răspunsul este gol
         if (response.text.empty()) {
-            QMessageBox::information(nullptr, "Error", "The server returned an empty response 111111.");
-        }
-
-        QString responseText = QString::fromStdString(response.text);
-        qDebug() << "Raw Response:" << responseText;
-
-        // Check if response is empty
-        if (responseText.isEmpty()) {
-            QMessageBox::information(nullptr, "Error", "The server returned an empty response.");
+            qDebug() << "Server returned an empty response.";
+            QMessageBox::critical(nullptr, "Error", "The server returned an empty response.");
             return;
         }
-        responseText = responseText.trimmed();
 
+        // Verify if the content is in JSON format
+        if (response.text.find("{") != std::string::npos) {
+            qDebug() << "Server returned a valid JSON response.";
+        }
+        else {
+            qDebug() << "The response is not a valid JSON.";
+            QMessageBox::critical(nullptr, "Error", "The server did not return a valid JSON.");
+            return;
+        }
 
         // Parse JSON response
         QJsonParseError jsonError;
-        QJsonDocument jsonDoc = QJsonDocument::fromJson(responseText.toUtf8(), &jsonError);
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(QString::fromStdString(response.text).toUtf8(), &jsonError);
 
-        // Check if JSON parsing failed
+        // Check for JSON parsing errors
         if (jsonDoc.isNull()) {
-            QMessageBox::critical(nullptr, "Error", "Invalid JSON received from server.");
+            QMessageBox::critical(nullptr, "JSON Parsing Error", "Error: " + jsonError.errorString());
             qDebug() << "JSON Parsing Error:" << jsonError.errorString();
             return;
         }
 
-        // Process the JSON document
+        // Debugging - Log parsed JSON
+        qDebug() << "Parsed JSON:" << jsonDoc.toJson(QJsonDocument::Indented);
+
+        // Extract JSON data
         QJsonObject rootObj = jsonDoc.object();
         int width = rootObj["width"].toInt();
         int height = rootObj["height"].toInt();
         QJsonArray mapArray = rootObj["map"].toArray();
 
-        qDebug() << "Map Dimensions:" << width << "x" << height;
+        // Debugging - Log map dimensions
+        qDebug() << "Map Dimensions: " << width << "x" << height;
+
+        // Process the map array
         for (int i = 0; i < mapArray.size(); ++i) {
             QJsonArray row = mapArray[i].toArray();
             QString rowString;
@@ -376,15 +756,17 @@ void ClientServer::FetchAndProcessMap() {
                 int cell = row[j].toInt();
                 rowString += QString::number(cell) + " ";
             }
-            qDebug() << "Row" << i << ":" << rowString;
+            // Debugging - Log each row
+            qDebug() << "Row " << i << ": " << rowString;
         }
+
     }
     catch (const std::exception& e) {
+        // Handle exceptions
         QMessageBox::critical(nullptr, "Error", e.what());
+        qDebug() << "Exception: " << e.what();
     }
 }
-
-
 
  void ClientServer::GenerateCode()
  {
