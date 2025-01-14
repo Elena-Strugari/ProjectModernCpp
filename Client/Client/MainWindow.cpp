@@ -179,10 +179,10 @@ void MainWindow::HandleLevel1()
         QMessageBox::information(this, "Error", "Failed to generate code.");
     }
     else {
-        QMessageBox::information(this, "Success", "Generated Game Code: " + QString(gameCode.c_str()));
+        GameWindow();
+        DisplayCode(QString(gameCode.c_str()));
     }
-    DisplayCode(QString(gameCode.c_str()));
-    GameWindow();
+
 }
 
 void MainWindow::HandleLevel2()
@@ -193,10 +193,9 @@ void MainWindow::HandleLevel2()
         QMessageBox::information(this, "Error", "Failed to generate code.");
     }
     else {
-        QMessageBox::information(this, "Success", "Generated Game Code: " + QString(gameCode.c_str()));
+        GameWindow();
+        DisplayCode(QString(gameCode.c_str()));
     }
-    DisplayCode(QString(gameCode.c_str()));
-    GameWindow();
 }
 void MainWindow::HandleLevel3()
 {
@@ -206,10 +205,9 @@ void MainWindow::HandleLevel3()
         QMessageBox::information(this, "Error", "Failed to generate code.");
     }
     else {
-        QMessageBox::information(this, "Success", "Generated Game Code: " + QString(gameCode.c_str()));
+        GameWindow();
+        DisplayCode(QString(gameCode.c_str()));
     }
-    DisplayCode(QString(gameCode.c_str()));
-    GameWindow();
 }
 
 void MainWindow::GameWindow()

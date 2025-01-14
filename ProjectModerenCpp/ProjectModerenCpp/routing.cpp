@@ -508,7 +508,8 @@ void http::Routing::Run()
             }
             games[gameCode] = Game(levelInt, gameCode);
 
-            return crow::response(200, "Game code generated: " + gameCode);
+            //return crow::response(200, "Game code generated: " + gameCode);
+            return crow::response(200,  gameCode);
         }
         catch (const std::exception& e) {
             return crow::response(500, "Error generating game code: " + std::string(e.what()));
