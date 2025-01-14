@@ -19,10 +19,11 @@ public:
 
 	static QJsonDocument GetMap();
 
-	static void GenerateCode();
+	static std::string GenerateCode(uint8_t level);
+	//static bool GenerateCode(uint8_t level);
 	static bool CheckCode();
 
-	static void Level();
+	//static void Level();
 	static void ProcessMap(const QJsonDocument& jsonDoc);
 	static void FetchAndProcessMap();
 

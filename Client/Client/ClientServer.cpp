@@ -676,7 +676,8 @@ void ClientServer::FetchAndProcessMap() {
      }
  }
 
- void ClientServer::Level()
+
+ /*void ClientServer::Level()
  {
      try {
          cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/level" });
@@ -691,7 +692,108 @@ void ClientServer::FetchAndProcessMap() {
      catch (const std::exception& ex) {
          std::cerr << "Excepție la conectare: " << ex.what() << std::endl;
      }
+ }*/
+
+
+ /*bool ClientServer::GenerateCode(uint8_t level)
+ {
+     try {
+         cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/generate_code" });
+
+         if (response.status_code == 200) {
+             std::cout << "Generated Game Code: " << response.text << std::endl;
+             return true;
+         }
+         else {
+             std::cerr << "Error: " << response.status_code << " " << response.text << std::endl;
+             return false;
+         }
+     }
+     catch (const std::exception& ex) {
+         std::cerr << "Exception during generating game code: " << ex.what() << std::endl;
+         return false;
+     }
+ }*/
+
+ //bool ClientServer::GenerateCode(uint8_t level)
+ //{
+ //    try {
+ //        // Include the level in the request URL or as a query parameter
+ //        cpr::Response response = cpr::Get(
+ //            cpr::Url{ std::string(SERVER_URL) + "/generate_code" },
+ //            cpr::Parameters{ {"level", std::to_string(level)} }  // Send the level as a query parameter
+ //        );
+
+ //        if (response.status_code == 200) {
+ //            std::cout << "Generated Game Code: " << response.text << std::endl;
+ //            return true;
+ //        }
+ //        else {
+ //            std::cerr << "Error: " << response.status_code << " " << response.text << std::endl;
+ //            return false;
+ //        }
+ //    }
+ //    catch (const std::exception& ex) {
+ //        std::cerr << "Exception during generating game code: " << ex.what() << std::endl;
+ //        return false;
+ //    }
+ //}
+ std::string ClientServer::GenerateCode(uint8_t level)
+ {
+     try {
+         // Include the level in the request URL or as a query parameter
+         cpr::Response response = cpr::Get(
+             cpr::Url{ std::string(SERVER_URL) + "/generate_code" },
+             cpr::Parameters{ {"level", std::to_string(level)} }  // Send the level as a query parameter
+         );
+
+         if (response.status_code == 200) {
+             std::cout << "Generated Game Code: " << response.text << std::endl;
+             return response.text;  // Return the generated game code
+         }
+         else {
+             std::cerr << "Error: " << response.status_code << " " << response.text << std::endl;
+             return "";  // Return an empty string if there was an error
+         }
+     }
+     catch (const std::exception& ex) {
+         std::cerr << "Exception during generating game code: " << ex.what() << std::endl;
+         return "";  // Return an empty string on exception
+     }
  }
+
+
+ //bool ClientServer::JoinGame(const std::string& gameCode, const std::string& username)
+ //{
+ //    try {
+ //        nlohmann::json jsonBody;
+ //        jsonBody["game_code"] = gameCode;
+ //        jsonBody["username"] = username;
+
+ //        std::string jsonString = jsonBody.dump();  // Convert JSON to string
+
+ //        cpr::Response response = cpr::Post(
+ //            cpr::Url{ std::string(SERVER_URL) + "/join_game" },
+ //            cpr::Body{ jsonString },
+ //            cpr::Header{ {"Content-Type", "application/json"} }
+ //        );
+
+ //        if (response.status_code == 200) {
+ //            std::cout << "Joined the game successfully: " << response.text << std::endl;
+ //            return true;
+ //        }
+ //        else {
+ //            std::cerr << "Failed to join game: " << response.status_code << " " << response.text << std::endl;
+ //            return false;
+ //        }
+ //    }
+ //    catch (const std::exception& ex) {
+ //        std::cerr << "Exception during joining game: " << ex.what() << std::endl;
+ //        return false;
+ //    }
+ //}
+
+
  void ClientServer::GetGeneralSettings() {
      try {
          cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_general_settings" });

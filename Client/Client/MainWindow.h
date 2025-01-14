@@ -24,7 +24,9 @@ private slots:
     void HandleControlsSet(const QMap<QString, QString>& controls , const QString& username);
     void HandleCreateCode();
     void HandleCheckCode();
-    void HandleLevel();
+    void HandleLevel1();
+    void HandleLevel2();
+    void HandleLevel3();
     void DisplayMap();
     void HandleInGameSettings();
     void HandleGeneralSettings();

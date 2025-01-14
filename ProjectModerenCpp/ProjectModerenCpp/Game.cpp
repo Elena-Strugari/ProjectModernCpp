@@ -3,9 +3,20 @@
 #include <iostream>
 #include <stdexcept>
 
-Game::Game(uint8_t level)
+Game::Game(uint8_t level,  const std::string& code)
     : m_map(level), m_playerManager(std::make_shared<PlayerManager>()),
-    m_collision(std::make_shared<CollisionManager>(std::make_shared<Map>(m_map), m_playerManager)) {
+    m_collision(std::make_shared<CollisionManager>(std::make_shared<Map>(m_map), m_playerManager)),
+    m_gameCode(code), m_gameStarted(false){
+}
+
+std::string Game::GenerateGameCode()
+{
+    std::string code;
+    static const char alphanum[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    for (int i = 0; i < 6; ++i) {
+        code += alphanum[rand() % (sizeof(alphanum) - 1)];
+    }
+    return code;
 }
 
 void Game::AddPlayer(const std::shared_ptr<Player>& player) {

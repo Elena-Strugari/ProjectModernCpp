@@ -9,7 +9,8 @@
 
 class Game {
 public:
-    explicit Game(uint8_t level);
+    explicit Game(uint8_t level=1, const std::string& code=GenerateGameCode());
+    static std::string GenerateGameCode();
 
     void AddPlayer(const std::shared_ptr<Player>& player);
     void Start();
@@ -28,6 +29,8 @@ public:
 
 private:
     Map m_map;
+    std::string m_gameCode;
+    bool m_gameStarted;
     std::shared_ptr<PlayerManager> m_playerManager;
     std::shared_ptr<CollisionManager> m_collision;
 };

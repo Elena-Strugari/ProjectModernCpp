@@ -135,15 +135,12 @@ void MainWindow::HandleControlsSet(const QMap<QString, QString>& controls, const
 }
 void MainWindow::HandleCreateCode()
 {
-    QMessageBox::information(this, "Success", "Generate Code");
     LevelSelectionWindow* levelWindow = new LevelSelectionWindow();
     levelWindow->show();
 
-    connect(levelWindow, &LevelSelectionWindow::LevelEasy, this, &MainWindow::HandleLevel);
-    connect(levelWindow, &LevelSelectionWindow::LevelMediu, this, &MainWindow::HandleLevel);
-    connect(levelWindow, &LevelSelectionWindow::LevelHard, this, &MainWindow::HandleLevel);
-    ClientServer::GenerateCode();
-
+    connect(levelWindow, &LevelSelectionWindow::LevelEasy, this, &MainWindow::HandleLevel1);
+    connect(levelWindow, &LevelSelectionWindow::LevelMediu, this, &MainWindow::HandleLevel2);
+    connect(levelWindow, &LevelSelectionWindow::LevelHard, this, &MainWindow::HandleLevel3);
 
 }
 void MainWindow::GameWindow()
@@ -164,12 +161,99 @@ void MainWindow::HandleCheckCode()
         QMessageBox::warning(this, "Error", "Invalid code. Please try again.");
     }
 }
-void MainWindow::HandleLevel()
+void MainWindow::HandleLevel1()
 {
-    QMessageBox::information(this, "Success", "Level");
-    ClientServer::Level();
+    // Call GenerateCode and store the returned game code
+    std::string gameCode = ClientServer::GenerateCode(1);
+
+    if (gameCode.empty()) {
+        QMessageBox::information(this, "Error", "Failed to generate code.");
+    }
+    else {
+        // Show the generated game code in a message box
+        QMessageBox::information(this, "Success", "Generated Game Code: " + QString(gameCode.c_str()));
+    }
+
+    // Proceed with other logic
+    QMessageBox::information(this, "Success", "Level 1");
     GameWindow();
 }
+
+void MainWindow::HandleLevel2()
+{
+    // Call GenerateCode and store the returned game code
+    std::string gameCode = ClientServer::GenerateCode(2);
+
+    if (gameCode.empty()) {
+        QMessageBox::information(this, "Error", "Failed to generate code.");
+    }
+    else {
+        // Show the generated game code in a message box
+        QMessageBox::information(this, "Success", "Generated Game Code: " + QString::fromStdString(gameCode));
+    }
+
+    // Proceed with other logic
+    QMessageBox::information(this, "Success", "Level 1");
+    GameWindow();
+}
+void MainWindow::HandleLevel3()
+{
+    // Call GenerateCode and store the returned game code
+    std::string gameCode = ClientServer::GenerateCode(3);
+
+    if (gameCode.empty()) {
+        QMessageBox::information(this, "Error", "Failed to generate code.");
+    }
+    else {
+        // Show the generated game code in a message box
+        QMessageBox::information(this, "Success", "Generated Game Code: " + QString::fromStdString(gameCode));
+    }
+
+    // Proceed with other logic
+    QMessageBox::information(this, "Success", "Level 1");
+    GameWindow();
+}
+
+
+//void MainWindow::HandleLevel1()
+//{
+//
+//    if (!ClientServer::GenerateCode(1))
+//        QMessageBox::information(this, "Error", "Not Generate Code");
+//
+//    QMessageBox::information(this, "Success", "Generate Code");
+//
+//    QMessageBox::information(this, "Success", "Level");
+//    //ClientServer::Level();
+//    GameWindow();
+//}
+//void MainWindow::HandleLevel2()
+//{
+//
+//    if (!ClientServer::GenerateCode(2))
+//        QMessageBox::information(this, "Error", "Not Generate Code");
+//
+//    QMessageBox::information(this, "Success", "Generate Code");
+//
+//    QMessageBox::information(this, "Success", "Level");
+//    //ClientServer::Level();
+//    GameWindow();
+//}
+//void MainWindow::HandleLevel3()
+//{
+//
+//    if (!ClientServer::GenerateCode(3))
+//        QMessageBox::information(this, "Error", "Not Generate Code");
+//
+//    QMessageBox::information(this, "Success", "Generate Code");
+//
+//    QMessageBox::information(this, "Success", "Level");
+//   // ClientServer::Level();
+//    GameWindow();
+//}
+// 
+// 
+// 
 //void MainWindow::DisplayMap() {
 //    try {
 //        //QJsonDocument response = ClientServer::GetMap();

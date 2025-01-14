@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "routing.h"
 #include "libs/nlohmann/json.hpp"
-#include "Game.h"
+#include "GameManager.h"
 
 using json = nlohmann::json;
 
@@ -11,6 +11,7 @@ using namespace http;
 Database db("testDatabase2.db");
 namespace http {
     std::unordered_map<std::string, Player> playersActive;
+    std::unordered_map<std::string, Game> games;
 
 }
 
@@ -50,7 +51,6 @@ void http::Routing::Run()
         if (db.ClientExists(username)) {
 
             Player player(username, db);
-            //playersActive[username] = std::move(player);
             playersActive.emplace(username, std::move(player));
 
             return crow::response(200, "Login successful");
@@ -75,7 +75,6 @@ void http::Routing::Run()
         else {
             db.AddClient(username, 0);
             Player player(username, db);
-            //players[username] = std::move(player);
             playersActive.emplace(username, std::move(player));
             return crow::response(200, "Registration successful");
         }
@@ -105,19 +104,16 @@ void http::Routing::Run()
         std::string right = json["Right"];
         std::string shoot = json["Shoot"];
 
-        // Further processing (e.g., saving controls or updating the player settings)
         std::cout << "Received controls for " << username << ": " << "Up = " << up << ", Down = " << down
             << ", Left = " << left << ", Right = " << right << ", Shoot = " << shoot << std::endl;
         if (playersActive.find(username) == playersActive.end()) {
             return crow::response(404, "User is not Active");
         }
 
-        // Save key bindings
         bool success = db.SaveKeyBindings(username, up, down, left, right, shoot);
         if (!success) {
             return crow::response(500, "Failed to save key bindings");
         }
-        // Return a success response
         return crow::response(200, "Controls successfully set for user: " + username);
         });
 
@@ -492,6 +488,87 @@ void http::Routing::Run()
     //        });
     //
 
+
+
+
+CROW_ROUTE(m_app, "/generate_code").methods("GET"_method)([](const crow::request& req) {
+    try {
+        auto level = req.url_params.get("level");
+        if (level == nullptr) {
+            return crow::response(400, "Missing level parameter");
+        }
+
+        uint8_t levelInt = std::stoi(level);
+
+        std::string gameCode = Game::GenerateGameCode();
+
+        while (games.find(gameCode) != games.end()) {
+            gameCode = Game::GenerateGameCode();
+        }
+        games[gameCode] = Game(levelInt, gameCode);  
+
+        return crow::response(200, "Game code generated: " + gameCode);
+    }
+    catch (const std::exception& e) {
+        return crow::response(500, "Error generating game code: " + std::string(e.what()));
+    }
+    });
+
+CROW_ROUTE(m_app, "/join_game").methods("POST"_method)([](const crow::request& req) {
+    auto json = crow::json::load(req.body);
+    if (!json || !json.has("game_code") || !json.has("username")) {
+        return crow::response(400, "Invalid JSON or missing fields");
+    }
+
+    std::string gameCode = json["game_code"].s();
+    std::string username = json["username"].s();
+
+    // Check if the game exists
+    if (!GameManager::GameExists(gameCode)) {
+        return crow::response(404, "Game code not found");
+    }
+
+    // Proceed with adding the player to the game...
+    return crow::response(200, "Player joined the game");
+    });
+
+
+//CROW_ROUTE(m_app, "/join_game").methods("POST"_method)([](const crow::request& req) {
+//    auto json = crow::json::load(req.body);
+//    if (!json || !json.has("game_code") || !json.has("username")) {
+//        return crow::response(400, "Invalid JSON or missing fields");
+//    }
+//
+//    std::string gameCode = json["game_code"].s();
+//    std::string username = json["username"].s();
+//
+//    // Check if the game code exists
+//    if (games.find(gameCode) == games.end()) {
+//        return crow::response(404, "Game code not found");
+//    }
+//
+//    Game& game = games[gameCode];
+//
+//    // Check if the game has already started
+//    if (game.gameStarted) {
+//        return crow::response(403, "Game already started");
+//    }
+//
+//    // Check if the player is already in the game
+//    if (std::find(game.players.begin(), game.players.end(), username) != game.players.end()) {
+//        return crow::response(409, "Player already in the game");
+//    }
+//
+//    // Add the player to the game
+//    game.players.push_back(username);
+//    std::cout << "Player " << username << " joined the game " << gameCode << std::endl;
+//
+//    return crow::response(200, "Player " + username + " joined the game successfully");
+//    });
+
+
+
+
         //CROW_ROUTE(m_app, "/choose_level").methods(crow::HTTPMethod::POST)([&](const crow::request& req) {
         //    try {
         //        std::string levelType = req.body;
@@ -674,6 +751,7 @@ void http::Routing::Run()
        // m_app.port(8080).concurrency(numThreads).run();
     m_app.port(8080).run();
 }
+
 
 
 
