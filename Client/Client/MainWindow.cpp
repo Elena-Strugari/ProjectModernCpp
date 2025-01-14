@@ -258,9 +258,9 @@ void MainWindow::HandleLogin(const QString& username)
 
     if (ClientServer::LoginClient(stdUsername)) {
         QMessageBox::information(this, "Login", "Welcome, " + username + "!");
-       CreateJoinWindow();
+       //CreateJoinWindow();
         close();
-        //DisplayMap();
+        DisplayMap();
     }
     else {
         QMessageBox::warning(this, "Error", "Login failed. This name does not exist.");
