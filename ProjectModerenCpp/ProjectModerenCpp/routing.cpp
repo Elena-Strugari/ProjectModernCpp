@@ -1,24 +1,26 @@
 ﻿#pragma once
 #include "routing.h"
+#include "libs/nlohmann/json.hpp"
 #include "Game.h"
 
-
+using json = nlohmann::json;
 
 #include <sstream>
 
 using namespace http;
-Database db("players.db");
+Database db("testDatabase2.db");
 namespace http {
     //std::unordered_map<std::string, std::string> Routing::m_users;
-    std::unordered_map<std::string, Player> players;
+    std::unordered_map<std::string, Player> playersActive;
 
-} 
+}
+
 
 void http::Routing::Run()
 {
     CROW_ROUTE(m_app, "/connect")([]() {
         return crow::response(200, "Server: Conectare reusita!");
-     });
+        });
     CROW_ROUTE(m_app, "/startGame")([]() {
         return crow::response(200, "Server: Conectare reusita la start!");
         });
@@ -26,8 +28,8 @@ void http::Routing::Run()
         return crow::response(200, "Server: Conectare reusita la user!");
         });
 
-   /* CROW_ROUTE(m_app, "/sendName").methods(crow::HTTPMethod::Post)([](const crow::request& req) {
-        auto body = req.body; 
+    CROW_ROUTE(m_app, "/sendName").methods(crow::HTTPMethod::Post)([](const crow::request& req) {
+        auto body = req.body;
         std::string response;
         if (body == "John") {
             response = "Server: Hello, John! Your name is recognized.";
@@ -37,32 +39,21 @@ void http::Routing::Run()
             response = "Server: Hello, " + body + "! Your name is not John, but it's still nice.";
             return crow::response(401, response);
         }
-        });*/
-    CROW_ROUTE(m_app, "/sendName").methods(crow::HTTPMethod::Post)([](const crow::request& req) {
-        auto body = req.body; // Preia corpul cererii POST
-        std::string response;
-
-        if (body == "John") {
-            response = "Hello, John! Your name is recognized."; // Mesajul pentru "John"
-            return crow::response(200, response); // Răspuns 200 cu textul
-        }
-        else {
-            response = "Hello, " + body + "! Your name is not John, but it's still nice."; // Mesajul pentru alți utilizatori
-            return crow::response(401, response); // Răspuns 401 cu textul
-        }
         });
 
-   
     CROW_ROUTE(m_app, "/login").methods("POST"_method)([](const crow::request& req) {
         auto json = crow::json::load(req.body);
-        if (!json) {
+        if (!json || !json.has("username")) {
             return crow::response(400, "Invalid JSON");
         }
 
         std::string username = json["username"].s();
         if (db.ClientExists(username)) {
-            
+
             Player player(username, db);
+            //playersActive[username] = std::move(player);
+            playersActive.emplace(username, std::move(player));
+
             return crow::response(200, "Login successful");
         }
         else {
@@ -86,62 +77,53 @@ void http::Routing::Run()
             db.AddClient(username, 0);
             Player player(username, db);
             //players[username] = std::move(player);
+            playersActive.emplace(username, std::move(player));
             return crow::response(200, "Registration successful");
         }
         });
 
+
     CROW_ROUTE(m_app, "/controls").methods("POST"_method)([](const crow::request& req) {
+        // Parse the JSON request body
+        nlohmann::json json;
         try {
-            // Parsează corpul cererii
-            auto json = crow::json::load(req.body);
-            if (!json) {
-                return crow::response(400, "Invalid JSON");
-            }
-
-            // Verifică dacă toate direcțiile sunt prezente
-            if (!json.has("Up") || !json.has("Down") || !json.has("Left") || !json.has("Right")) {
-                return crow::response(401, "Missing control keys");
-            }
-
-            // Obține tastele de control
-          //  std::string name = json[""].s();
-            std::string up = json["Up"].s();
-            std::string down = json["Down"].s();
-            std::string left = json["Left"].s();
-            std::string right = json["Right"].s();
-            std::string shoot = json["Shoot"].s();
-
-            std::cout<<std::endl;
-            std::cout << up << " " << down << " " << left << " " << right << " " << shoot;
-            std::cout << std::endl;
-
-            // Aici poți adăuga validări sau salva tastele în baza de date
-            // Exemplu: verifică dacă tastele sunt unice
-            if (up == down || up == left || up == right || up == shoot ||
-                down == left || down == right || down ==shoot || 
-                left == right || left == shoot || right == shoot) {
-                return crow::response(402, "Keys must be unique");
-            }
-
-            // Exemplu de salvare în baza de date (pseudo-cod)
-            // database.saveControls(user_id, up, down, left, right);
-
-            // Răspuns de succes
-            /*if (players.find(name) == players.end()) {
-                return crow::response(404, "User not found");
-            }*/
-
-           // Player& player = players[name];
-           // player.ChooseKeyBindings(up, down, left, right);
-            return crow::response(200, "Controls set successfully");
-
+            json = nlohmann::json::parse(req.body);
         }
         catch (const std::exception& e) {
-            // În caz de eroare, întoarce un răspuns 500
-            return crow::response(500, "Server error: " + std::string(e.what()));
+            return crow::response(400, "Invalid JSON format: " + std::string(e.what()));
         }
+
+        // Validate that all necessary fields are present in the JSON
+        if (!json.contains("username") || !json.contains("Up") || !json.contains("Down") ||
+            !json.contains("Left") || !json.contains("Right") || !json.contains("Shoot")) {
+            return crow::response(400, "Invalid JSON or missing fields");
+        }
+
+        std::string username = json["username"];
+        std::string up = json["Up"];
+        std::string down = json["Down"];
+        std::string left = json["Left"];
+        std::string right = json["Right"];
+        std::string shoot = json["Shoot"];
+
+        // Further processing (e.g., saving controls or updating the player settings)
+        std::cout << "Received controls for " << username << ": " << "Up = " << up << ", Down = " << down
+            << ", Left = " << left << ", Right = " << right << ", Shoot = " << shoot << std::endl;
+        if (playersActive.find(username) == playersActive.end()) {
+            return crow::response(404, "User is not Active");
+        }
+
+        // Save key bindings
+        bool success = db.SaveKeyBindings(username, up, down, left, right, shoot);
+        if (!success) {
+            return crow::response(500, "Failed to save key bindings");
+        }
+        // Return a success response
+        return crow::response(200, "Controls successfully set for user: " + username);
         });
 
+
+    
 
     //CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
     //    try {
@@ -355,394 +337,342 @@ void http::Routing::Run()
 //    }
 //    });
 
-//.............................................................................................................................
-CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
-    try {
-        Map gameMap(1); // Create an instance of Map
+    CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
+        try {
+            Map gameMap(1); // Create an instance of Map
 
-        crow::json::wvalue json; // Create the root JSON object
-        json["width"] = gameMap.GetWidth();
-        json["height"] = gameMap.GetHeight();
+            crow::json::wvalue json; // Create the root JSON object
+            json["width"] = gameMap.GetWidth();
+            json["height"] = gameMap.GetHeight();
 
-        const auto& mapData = gameMap.GetMap();
+            const auto& mapData = gameMap.GetMap();
 
-        // Create the "cells" array
-        crow::json::wvalue::list jsonMap;
-        for (const auto& row : mapData) {
-            crow::json::wvalue::list jsonRow;
-            for (const auto& cell : row) {
-                jsonRow.push_back(cell.ToInt());
+            // Create the "cells" array
+            crow::json::wvalue::list jsonMap;
+            for (const auto& row : mapData) {
+                crow::json::wvalue::list jsonRow;
+                for (const auto& cell : row) {
+                    jsonRow.push_back(cell.ToInt());
+                }
+                jsonMap.push_back(std::move(jsonRow));
             }
-            jsonMap.push_back(std::move(jsonRow));
+            json["map"] = std::move(jsonMap);
+
+            // Serialize the JSON to ensure it's valid
+            std::string serializedJson = json.dump();
+
+            // Log the serialized JSON for debugging
+            std::cout << "Serialized JSON Response: " << serializedJson << std::endl;
+
+            // Return the serialized JSON
+            //return crow::response(200, serializedJson);
+            return crow::response(200, serializedJson);//.add_header("Content-Type", "application/json; charset=utf-8");
+
         }
-        json["map"] = std::move(jsonMap);
-
-        // Serialize the JSON to ensure it's valid
-        std::string serializedJson = json.dump();
-
-        // Log the serialized JSON for debugging
-        std::cout << "Serialized JSON Response: " << serializedJson << std::endl;
-
-        // Return the serialized JSON
-        //return crow::response(200, serializedJson);
-        return crow::response(200, serializedJson);//.add_header("Content-Type", "application/json; charset=utf-8");
-
-    }
-    catch (const std::exception& e) {
-        return crow::response(500, "Server error: " + std::string(e.what()));
-    }
-    });
-
-//...............................................................................................................
-
-CROW_ROUTE(m_app, "/test_json")([]() {
-    crow::json::wvalue response;
-    response["status"] = "success";
-    response["message"] = "Hello, client!";
-    return crow::response(200, response);
-    });
-
-
-//CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
-//    try {
-//        Map gameMap(1); // Create an instance of Map
-//
-//        crow::json::wvalue json; // Create the root JSON object
-//        json["width"] = gameMap.GetWidth();
-//        json["height"] = gameMap.GetHeight();
-//
-//        const auto& mapData = gameMap.GetMap();
-//
-//        // Create the "map" array
-//        crow::json::wvalue::list jsonMap;
-//        for (const auto& row : mapData) {
-//            crow::json::wvalue::list jsonRow;
-//            for (const auto& cell : row) {
-//                jsonRow.push_back(cell.ToInt());
-//            }
-//            jsonMap.push_back(std::move(jsonRow));
-//        }
-//        json["map"] = std::move(jsonMap);
-//
-//        // Serialize the JSON to ensure it's valid
-//        std::string serializedJson = json.dump();
-//
-//        // Log the serialized JSON for debugging
-//        CROW_LOG_INFO << "Serialized JSON Response: " << serializedJson;
-//
-//        // Return the serialized JSON with proper headers
-//        crow::response res(200, serializedJson);
-//        res.add_header("Content-Type", "application/json; charset=utf-8");
-//        return res;
-//    }
-//    catch (const std::exception& e) {
-//        // Return a JSON-formatted error response
-//        crow::json::wvalue errorJson;
-//        errorJson["error"] = "Server error";
-//        errorJson["details"] = e.what();
-//        CROW_LOG_ERROR << "Server error: " << e.what();
-//        return crow::response(500, errorJson.dump());
-//    }
-//    });
+        catch (const std::exception& e) {
+            return crow::response(500, "Server error: " + std::string(e.what()));
+        }
+        });
 
 
 
 
-    
-//CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
-//    crow::json::wvalue jsonMap;
-//    jsonMap["width"] = 10;
-//    jsonMap["height"] = 10;
-//    jsonMap["cells"] = crow::json::load(R"({
-//        "0": {"0": {"type": "Empty", "border": false}},
-//        "1": {"0": {"type": "Wall_Destructible", "border": false}}
-//    })");
-//    return crow::response(200, jsonMap);
-//    });
 
-//CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
-//    crow::json::wvalue jsonMap;
-//    jsonMap["width"] = 10;
-//    jsonMap["height"] = 10;
-//
-//    jsonMap["cells"]["0"]["0"] = { {"type", "Empty"}, {"border", false} };
-//    jsonMap["cells"]["1"]["0"] = { {"type", "Wall_Destructible"}, {"border", false} };
-//
-//    return crow::response(200, jsonMap); // Directly use jsonMap as the response body
-//    });
 
-//CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
-//    crow::json::wvalue jsonMap;
-//
-//    // Correctly construct JSON
-//    jsonMap["width"] = 10;
-//    jsonMap["height"] = 10;
-//
-//    jsonMap["cells"]["0"]["0"] = { {"type", "Empty"}, {"border", false} };
-//    jsonMap["cells"]["1"]["0"] = { {"type", "Wall_Destructible"}, {"border", false} };
-//
-//    // Serialize JSON to string
-//    std::ostringstream os;
-//    os << jsonMap;
-//
-//    crow::response res(200);
-//    res.add_header("Content-Type", "application/json; charset=utf-8");
-//    res.body = os.str(); // Serialize JSON as response body
-//    return res;
-//    });
-
-//CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
-//    try {
-//        Map gameMap(1); // Instanța clasei Map
-//
-//        // Structură JSON pentru mapă
-//        json jsonMap;
-//        jsonMap["width"] = gameMap.GetWidth();
-//        jsonMap["height"] = gameMap.GetHeight();
-//
-//        const auto& mapData = gameMap.GetMap();
-//        jsonMap["cells"] = json::array();
-//
-//        for (size_t i = 0; i < mapData.size(); ++i) {
-//            json rowJson = json::array();
-//            for (size_t j = 0; j < mapData[i].size(); ++j) {
-//                const auto& cell = mapData[i][j];
-//                json cellJson;
-//
-//                // Tipuri de celule
-//                if (std::holds_alternative<Map::Empty>(cell.content)) {
-//                    cellJson["type"] = "Empty";
-//                }
-//                else if (std::holds_alternative<Map::Bomb>(cell.content)) {
-//                    cellJson["type"] = "Bomb";
-//                }
-//                else if (std::holds_alternative<Map::BonusLife>(cell.content)) {
-//                    cellJson["type"] = "BonusLife";
-//                }
-//                else if (std::holds_alternative<Wall::TypeWall>(cell.content)) {
-//                    auto wallType = std::get<Wall::TypeWall>(cell.content);
-//                    cellJson["type"] = (wallType == Wall::TypeWall::indestructible)
-//                        ? "Wall_Indestructible"
-//                        : "Wall_Destructible";
-//                }
-//                else if (std::holds_alternative<Map::Tank>(cell.content)) {
-//                    cellJson["type"] = "Tank";
-//                }
-//                else if (std::holds_alternative<Map::Bullet>(cell.content)) {
-//                    cellJson["type"] = "Bullet";
-//                }
-//
-//                cellJson["border"] = cell.border;
-//
-//                // Adăugăm celula în rând
-//                rowJson.push_back(cellJson);
-//            }
-//            // Adăugăm rândul în matrice
-//            jsonMap["cells"].push_back(rowJson);
-//        }
-//
-//        // Afișăm JSON-ul generat
-//        std::cout << "Generated JSON Map:\n" << jsonMap.dump(4) << std::endl;
-//
-//        // Returnăm JSON-ul către client
-//        return crow::response(200, jsonMap.dump());
-//    }
-//    catch (const std::exception& e) {
-//        return crow::response(500, "Server error: " + std::string(e.what()));
-//    }
-//    });
-//
-//    CROW_ROUTE(m_app, "/generate_code")([]() {
-//        return crow::response(200, "Server: Generate code");
-//        });
-//    CROW_ROUTE(m_app, "/check_code")([]() {
-//        return crow::response(200, "Server: check coded!");
-//        });
-//    CROW_ROUTE(m_app, "/level")([]() {
-//        return crow::response(200, "Server: level corect!");
-//        });
-//
-
-    //CROW_ROUTE(m_app, "/choose_level").methods(crow::HTTPMethod::POST)([&](const crow::request& req) {
-    //    try {
-    //        std::string levelType = req.body;
-    //        if (levelType.empty()) {
-    //            return crow::response(400, "Server:Bad request: missing level type");
-    //        }
-
-    //        std::string clientId = req.get_header_value("Client-ID");
-    //        if (clientId.empty()) {
-    //            return crow::response(400, "Server:Bad request: missing client ID");
-    //        }
-
-    //        std::cout << "Nivel ales pentru Client-ID " << clientId << ": " << levelType << std::endl;
-    //        AddClient(clientId, levelType);
-    //        std::cout << "Nivel ales pentru Client-ID " << clientId << ": " << levelType << std::endl;
-
-    //        return crow::response(200, "Server:Nivel ales: " + levelType);
-    //    }
-    //    catch (const std::exception& e) {
-    //        return crow::response(500, "Server:Internal server error: " + std::string(e.what()));
-    //    }
+    //CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
+    //    crow::json::wvalue jsonMap;
+    //    jsonMap["width"] = 10;
+    //    jsonMap["height"] = 10;
+    //    jsonMap["cells"] = crow::json::load(R"({
+    //        "0": {"0": {"type": "Empty", "border": false}},
+    //        "1": {"0": {"type": "Wall_Destructible", "border": false}}
+    //    })");
+    //    return crow::response(200, jsonMap);
     //    });
 
-    //CROW_ROUTE(m_app, "/get_map").methods(crow::HTTPMethod::GET)([&](const crow::request& req) {
+    //CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
+    //    crow::json::wvalue jsonMap;
+    //    jsonMap["width"] = 10;
+    //    jsonMap["height"] = 10;
+    //
+    //    jsonMap["cells"]["0"]["0"] = { {"type", "Empty"}, {"border", false} };
+    //    jsonMap["cells"]["1"]["0"] = { {"type", "Wall_Destructible"}, {"border", false} };
+    //
+    //    return crow::response(200, jsonMap); // Directly use jsonMap as the response body
+    //    });
+
+    //CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
+    //    crow::json::wvalue jsonMap;
+    //
+    //    // Correctly construct JSON
+    //    jsonMap["width"] = 10;
+    //    jsonMap["height"] = 10;
+    //
+    //    jsonMap["cells"]["0"]["0"] = { {"type", "Empty"}, {"border", false} };
+    //    jsonMap["cells"]["1"]["0"] = { {"type", "Wall_Destructible"}, {"border", false} };
+    //
+    //    // Serialize JSON to string
+    //    std::ostringstream os;
+    //    os << jsonMap;
+    //
+    //    crow::response res(200);
+    //    res.add_header("Content-Type", "application/json; charset=utf-8");
+    //    res.body = os.str(); // Serialize JSON as response body
+    //    return res;
+    //    });
+
+    //CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
     //    try {
-    //        std::string clientId = req.get_header_value("Client-ID");
-    //        if (clientId.empty()) {
-    //            return crow::response(400, "Server: Missing Client-ID");
-    //        }
-
-    //        std::string levelType;
-    //        {
-    //            //std::lock_guard<std::mutex> lock(clientLevelsMutex);
-    //            if (m_clientLevels.find(clientId) == m_clientLevels.end()) {
-    //                return crow::response(400, "Server: Client ID invalid sau nu s-a ales un nivel");
-    //            }
-    //            levelType = m_clientLevels[clientId];
-    //        }
-
-    //        std::cout << "Client-ID " << clientId << " solicită nivelul: " << levelType << std::endl;
-
-    //        Map map(1);  // Nivel default
-    //        if (levelType == "Usor") {
-    //            map = Map(1);
-    //            map.GenerateWalls(1);
-    //        }
-    //        else if (levelType == "Mediu") {
-    //            map = Map(2);
-    //            map.GenerateWalls(1);
-
-    //        }
-    //        else if (levelType == "Greu") {
-    //            map = Map(3);
-    //            map.GenerateWalls(1);
-
-    //        }
-    //        else {
-    //            return crow::response(400, "Server: Nivel necunoscut");
-    //        }
-    //        std::cout << "\n";
-    //        std::cout << "\n";
-    //        map.DisplayMap();
-    //        std::cout << "\n";
-    //        std::cout << "\n";
-
-
-    //        // Crează răspunsul JSON
-    //        crow::json::wvalue mapJson;
-    //        const auto& mapData = map.GetMap();
-
+    //        Map gameMap(1); // Instanța clasei Map
+    //
+    //        // Structură JSON pentru mapă
+    //        json jsonMap;
+    //        jsonMap["width"] = gameMap.GetWidth();
+    //        jsonMap["height"] = gameMap.GetHeight();
+    //
+    //        const auto& mapData = gameMap.GetMap();
+    //        jsonMap["cells"] = json::array();
+    //
     //        for (size_t i = 0; i < mapData.size(); ++i) {
-    //            crow::json::wvalue rowJson;
+    //            json rowJson = json::array();
     //            for (size_t j = 0; j < mapData[i].size(); ++j) {
     //                const auto& cell = mapData[i][j];
-    //                crow::json::wvalue cellJson;
-    //                cellJson["wall"] = (cell.typeWall == Wall::TypeWall::destructible) ? "destructible" : "indestructible";
-    //                cellJson["space"] = cell.space;
+    //                json cellJson;
+    //
+    //                // Tipuri de celule
+    //                if (std::holds_alternative<Map::Empty>(cell.content)) {
+    //                    cellJson["type"] = "Empty";
+    //                }
+    //                else if (std::holds_alternative<Map::Bomb>(cell.content)) {
+    //                    cellJson["type"] = "Bomb";
+    //                }
+    //                else if (std::holds_alternative<Map::BonusLife>(cell.content)) {
+    //                    cellJson["type"] = "BonusLife";
+    //                }
+    //                else if (std::holds_alternative<Wall::TypeWall>(cell.content)) {
+    //                    auto wallType = std::get<Wall::TypeWall>(cell.content);
+    //                    cellJson["type"] = (wallType == Wall::TypeWall::indestructible)
+    //                        ? "Wall_Indestructible"
+    //                        : "Wall_Destructible";
+    //                }
+    //                else if (std::holds_alternative<Map::Tank>(cell.content)) {
+    //                    cellJson["type"] = "Tank";
+    //                }
+    //                else if (std::holds_alternative<Map::Bullet>(cell.content)) {
+    //                    cellJson["type"] = "Bullet";
+    //                }
+    //
     //                cellJson["border"] = cell.border;
-    //                rowJson[std::to_string(j)] = std::move(cellJson);
+    //
+    //                // Adăugăm celula în rând
+    //                rowJson.push_back(cellJson);
     //            }
-    //            mapJson[std::to_string(i)] = std::move(rowJson);
+    //            // Adăugăm rândul în matrice
+    //            jsonMap["cells"].push_back(rowJson);
     //        }
-
-    //        std::cout << "Răspuns JSON generat!" << std::endl;
-    //        return crow::response(mapJson);
+    //
+    //        // Afișăm JSON-ul generat
+    //        std::cout << "Generated JSON Map:\n" << jsonMap.dump(4) << std::endl;
+    //
+    //        // Returnăm JSON-ul către client
+    //        return crow::response(200, jsonMap.dump());
     //    }
     //    catch (const std::exception& e) {
-    //        std::cout << "Eroare internă: " << e.what() << std::endl;
-    //        return crow::response(500, "Server: Internal server error: " + std::string(e.what()));
+    //        return crow::response(500, "Server error: " + std::string(e.what()));
     //    }
     //    });
-
-
-    //CROW_ROUTE(m_app, "/get_tank")
-    //    ([this](const crow::request& req) {
-    //    crow::json::wvalue response;
-    //    auto clientId = req.url_params.get("id");
-
-    //    if (clientId) {
-
-    //        if (m_tanks.find(clientId) == m_tanks.end()) {
-    //            return crow::response(404, R"({"error":"Tank not found for given Client ID"})");
-    //        }
-    //        const auto& tank = m_tanks[clientId];
-    //        Tank::ColorTank color = tank.GetTank().GetColor();
-
-    //        std::string rezColorTank;
-    //        switch (color) {
-    //        case Tank::ColorTank::Red:
-    //            rezColorTank = "Red";
-    //            break;
-    //        case Tank::ColorTank::Blue:
-    //            rezColorTank = "Blue";
-    //            break;
-    //        case Tank::ColorTank::Green:
-    //            rezColorTank = "Green";
-    //            break;
-    //        default:
-    //            rezColorTank = "Unknown";
-    //            break;
-    //        }
-
-    //        std::cout << "Tank color for Client ID " << clientId << ": " << rezColorTank << "\n\n";
-
-    //        return crow::response(rezColorTank);
-    //    }
-
-    //    return crow::response(400, R"({"error":"Client ID missing"})");
+    //
+    //    CROW_ROUTE(m_app, "/generate_code")([]() {
+    //        return crow::response(200, "Server: Generate code");
     //        });
+    //    CROW_ROUTE(m_app, "/check_code")([]() {
+    //        return crow::response(200, "Server: check coded!");
+    //        });
+    //    CROW_ROUTE(m_app, "/level")([]() {
+    //        return crow::response(200, "Server: level corect!");
+    //        });
+    //
+
+        //CROW_ROUTE(m_app, "/choose_level").methods(crow::HTTPMethod::POST)([&](const crow::request& req) {
+        //    try {
+        //        std::string levelType = req.body;
+        //        if (levelType.empty()) {
+        //            return crow::response(400, "Server:Bad request: missing level type");
+        //        }
+
+        //        std::string clientId = req.get_header_value("Client-ID");
+        //        if (clientId.empty()) {
+        //            return crow::response(400, "Server:Bad request: missing client ID");
+        //        }
+
+        //        std::cout << "Nivel ales pentru Client-ID " << clientId << ": " << levelType << std::endl;
+        //        AddClient(clientId, levelType);
+        //        std::cout << "Nivel ales pentru Client-ID " << clientId << ": " << levelType << std::endl;
+
+        //        return crow::response(200, "Server:Nivel ales: " + levelType);
+        //    }
+        //    catch (const std::exception& e) {
+        //        return crow::response(500, "Server:Internal server error: " + std::string(e.what()));
+        //    }
+        //    });
+
+        //CROW_ROUTE(m_app, "/get_map").methods(crow::HTTPMethod::GET)([&](const crow::request& req) {
+        //    try {
+        //        std::string clientId = req.get_header_value("Client-ID");
+        //        if (clientId.empty()) {
+        //            return crow::response(400, "Server: Missing Client-ID");
+        //        }
+
+        //        std::string levelType;
+        //        {
+        //            //std::lock_guard<std::mutex> lock(clientLevelsMutex);
+        //            if (m_clientLevels.find(clientId) == m_clientLevels.end()) {
+        //                return crow::response(400, "Server: Client ID invalid sau nu s-a ales un nivel");
+        //            }
+        //            levelType = m_clientLevels[clientId];
+        //        }
+
+        //        std::cout << "Client-ID " << clientId << " solicită nivelul: " << levelType << std::endl;
+
+        //        Map map(1);  // Nivel default
+        //        if (levelType == "Usor") {
+        //            map = Map(1);
+        //            map.GenerateWalls(1);
+        //        }
+        //        else if (levelType == "Mediu") {
+        //            map = Map(2);
+        //            map.GenerateWalls(1);
+
+        //        }
+        //        else if (levelType == "Greu") {
+        //            map = Map(3);
+        //            map.GenerateWalls(1);
+
+        //        }
+        //        else {
+        //            return crow::response(400, "Server: Nivel necunoscut");
+        //        }
+        //        std::cout << "\n";
+        //        std::cout << "\n";
+        //        map.DisplayMap();
+        //        std::cout << "\n";
+        //        std::cout << "\n";
 
 
-    //CROW_ROUTE(m_app, "/move_tank/up")([this](const crow::request& req) {
-    //    auto clientId = req.url_params.get("id");
-    //    if (!clientId) {
-    //        return crow::response(400, "Missing client ID");
-    //    }
+        //        // Crează răspunsul JSON
+        //        crow::json::wvalue mapJson;
+        //        const auto& mapData = map.GetMap();
 
-    //    MoveTank(clientId, MovementObject::Direction::Up);
-    //    std::string word = GetTankPositionString(clientId);
-    //    return crow::response(200, "S-a mutat sus " + word);
-    //    });
+        //        for (size_t i = 0; i < mapData.size(); ++i) {
+        //            crow::json::wvalue rowJson;
+        //            for (size_t j = 0; j < mapData[i].size(); ++j) {
+        //                const auto& cell = mapData[i][j];
+        //                crow::json::wvalue cellJson;
+        //                cellJson["wall"] = (cell.typeWall == Wall::TypeWall::destructible) ? "destructible" : "indestructible";
+        //                cellJson["space"] = cell.space;
+        //                cellJson["border"] = cell.border;
+        //                rowJson[std::to_string(j)] = std::move(cellJson);
+        //            }
+        //            mapJson[std::to_string(i)] = std::move(rowJson);
+        //        }
 
-    //CROW_ROUTE(m_app, "/move_tank/down")([this](const crow::request& req) {
-    //    auto clientId = req.url_params.get("id");
-    //    if (!clientId) {
-    //        return crow::response(400, "Missing client ID");
-    //    }
-
-    //    MoveTank(clientId, MovementObject::Direction::Down);
-    //    std::string word = GetTankPositionString(clientId);
-    //    return crow::response(200, "S-a mutat jos " + word);
-    //    });
-
-    //CROW_ROUTE(m_app, "/move_tank/left")([this](const crow::request& req) {
-    //    auto clientId = req.url_params.get("id");
-    //    if (!clientId) {
-    //        return crow::response(400, "Missing client ID");
-    //    }
-
-    //    MoveTank(clientId, MovementObject::Direction::Left);
-    //    std::string word = GetTankPositionString(clientId);
-    //    return crow::response(200, "S-a mutat la stanga " + word);
-    //    });
-
-    //CROW_ROUTE(m_app, "/move_tank/right")([this](const crow::request& req) {
-    //    auto clientId = req.url_params.get("id");
-    //    if (!clientId) {
-    //        return crow::response(400, "Missing client ID");
-    //    }
-
-    //    MoveTank(clientId, MovementObject::Direction::Right);
-    //    std::string word = GetTankPositionString(clientId);
-    //    return crow::response(200, "S-a mutat la dreapta " + word);
-    //    });
+        //        std::cout << "Răspuns JSON generat!" << std::endl;
+        //        return crow::response(mapJson);
+        //    }
+        //    catch (const std::exception& e) {
+        //        std::cout << "Eroare internă: " << e.what() << std::endl;
+        //        return crow::response(500, "Server: Internal server error: " + std::string(e.what()));
+        //    }
+        //    });
 
 
-    //unsigned int numThreads = std::thread::hardware_concurrency(); // Determină numărul de fire
-    //if (numThreads == 0) numThreads = 4; // Asigură-te că există cel puțin un fir
+        //CROW_ROUTE(m_app, "/get_tank")
+        //    ([this](const crow::request& req) {
+        //    crow::json::wvalue response;
+        //    auto clientId = req.url_params.get("id");
 
-   // m_app.port(8080).concurrency(numThreads).run();
+        //    if (clientId) {
+
+        //        if (m_tanks.find(clientId) == m_tanks.end()) {
+        //            return crow::response(404, R"({"error":"Tank not found for given Client ID"})");
+        //        }
+        //        const auto& tank = m_tanks[clientId];
+        //        Tank::ColorTank color = tank.GetTank().GetColor();
+
+        //        std::string rezColorTank;
+        //        switch (color) {
+        //        case Tank::ColorTank::Red:
+        //            rezColorTank = "Red";
+        //            break;
+        //        case Tank::ColorTank::Blue:
+        //            rezColorTank = "Blue";
+        //            break;
+        //        case Tank::ColorTank::Green:
+        //            rezColorTank = "Green";
+        //            break;
+        //        default:
+        //            rezColorTank = "Unknown";
+        //            break;
+        //        }
+
+        //        std::cout << "Tank color for Client ID " << clientId << ": " << rezColorTank << "\n\n";
+
+        //        return crow::response(rezColorTank);
+        //    }
+
+        //    return crow::response(400, R"({"error":"Client ID missing"})");
+        //        });
+
+
+        //CROW_ROUTE(m_app, "/move_tank/up")([this](const crow::request& req) {
+        //    auto clientId = req.url_params.get("id");
+        //    if (!clientId) {
+        //        return crow::response(400, "Missing client ID");
+        //    }
+
+        //    MoveTank(clientId, MovementObject::Direction::Up);
+        //    std::string word = GetTankPositionString(clientId);
+        //    return crow::response(200, "S-a mutat sus " + word);
+        //    });
+
+        //CROW_ROUTE(m_app, "/move_tank/down")([this](const crow::request& req) {
+        //    auto clientId = req.url_params.get("id");
+        //    if (!clientId) {
+        //        return crow::response(400, "Missing client ID");
+        //    }
+
+        //    MoveTank(clientId, MovementObject::Direction::Down);
+        //    std::string word = GetTankPositionString(clientId);
+        //    return crow::response(200, "S-a mutat jos " + word);
+        //    });
+
+        //CROW_ROUTE(m_app, "/move_tank/left")([this](const crow::request& req) {
+        //    auto clientId = req.url_params.get("id");
+        //    if (!clientId) {
+        //        return crow::response(400, "Missing client ID");
+        //    }
+
+        //    MoveTank(clientId, MovementObject::Direction::Left);
+        //    std::string word = GetTankPositionString(clientId);
+        //    return crow::response(200, "S-a mutat la stanga " + word);
+        //    });
+
+        //CROW_ROUTE(m_app, "/move_tank/right")([this](const crow::request& req) {
+        //    auto clientId = req.url_params.get("id");
+        //    if (!clientId) {
+        //        return crow::response(400, "Missing client ID");
+        //    }
+
+        //    MoveTank(clientId, MovementObject::Direction::Right);
+        //    std::string word = GetTankPositionString(clientId);
+        //    return crow::response(200, "S-a mutat la dreapta " + word);
+        //    });
+
+
+        //unsigned int numThreads = std::thread::hardware_concurrency(); // Determină numărul de fire
+        //if (numThreads == 0) numThreads = 4; // Asigură-te că există cel puțin un fir
+
+       // m_app.port(8080).concurrency(numThreads).run();
     m_app.port(8080).run();
 }
 
@@ -856,3 +786,50 @@ CROW_ROUTE(m_app, "/test_json")([]() {
 //    });
 
 
+
+
+
+
+//CROW_ROUTE(m_app, "/move").methods("POST"_method)([](const crow::request& req) {
+//    auto json = crow::json::load(req.body);
+//    if (!json.has("username") || !json.has("direction")) {
+//        return crow::response(400, "Missing parameters");
+//    }
+//
+//    std::string username = json["username"].s();
+//    std::string direction = json["direction"].s();
+//
+//    auto* player = PlayerManager::GetPlayer(username);
+//    if (!player) {
+//        return crow::response(404, "Player not found");
+//    }
+//
+//    MovementObject::Direction dir;
+//    if (direction == "up") dir = MovementObject::Direction::Up;
+//    else if (direction == "down") dir = MovementObject::Direction::Down;
+//    else if (direction == "left") dir = MovementObject::Direction::Left;
+//    else if (direction == "right") dir = MovementObject::Direction::Right;
+//    else return crow::response(400, "Invalid direction");
+//
+//    player->GetMovementObject().Move(dir);
+//    return crow::response(200, "Player moved");
+//    });
+//CROW_ROUTE(m_app, "/shoot").methods("POST"_method)([](const crow::request& req) {
+//    auto json = crow::json::load(req.body);
+//    if (!json.has("username")) {
+//        return crow::response(400, "Missing username");
+//    }
+//
+//    std::string username = json["username"].s();
+//    auto* player = PlayerManager::GetPlayer(username);
+//    if (!player) {
+//        return crow::response(404, "Player not found");
+//    }
+//
+//    player->GetMovementObject().Shoot();
+//    return crow::response(200, "Bullet shot");
+//    });
+//
+//CROW_ROUTE(m_app, "/game_ws").websocket().onmessage([](crow::websocket::connection& conn, const std::string& data) {
+//    conn.send_text("Game update: " + data);
+//    });
