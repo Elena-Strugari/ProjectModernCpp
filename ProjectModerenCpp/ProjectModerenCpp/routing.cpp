@@ -1,6 +1,11 @@
 ﻿#pragma once
 #include "routing.h"
+
 #include "Game.h"
+
+
+
+#include <sstream>
 
 using namespace http;
 Database db("players.db");
@@ -126,77 +131,373 @@ void http::Routing::Run()
         });
 
 
-    CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
-        try {
-            Map gameMap(1); // Creează o instanță a clasei Map
+    //CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
+    //    try {
+    //        Map gameMap(1); // Creează o instanță a clasei Map
 
-            // Crearea structurii JSON
-            crow::json::wvalue jsonMap;
-            jsonMap["width"] = gameMap.GetWidth();
-            jsonMap["height"] = gameMap.GetHeight();
+    //        // Crearea structurii JSON
+    //        crow::json::wvalue jsonMap;
+    //        jsonMap["width"] = gameMap.GetWidth();
+    //        jsonMap["height"] = gameMap.GetHeight();
 
-            // Crearea matricei de celule
-            const auto& mapData = gameMap.GetMap();
-            crow::json::wvalue::list cellsArray;
+    //        const auto& mapData = gameMap.GetMap();
 
-            for (const auto& row : mapData) {
-                crow::json::wvalue::list rowArray;
+    //        // Construim JSON-ul rând cu rând
+    //        for (size_t i = 0; i < mapData.size(); ++i) {
+    //            crow::json::wvalue rowJson;
+    //            for (size_t j = 0; j < mapData[i].size(); ++j) {
+    //                const auto& cell = mapData[i][j];
+    //                crow::json::wvalue cellJson;
 
-                for (const auto& cell : row) {
-                    crow::json::wvalue cellJson;
+    //                // Determinăm tipul celulei
+    //                /*if (std::holds_alternative<Map::Empty>(cell.content)) {
+    //                    cellJson["type"] = "Empty";
+    //                }
+    //                else if (std::holds_alternative<Map::Bomb>(cell.content)) {
+    //                    cellJson["type"] = "Bomb";
+    //                }
+    //                else if (std::holds_alternative<Map::BonusLife>(cell.content)) {
+    //                    cellJson["type"] = "BonusLife";
+    //                }
+    //                else if (std::holds_alternative<Wall::TypeWall>(cell.content)) {
+    //                    auto wallType = std::get<Wall::TypeWall>(cell.content);
+    //                    cellJson["type"] = (wallType == Wall::TypeWall::indestructible)
+    //                        ? "Wall_Indestructible"
+    //                        : "Wall_Destructible";
+    //                }
+    //                else if (std::holds_alternative<Map::Tank>(cell.content)) {
+    //                    cellJson["type"] = "Tank";
+    //                }
+    //                else if (std::holds_alternative<Map::Bullet>(cell.content)) {
+    //                    cellJson["type"] = "Bullet";
+    //                }*/
 
-                    // Setăm tipul celulei folosind `std::visit`
-                    std::visit([&](const auto& content) {
-                        using T = std::decay_t<decltype(content)>;
-                        if constexpr (std::is_same_v<T, Map::Empty>) {
-                            cellJson["type"] = "Empty";
-                        }
-                        else if constexpr (std::is_same_v<T, Map::Bomb>) {
-                            cellJson["type"] = "Bomb";
-                        }
-                        else if constexpr (std::is_same_v<T, Map::BonusLife>) {
-                            cellJson["type"] = "BonusLife";
-                        }
-                        else if constexpr (std::is_same_v<T, Wall::TypeWall>) {
-                            cellJson["type"] = content == Wall::TypeWall::indestructible
-                                ? "Wall_Indestructible"
-                                : "Wall_Destructible";
-                        }
-                        else if constexpr (std::is_same_v<T, Map::Tank>) {
-                            cellJson["type"] = "Tank";
-                        }
-                        else if constexpr (std::is_same_v<T, Map::Bullet>) {
-                            cellJson["type"] = "Bullet";
-                        }
-                        }, cell.content);
+    //                if (std::holds_alternative<Map::Empty>(cell.content)) {
+    //                   // std::cout << "Cell (" << i << "," << j << ") is Empty.\n";
+    //                    cellJson["type"] = "Empty";
+    //                }
+    //                else if (std::holds_alternative<Map::Bomb>(cell.content)) {
+    //                    //std::cout << "Cell (" << i << "," << j << ") is Bomb.\n";
+    //                    cellJson["type"] = "Bomb";
+    //                }
+    //                else if (std::holds_alternative<Map::BonusLife>(cell.content)) {
+    //                    //std::cout << "Cell (" << i << "," << j << ") is BonusLife.\n";
+    //                    cellJson["type"] = "BonusLife";
+    //                }
+    //                else if (std::holds_alternative<Wall::TypeWall>(cell.content)) {
+    //                    auto wallType = std::get<Wall::TypeWall>(cell.content);
+    //                   // std::cout << "Cell (" << i << "," << j << ") is Wall of type: "
+    //                       // << (wallType == Wall::TypeWall::indestructible ? "Indestructible" : "Destructible") << "\n";
+    //                    cellJson["type"] = (wallType == Wall::TypeWall::indestructible)
+    //                        ? "Wall_Indestructible"
+    //                        : "Wall_Destructible";
+    //                }
+    //                else if (std::holds_alternative<Map::Tank>(cell.content)) {
+    //                    //std::cout << "Cell (" << i << "," << j << ") is Tank.\n";
+    //                    cellJson["type"] = "Tank";
+    //                }
+    //                else if (std::holds_alternative<Map::Bullet>(cell.content)) {
+    //                   // std::cout << "Cell (" << i << "," << j << ") is Bullet.\n";
+    //                    cellJson["type"] = "Bullet";
+    //                }
+    //                else {
+    //                    std::cout << "Cell (" << i << "," << j << ") is unrecognized!\n";
+    //                }
 
-                    rowArray.push_back(cellJson); // Folosim push_back pentru a adăuga în array
-                }
+    //                // Adăugăm alte detalii opționale
+    //                cellJson["border"] = cell.border;
 
-                cellsArray.push_back(rowArray); // Folosim push_back pentru rânduri
+    //                // Adăugăm celula la rând
+    //                std::cout << "Cell (" << i << "," << j << "): " << cellJson.dump() << std::endl;
+
+    //                rowJson[std::to_string(j)] = std::move(cellJson);
+    //               
+    //            }
+    //            /*std::cout << "Row " << i << ": {";
+    //            for (const auto& [key, value] : rowJson) {
+    //                std::cout << "\"" << key << "\": " << value.dump() << ", ";
+    //            }
+    //            std::cout << "}" << std::endl;*/
+
+
+    //            // Adăugăm rândul la JSON
+    //            jsonMap["cells"][std::to_string(i)] = std::move(rowJson);
+    //        }
+
+    //        //std::cout << "Răspuns JSON generat:\n" << crow::json::dump(jsonMap) << std::endl;
+
+    //        // Returnăm JSON-ul
+    //        return crow::response(200, jsonMap);
+    //    }
+    //    catch (const std::exception& e) {
+    //        return crow::response(500, "Server error: " + std::string(e.what()));
+    //    }
+    //    });
+
+//CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
+//    try {
+//        Map gameMap(1); // Create an instance of Map
+//
+//        crow::json::wvalue jsonMap; // Create the root JSON object
+//        jsonMap["width"] = gameMap.GetWidth();
+//        jsonMap["height"] = gameMap.GetHeight();
+//
+//        const auto& mapData = gameMap.GetMap();
+//
+//        // Create the "cells" array
+//        crow::json::wvalue::list cellsJson;
+//
+//        for (size_t i = 0; i < mapData.size(); ++i) {
+//            crow::json::wvalue::list rowJson; // Each row is a list
+//            for (size_t j = 0; j < mapData[i].size(); ++j) {
+//                const auto& cell = mapData[i][j];
+//                crow::json::wvalue cellJson; // Create a JSON object for each cell
+//
+//                // Use numeric codes for cell types
+//                if (std::holds_alternative<Map::Empty>(cell.content)) {
+//                    cellJson["type"] = static_cast<int>(0);
+//                }
+//                else if (std::holds_alternative<Map::Bomb>(cell.content)) {
+//                    cellJson["type"] = static_cast<int>(1);
+//                }
+//                else if (std::holds_alternative<Map::BonusLife>(cell.content)) {
+//                    cellJson["type"] = static_cast<int>(2);
+//                }
+//                else if (std::holds_alternative<Wall::TypeWall>(cell.content)) {
+//                    auto wallType = std::get<Wall::TypeWall>(cell.content);
+//                    cellJson["type"] = static_cast<int>(
+//                        (wallType == Wall::TypeWall::indestructible) ? 4 : 3);
+//                }
+//                else if (std::holds_alternative<Map::Tank>(cell.content)) {
+//                    cellJson["type"] = static_cast<int>(5);
+//                }
+//                else if (std::holds_alternative<Map::Bullet>(cell.content)) {
+//                    cellJson["type"] = static_cast<int>(6);
+//                }
+//                else {
+//                    cellJson["type"] = static_cast<int>(-1); // Unrecognized
+//                }
+//
+//                // Optional details like `border`
+//                cellJson["border"] = static_cast<int>(cell.border);
+//
+//                // Add the cell JSON object to the row
+//                //rowJson.push_back(std::move(cellJson));
+//                std::cout << "cellJson before move: " << cellJson.dump()<< std::endl;
+//
+//                // Add to rowJson
+//                rowJson.push_back(std::move(cellJson));
+//
+//                // Debug rowJson after adding cellJson
+//                //std::cout << "rowJson after adding cell (" << i << ", " << j << "): " << rowJson.dump() << std::endl;
+//
+//            }
+//
+//            // Add the row to the "cells" array
+//            cellsJson.push_back(std::move(rowJson));
+//        }
+//
+//        // Assign the "cells" array to the root JSON object
+//        jsonMap["cells"] = std::move(cellsJson);
+//
+//        // Return the JSON response
+//        //if(!jsonMap.empty_object())
+//        return crow::response(200, jsonMap);
+//    }
+//    catch (const std::exception& e) {
+//        return crow::response(500, "Server error: " + std::string(e.what()));
+//    }
+//    });
+
+
+
+//CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
+//    try {
+//        Map gameMap(1); // Create an instance of Map
+//
+//        crow::json::wvalue json; // Create the root JSON object
+//        json["width"] = gameMap.GetWidth();
+//        json["height"] = gameMap.GetHeight();
+//
+//        const auto& mapData = gameMap.GetMap();
+//
+//        // Create the "cells" array
+//        crow::json::wvalue::list jsonMap;
+//
+//        for (const auto& row : mapData) {
+//            crow::json::wvalue::list jsonRow;
+//            for (const auto& cell : row)
+//            {
+//                jsonRow.push_back(cell.ToInt());
+//            }
+//            jsonMap.push_back(std::move(jsonRow));
+//        }
+//        json["map"] = std::move(jsonMap);
+//
+//              
+//            
+//        return crow::response(200, json);
+//    }
+//    catch (const std::exception& e) {
+//        return crow::response(500, "Server error: " + std::string(e.what()));
+//    }
+//    });
+
+CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
+    try {
+        Map gameMap(1); // Create an instance of Map
+
+        crow::json::wvalue json; // Create the root JSON object
+        json["width"] = gameMap.GetWidth();
+        json["height"] = gameMap.GetHeight();
+
+        const auto& mapData = gameMap.GetMap();
+
+        // Create the "cells" array
+        crow::json::wvalue::list jsonMap;
+        for (const auto& row : mapData) {
+            crow::json::wvalue::list jsonRow;
+            for (const auto& cell : row) {
+                jsonRow.push_back(cell.ToInt());
             }
-
-            jsonMap["cells"] = std::move(cellsArray);
-
-
-            // Returnăm JSON-ul ca răspuns
-            return crow::response(200, jsonMap);
+            jsonMap.push_back(std::move(jsonRow));
         }
-        catch (const std::exception& e) {
-            return crow::response(500, "Server error: " + std::string(e.what()));
-        }
-        });
+        json["map"] = std::move(jsonMap);
 
-    CROW_ROUTE(m_app, "/generate_code")([]() {
-        return crow::response(200, "Server: Generate code");
-        });
-    CROW_ROUTE(m_app, "/check_code")([]() {
-        return crow::response(200, "Server: check coded!");
-        });
-    CROW_ROUTE(m_app, "/level")([]() {
-        return crow::response(200, "Server: level corect!");
-        });
+        // Serialize the JSON to ensure it's valid
+        std::string serializedJson = json.dump();
 
+        // Log the serialized JSON for debugging
+        std::cout << "Serialized JSON Response: " << serializedJson << std::endl;
+
+        // Return the serialized JSON
+        //return crow::response(200, serializedJson);
+        return crow::response(200, serializedJson);//.add_header("Content-Type", "application/json; charset=utf-8");
+
+    }
+    catch (const std::exception& e) {
+        return crow::response(500, "Server error: " + std::string(e.what()));
+    }
+    });
+
+
+
+
+
+    
+//CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
+//    crow::json::wvalue jsonMap;
+//    jsonMap["width"] = 10;
+//    jsonMap["height"] = 10;
+//    jsonMap["cells"] = crow::json::load(R"({
+//        "0": {"0": {"type": "Empty", "border": false}},
+//        "1": {"0": {"type": "Wall_Destructible", "border": false}}
+//    })");
+//    return crow::response(200, jsonMap);
+//    });
+
+//CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
+//    crow::json::wvalue jsonMap;
+//    jsonMap["width"] = 10;
+//    jsonMap["height"] = 10;
+//
+//    jsonMap["cells"]["0"]["0"] = { {"type", "Empty"}, {"border", false} };
+//    jsonMap["cells"]["1"]["0"] = { {"type", "Wall_Destructible"}, {"border", false} };
+//
+//    return crow::response(200, jsonMap); // Directly use jsonMap as the response body
+//    });
+
+//CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
+//    crow::json::wvalue jsonMap;
+//
+//    // Correctly construct JSON
+//    jsonMap["width"] = 10;
+//    jsonMap["height"] = 10;
+//
+//    jsonMap["cells"]["0"]["0"] = { {"type", "Empty"}, {"border", false} };
+//    jsonMap["cells"]["1"]["0"] = { {"type", "Wall_Destructible"}, {"border", false} };
+//
+//    // Serialize JSON to string
+//    std::ostringstream os;
+//    os << jsonMap;
+//
+//    crow::response res(200);
+//    res.add_header("Content-Type", "application/json; charset=utf-8");
+//    res.body = os.str(); // Serialize JSON as response body
+//    return res;
+//    });
+
+//CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
+//    try {
+//        Map gameMap(1); // Instanța clasei Map
+//
+//        // Structură JSON pentru mapă
+//        json jsonMap;
+//        jsonMap["width"] = gameMap.GetWidth();
+//        jsonMap["height"] = gameMap.GetHeight();
+//
+//        const auto& mapData = gameMap.GetMap();
+//        jsonMap["cells"] = json::array();
+//
+//        for (size_t i = 0; i < mapData.size(); ++i) {
+//            json rowJson = json::array();
+//            for (size_t j = 0; j < mapData[i].size(); ++j) {
+//                const auto& cell = mapData[i][j];
+//                json cellJson;
+//
+//                // Tipuri de celule
+//                if (std::holds_alternative<Map::Empty>(cell.content)) {
+//                    cellJson["type"] = "Empty";
+//                }
+//                else if (std::holds_alternative<Map::Bomb>(cell.content)) {
+//                    cellJson["type"] = "Bomb";
+//                }
+//                else if (std::holds_alternative<Map::BonusLife>(cell.content)) {
+//                    cellJson["type"] = "BonusLife";
+//                }
+//                else if (std::holds_alternative<Wall::TypeWall>(cell.content)) {
+//                    auto wallType = std::get<Wall::TypeWall>(cell.content);
+//                    cellJson["type"] = (wallType == Wall::TypeWall::indestructible)
+//                        ? "Wall_Indestructible"
+//                        : "Wall_Destructible";
+//                }
+//                else if (std::holds_alternative<Map::Tank>(cell.content)) {
+//                    cellJson["type"] = "Tank";
+//                }
+//                else if (std::holds_alternative<Map::Bullet>(cell.content)) {
+//                    cellJson["type"] = "Bullet";
+//                }
+//
+//                cellJson["border"] = cell.border;
+//
+//                // Adăugăm celula în rând
+//                rowJson.push_back(cellJson);
+//            }
+//            // Adăugăm rândul în matrice
+//            jsonMap["cells"].push_back(rowJson);
+//        }
+//
+//        // Afișăm JSON-ul generat
+//        std::cout << "Generated JSON Map:\n" << jsonMap.dump(4) << std::endl;
+//
+//        // Returnăm JSON-ul către client
+//        return crow::response(200, jsonMap.dump());
+//    }
+//    catch (const std::exception& e) {
+//        return crow::response(500, "Server error: " + std::string(e.what()));
+//    }
+//    });
+//
+//    CROW_ROUTE(m_app, "/generate_code")([]() {
+//        return crow::response(200, "Server: Generate code");
+//        });
+//    CROW_ROUTE(m_app, "/check_code")([]() {
+//        return crow::response(200, "Server: check coded!");
+//        });
+//    CROW_ROUTE(m_app, "/level")([]() {
+//        return crow::response(200, "Server: level corect!");
+//        });
+//
 
     //CROW_ROUTE(m_app, "/choose_level").methods(crow::HTTPMethod::POST)([&](const crow::request& req) {
     //    try {

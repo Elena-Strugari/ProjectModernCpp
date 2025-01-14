@@ -26,6 +26,21 @@ public:
 
         Cell(CellContent content, uint16_t border)
             : content(std::move(content)), border(border) {}
+
+        int ToInt() const {
+            return std::visit([](const auto& content) -> int {
+                using T = std::decay_t<decltype(content)>;
+                if constexpr (std::is_same_v<T, Empty>) return 0;
+                else if constexpr (std::is_same_v<T, Bomb>) return 1;
+                else if constexpr (std::is_same_v<T, BonusLife>) return 2;
+                else if constexpr (std::is_same_v<T, Wall::TypeWall>) {
+                    return (content == Wall::TypeWall::indestructible) ? 4 : 3;
+                }
+                else if constexpr (std::is_same_v<T, Tank>) return 5;
+                else if constexpr (std::is_same_v<T, Bullet>) return 6;
+                else return -1; // Unknown type
+                }, content);
+        }
     };
 
 public:

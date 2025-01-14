@@ -23,6 +23,9 @@ public:
 	static bool CheckCode();
 
 	static void Level();
+	static void ProcessMap(const QJsonDocument& jsonDoc);
+	static void FetchAndProcessMap();
+
 
 	//static bool ControlsClient(const std::string& client, const std::string& controlsClient);
 	static bool ControlsClient( const std::string& controlsClient);
