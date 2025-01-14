@@ -115,6 +115,8 @@ private slots:
     void HandleCheckCode();
     void HandleLevel();
     void DisplayMap();
+    void HandleInGameSettings();
+    void HandleGeneralSettings();
 
 private:
     Ui::MainWindow* ui;
@@ -124,6 +126,7 @@ private:
     void StartGameWindoww();
     void LogUserWindow();
     void CreateJoinWindow();
+    void GameWindow();
 
 };
 

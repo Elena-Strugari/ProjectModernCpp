@@ -12,6 +12,7 @@ class InGameSettingsWindow : public QWidget
 public:
     explicit InGameSettingsWindow(QWidget* parent = nullptr);
     ~InGameSettingsWindow();
+    void positionInTopRight(QWidget* parent);
 
 signals:
     void backToGame();   // Semnal pentru întoarcerea la joc

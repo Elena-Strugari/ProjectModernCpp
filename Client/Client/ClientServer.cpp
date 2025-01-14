@@ -443,6 +443,83 @@ void ClientServer::FetchAndProcessMap() {
          std::cerr << "Excepție la conectare: " << ex.what() << std::endl;
      }
  }
+ void ClientServer::GetGeneralSettings() {
+     try {
+         cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_general_settings" });
+
+         if (response.status_code == 200) {
+             std::cout << "General settings retrieved: " << response.text << std::endl;
+            
+         }
+         else {
+             std::cerr << "Failed to retrieve general settings. Response code: " << response.status_code << std::endl;
+         }
+     }
+     catch (const std::exception& ex) {
+         std::cerr << "Exception while getting general settings: " << ex.what() << std::endl;
+     }
+ }
+ bool ClientServer::SetGeneralSettings(const std::string& settingsJson) {
+     try {
+         cpr::Response response = cpr::Post(
+             cpr::Url{ std::string(SERVER_URL) + "/set_general_settings" },
+             cpr::Body{ settingsJson },
+             cpr::Header{ {"Content-Type", "application/json"} }
+         );
+
+         if (response.status_code == 200) {
+             std::cout << "General settings updated: " << response.text << std::endl;
+             return true;
+         }
+         else {
+             std::cerr << "Failed to update general settings. Response code: " << response.status_code << std::endl;
+             return false;
+         }
+     }
+     catch (const std::exception& ex) {
+         std::cerr << "Exception while setting general settings: " << ex.what() << std::endl;
+         return false;
+     }
+ }
+ void ClientServer::GetInGameSettings() {
+     try {
+         cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_in_game_settings" });
+
+         if (response.status_code == 200) {
+             std::cout << "In game settings retrieved: " << response.text << std::endl;
+            
+         }
+         else {
+             std::cerr << "Failed to retrieve in game settings. Response code: " << response.status_code << std::endl;
+         }
+     }
+     catch (const std::exception& ex) {
+         std::cerr << "Exception while getting in game settings: " << ex.what() << std::endl;
+     }
+ }
+ bool ClientServer::SetInGameSettings(const std::string& settingsJson) {
+     try {
+         cpr::Response response = cpr::Post(
+             cpr::Url{ std::string(SERVER_URL) + "/set_in_game_settings" },
+             cpr::Body{ settingsJson },
+             cpr::Header{ {"Content-Type", "application/json"} }
+         );
+
+         if (response.status_code == 200) {
+             std::cout << "In game settings updated: " << response.text << std::endl;
+             return true;
+         }
+         else {
+             std::cerr << "Failed to update in game settings. Response code: " << response.status_code << std::endl;
+             return false;
+         }
+     }
+     catch (const std::exception& ex) {
+         std::cerr << "Exception while setting in game settings: " << ex.what() << std::endl;
+         return false;
+     }
+ }
+
 
 
 //void Client::onChooseLevel(const std::string& clientId, const std::string& level) {

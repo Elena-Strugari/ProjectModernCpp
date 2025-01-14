@@ -17,7 +17,8 @@ public:
 
 signals:
     void Generate();
-    void CheckCode(); 
+    void CheckCode();
+    void GeneralSettings();
 protected:
     void resizeEvent(QResizeEvent* event) override;
 private:
@@ -27,6 +28,7 @@ private:
     QPushButton* generateCodeButton;
     QPushButton* checkCodeButton;
     QLineEdit* typeCode;
+    QPushButton* generalSettingsButton;
 };
 
 #endif // CREATEORJOINGAMEWINDOW_H

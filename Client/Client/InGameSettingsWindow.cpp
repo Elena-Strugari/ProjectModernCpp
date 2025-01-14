@@ -15,7 +15,11 @@ InGameSettingsWindow::InGameSettingsWindow(QWidget* parent)
     exitGameButton(new QPushButton("Exit Game", this))
 {
     setWindowTitle("In-Game Settings");
-    resize(800, 600);
+    resize(300, 200);
+
+    setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    setAttribute(Qt::WA_TranslucentBackground);
+    setStyleSheet("background-color: rgba(0, 0, 0, 150); border-radius: 10px;");
 
     // Initializează fundalul
     BackgroundHelper::InitializeBackground(this);
@@ -137,4 +141,11 @@ void InGameSettingsWindow::resizeEvent(QResizeEvent* event)
     }
 
     QWidget::resizeEvent(event);
+}
+void InGameSettingsWindow::positionInTopRight(QWidget* parent) {
+    if (parent) {
+        int x = parent->x() + parent->width() - width() - 20;
+        int y = parent->y() + 20;
+        move(x, y);
+    }
 }

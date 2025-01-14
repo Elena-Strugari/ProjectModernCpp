@@ -23,6 +23,7 @@ private:
 
 signals:
 void SettingsClicked();
+
 public slots:
     void onSettingsClicked();
 

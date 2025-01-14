@@ -187,6 +187,8 @@
 #include "CreateOrJoinGameWindow.h"
 #include "LevelSelectionWindow.h"
 #include "GameMapWindow.h"
+#include "InGameSettingsWindow.h"
+#include "GeneralSettingsWindow.h"
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
@@ -246,6 +248,7 @@ void MainWindow::CreateJoinWindow()
 {
     CreateOrJoinGameWindow* createJoinWindow = new CreateOrJoinGameWindow();
     createJoinWindow->show();
+    connect(createJoinWindow, &CreateOrJoinGameWindow::GeneralSettings, this, &MainWindow::HandleGeneralSettings);
     connect(createJoinWindow, &CreateOrJoinGameWindow::Generate, this, &MainWindow::HandleCreateCode);
     connect(createJoinWindow, &CreateOrJoinGameWindow::CheckCode, this, &MainWindow::HandleCheckCode);
 }
@@ -317,14 +320,19 @@ void MainWindow::HandleCreateCode()
 
 
 }
+void MainWindow::GameWindow()
+{
+    GameMapWindow* gameMapWindow = new GameMapWindow();
+    gameMapWindow->show();
+    connect(gameMapWindow, &GameMapWindow::SettingsClicked, this, &MainWindow::HandleInGameSettings);
+}
 void MainWindow::HandleCheckCode()
 {
     if (ClientServer::CheckCode()) {
         QMessageBox::information(this, "Success", "Code verified. Loading game map...");
 
         // Creează și afișează fereastra GameMapWindow
-        GameMapWindow* gameMapWindow = new GameMapWindow();
-        gameMapWindow->show();
+        GameWindow();
     }
     else {
         QMessageBox::warning(this, "Error", "Invalid code. Please try again.");
@@ -334,8 +342,7 @@ void MainWindow::HandleLevel()
 {
     QMessageBox::information(this, "Success", "Level");
     ClientServer::Level();
-    GameMapWindow* gameMapWindow = new GameMapWindow();
-    gameMapWindow->show();
+    GameWindow();
 }
 //void MainWindow::DisplayMap() {
 //    try {
@@ -364,6 +371,17 @@ void MainWindow::HandleLevel()
 //        QMessageBox::critical(this, "Error", e.what());
 //    }
 //}
+void MainWindow::HandleInGameSettings()
+{
+    InGameSettingsWindow* settingsWindow = new InGameSettingsWindow(this);
+    settingsWindow->positionInTopRight(this); 
+    settingsWindow->show();
+}
+void MainWindow::HandleGeneralSettings()
+{
+    GeneralSettingsWindow* generalSettings = new GeneralSettingsWindow(this);
+    generalSettings->show();
+}
 void MainWindow::DisplayMap() {
     try {
         ClientServer client;

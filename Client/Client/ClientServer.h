@@ -31,6 +31,12 @@ public:
 	static bool ControlsClient( const std::string& controlsClient);
 	static bool verificare();
 
+	static void GetGeneralSettings();  
+	static bool SetGeneralSettings(const std::string& settingsJson);
+
+	static void GetInGameSettings();  
+	static bool SetInGameSettings(const std::string& settingsJson);
+
 private:
 
 };

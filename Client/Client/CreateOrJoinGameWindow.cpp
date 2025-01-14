@@ -1,9 +1,11 @@
 #include "CreateOrJoinGameWindow.h"
+
 CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
     : QWidget(parent)
     , titleLabel(new QLabel("Create Game or Join Game", this))
     , generateCodeButton(new QPushButton("Generate Code", this))
     , checkCodeButton(new QPushButton("Check Code", this))
+    , generalSettingsButton(new QPushButton("Settings", this))
     , typeCode(new QLineEdit(this))
 {
     setWindowTitle("Create Game or Join Game");
@@ -26,9 +28,10 @@ CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
         "border: 2px solid black; "
         "border-radius: 5px; "
         "padding: 5px;";
-
     generateCodeButton->setStyleSheet(buttonStyle);
     checkCodeButton->setStyleSheet(buttonStyle);
+    generalSettingsButton->setStyleSheet(buttonStyle);
+
     typeCode->setStyleSheet(
         "font-size: 16px; "
         "color: black; "
@@ -41,11 +44,14 @@ CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
     generateCodeButton->setFixedSize(150, 50);
     typeCode->setFixedSize(200, 40);
     checkCodeButton->setFixedSize(100, 40);
-
+    generalSettingsButton->setFixedSize(80, 30);
    
     typeCode->setPlaceholderText("Type code ...");
 
-    
+    QHBoxLayout* settingsLayout = new QHBoxLayout();
+    settingsLayout->addStretch();
+    settingsLayout->addWidget(generalSettingsButton, 0, Qt::AlignRight);
+
     QHBoxLayout* generateLayout = new QHBoxLayout();
     generateLayout->addStretch();
     generateLayout->addWidget(generateCodeButton);
@@ -59,6 +65,7 @@ CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
     inputLayout->addStretch();
 
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
+    mainLayout->addLayout(settingsLayout);
     mainLayout->addStretch();
     mainLayout->addWidget(titleLabel);
     mainLayout->addLayout(generateLayout);
@@ -77,6 +84,9 @@ CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
     connect(checkCodeButton, &QPushButton::clicked, this, [this]() {
         emit CheckCode();
         this->close();
+        });
+    connect(generalSettingsButton, &QPushButton::clicked, this, [this]() {
+        emit GeneralSettings();
         });
 }
 
