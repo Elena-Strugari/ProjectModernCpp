@@ -205,6 +205,7 @@ void MainWindow::GameWindow(const QString& gameCode)
     GameMapWindow* gameMapWindow = new GameMapWindow();
     gameMapWindow->show();
     connect(gameMapWindow, &GameMapWindow::KeyPressed, this, &MainWindow::HandleKeyPressedOnMap);
+    // de facut rute 
     connect(gameMapWindow, &GameMapWindow::SettingsClicked, this, &MainWindow::HandleInGameSettings);
     DisplayMap(gameCode);
 }

@@ -51,6 +51,10 @@ void http::Routing::Run()
         std::string username = json["username"].s();
         if (db.ClientExists(username)) {
 
+            if (playersActive.find(username) != playersActive.end()) {
+                return crow::response(403, "Player is already active");
+            }
+
             Player player(username, db);
             playersActive.emplace(username, std::move(player));
 
@@ -572,7 +576,11 @@ void http::Routing::Run()
             }
 
             Game& game = games[gameCode];  // Get the game by code
-
+            Map gameMap= game.GetMap();
+            gameMap.DisplayMap();
+            uint16_t width = gameMap.GetWidth();
+            uint16_t height = gameMap.GetHeight();
+            std::cout << width << " " << height;
             // Return the current map state as JSON
             //crow::json::wvalue jsonMap = game.GetMapAsJson();  // Assuming GetMapAsJson() returns the game map in JSON format
             //return crow::response(200, jsonMap);

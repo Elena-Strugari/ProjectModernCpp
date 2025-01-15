@@ -1,6 +1,7 @@
 ﻿#include "CollisionManager.h"
-#include "Map.h"
-#include "PlayerManager.h"
+//#include "Map.h"
+//#include "PlayerManager.h"
+#include "Game.h"
 #include <algorithm>
 #include <memory>
 #include <map>

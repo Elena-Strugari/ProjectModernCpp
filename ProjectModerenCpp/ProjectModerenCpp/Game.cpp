@@ -23,6 +23,11 @@ std::string Game::GenerateGameCode()
 }
 
 void Game::AddPlayer(const std::shared_ptr<Player>& player) {
+
+    if (m_players.size() > 4) {
+        std::cout << "Cannot add more than 4 players." << std::endl;
+        return; // Don't add the player if there are already 4 players
+    }
     player->AddPlayerObject();
     m_playerManager->AddPlayer(player);
     PlacePlayerOnMap(player);
@@ -60,6 +65,11 @@ void Game::PlacePlayerOnMap(const std::shared_ptr<Player>& player) {
     auto& movement = player->GetMovementObject();
     movement.SetPosition(startX, startY);
     m_map.SetCellContent(startX, startY, Map::Tank{});
+}
+
+Map Game::GetMap() const
+{
+    return m_map;
 }
 
 

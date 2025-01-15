@@ -101,6 +101,7 @@ void LoginWindow::OnLoginClicked()
         return;
     }
     emit Login(clientId); 
+    close();
 }
 
 void LoginWindow::OnRegisterClicked()
@@ -114,4 +115,5 @@ void LoginWindow::OnRegisterClicked()
     }
     emit RegisterUser(clientId);
     deleteLater();
+    close();
 }

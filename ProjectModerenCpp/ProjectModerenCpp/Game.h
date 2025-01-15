@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <vector>
+#include <array>
 #include "Map.h"
 #include "PlayerManager.h"
 #include "CollisionManager.h"
@@ -18,7 +19,6 @@ public:
     void UpdateClientsWithNewMap();
 
     void PlacePlayerOnMap(const std::shared_ptr<Player>& player);
-
     void ShootBulletS(const std::shared_ptr<Player>& player);
     void MoveBullets();
 
@@ -28,8 +28,10 @@ public:
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
     }*/
-    std::vector<std::shared_ptr<Player>> m_players; 
 
+    Map GetMap()const;
+    std::vector<std::shared_ptr<Player>> m_players; 
+    //std::array<std::shared_ptr<Player>, 4> m_players;
 
 private:
     Map m_map;
