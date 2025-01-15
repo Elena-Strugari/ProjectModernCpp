@@ -32,6 +32,8 @@ CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
     checkCodeButton->setStyleSheet(buttonStyle);
     generalSettingsButton->setStyleSheet(buttonStyle);
 
+
+
     typeCode->setStyleSheet(
         "font-size: 16px; "
         "color: black; "
@@ -85,11 +87,14 @@ CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
         emit CheckCode(typeCode->text(), m_username);
         this->close();
         });
-    connect(generalSettingsButton, &QPushButton::clicked, this, [this]() {
-        emit GeneralSettings();
-        });
+    connect(generalSettingsButton, &QPushButton::clicked, this, &CreateOrJoinGameWindow::OnSetting);
 }
 
+void CreateOrJoinGameWindow::OnSetting()
+{
+    emit GeneralSettings();
+
+}
 void CreateOrJoinGameWindow::resizeEvent(QResizeEvent* event)
 {
     QImage image(":/StartImage/resources/StartGame.jpg");

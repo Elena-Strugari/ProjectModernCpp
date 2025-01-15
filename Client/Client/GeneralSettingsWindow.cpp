@@ -36,6 +36,7 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
     logoutButton->setStyleSheet(buttonStyle);
     saveButton->setStyleSheet(buttonStyle);
     deleteButton->setStyleSheet(buttonStyle);
+    
 
     // Setăm dimensiuni fixe pentru butoane
     QSize buttonSize(150, 40);
@@ -91,8 +92,9 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
 
 void GeneralSettingsWindow::onSaveSettings()
 {
-    QMessageBox::information(this, "Save Settings", "Settings saved successfully!");
-    emit SaveSettings();
+    qDebug() << "Save settings clicked.";
+    QMessageBox::information(this, "Save", "Save Settings clicked.");
+    emit SaveSettings(musicVolumeSlider->value());
 
 }
 

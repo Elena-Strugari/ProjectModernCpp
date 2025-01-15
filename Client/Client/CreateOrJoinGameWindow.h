@@ -22,7 +22,7 @@ signals:
 protected:
     void resizeEvent(QResizeEvent* event) override;
 private slots:
-   // void OnCheckCode();
+    void OnSetting();
 private:
 
     QLabel* titleLabel;

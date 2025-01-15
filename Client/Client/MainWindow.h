@@ -30,6 +30,14 @@ private slots:
     void DisplayMap(const QString& gameCode);
     void HandleInGameSettings();
     void HandleGeneralSettings();
+    void HandleKeyPressedOnMap(int key);
+
+    void HandleSaveSettings(int volume);
+    void HandleEditControls();
+    void HandleLogOut();
+    void HandleDeleteAccount();
+    void HandleBackToGameSetting();
+    void HandleExitGameSetting();
 
 private:
     Ui::MainWindow* ui;

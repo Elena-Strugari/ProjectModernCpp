@@ -204,9 +204,16 @@ void MainWindow::GameWindow(const QString& gameCode)
 {
     GameMapWindow* gameMapWindow = new GameMapWindow();
     gameMapWindow->show();
+    connect(gameMapWindow, &GameMapWindow::KeyPressed, this, &MainWindow::HandleKeyPressedOnMap);
     connect(gameMapWindow, &GameMapWindow::SettingsClicked, this, &MainWindow::HandleInGameSettings);
     DisplayMap(gameCode);
 }
+
+void MainWindow::HandleKeyPressedOnMap(int key)
+{
+    qDebug() << "Sending key to server:" << key;
+}
+
 
 void MainWindow::DisplayCode(const QString& message)
 {
@@ -248,11 +255,67 @@ void MainWindow::HandleInGameSettings()
     InGameSettingsWindow* settingsWindow = new InGameSettingsWindow(this);
     settingsWindow->positionInTopRight(this);
     settingsWindow->show();
+
+    connect(settingsWindow, &InGameSettingsWindow::backToGame, this, &MainWindow::HandleBackToGameSetting);
+    connect(settingsWindow, &InGameSettingsWindow::exitGame, this, &MainWindow::HandleExitGameSetting);
+    connect(settingsWindow, &InGameSettingsWindow::SaveSettings, this, &MainWindow::HandleSaveSettings);
 }
+
+// Slotul în MainWindow care se ocupă de Back to Game
+void MainWindow::HandleBackToGameSetting() {
+    qDebug() << "Back to game!";
+}
+
+// Alte sloturi similare
+void MainWindow::HandleExitGameSetting() {
+    qDebug() << "Exit game!";
+}
+
+void MainWindow::HandleSaveSettings(int volume)
+{
+
+    qDebug() << "Save settings!";
+    std::string volumeStr = std::to_string(volume);
+
+    // Trimite volumul la server (sau orice alte setări)
+    if (ClientServer::SaveSettings(volumeStr)) {
+        QMessageBox::information(this, "Success", "General settings have been saved to the server!");
+    }
+    else {
+        QMessageBox::warning(this, "Error", "Failed to save general settings to the server.");
+    }
+
+}
+
+void MainWindow::HandleEditControls()
+{
+    qDebug() << "Edit Controls!";
+
+}
+
+void MainWindow::HandleLogOut()
+{
+    qDebug() << "LogOut!";
+
+}
+
+void MainWindow::HandleDeleteAccount()
+{
+    qDebug() << "Delete Account!";
+
+}
+
 void MainWindow::HandleGeneralSettings()
 {
     GeneralSettingsWindow* generalSettings = new GeneralSettingsWindow(this);
     generalSettings->show();
+    //generalSettings->raise();  // Bring it to the front
+    //generalSettings->activateWindow();
+
+    connect(generalSettings, &GeneralSettingsWindow::SaveSettings, this, &MainWindow::HandleSaveSettings);
+    connect(generalSettings, &GeneralSettingsWindow::EditControls, this, &MainWindow::HandleEditControls);
+    connect(generalSettings, &GeneralSettingsWindow::Logout, this, &MainWindow::HandleLogOut);
+    connect(generalSettings, &GeneralSettingsWindow::Delete, this, &MainWindow::HandleDeleteAccount);
 }
 void MainWindow::DisplayMap(const QString& gameCode) {
     try {

@@ -12,7 +12,7 @@ class GeneralSettingsWindow : public QWidget
 public:
     explicit GeneralSettingsWindow(QWidget* parent = nullptr);
 signals:
-    void SaveSettings();
+    void SaveSettings(int volume);
     void EditControls();
     void Logout();
     void Delete();

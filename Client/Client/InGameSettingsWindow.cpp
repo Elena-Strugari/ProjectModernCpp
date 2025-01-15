@@ -11,7 +11,7 @@ InGameSettingsWindow::InGameSettingsWindow(QWidget* parent)
     : QWidget(parent),
     musicVolumeSlider(new QSlider(Qt::Horizontal, this)),
     backToGameButton(new QPushButton("Back to Game", this)),
-    editControlsButton(new QPushButton("Edit Controls", this)),
+    //editControlsButton(new QPushButton("Edit Controls", this)),
     exitGameButton(new QPushButton("Exit Game", this)),
     saveSettingsButton(new QPushButton("Save Settings", this))
 {
@@ -19,7 +19,7 @@ InGameSettingsWindow::InGameSettingsWindow(QWidget* parent)
     resize(300, 200);
 
     setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
-    setStyleSheet("background-color: rgba(0, 0, 0, 155); border-radius: 20px;");
+    setStyleSheet("background-color: rgba(0, 0, 50, 180); border-radius: 20px;");
     //setAttribute(Qt::WA_TranslucentBackground);
     setAutoFillBackground("background_color: rgba(0,0,0,155); border-radius: 20px;");
 
@@ -36,14 +36,14 @@ InGameSettingsWindow::InGameSettingsWindow(QWidget* parent)
         "border-radius: 10px; "
         "padding: 5px;";
     backToGameButton->setStyleSheet(buttonStyle);
-    editControlsButton->setStyleSheet(buttonStyle);
+    //editControlsButton->setStyleSheet(buttonStyle);
     exitGameButton->setStyleSheet(buttonStyle);
     saveSettingsButton->setStyleSheet(buttonStyle);
 
     // Setăm dimensiuni fixe pentru butoane
     QSize buttonSize(150, 40);
     backToGameButton->setFixedSize(buttonSize);
-    editControlsButton->setFixedSize(buttonSize);
+    //editControlsButton->setFixedSize(buttonSize);
     exitGameButton->setFixedSize(buttonSize);
     saveSettingsButton->setFixedSize(buttonSize);
 
@@ -62,8 +62,8 @@ InGameSettingsWindow::InGameSettingsWindow(QWidget* parent)
     buttonLayout->addStretch();
     buttonLayout->addWidget(backToGameButton);
     buttonLayout->addSpacing(50);
-    buttonLayout->addWidget(editControlsButton);
-    buttonLayout->addSpacing(50);
+   // buttonLayout->addWidget(editControlsButton);
+   // buttonLayout->addSpacing(50);
     buttonLayout->addWidget(exitGameButton);
     buttonLayout->addSpacing(50);
     buttonLayout->addWidget(saveSettingsButton);
@@ -87,7 +87,6 @@ InGameSettingsWindow::InGameSettingsWindow(QWidget* parent)
 
     // Conexiuni pentru butoane
     connect(backToGameButton, &QPushButton::clicked, this, &InGameSettingsWindow::onBackToGame);
-    connect(editControlsButton, &QPushButton::clicked, this, &InGameSettingsWindow::onEditControls);
     connect(exitGameButton, &QPushButton::clicked, this, &InGameSettingsWindow::onExitGame);
     connect(saveSettingsButton, &QPushButton::clicked, this, &InGameSettingsWindow::onSaveSettings);
 }
@@ -99,16 +98,10 @@ InGameSettingsWindow::~InGameSettingsWindow()
 void InGameSettingsWindow::onBackToGame()
 {
     qDebug() << "Back to Game clicked.";
-    QMessageBox::information(this, "Back to Game", "Back to Game button clicked.");
     emit backToGame(); // Emiterea semnalului
+    this->close();
 }
 
-void InGameSettingsWindow::onEditControls()
-{
-    qDebug() << "Edit Controls clicked.";
-    QMessageBox::information(this, "Edit Controls", "Edit Controls button clicked.");
-    emit editControls(); // Emiterea semnalului
-}
 
 void InGameSettingsWindow::onExitGame()
 {
@@ -120,7 +113,7 @@ void InGameSettingsWindow::onSaveSettings()
 {
     qDebug() << "Save settings clicked.";
     QMessageBox::information(this, "Save", "Save Settings clicked.");
-    emit SaveSettings(); // Emiterea semnalului
+    emit SaveSettings(musicVolumeSlider->value()); // Emiterea semnalului
 }
 //void InGameSettingsWindow::resizeEvent(QResizeEvent* event)
 //{
@@ -139,8 +132,8 @@ void InGameSettingsWindow::onSaveSettings()
 
 void InGameSettingsWindow::positionInTopRight(QWidget* parent) {
     if (parent) {
-        int x = parent->x() + parent->width() - width() - 20;
-        int y = parent->y() + 20;
+        int x = parent->x() + parent->width() - width() - 300;
+        int y = parent->y() + 50;
         move(x, y);
     }
 }

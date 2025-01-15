@@ -220,6 +220,30 @@ bool ClientServer::ControlsClient(const std::string& controls)
     }
 }
 
+bool ClientServer::SaveSettings(const std::string& volume)
+    {
+        try {
+            // Trimite volumul către server printr-o cerere POST
+            cpr::Response response = cpr::Post(
+                cpr::Url{ std::string(SERVER_URL) + "/save_general_settings" },
+                cpr::Body{ "{\"volume\":\"" + volume + "\"}" },
+                cpr::Header{ {"Content-Type", "application/json"} }
+            );
+
+            if (response.status_code == 200) {
+                std::cout << "Settings saved successfully: " << response.text << std::endl;
+                return true;
+            }
+            else {
+                std::cerr << "Failed to save settings: " << response.text << std::endl;
+                return false;
+            }
+        }
+        catch (const std::exception& ex) {
+            std::cerr << "Error during settings save request: " << ex.what() << std::endl;
+            return false;
+        }
+    }
 
 /*QJsonDocument ClientServer::GetMap() {
      auto response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_map" });

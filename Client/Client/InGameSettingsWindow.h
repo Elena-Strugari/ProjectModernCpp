@@ -16,13 +16,13 @@ public:
 
 signals:
     void backToGame();   // Semnal pentru întoarcerea la joc
-    void editControls(); // Semnal pentru schimbarea controalelor
+    //void editControls(); // Semnal pentru schimbarea controalelor
     void exitGame();     // Semnal pentru ieșirea din joc
-    void SaveSettings();    
+    void SaveSettings(int volume);    
 
 private slots:
     void onBackToGame();   // Slot pentru butonul "Back to Game"
-    void onEditControls(); // Slot pentru butonul "Edit Controls"
+    //void onEditControls(); // Slot pentru butonul "Edit Controls"
     void onExitGame();     // Slot pentru butonul "Exit Game"
     void onSaveSettings();
 private:
@@ -30,7 +30,7 @@ private:
 
     QSlider* musicVolumeSlider;
     QPushButton* backToGameButton;
-    QPushButton* editControlsButton;
+    //QPushButton* editControlsButton;
     QPushButton* exitGameButton;
     QPushButton* saveSettingsButton;
 };

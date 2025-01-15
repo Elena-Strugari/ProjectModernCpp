@@ -15,6 +15,7 @@ public:
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
 private:
     void adjustMapWidgetSize(QResizeEvent* event);
 
@@ -23,6 +24,7 @@ private:
 
 signals:
 void SettingsClicked();
+void KeyPressed(int key);
 
 public slots:
     void onSettingsClicked();

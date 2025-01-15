@@ -33,6 +33,8 @@ public:
 	static void GetGeneralSettings();
 	static bool SetGeneralSettings(const std::string& settingsJson);
 
+	static bool SaveSettings(const std::string& volume);
+
 	static void GetInGameSettings();
 	static bool SetInGameSettings(const std::string& settingsJson);
 

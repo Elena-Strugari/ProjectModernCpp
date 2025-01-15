@@ -31,7 +31,7 @@ GameMapWindow::GameMapWindow(QWidget* parent)
         "padding: 5px;"
     );
     settingsButton->setFixedSize(120, 40);
-
+    settingsButton->setFocusPolicy(Qt::NoFocus);
     // Configurare mapWidget
     mapWidget->setStyleSheet(
         "background-color: rgba(0, 0, 0, 150); "
@@ -87,6 +87,20 @@ void GameMapWindow::adjustMapWidgetSize(QResizeEvent* event)
 
 void GameMapWindow::onSettingsClicked()
 {
-    QMessageBox::information(this, "Settings Clicked", "The Settings button was clicked!");
+    //QMessageBox::information(this, "Settings Clicked", "The Settings button was clicked!");
     emit SettingsClicked();
+}
+
+void GameMapWindow::keyPressEvent(QKeyEvent* event)
+{
+    if (event->isAutoRepeat()) {
+        return;
+    }
+
+    qDebug() << "Key pressed:" << event->key();
+
+    // Emit semnal pentru tasta apăsată
+    emit KeyPressed(event->key());
+
+    QWidget::keyPressEvent(event);
 }
