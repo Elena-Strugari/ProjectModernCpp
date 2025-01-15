@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include "routing.h"
 #include "libs/nlohmann/json.hpp"
-//#include "GameManager.h"
-#include "Game.h"
+#include "GameManager.h"
+//#include "Game.h"
 
 using json = nlohmann::json;
 
@@ -506,8 +506,9 @@ void http::Routing::Run()
             while (games.find(gameCode) != games.end()) {
                 gameCode = Game::GenerateGameCode();
             }
-            games[gameCode] = Game(levelInt, gameCode);
-
+            //games[gameCode] = Game(levelInt, gameCode);
+            games.emplace(gameCode, Game(levelInt, gameCode));
+            //games[gameCode].m_players
             //return crow::response(200, "Game code generated: " + gameCode);
             return crow::response(200,  gameCode);
         }
@@ -535,38 +536,48 @@ void http::Routing::Run()
     //    });
 
 
-    //CROW_ROUTE(m_app, "/join_game").methods("POST"_method)([](const crow::request& req) {
-    //    auto json = crow::json::load(req.body);
-    //    if (!json || !json.has("game_code") || !json.has("username")) {
-    //        return crow::response(400, "Invalid JSON or missing fields");
-    //    }
-    //
-    //    std::string gameCode = json["game_code"].s();
-    //    std::string username = json["username"].s();
-    //
-    //    // Check if the game code exists
-    //    if (games.find(gameCode) == games.end()) {
-    //        return crow::response(404, "Game code not found");
-    //    }
-    //
-    //    Game& game = games[gameCode];
-    //
-    //    // Check if the game has already started
-    //    if (game.gameStarted) {
-    //        return crow::response(403, "Game already started");
-    //    }
-    //
-    //    // Check if the player is already in the game
-    //    if (std::find(game.players.begin(), game.players.end(), username) != game.players.end()) {
-    //        return crow::response(409, "Player already in the game");
-    //    }
-    //
-    //    // Add the player to the game
-    //    game.players.push_back(username);
-    //    std::cout << "Player " << username << " joined the game " << gameCode << std::endl;
-    //
-    //    return crow::response(200, "Player " + username + " joined the game successfully");
-    //    });
+    CROW_ROUTE(m_app, "/join_game").methods("POST"_method)([](const crow::request& req) {
+        auto json = crow::json::load(req.body);
+        if (!json || !json.has("game_code") || !json.has("username")) {
+            return crow::response(400, "Invalid JSON or missing fields");
+        }
+    
+        std::string gameCode = json["game_code"].s();
+        std::string username = json["username"].s();
+    
+        // Check if the game code exists
+        if (games.find(gameCode) == games.end()) {
+            return crow::response(404, "Game code not found");
+        }
+    
+        Game& game = games[gameCode];
+    
+        // Check if the game has already started
+        if (game.IsGameStarted()) {
+            return crow::response(403, "Game already started");
+        }
+    
+        // Check if the player is already in the game
+        bool playerExists = false;
+        for (const auto& player : game.m_players) {
+            if (player->GetName() == username) {
+                playerExists = true;
+                break;
+            }
+        }
+
+        if (playerExists) {
+            return crow::response(409, "Player already in the game");
+        }
+
+        // Add the player to the game
+        std::shared_ptr<Player> newPlayer = std::make_shared<Player>(username, db);
+        game.AddPlayer(newPlayer);
+
+        std::cout << "Player " << username << " joined the game " << gameCode << std::endl;
+
+        return crow::response(200, "Player " + username + " joined the game successfully");
+        });
 
 
 

@@ -82,7 +82,7 @@ CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
         });
 
     connect(checkCodeButton, &QPushButton::clicked, this, [this]() {
-       // emit CheckCode(typeCode->text());
+        emit CheckCode(typeCode->text(), m_username);
         this->close();
         });
     connect(generalSettingsButton, &QPushButton::clicked, this, [this]() {

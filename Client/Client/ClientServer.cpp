@@ -777,6 +777,39 @@ bool ClientServer::JoinGame(const std::string& gameCode, const std::string& user
 }
 
 
+//bool ClientServer::JoinGame(const std::string& gameCode, const std::string& username) {
+//    try {
+//        // Create a JSON object with the game code and username
+//        nlohmann::json jsonBody;
+//        jsonBody["game_code"] = gameCode;
+//        jsonBody["username"] = username;
+//
+//        // Convert the JSON object to a string
+//        std::string jsonString = jsonBody.dump();
+//
+//        // Send a POST request to the server to join the game
+//        cpr::Response response = cpr::Post(
+//            cpr::Url{ std::string(SERVER_URL) + "/join_game" },
+//            cpr::Body{ jsonString },
+//            cpr::Header{ {"Content-Type", "application/json"} }
+//        );
+//
+//        if (response.status_code == 200) {
+//            std::cout << "Successfully joined the game: " << response.text << std::endl;
+//            return true;
+//        }
+//        else {
+//            std::cerr << "Failed to join the game. Server response: " << response.status_code << " " << response.text << std::endl;
+//            return false;
+//        }
+//    }
+//    catch (const std::exception& ex) {
+//        std::cerr << "Exception during joining the game: " << ex.what() << std::endl;
+//        return false;
+//    }
+//}
+
+
 
 std::string ClientServer::GenerateCode(uint8_t level)
 {

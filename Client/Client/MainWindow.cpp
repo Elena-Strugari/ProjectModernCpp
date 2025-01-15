@@ -136,7 +136,7 @@ void MainWindow::CreateJoinWindow()
     createJoinWindow->show();
     connect(createJoinWindow, &CreateOrJoinGameWindow::GeneralSettings, this, &MainWindow::HandleGeneralSettings);
     connect(createJoinWindow, &CreateOrJoinGameWindow::Generate, this, &MainWindow::HandleCreateCode);
-    //connect(createJoinWindow, &CreateOrJoinGameWindow::CheckCode, this, &MainWindow::HandleCheckCode);
+    connect(createJoinWindow, &CreateOrJoinGameWindow::CheckCode, this, &MainWindow::HandleCheckCode);
 }
 
 void MainWindow::HandleCreateCode()
@@ -152,25 +152,15 @@ void MainWindow::HandleCreateCode()
 
 void MainWindow::HandleCheckCode(const QString& gameCode, const QString& username)
 {
-    GameWindow();
-
-    /*if (ClientServer::JoinGame(gameCode.toUtf8().constData(), username.toUtf8().constData())) {
+    if (ClientServer::JoinGame(gameCode.toUtf8().constData(), username.toUtf8().constData())) {
         QMessageBox::information(this, "Success", "Code verified. Loading game map...");
-
-        GameWindow();
+        GameWindow();  // Transition to the game window
     }
     else {
         QMessageBox::warning(this, "Error", "Invalid code. Please try again.");
-    }*/
-    /*if (ClientServer::CheckCode()) {
-        QMessageBox::information(this, "Success", "Code verified. Loading game map...");
-
-        GameWindow();
     }
-    else {
-        QMessageBox::warning(this, "Error", "Invalid code. Please try again.");
-    }*/
 }
+
 void MainWindow::HandleLevel1()
 {
     std::string gameCode = ClientServer::GenerateCode(1);

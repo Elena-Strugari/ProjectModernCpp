@@ -17,12 +17,12 @@ public:
 
 signals:
     void Generate();
-   // void CheckCode(const QString& code);
+    void CheckCode(const QString& code, const QString& username);
     void GeneralSettings();
 protected:
     void resizeEvent(QResizeEvent* event) override;
 private slots:
-    //void OnCheckCode();
+   // void OnCheckCode();
 private:
 
     QLabel* titleLabel;
