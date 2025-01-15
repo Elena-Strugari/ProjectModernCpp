@@ -154,7 +154,7 @@ void MainWindow::HandleCheckCode(const QString& gameCode, const QString& usernam
 {
     if (ClientServer::JoinGame(gameCode.toUtf8().constData(), username.toUtf8().constData())) {
         QMessageBox::information(this, "Success", "Code verified. Loading game map...");
-        GameWindow();  // Transition to the game window
+        GameWindow(gameCode.toUtf8().constData());  // Transition to the game window
     }
     else {
         QMessageBox::warning(this, "Error", "Invalid code. Please try again.");
@@ -169,7 +169,7 @@ void MainWindow::HandleLevel1()
         QMessageBox::information(this, "Error", "Failed to generate code.");
     }
     else {
-        GameWindow();
+        GameWindow(gameCode.c_str());
         DisplayCode(QString(gameCode.c_str()));
     }
 
@@ -183,7 +183,7 @@ void MainWindow::HandleLevel2()
         QMessageBox::information(this, "Error", "Failed to generate code.");
     }
     else {
-        GameWindow();
+        GameWindow(gameCode.c_str());
         DisplayCode(QString(gameCode.c_str()));
     }
 }
@@ -195,17 +195,17 @@ void MainWindow::HandleLevel3()
         QMessageBox::information(this, "Error", "Failed to generate code.");
     }
     else {
-        GameWindow();
+        GameWindow(gameCode.c_str());
         DisplayCode(QString(gameCode.c_str()));
     }
 }
 
-void MainWindow::GameWindow()
+void MainWindow::GameWindow(const QString& gameCode)
 {
     GameMapWindow* gameMapWindow = new GameMapWindow();
     gameMapWindow->show();
     connect(gameMapWindow, &GameMapWindow::SettingsClicked, this, &MainWindow::HandleInGameSettings);
-    DisplayMap();
+    DisplayMap(gameCode);
 }
 
 void MainWindow::DisplayCode(const QString& message)
@@ -254,10 +254,12 @@ void MainWindow::HandleGeneralSettings()
     GeneralSettingsWindow* generalSettings = new GeneralSettingsWindow(this);
     generalSettings->show();
 }
-void MainWindow::DisplayMap() {
+void MainWindow::DisplayMap(const QString& gameCode) {
     try {
         ClientServer client;
-        client.FetchAndProcessMap();
+        //client.FetchAndProcessMap();
+        //ClientServer::GetGameMap(gameCode.toUtf8().constData());
+        client.GetGameMap(gameCode.toUtf8().constData());
     }
     catch (const std::exception& e) {
         QMessageBox::critical(this, "Error", e.what());

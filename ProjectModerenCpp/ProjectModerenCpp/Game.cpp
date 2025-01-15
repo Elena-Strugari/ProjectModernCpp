@@ -1,7 +1,9 @@
 ﻿#include "Game.h"
 #include "CollisionManager.h"
+#include "libs/nlohmann/json.hpp"
 #include <iostream>
 #include <stdexcept>
+using json = nlohmann::json;
 
 Game::Game(uint8_t level, const std::string& code)
     : m_map(level), m_playerManager(std::make_shared<PlayerManager>()),
@@ -75,8 +77,40 @@ void Game::MovePlayer(const std::shared_ptr<Player>& player, MovementObject::Dir
 
         movement.SetPosition(newX, newY);
         movement.SetDirection(direction);
+        UpdateClientsWithNewMap();
     }
 }
+void Game::UpdateClientsWithNewMap() {
+
+    std::cout << "mapUpdate";
+    //for (auto& client : m_players) {
+    //    // Send the updated map to each client
+    //    client->SendUpdatedMap(m_map.GetMapAsJson());
+    //}
+}
+
+//nlohmann::json Game::GetMapAsJson() {
+//    nlohmann::json jsonMap;
+//
+//    // Serialize the map to JSON
+//    jsonMap["width"] = m_map.GetWidth();
+//    jsonMap["height"] = m_map.GetHeight();
+//
+//    // For simplicity, assuming m_map.GetMap() returns a 2D vector or array of cells
+//    std::vector<std::vector<int>> mapData;
+//
+//    for (int i = 0; i < m_map.GetHeight(); ++i) {
+//        std::vector<int> rowData;
+//        for (int j = 0; j < m_map.GetWidth(); ++j) {
+//            // Serialize each cell in the map. For example, 0 for empty, 1 for walls, etc.
+//            rowData.push_back(m_map.GetCell(i, j).GetType());
+//        }
+//        mapData.push_back(rowData);
+//    }
+//
+//    jsonMap["cells"] = mapData;
+//    return jsonMap;
+//}
 
 void Game::ShootBulletS(const std::shared_ptr<Player>& player) {
     auto& movement = player->GetMovementObject();

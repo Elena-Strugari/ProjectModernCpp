@@ -159,6 +159,43 @@ bool ClientServer::RegisterClient(const std::string& username) {
     }
 }
 
+bool ClientServer::GetGameMap(const std::string& gameCode)
+{
+    try {
+                // Send GET request to the server to get the map for the game
+                cpr::Response response = cpr::Get(
+                    cpr::Url{ std::string(SERVER_URL) + "/get_map" },
+                    cpr::Parameters{ {"game_code", gameCode} }  // Pass the game code as a query parameter
+                );
+        
+                if (response.status_code == 200) {
+                    QMessageBox::information(nullptr, "Success", "Game map fetched successfully!");
+                
+                    // Parse the JSON response
+                    
+                   // nlohmann::json jsonResponse = nlohmann::json::parse(response.text);
+        
+                    // Now handle the received map (e.g., update your UI)
+                    // For example, just printing the map as a JSON string:
+                    //std::cout << "Game Map JSON: " << jsonResponse.dump(4) << std::endl;
+        
+                    // Handle the game map (e.g., update the client display here)
+                    // This could involve updating the user interface with the new map state
+                    //UpdateGameMap(jsonResponse);
+        
+                    return true;
+                }
+                else {
+                    std::cerr << "Error fetching game map. Server response: " << response.status_code << " " << response.text << std::endl;
+                    return false;
+                }
+            }
+            catch (const std::exception& ex) {
+                std::cerr << "Exception during fetching game map: " << ex.what() << std::endl;
+                return false;
+            }
+}
+
 bool ClientServer::ControlsClient(const std::string& controls)
 {
     try {
@@ -677,72 +714,86 @@ bool ClientServer::ControlsClient(const std::string& controls)
 //        std::cerr << "Exception: " << ex.what() << std::endl;
 //    }
 //}
-void ClientServer::FetchAndProcessMap()
-{
-    qDebug() << "Am intrat in metoda FetchAndProcessMap.";
-    try {
-        // Trimite cererea GET către server pentru a obține harta
-        cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:8080/get_map" });
-
-        if (response.status_code == 200) {
-            // Parsează răspunsul JSON folosind biblioteca nlohmann::json
-            json mapData = json::parse(response.text);
-
-            // Afișează dimensiunile hărții
-            int width = mapData["width"];
-            int height = mapData["height"];
-            std::cout << "Map Dimensions: " << width << " x " << height << std::endl;
-            qDebug() << "Dimensiunile hartii sunt " << width << " x " << height;
-
-            // Afișează harta în formatul unui tablou
-            json mapArray = mapData["map"];
-
-            // Convertește `mapArray` din json la `QJsonArray` pentru a-l folosi în Qt
-            QJsonArray qMapArray;
-            for (const auto& row : mapArray) {
-                QJsonArray qRow;
-                for (const auto& cell : row) {
-                    qRow.append(QJsonValue(static_cast<int>(cell)));  // Adaugă celula ca QJsonValue
-                }
-                qMapArray.append(qRow);
-            }
-
-            // Emit semnalul cu harta procesată
-            //emit mapDataReady(qMapArray);
-        }
-        else {
-            std::cout << "Failed to fetch map: " << response.status_code << std::endl;
-        }
-    }
-    catch (const std::exception& ex) {
-        std::cerr << "Exception: " << ex.what() << std::endl;
-    }
-}
-
-
-//bool ClientServer::CheckCode()
+//void ClientServer::FetchAndProcessMap()
 //{
+//    qDebug() << "Am intrat in metoda FetchAndProcessMap.";
 //    try {
-//        auto response = cpr::Post(
-//            cpr::Url{ std::string(SERVER_URL) + "/check_code" }//,
-//            /*cpr::Body{ "{\"username\":\"" + username + "\"}" },
-//            cpr::Header{ {"Content-Type", "application/json"} }*/
-//        );
-
+//        // Trimite cererea GET către server pentru a obține harta
+//        cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:8080/get_map" });
+//
 //        if (response.status_code == 200) {
-//            std::cout << "Login successful: " << response.text << std::endl;
+//            // Parsează răspunsul JSON folosind biblioteca nlohmann::json
+//            json mapData = json::parse(response.text);
+//
+//            // Afișează dimensiunile hărții
+//            int width = mapData["width"];
+//            int height = mapData["height"];
+//            std::cout << "Map Dimensions: " << width << " x " << height << std::endl;
+//            qDebug() << "Dimensiunile hartii sunt " << width << " x " << height;
+//
+//            // Afișează harta în formatul unui tablou
+//            json mapArray = mapData["map"];
+//
+//            // Convertește `mapArray` din json la `QJsonArray` pentru a-l folosi în Qt
+//            QJsonArray qMapArray;
+//            for (const auto& row : mapArray) {
+//                QJsonArray qRow;
+//                for (const auto& cell : row) {
+//                    qRow.append(QJsonValue(static_cast<int>(cell)));  // Adaugă celula ca QJsonValue
+//                }
+//                qMapArray.append(qRow);
+//            }
+//
+//            // Emit semnalul cu harta procesată
+//            //emit mapDataReady(qMapArray);
+//        }
+//        else {
+//            std::cout << "Failed to fetch map: " << response.status_code << std::endl;
+//        }
+//    }
+//    catch (const std::exception& ex) {
+//        std::cerr << "Exception: " << ex.what() << std::endl;
+//    }
+//}
+
+//bool GetGameMap(const std::string& gameCode) {
+//    try {
+//        // Send GET request to the server to get the map for the game
+//        cpr::Response response = cpr::Get(
+//            cpr::Url{ std::string(SERVER_URL) + "/get_map" },
+//            cpr::Parameters{ {"game_code", gameCode} }  // Pass the game code as a query parameter
+//        );
+//
+//        if (response.status_code == 200) {
+//            QMessageBox::information(nullptr, "Success", "Game map fetched successfully!");
+//        
+//            // Parse the JSON response
+//            
+//           // nlohmann::json jsonResponse = nlohmann::json::parse(response.text);
+//
+//            // Now handle the received map (e.g., update your UI)
+//            // For example, just printing the map as a JSON string:
+//            //std::cout << "Game Map JSON: " << jsonResponse.dump(4) << std::endl;
+//
+//            // Handle the game map (e.g., update the client display here)
+//            // This could involve updating the user interface with the new map state
+//            //UpdateGameMap(jsonResponse);
+//
 //            return true;
 //        }
 //        else {
-//            std::cerr << "Login failed: " << response.text << " (Code: " << response.status_code << ")" << std::endl;
+//            std::cerr << "Error fetching game map. Server response: " << response.status_code << " " << response.text << std::endl;
 //            return false;
 //        }
 //    }
 //    catch (const std::exception& ex) {
-//        std::cerr << "Exception during login: " << ex.what() << std::endl;
+//        std::cerr << "Exception during fetching game map: " << ex.what() << std::endl;
 //        return false;
 //    }
 //}
+
+
+
 bool ClientServer::JoinGame(const std::string& gameCode, const std::string& username)
 {
     try {
@@ -776,38 +827,6 @@ bool ClientServer::JoinGame(const std::string& gameCode, const std::string& user
     }
 }
 
-
-//bool ClientServer::JoinGame(const std::string& gameCode, const std::string& username) {
-//    try {
-//        // Create a JSON object with the game code and username
-//        nlohmann::json jsonBody;
-//        jsonBody["game_code"] = gameCode;
-//        jsonBody["username"] = username;
-//
-//        // Convert the JSON object to a string
-//        std::string jsonString = jsonBody.dump();
-//
-//        // Send a POST request to the server to join the game
-//        cpr::Response response = cpr::Post(
-//            cpr::Url{ std::string(SERVER_URL) + "/join_game" },
-//            cpr::Body{ jsonString },
-//            cpr::Header{ {"Content-Type", "application/json"} }
-//        );
-//
-//        if (response.status_code == 200) {
-//            std::cout << "Successfully joined the game: " << response.text << std::endl;
-//            return true;
-//        }
-//        else {
-//            std::cerr << "Failed to join the game. Server response: " << response.status_code << " " << response.text << std::endl;
-//            return false;
-//        }
-//    }
-//    catch (const std::exception& ex) {
-//        std::cerr << "Exception during joining the game: " << ex.what() << std::endl;
-//        return false;
-//    }
-//}
 
 
 

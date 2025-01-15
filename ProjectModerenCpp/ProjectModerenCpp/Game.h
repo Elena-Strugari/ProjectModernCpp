@@ -15,6 +15,8 @@ public:
     void Start();
     bool IsGameStarted() const { return m_gameStarted; }
     void MovePlayer(const std::shared_ptr<Player>& player, MovementObject::Direction direction);
+    void UpdateClientsWithNewMap();
+
     void PlacePlayerOnMap(const std::shared_ptr<Player>& player);
 
     void ShootBulletS(const std::shared_ptr<Player>& player);

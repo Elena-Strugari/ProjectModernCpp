@@ -27,7 +27,7 @@ private slots:
     void HandleLevel1();
     void HandleLevel2();
     void HandleLevel3();
-    void DisplayMap();
+    void DisplayMap(const QString& gameCode);
     void HandleInGameSettings();
     void HandleGeneralSettings();
 
@@ -38,7 +38,7 @@ private:
     void StartGameWindoww();
     void LogUserWindow();
     void CreateJoinWindow();
-    void GameWindow();
+    void GameWindow(const QString& gameCode);
     void DisplayCode(const QString& message);
 
 };

@@ -24,7 +24,8 @@ public:
 	//static bool CheckCode();
 
 	static void ProcessMap(const QJsonDocument& jsonDoc);
-	void FetchAndProcessMap();
+	//void FetchAndProcessMap();
+	static bool GetGameMap(const std::string& gameCode);
 
 	static bool ControlsClient(const std::string& controlsClient);
 	static bool verificare();
