@@ -25,8 +25,9 @@ public:
 	static std::string GenerateCode(uint8_t level);
 	//static bool CheckCode();
 
-	static void ProcessMap(const QJsonDocument& jsonDoc);
-	void FetchAndProcessMap();
+	//static void ProcessMap(const QJsonDocument& jsonDoc);
+	//void FetchAndProcessMap();
+	void FetchAndProcessMap(const std::string& gameCode);
 	//static bool GetGameMap(const std::string& gameCode);
 
 	static bool ControlsClient(const std::string& controlsClient);

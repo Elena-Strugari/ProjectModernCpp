@@ -1,16 +1,10 @@
 ﻿#include "Player.h"
 #include <iostream>
 
-//Player::Player(const std::string& name, Database& db, GameObject&& object)
-//    : m_name(name), m_score(0), m_lives(3), m_database(db), m_object(std::move(object)), m_moveObject(m_object) {
-//    if (!m_database.ClientExists(m_name)) {
-//        m_database.AddClient(m_name, m_score);
-//    }
-//    else {
-//        m_score = m_database.GetScore(m_name);
-//    }
-//}
-//Player::Player() : m_name(""), m_score(0), m_lives(3), m_database() {}
+Player::Player():m_name("default_name"), m_score(0), m_lives(3), m_database(m_database)
+{
+}
+
 Player::Player(const std::string& name, Database& db)
     : m_name(name), m_score(0), m_lives(3), m_database(db) {
     if (m_database.ClientExists(m_name)) {

@@ -202,36 +202,24 @@ void MainWindow::HandleLevel3()
 
 void MainWindow::GameWindow(const QString& gameCode)
 {
-    //GameMapWindow* gameMapWindow = new GameMapWindow();
-    //gameMapWindow->show();
-    //connect(gameMapWindow, &GameMapWindow::KeyPressed, this, &MainWindow::HandleKeyPressedOnMap);
-    //// de facut rute 
-    //connect(gameMapWindow, &GameMapWindow::SettingsClicked, this, &MainWindow::HandleInGameSettings);
-    //DisplayMap(gameCode);
-
-        qDebug() << "Am intrat în GameWindow().";
-
-        // Creează o instanță de GameMapWindow
+    
         GameMapWindow* gameMapWindow = new GameMapWindow();
         gameMapWindow->show();
 
-        // Conectează semnalul pentru settingsClicked
+        connect(gameMapWindow, &GameMapWindow::KeyPressed, this, &MainWindow::HandleKeyPressedOnMap);
         connect(gameMapWindow, &GameMapWindow::SettingsClicked, this, &MainWindow::HandleInGameSettings);
 
-        // Creează o instanță de ClientServer (sau folosește una existentă)
         ClientServer client;
-        client.FetchAndProcessMap();
+        client.FetchAndProcessMap(gameCode.toUtf8().constData());
+
         try {
-            // Obține harta de la server folosind metoda getMap
             QJsonArray mapData = client.GetMap();
 
-            // Debug pentru a verifica datele
             qDebug() << "Conținutul mapData obținut de la server:";
             for (const auto& row : mapData) {
                 qDebug() << row;
             }
 
-            // Transmite datele către GameMapWindow pentru afișare
             gameMapWindow->displayMap(mapData);
         }
         catch (const std::exception& e) {
@@ -259,34 +247,6 @@ void MainWindow::DisplayCode(const QString& message)
     displayCode->show();
 }
 
-// 
-//void MainWindow::DisplayMap() {
-//    try {
-//        //QJsonDocument response = ClientServer::GetMap();
-//        ClientServer::FetchAndProcessMap();
-//       /* if (response.isNull()) {
-//            throw std::runtime_error("Empty response from server");
-//        }
-//
-//        QJsonObject mapObject = response.object();
-//        int width = mapObject["width"].toInt();
-//        int height = mapObject["height"].toInt();
-//        QJsonArray cells = mapObject["cells"].toArray();
-//
-//        for (int y = 0; y < height; ++y) {
-//            QJsonArray row = cells[y].toArray();
-//            for (int x = 0; x < width; ++x) {
-//                QJsonObject cell = row[x].toObject();
-//                QString type = cell["type"].toString();
-//
-//                qDebug() << "Cell (" << x << "," << y << "):" << type;
-//            }
-//        }*/
-//    }
-//    catch (const std::exception& e) {
-//        QMessageBox::critical(this, "Error", e.what());
-//    }
-//}
 void MainWindow::HandleInGameSettings()
 {
     InGameSettingsWindow* settingsWindow = new InGameSettingsWindow(this);
@@ -354,27 +314,3 @@ void MainWindow::HandleGeneralSettings()
     connect(generalSettings, &GeneralSettingsWindow::Logout, this, &MainWindow::HandleLogOut);
     connect(generalSettings, &GeneralSettingsWindow::Delete, this, &MainWindow::HandleDeleteAccount);
 }
-
-//void MainWindow::HandleKeyPressedOnMap(int key)
-//{
-//    if (ClientServer::SendKeyPress(key))
-//    {
-//        qDebug() << "Key press successfully sent to server.";
-//    }
-//    else {
-//        qDebug() << "Failed to send key press to server.";
-//    }
-//}
-//void MainWindow::DisplayMap(const QString& gameCode) {
-//    try {
-//        ClientServer client;
-//        //client.FetchAndProcessMap();
-//        //ClientServer::GetGameMap(gameCode.toUtf8().constData());
-//        client.GetGameMap(gameCode.toUtf8().constData());
-//    }
-//    catch (const std::exception& e) {
-//        QMessageBox::critical(this, "Error", e.what());
-//    }
-//}
-
-

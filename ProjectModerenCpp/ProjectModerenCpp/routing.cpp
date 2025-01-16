@@ -194,37 +194,19 @@ void http::Routing::Run()
         });
 
 
-
-    //CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([](const crow::request& req) {
-    //    try {
-    //        std::string gameCode = req.url_params.get("game_code");  // Get the game code from the request
-
-    //        if (games.find(gameCode) == games.end()) {
-    //            return crow::response(404, "Game code not found");
-    //        }
-
-    //        Game& game = games[gameCode];  // Get the game by code
-    //        Map gameMap= game.GetMap();
-    //        gameMap.DisplayMap();
-    //        uint16_t width = gameMap.GetWidth();
-    //        uint16_t height = gameMap.GetHeight();
-    //        std::cout << width << " " << height;
-    //        // Return the current map state as JSON
-    //        //crow::json::wvalue jsonMap = game.GetMapAsJson();  // Assuming GetMapAsJson() returns the game map in JSON format
-    //        //return crow::response(200, jsonMap);
-    //        return crow::response(200);
-    //    }
-    //    catch (const std::exception& e) {
-    //        return crow::response(500, "Error fetching map: " + std::string(e.what()));
-    //    }
-    //    });
-
-
-    CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([]() {
+    CROW_ROUTE(m_app, "/get_map").methods("GET"_method)([](const crow::request& req) {
         try {
-            Map gameMap(1); // Create an instance of Map
 
-            crow::json::wvalue json; // Create the root JSON object
+            std::string gameCode = req.url_params.get("game_code"); 
+
+            if (games.find(gameCode) == games.end()) {
+                return crow::response(404, "Game code not found");
+            }
+
+            Game& game = games[gameCode];  
+            Map gameMap= game.GetMap();
+            //gameMap.DisplayMap();  
+            crow::json::wvalue json;
             json["width"] = gameMap.GetWidth();
             json["height"] = gameMap.GetHeight();
 
@@ -247,8 +229,6 @@ void http::Routing::Run()
             // Log the serialized JSON for debugging
             std::cout << "Serialized JSON Response: " << serializedJson << std::endl;
 
-            // Return the serialized JSON
-            //return crow::response(200, serializedJson);
             return crow::response(200, serializedJson);//.add_header("Content-Type", "application/json; charset=utf-8");
 
         }
@@ -256,11 +236,39 @@ void http::Routing::Run()
             return crow::response(500, "Server error: " + std::string(e.what()));
         }
         });
-    
-
 
             
+    CROW_ROUTE(m_app, "/key_press").methods("POST"_method)([](const crow::request& req) {
+        try {
+            // Parse the JSON payload
+            auto json = crow::json::load(req.body);
+            if (!json.has("username") || !json.has("key_code")) {
+                return crow::response(400, "Missing 'username' or 'key_code' field");
+            }
 
+            // Extract fields from the JSON
+            std::string username = json["username"].s();
+            int keyCode = json["key_code"].i();
+
+            // Check if the user is active
+            if (playersActive.find(username) == playersActive.end()) {
+                return crow::response(404, "Player not found or not active");
+            }
+
+            // Handle the key press event (example: move tank or perform action)
+            auto& player = playersActive[username];
+
+            std::cout << "Key press received for player: " << username
+                << " with key code: " << keyCode << std::endl;
+
+            // Return a success response
+            return crow::response(200, "Key press processed successfully");
+        }
+        catch (const std::exception& ex) {
+            // Handle errors and return an appropriate response
+            return crow::response(500, "Server error: " + std::string(ex.what()));
+        }
+        });
 
 
 

@@ -7,6 +7,7 @@
 class Player {
 public:
    
+    Player();
     Player(const std::string& name, Database& db);
     Player(Player&& other) noexcept;         // Move constructor
     Player(const Player& other);             // Copy constructor
