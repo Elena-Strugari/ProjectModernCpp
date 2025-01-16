@@ -7,7 +7,9 @@
 #include "Tank.h"
 #include "Map.h"
 #include "PlayerManager.h"
-#include "Wall.h"
+//#include "Wall.h"
+import Wall;
+//import Tank;
 
 class CollisionManager {
     std::shared_ptr<Map> m_map;

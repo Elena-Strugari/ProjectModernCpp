@@ -172,6 +172,7 @@
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="UserManager.cpp" />
     <ClCompile Include="Wall.cpp" />
+    <ClCompile Include="Wall.cppm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

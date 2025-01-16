@@ -5,8 +5,8 @@
 #include <variant>
 #include <tuple>
 #include <stdexcept>
-#include "Wall.h"
-
+//#include "Wall.h"
+import Wall;
 
 class Map {
 public:
