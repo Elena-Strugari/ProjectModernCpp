@@ -97,6 +97,9 @@
     <ClCompile Include="DisplayCodeWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MapWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientServer.h">
@@ -156,6 +159,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="DisplayCodeWindow.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="MapWidget.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

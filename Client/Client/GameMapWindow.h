@@ -4,14 +4,16 @@
 #include <QWidget>
 #include <QPushButton>
 #include <QLabel>
+#include <QJsonArray>
 #include "BackgroundHelper.h"
+#include "MapWidget.h"
 class GameMapWindow : public QWidget
 {
     Q_OBJECT
 
 public:
     explicit GameMapWindow(QWidget* parent = nullptr);
-    ~GameMapWindow();
+    ~GameMapWindow() override;
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
@@ -28,11 +30,13 @@ void KeyPressed(int key);
 
 public slots:
     void onSettingsClicked();
-
+    void displayMap(const QJsonArray& mapData); 
 private:
-    QWidget* mapWidget;
+   // QWidget* mapWidget;
     QPushButton* settingsButton;
     QLabel* titleLabel;
+    MapWidget* mapWidget;     // Widget-ul pentru desenarea hărții
+    QJsonArray mapData;
 };
 
 #endif // GAMEMAPWINDOW_H

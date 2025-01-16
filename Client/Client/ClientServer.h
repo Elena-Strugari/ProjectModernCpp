@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <QtWidgets/QMainWindow>
+#include <QJsonArray>
 #include <cpr/cpr.h>
 
 
@@ -17,15 +18,16 @@ public:
 	static bool RegisterClient(const std::string& clientId);
 
 
-	static QJsonDocument GetMap();
+	//static QJsonDocument GetMap();
+	QJsonArray GetMap();
 	static bool JoinGame(const std::string& gameCode, const std::string& username);
 
 	static std::string GenerateCode(uint8_t level);
 	//static bool CheckCode();
 
 	static void ProcessMap(const QJsonDocument& jsonDoc);
-	//void FetchAndProcessMap();
-	static bool GetGameMap(const std::string& gameCode);
+	void FetchAndProcessMap();
+	//static bool GetGameMap(const std::string& gameCode);
 
 	static bool ControlsClient(const std::string& controlsClient);
 	static bool verificare();
@@ -39,6 +41,7 @@ public:
 	static bool SetInGameSettings(const std::string& settingsJson);
 
 private:
+	QJsonArray mapData;
 
 };
 

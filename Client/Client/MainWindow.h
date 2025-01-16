@@ -27,7 +27,7 @@ private slots:
     void HandleLevel1();
     void HandleLevel2();
     void HandleLevel3();
-    void DisplayMap(const QString& gameCode);
+    //void DisplayMap(const QString& gameCode);
     void HandleInGameSettings();
     void HandleGeneralSettings();
     void HandleKeyPressedOnMap(int key);

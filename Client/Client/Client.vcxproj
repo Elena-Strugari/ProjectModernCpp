@@ -128,6 +128,7 @@
     <ClCompile Include="LevelSelectionWindow.cpp" />
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="MapCell.cpp" />
+    <ClCompile Include="MapWidget.cpp" />
     <ClCompile Include="NoGreenScreen.cpp" />
     <ClCompile Include="DisplayElements.cpp" />
     <ClCompile Include="StartGameWindow.cpp" />
@@ -165,6 +166,7 @@
     <QtMoc Include="InGameSettingsWindow.h" />
     <QtMoc Include="GameOverWindow.h" />
     <ClInclude Include="MapCell.h" />
+    <QtMoc Include="MapWidget.h" />
     <ClInclude Include="NoGreenScreen.h" />
     <ClInclude Include="DisplayElements.h" />
     <QtMoc Include="StartGameWindow.h" />

@@ -159,41 +159,81 @@ bool ClientServer::RegisterClient(const std::string& username) {
     }
 }
 
-bool ClientServer::GetGameMap(const std::string& gameCode)
-{
+//bool ClientServer::GetGameMap(const std::string& gameCode)
+//{
+//    try {
+//                // Send GET request to the server to get the map for the game
+//                cpr::Response response = cpr::Get(
+//                    cpr::Url{ std::string(SERVER_URL) + "/get_map" },
+//                    cpr::Parameters{ {"game_code", gameCode} }  // Pass the game code as a query parameter
+//                );
+//        
+//                if (response.status_code == 200) {
+//                    QMessageBox::information(nullptr, "Success", "Game map fetched successfully!");
+//                
+//                    // Parse the JSON response
+//                    
+//                   // nlohmann::json jsonResponse = nlohmann::json::parse(response.text);
+//        
+//                    // Now handle the received map (e.g., update your UI)
+//                    // For example, just printing the map as a JSON string:
+//                    //std::cout << "Game Map JSON: " << jsonResponse.dump(4) << std::endl;
+//        
+//                    // Handle the game map (e.g., update the client display here)
+//                    // This could involve updating the user interface with the new map state
+//                    //UpdateGameMap(jsonResponse);
+//        
+//                    return true;
+//                }
+//                else {
+//                    std::cerr << "Error fetching game map. Server response: " << response.status_code << " " << response.text << std::endl;
+//                    return false;
+//                }
+//            }
+//            catch (const std::exception& ex) {
+//                std::cerr << "Exception during fetching game map: " << ex.what() << std::endl;
+//                return false;
+//            }
+//}
+
+void ClientServer::FetchAndProcessMap() {
     try {
-                // Send GET request to the server to get the map for the game
-                cpr::Response response = cpr::Get(
-                    cpr::Url{ std::string(SERVER_URL) + "/get_map" },
-                    cpr::Parameters{ {"game_code", gameCode} }  // Pass the game code as a query parameter
-                );
-        
-                if (response.status_code == 200) {
-                    QMessageBox::information(nullptr, "Success", "Game map fetched successfully!");
-                
-                    // Parse the JSON response
-                    
-                   // nlohmann::json jsonResponse = nlohmann::json::parse(response.text);
-        
-                    // Now handle the received map (e.g., update your UI)
-                    // For example, just printing the map as a JSON string:
-                    //std::cout << "Game Map JSON: " << jsonResponse.dump(4) << std::endl;
-        
-                    // Handle the game map (e.g., update the client display here)
-                    // This could involve updating the user interface with the new map state
-                    //UpdateGameMap(jsonResponse);
-        
-                    return true;
+        // Cerere GET la server
+        cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:8080/get_map" });
+
+        if (response.status_code == 200) {
+            // Parsează răspunsul serverului folosind nlohmann::json
+            json mapData = json::parse(response.text);
+
+            // Convertește JSON-ul primit în QJsonArray
+            QJsonArray qMapArray;
+
+            for (const auto& row : mapData["map"]) {
+                QJsonArray qRow;
+                for (const auto& cell : row) {
+                    qRow.append(static_cast<int>(cell)); // Transformă valorile în int
                 }
-                else {
-                    std::cerr << "Error fetching game map. Server response: " << response.status_code << " " << response.text << std::endl;
-                    return false;
-                }
+                qMapArray.append(qRow);
             }
-            catch (const std::exception& ex) {
-                std::cerr << "Exception during fetching game map: " << ex.what() << std::endl;
-                return false;
-            }
+
+            this->mapData = qMapArray;
+        }
+        else {
+            qDebug() << "Eroare la fetch map: Cod status =" << response.status_code;
+        }
+    }
+    catch (const std::exception& ex) {
+        qDebug() << "Excepție: " << ex.what();
+    }
+}
+
+QJsonArray ClientServer::GetMap()
+{
+    qDebug() << "Continutul mapData în getMap():";
+    for (const auto& row : mapData) {
+        qDebug() << row;
+    }
+    return mapData;
 }
 
 bool ClientServer::ControlsClient(const std::string& controls)

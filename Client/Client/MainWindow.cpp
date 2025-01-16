@@ -202,12 +202,42 @@ void MainWindow::HandleLevel3()
 
 void MainWindow::GameWindow(const QString& gameCode)
 {
-    GameMapWindow* gameMapWindow = new GameMapWindow();
-    gameMapWindow->show();
-    connect(gameMapWindow, &GameMapWindow::KeyPressed, this, &MainWindow::HandleKeyPressedOnMap);
-    // de facut rute 
-    connect(gameMapWindow, &GameMapWindow::SettingsClicked, this, &MainWindow::HandleInGameSettings);
-    DisplayMap(gameCode);
+    //GameMapWindow* gameMapWindow = new GameMapWindow();
+    //gameMapWindow->show();
+    //connect(gameMapWindow, &GameMapWindow::KeyPressed, this, &MainWindow::HandleKeyPressedOnMap);
+    //// de facut rute 
+    //connect(gameMapWindow, &GameMapWindow::SettingsClicked, this, &MainWindow::HandleInGameSettings);
+    //DisplayMap(gameCode);
+
+        qDebug() << "Am intrat în GameWindow().";
+
+        // Creează o instanță de GameMapWindow
+        GameMapWindow* gameMapWindow = new GameMapWindow();
+        gameMapWindow->show();
+
+        // Conectează semnalul pentru settingsClicked
+        connect(gameMapWindow, &GameMapWindow::SettingsClicked, this, &MainWindow::HandleInGameSettings);
+
+        // Creează o instanță de ClientServer (sau folosește una existentă)
+        ClientServer client;
+        client.FetchAndProcessMap();
+        try {
+            // Obține harta de la server folosind metoda getMap
+            QJsonArray mapData = client.GetMap();
+
+            // Debug pentru a verifica datele
+            qDebug() << "Conținutul mapData obținut de la server:";
+            for (const auto& row : mapData) {
+                qDebug() << row;
+            }
+
+            // Transmite datele către GameMapWindow pentru afișare
+            gameMapWindow->displayMap(mapData);
+        }
+        catch (const std::exception& e) {
+            // În caz de eroare, afișează un mesaj de eroare
+            QMessageBox::critical(this, "Error", e.what());
+        }
 }
 
 void MainWindow::HandleKeyPressedOnMap(int key)
@@ -318,16 +348,16 @@ void MainWindow::HandleGeneralSettings()
     connect(generalSettings, &GeneralSettingsWindow::Logout, this, &MainWindow::HandleLogOut);
     connect(generalSettings, &GeneralSettingsWindow::Delete, this, &MainWindow::HandleDeleteAccount);
 }
-void MainWindow::DisplayMap(const QString& gameCode) {
-    try {
-        ClientServer client;
-        //client.FetchAndProcessMap();
-        //ClientServer::GetGameMap(gameCode.toUtf8().constData());
-        client.GetGameMap(gameCode.toUtf8().constData());
-    }
-    catch (const std::exception& e) {
-        QMessageBox::critical(this, "Error", e.what());
-    }
-}
+//void MainWindow::DisplayMap(const QString& gameCode) {
+//    try {
+//        ClientServer client;
+//        //client.FetchAndProcessMap();
+//        //ClientServer::GetGameMap(gameCode.toUtf8().constData());
+//        client.GetGameMap(gameCode.toUtf8().constData());
+//    }
+//    catch (const std::exception& e) {
+//        QMessageBox::critical(this, "Error", e.what());
+//    }
+//}
 
 

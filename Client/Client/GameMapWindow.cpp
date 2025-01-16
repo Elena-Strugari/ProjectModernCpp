@@ -7,7 +7,7 @@
 
 GameMapWindow::GameMapWindow(QWidget* parent)
     : QWidget(parent),
-    mapWidget(new QWidget(this)),
+    mapWidget(new MapWidget(this)),
     settingsButton(new QPushButton("Settings", this)),
     titleLabel(new QLabel("Game Map", this))
 {
@@ -46,10 +46,10 @@ GameMapWindow::GameMapWindow(QWidget* parent)
 
     // Layout principal
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
-    mainLayout->addLayout(topLayout);
-    mainLayout->addStretch();
-    mainLayout->addWidget(mapWidget, 0, Qt::AlignCenter);
-    mainLayout->addStretch();
+    mainLayout->addLayout(topLayout); // Adaugă rândul de sus
+    mainLayout->addWidget(mapWidget, 2, Qt::AlignCenter); // Centralizează mapWidget
+    //mainLayout->addWidget(mapWidget);
+    mainLayout->setContentsMargins(10, 10, 10, 10); // Margini opționale pentru estetică
 
     setLayout(mainLayout);
 
@@ -61,15 +61,15 @@ GameMapWindow::~GameMapWindow() = default;
 
 void GameMapWindow::resizeEvent(QResizeEvent* event)
 {
-    // Ajustează fundalul
-    QImage image(":/StartImage/resources/StartGame.jpg");
+    //// Ajustează fundalul
+    //QImage image(":/StartImage/resources/StartGame.jpg");
 
-    if (!image.isNull())
-    {
-        QPalette palette;
-        palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
-        setPalette(palette);
-    }
+    //if (!image.isNull())
+    //{
+    //    QPalette palette;
+    //    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
+    //    setPalette(palette);
+    //}
 
     // Ajustează dimensiunea widget-ului map
     adjustMapWidgetSize(event);
@@ -77,12 +77,26 @@ void GameMapWindow::resizeEvent(QResizeEvent* event)
     QWidget::resizeEvent(event);
 }
 
+void GameMapWindow::displayMap(const QJsonArray& mapData)
+{
+    if (mapData.isEmpty() || !mapWidget) {
+        qDebug() << "Eroare: mapData este gol sau mapWidget nu este inițializat!";
+        return;
+    }
+
+    mapWidget->setMapData(mapData); // Transmite datele către mapWidget
+    mapWidget->update(); // Reîmprospătează widget-ul
+}
+
 void GameMapWindow::adjustMapWidgetSize(QResizeEvent* event)
 {
-    // Ajustăm dimensiunea mapWidget proporțional cu fereastra
-    int widgetWidth = width() * 0.8;  // 80% din lățimea ferestrei
-    int widgetHeight = height() * 0.6; // 60% din înălțimea ferestrei
-    mapWidget->setFixedSize(widgetWidth, widgetHeight);
+    if (mapWidget) {
+        int widgetWidth = width() * 0.9;  // 80% din lățimea ferestrei
+        int widgetHeight = height() * 0.9; // 60% din înălțimea ferestrei
+        mapWidget->setFixedSize(widgetWidth, widgetHeight);
+        //mapWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+    }
 }
 
 void GameMapWindow::onSettingsClicked()
