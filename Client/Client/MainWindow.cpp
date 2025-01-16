@@ -242,7 +242,13 @@ void MainWindow::GameWindow(const QString& gameCode)
 
 void MainWindow::HandleKeyPressedOnMap(int key)
 {
-    qDebug() << "Sending key to server:" << key;
+   /* if (ClientServer::SendKeyPress(key))
+    {
+       qDebug() << "Key press successfully sent to server.";
+    }
+    else {
+       qDebug() << "Failed to send key press to server.";
+    }*/
 }
 
 
@@ -348,6 +354,17 @@ void MainWindow::HandleGeneralSettings()
     connect(generalSettings, &GeneralSettingsWindow::Logout, this, &MainWindow::HandleLogOut);
     connect(generalSettings, &GeneralSettingsWindow::Delete, this, &MainWindow::HandleDeleteAccount);
 }
+
+//void MainWindow::HandleKeyPressedOnMap(int key)
+//{
+//    if (ClientServer::SendKeyPress(key))
+//    {
+//        qDebug() << "Key press successfully sent to server.";
+//    }
+//    else {
+//        qDebug() << "Failed to send key press to server.";
+//    }
+//}
 //void MainWindow::DisplayMap(const QString& gameCode) {
 //    try {
 //        ClientServer client;

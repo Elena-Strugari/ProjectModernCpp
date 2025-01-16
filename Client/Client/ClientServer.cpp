@@ -285,6 +285,35 @@ bool ClientServer::SaveSettings(const std::string& volume)
         }
     }
 
+bool ClientServer::SendKeyPress(const std::string& username, int keyCode) {
+    try {
+        // Create JSON payload
+        nlohmann::json keyPressJson;
+        keyPressJson["username"] = username;
+        keyPressJson["key_code"] = keyCode;
+
+        // Send POST request
+        cpr::Response response = cpr::Post(
+            cpr::Url{ std::string(SERVER_URL) + "/key_press" },
+            cpr::Body{ keyPressJson.dump() },
+            cpr::Header{ {"Content-Type", "application/json"} }
+        );
+
+        if (response.status_code == 200) {
+            std::cout << "Key press sent successfully: " << response.text << std::endl;
+            return true;
+        }
+        else {
+            std::cerr << "Failed to send key press. Response: " << response.text << std::endl;
+            return false;
+        }
+    }
+    catch (const std::exception& ex) {
+        std::cerr << "Exception while sending key press: " << ex.what() << std::endl;
+        return false;
+    }
+}
+
 /*QJsonDocument ClientServer::GetMap() {
      auto response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_map" });
      if (response.status_code == 200) {

@@ -78,10 +78,13 @@ void MapWidget::paintEvent(QPaintEvent* event) {
             {
                 img = RemoveGreenScreen(":/Wall/resources/Asteroid.png");
             }
+            else if (value == 5)
+            {
+                img = RemoveGreenScreen(":/PlayersImages/resources/Astronaut_1.png");
+            }
             else if (value == 7)
             {
                 img = RemoveGreenScreen(":/Border/resources/Border.png");
-                //img = QImage(":/Border/resources/Border.png");
             }
             else {
                 img = QImage(); // Imagine nulă
@@ -93,9 +96,7 @@ void MapWidget::paintEvent(QPaintEvent* event) {
             else {
                 qDebug() << "Imaginea a fost încărcată cu succes!";
             }
-            //QImage img;
-           // img = QImage(":/StartImage/resources/StartGame.jpg");
-            // Verifică dacă imaginea este validă
+
             if (img.isNull()) {
                 qDebug() << "Eroare: Imaginea pentru valoarea" << value << "nu a fost încărcată!";
                 continue; // Sari peste această celulă
