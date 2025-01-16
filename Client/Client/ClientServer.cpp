@@ -162,12 +162,22 @@ QJsonArray ClientServer::GetMap()
 bool ClientServer::ControlsClient(const std::string& controls)
 {
     try {
+        // Creating a JSON object to send both username and controls
+        nlohmann::json jsonBody;
+        jsonBody["username"] = ClientServer::m_username;  // Username
+        jsonBody["controls"] = nlohmann::json::parse(controls);  // Controls (this is expected to be a JSON string)
+
+        // Convert the JSON object to a string
+        std::string jsonString = jsonBody.dump();
+
+        // Send the JSON object in the POST request
         cpr::Response response = cpr::Post(
             cpr::Url{ std::string(SERVER_URL) + "/controls" },
-            cpr::Body{ controls },
-            cpr::Header{ {"Content-Type", "application/json"} }
+            cpr::Body{ jsonString },  // Send the JSON string as the body
+            cpr::Header{ {"Content-Type", "application/json"} }  // Set the header to application/json
         );
 
+        // Check if the server responded successfully
         if (response.status_code == 200) {
             std::cout << "Success: " << response.text << std::endl;
             return true;
@@ -181,6 +191,7 @@ bool ClientServer::ControlsClient(const std::string& controls)
         std::cerr << "Exception during controls submission: " << ex.what() << std::endl;
         return false;
     }
+    return false;
 }
 
 bool ClientServer::SaveSettings(const std::string& volume)
@@ -208,7 +219,7 @@ bool ClientServer::SaveSettings(const std::string& volume)
         }
     }
 
-bool ClientServer::SendKeyPress(const std::string& username, int keyCode) {
+bool ClientServer::SendKeyPress(int keyCode) {
     try {
         // Create JSON payload
         std::string name = ClientServer::m_username;

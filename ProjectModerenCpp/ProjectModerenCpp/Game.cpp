@@ -27,6 +27,9 @@ std::string Game::GenerateGameCode()
 }
 
 void Game::AddPlayer(const std::shared_ptr<Player>& player) {
+
+    std::thread playerThread(&Game::HandlePlayerActions, this, player);
+    playerThread.detach();
     player->AddPlayerObject();
     m_playerManager->AddPlayer(player);
     PlacePlayerOnMap(player);
@@ -154,6 +157,23 @@ void Game::MoveBullets() {
         }
     }
 
+}
+
+void Game::HandlePlayerActions(std::shared_ptr<Player> player)
+{
+    while (player->IsAlive()) {
+        // Process actions like move, shoot, etc.
+        if (player->IsMoving()) {
+            player->Move();
+        }
+
+        if (player->IsShooting()) {
+            player->ShootBulletS();
+        }
+
+        // Add sleep to simulate periodic actions
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
 }
 
 Map Game::GetMap() const

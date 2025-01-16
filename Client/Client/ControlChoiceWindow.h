@@ -30,8 +30,11 @@ public:
     explicit ControlChoiceWindow(const QString& clientId, QWidget* parent = nullptr);
     ~ControlChoiceWindow();
 
+    static int GetKeyEventFromChar(char letter);
+
 signals:
-    void ControlsSet(const QMap<QString, QString>& controls, const QString& username);
+    //void ControlsSet(const QMap<QString, QString>& controls, const QString& username);
+    void ControlsSet(const QMap<QString, int>& controls);
 
 private slots:
     void OnSaveControls();
@@ -50,8 +53,9 @@ private:
     QPushButton* saveButton;
     QPushButton* resetButton;
 
-    QString m_username;
-    QMap<QString, QString> controls;
+    //QString m_username;
+    //QMap<QString, QString> controls;
+    QMap<QString, int> controls;
 };
 
 #endif // CONTROLCHOICEWINDOW_H

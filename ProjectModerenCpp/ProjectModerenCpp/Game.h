@@ -7,6 +7,8 @@
 #include "PlayerManager.h"
 #include "CollisionManager.h"
 
+#include <thread>
+#include <atomic>
 
 class Game {
 public:
@@ -28,7 +30,7 @@ public:
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
     }*/
-
+    void HandlePlayerActions(std::shared_ptr<Player> player);  // Declare the method for handling player actions
     Map GetMap()const;
     std::vector<std::shared_ptr<Player>> m_players; 
     //std::array<std::shared_ptr<Player>, 4> m_players;

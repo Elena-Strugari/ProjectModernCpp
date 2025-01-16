@@ -3,6 +3,8 @@
 #include <optional>
 #include "Database.h"
 #include "MovementObject.h"
+#include <atomic>
+
 
 class Player {
 public:
@@ -34,9 +36,24 @@ public:
     // Save state to database
     void SaveState();
     void AddScore(int points);
-    void ChooseKeyBindings(const std::string& up, const std::string& down, const std::string& left, const std::string& right, const std::string& shoot);
+    void ChooseKeyBindings(int up, int down,int left, int right, int shoot);
 
 
+    bool IsAlive() const;  // Check if the player is alive
+    bool IsMoving() const; // Check if the player is moving
+    bool IsShooting() const;  // Check if the player is shooting
+
+    void Move();  // Move the player
+    void ShootBulletS();  // Handle the shooting action
+
+    void SetMovement(bool moving);  // Set the player's movement state
+    void SetShooting(bool shooting);  // Set the player's shooting state
+    void SetAlive(bool alive);
+    void AddMovementObject(MovementObject&& movement);
+    MovementObject::Direction m_currentDirection;
+    //void Move();
+    void SetDirection(MovementObject::Direction direction);
+    void UpdateDirection(MovementObject::Direction direction);
 private:
     std::string m_name;
     int m_score;
@@ -47,5 +64,9 @@ private:
     GameObject m_object;
     std::optional<MovementObject> m_moveObject;
     bool m_objectInitialized = false;
+
+    std::atomic<bool> m_alive;
+    std::atomic<bool> m_moving;
+    std::atomic<bool> m_shooting;
 
 };

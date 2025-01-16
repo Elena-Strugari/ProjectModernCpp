@@ -36,7 +36,7 @@ public:
 
 	static void GetInGameSettings();
 	static bool SetInGameSettings(const std::string& settingsJson);
-	static bool SendKeyPress(const std::string& username, int key);
+	static bool SendKeyPress(int key);
 	static std::string m_username;
 private:
 	QJsonArray mapData;

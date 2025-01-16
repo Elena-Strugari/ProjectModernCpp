@@ -82,7 +82,6 @@ void MainWindow::HandleLogin(const QString& username)
         QMessageBox::information(this, "Login", "Welcome, " + username + "!");
         CreateJoinWindow();
         close();
-      //  DisplayMap();
     }
     else {
         QMessageBox::warning(this, "Error", "Login failed. This name does not exist.");
@@ -106,10 +105,34 @@ void MainWindow::HandleRegister(const QString& username)
     }
 }
 
-void MainWindow::HandleControlsSet(const QMap<QString, QString>& controls, const QString& username)
+//void MainWindow::HandleControlsSet(const QMap<QString, QString>& controls, const QString& username)
+//{
+//    QJsonObject jsonObject;
+//    jsonObject.insert("username", username);
+//    for (auto it = controls.begin(); it != controls.end(); ++it) {
+//        jsonObject.insert(it.key(), it.value());
+//    }
+//    QJsonDocument jsonDoc(jsonObject);
+//    QString jsonString = jsonDoc.toJson(QJsonDocument::Compact);
+//    QMessageBox::information(this, "JSON Sent to Server", "The following JSON was sent:\n\n" + jsonString);
+//
+//
+//    std::string controlsStr = jsonString.toUtf8().constData();
+//    if (ClientServer::ControlsClient(controlsStr))
+//    {
+//        QMessageBox::information(this, "Success", "Controls have been successfully set!");
+//        CreateJoinWindow();
+//    }
+//    else
+//        QMessageBox::warning(this, "Error", "Failed to set controls: ");
+//
+//
+//}
+
+void MainWindow::HandleControlsSet(const QMap<QString, int>& controls)
 {
     QJsonObject jsonObject;
-    jsonObject.insert("username", username);
+    //jsonObject.insert("username", username);
     for (auto it = controls.begin(); it != controls.end(); ++it) {
         jsonObject.insert(it.key(), it.value());
     }
@@ -230,13 +253,13 @@ void MainWindow::GameWindow(const QString& gameCode)
 
 void MainWindow::HandleKeyPressedOnMap(int key)
 {
-   /* if (ClientServer::SendKeyPress(key))
+    if (ClientServer::SendKeyPress(key))
     {
        qDebug() << "Key press successfully sent to server.";
     }
     else {
        qDebug() << "Failed to send key press to server.";
-    }*/
+    }
 }
 
 

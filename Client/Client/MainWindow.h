@@ -21,7 +21,8 @@ private slots:
     void onStartGameClicked();
     void HandleLogin(const QString& username);
     void HandleRegister(const QString& username);
-    void HandleControlsSet(const QMap<QString, QString>& controls, const QString& username);
+    //void HandleControlsSet(const QMap<QString, QString>& controls, const QString& username);
+    void HandleControlsSet(const QMap<QString, int>& controls);
     void HandleCreateCode(const QString& username);
    // void HandleCreateCode();
     void HandleCheckCode(const QString& gameCode, const QString& username);

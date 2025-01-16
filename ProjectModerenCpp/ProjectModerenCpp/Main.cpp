@@ -1,77 +1,77 @@
-﻿#include <iostream>
-#include<utility>
-#include<vector>
-
-#include "routing.h"
-
-int main() {
-
-    http::Routing r;
-    r.Run();
-    return 0;
-}
+﻿//#include <iostream>
+//#include<utility>
+//#include<vector>
+//
+//#include "routing.h"
+//
+//int main() {
+//
+//    http::Routing r;
+//    r.Run();
+//    return 0;
+//}
 
 
 //test denisa 
  
 
-//#include <iostream>
-//#include <memory>
-//#include "Game.h"A
-//#include "Player.h"
-//#include "CollisionManager.h"
-//
-//int main() {
-//    try {
-//        Database db("testDatabase2.db");
-//
-//        // Generate game code for the game (assume level 1)
-//        uint8_t level = 1;
-//        std::string gameCode = "game1"; 
-//        Game game(level, gameCode);
-//
-//
-//        // Step 3: Create players
-//        std::shared_ptr<Player> player1 = std::make_shared<Player>("Player1", db);
-//        std::shared_ptr<Player> player2 = std::make_shared<Player>("Player2", db);
-//
-//        // Step 4: Add players to the game
-//        game.AddPlayer(player1);
-//        game.AddPlayer(player2);
-//
-//        // Step 5: Start the game (this would show the map and start gameplay)
-//        game.Start();
-//
-//        // Step 6: Simulate player movements (this could be triggered by user input in a real game)
-//        game.MovePlayer(player1, MovementObject::Direction::Down);
-//        game.MovePlayer(player2, MovementObject::Direction::Up);
-//
-//        game.Start();
-//
-//        // Step 7: Simulate shooting bullets
-//        game.ShootBulletS(player1);
-//
-//        // Step 8: Move bullets and handle collisions
-//        game.MoveBullets();
-//
-//        // Step 9: Check for tank collisions
-//        game.MovePlayer(player2, MovementObject::Direction::Right);
-//        game.MovePlayer(player1, MovementObject::Direction::Right);
-//
-//        game.Start();
-//        // Step 10: Handle bullet collisions with tanks
-//        game.MoveBullets();  // This would detect bullet collisions
-//
-//        std::cout << "Game simulation complete." << std::endl;
-//
-//    }
-//    catch (const std::exception& e) {
-//        std::cerr << "Error during game simulation: " << e.what() << std::endl;
-//    }
-//
-//    return 0;
-//}
-//
+#include <iostream>
+#include <memory>
+#include "Game.h"
+#include "Player.h"
+#include "CollisionManager.h"
+
+int main() {
+    try {
+        Database db("testDatabase2.db");
+
+        // Generate game code for the game (assume level 1)
+        uint8_t level = 1;
+        std::string gameCode = "game1"; 
+        Game game(level, gameCode);
+
+
+        // Step 3: Create players
+        std::shared_ptr<Player> player1 = std::make_shared<Player>("Player1", db);
+        std::shared_ptr<Player> player2 = std::make_shared<Player>("Player2", db);
+
+        // Step 4: Add players to the game
+        game.AddPlayer(player1);
+        game.AddPlayer(player2);
+
+        // Step 5: Start the game (this would show the map and start gameplay)
+        game.Start();
+
+        // Step 6: Simulate player movements (this could be triggered by user input in a real game)
+        game.MovePlayer(player1, MovementObject::Direction::Down);
+        game.MovePlayer(player2, MovementObject::Direction::Up);
+
+        game.Start();
+
+        // Step 7: Simulate shooting bullets
+        game.ShootBulletS(player1);
+
+        // Step 8: Move bullets and handle collisions
+        game.MoveBullets();
+
+        // Step 9: Check for tank collisions
+        game.MovePlayer(player2, MovementObject::Direction::Right);
+        game.MovePlayer(player1, MovementObject::Direction::Right);
+
+        game.Start();
+        // Step 10: Handle bullet collisions with tanks
+        game.MoveBullets();  // This would detect bullet collisions
+
+        std::cout << "Game simulation complete." << std::endl;
+
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Error during game simulation: " << e.what() << std::endl;
+    }
+
+    return 0;
+}
+
 
 
 
