@@ -6,10 +6,14 @@
 using json = nlohmann::json;
 
 Game::Game(uint8_t level, const std::string& code)
-    : m_map(level), m_playerManager(std::make_shared<PlayerManager>()),
-    m_collision(std::make_shared<CollisionManager>(std::make_shared<Map>(m_map), m_playerManager)),
-    m_gameCode(code), m_gameStarted(false) {
+    : m_map(level),
+    m_playerManager(std::make_shared<PlayerManager>()),
+    m_gameCode(code),
+    m_gameStarted(false) {
+    // Inițializează CollisionManager după ce m_map și m_playerManager sunt complet inițializați
+    m_collision = std::make_shared<CollisionManager>(std::make_shared<Map>(m_map), m_playerManager);
 }
+
 
 std::string Game::GenerateGameCode()
 {
@@ -19,15 +23,10 @@ std::string Game::GenerateGameCode()
         code += alphanum[rand() % (sizeof(alphanum) - 1)];
     }
     return code;
-   
+
 }
 
 void Game::AddPlayer(const std::shared_ptr<Player>& player) {
-
-    if (m_players.size() > 4) {
-        std::cout << "Cannot add more than 4 players." << std::endl;
-        return; // Don't add the player if there are already 4 players
-    }
     player->AddPlayerObject();
     m_playerManager->AddPlayer(player);
     PlacePlayerOnMap(player);
@@ -67,29 +66,35 @@ void Game::PlacePlayerOnMap(const std::shared_ptr<Player>& player) {
     m_map.SetCellContent(startX, startY, Map::Tank{});
 }
 
-Map Game::GetMap() const
-{
-    return m_map;
-}
-
-
 
 void Game::MovePlayer(const std::shared_ptr<Player>& player, MovementObject::Direction direction) {
     auto& movement = player->GetMovementObject();
     auto [currentX, currentY] = movement.GetPosition();
-
     auto [newX, newY] = movement.Move(direction);
 
-    if (m_map.IsValidPosition(newX, newY)) {
-        m_collision->HandleTankCollisions();
+    if (!m_map.IsValidPosition(newX, newY)) {
+        std::cout << "Movement blocked to (" << newX << ", " << newY << ") due to invalid position.\n";
+        return;
+    }
+
+    if (std::holds_alternative<Map::Empty>(m_map.GetCell(newX, newY).content) &&
+        !m_collision->isOccupiedByAnotherTank(m_playerManager->GetAllPlayers(), newX, newY, player)) {
         m_map.SetCellContent(currentX, currentY, Map::Empty{});
         m_map.SetCellContent(newX, newY, Map::Tank{});
 
         movement.SetPosition(newX, newY);
         movement.SetDirection(direction);
+
         UpdateClientsWithNewMap();
     }
+    else {
+        std::cout << "Movement blocked to (" << newX << ", " << newY << ") due to collision or obstruction.\n";
+    }
 }
+
+
+
+
 void Game::UpdateClientsWithNewMap() {
 
     std::cout << "mapUpdate";
@@ -150,3 +155,9 @@ void Game::MoveBullets() {
     }
 
 }
+
+Map Game::GetMap() const
+{
+    return m_map;
+}
+

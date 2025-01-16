@@ -20,6 +20,7 @@ public:
     void HandleBulletCollisions();
     void HandleTankCollisions();
     void HandleBulletTankCollisions();
+    bool isOccupiedByAnotherTank(const std::vector<std::shared_ptr<Player>>& players, uint16_t x, uint16_t y, const std::shared_ptr<Player>& currentPlayer);
 };
 
 

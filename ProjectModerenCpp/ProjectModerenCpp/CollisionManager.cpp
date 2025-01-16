@@ -1,6 +1,4 @@
 ﻿#include "CollisionManager.h"
-//#include "Map.h"
-//#include "PlayerManager.h"
 #include "Game.h"
 #include <algorithm>
 #include <memory>
@@ -11,7 +9,7 @@ CollisionManager::CollisionManager(std::shared_ptr<Map> map, std::shared_ptr<Pla
     : m_map(map), m_playerManager(playerManager) {}
 
 bool CollisionManager::IsValidPosition(uint16_t x, uint16_t y) const {
-    if (x < 0 || y < 0 || x >= m_map->GetWidth() || y >= m_map->GetHeight()) {
+    if (x >= m_map->GetWidth() || y >= m_map->GetHeight()) {
         return false;
     }
     auto& cell = m_map->GetCell(x, y);
@@ -55,31 +53,27 @@ void CollisionManager::HandleTankCollisions() {
     auto players = m_playerManager->GetAllPlayers();
     for (auto& player : players) {
         auto& movement = player->GetMovementObject();
-        auto [x, y] = movement.GetPosition(false);
-
+        auto [currentX, currentY] = movement.GetPosition(false);
         auto [targetX, targetY] = movement.GetPosition(true);
 
-        if (!IsValidPosition(targetX, targetY)) {
-            std::cout << "Invalid position (" << targetX << ", " << targetY << "). Movement blocked.\n";
-            continue;
-        }
-
-        bool isOccupiedByTank = std::any_of(players.begin(), players.end(),
-            [&](const auto& targetPlayer) {
-                if (player == targetPlayer) return false;
-                auto& targetMovement = targetPlayer->GetMovementObject();
-                auto [otherX, otherY] = targetMovement.GetPosition(false);
-                return targetX == otherX && targetY == otherY;
-            });
-
-        if (isOccupiedByTank) {
-            std::cout << "Position (" << targetX << ", " << targetY << ") is occupied by another tank. Movement blocked.\n";
+        if (!IsValidPosition(targetX, targetY) || isOccupiedByAnotherTank(players, targetX, targetY, player)) {
+            std::cout << "Movement blocked: Invalid position or occupied (" << targetX << ", " << targetY << ").\n";
             continue;
         }
 
         movement.SetPosition(targetX, targetY);
+        m_map->SetCellContent(currentX, currentY, Map::Empty{});
+        m_map->SetCellContent(targetX, targetY, Map::Tank{});
     }
 }
+bool CollisionManager::isOccupiedByAnotherTank(const std::vector<std::shared_ptr<Player>>& players, uint16_t x, uint16_t y, const std::shared_ptr<Player>& currentPlayer) {
+    return std::any_of(players.begin(), players.end(), [&](const auto& player) {
+        if (player == currentPlayer) return false;
+        auto [px, py] = player->GetMovementObject().GetPosition(false);
+        return (px == x && py == y);
+        });
+}
+
 
 
 void CollisionManager::HandleBulletTankCollisions() {
