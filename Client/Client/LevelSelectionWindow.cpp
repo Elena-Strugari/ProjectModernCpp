@@ -59,38 +59,23 @@ LevelSelectionWindow::LevelSelectionWindow(QWidget* parent)
     setLayout(mainLayout);
 
     connect(easyButton, &QPushButton::clicked, this, [this]() {
-        emit LevelEasy();
+        emit LevelEasy(m_username);
         this->close(); 
         });
 
     connect(mediumButton, &QPushButton::clicked, this, [this]() {
-        emit LevelMediu();
+        emit LevelMediu(m_username);
         this->close();
         });
 
     connect(hardButton, &QPushButton::clicked, this, [this]() {
-        emit LevelHard();
+        emit LevelHard(m_username);
         this->close();
         });
 }
 
 LevelSelectionWindow::~LevelSelectionWindow() = default;
 
-//void LevelSelectionWindow::initializeBackground()
-//{
-//    QImage image(":/StartImage/resources/StartGame.jpg"); 
-//
-//    if (image.isNull())
-//    {
-//        qDebug() << "Failed to load background image!";
-//        return;
-//    }
-//
-//    QPalette palette;
-//    palette.setBrush(QPalette::Window, QBrush(image.scaled(size(), Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation)));
-//    setPalette(palette);
-//    setAutoFillBackground(true);
-//}
 void LevelSelectionWindow::resizeEvent(QResizeEvent* event)
 {
     QImage image(":/StartImage/resources/StartGame.jpg");

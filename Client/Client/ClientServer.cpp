@@ -17,8 +17,8 @@ using json = nlohmann::json;
 
 
 constexpr auto SERVER_URL = "http://localhost:8080";
-
-
+//static std::string ClientServer::m_username;
+std::string ClientServer::m_username = "";
 void ClientServer::connectServer()
 {
     qDebug() << "Am intrat in functia de conectare la server din ClientServer.";
@@ -62,58 +62,10 @@ void ClientServer::StartGameWindow()
 }
 
 
-void ClientServer::UserWindow()
-{
-    try {
-        cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/user" });
-
-        if (response.status_code == 200) {
-            std::cout << "Mesaj de la server: " << response.text << std::endl;
-        }
-        else {
-            std::cerr << "Eroare la conectare. Cod răspuns: " << response.status_code << std::endl;
-        }
-    }
-    catch (const std::exception& ex) {
-        std::cerr << "Excepție la conectare: " << ex.what() << std::endl;
-    }
-
-}
-
-
-bool ClientServer::verificare()
-{
-    qDebug() << "Am intrat in noua functie de verificare din ClientServer.";
-    try {
-        QString name = "John";
-        std::string nameS = name.toUtf8().constData();
-
-        cpr::Response r = cpr::Post(
-            cpr::Url{ std::string(SERVER_URL) + "/sendName" },
-            cpr::Body{ nameS },
-            cpr::Header{ {"Content-Type", "text/plain"} }
-        );
-        if (r.status_code == 200) {
-            qDebug() << "Server returned message: " << r.text.c_str();
-
-            return true;
-        }
-        else {
-            qDebug() << "Registration failed. Status code: " << r.status_code;
-            qDebug() << "Server response: " << QString::fromStdString(r.text);
-            return false;
-        }
-    }
-    catch (const std::exception& ex) {
-        qDebug() << "Error during verification: " << ex.what();
-        return false;
-    }
-}
-
-
 
 bool ClientServer::LoginClient(const std::string& username) {
     try {
+        m_username = username;
         auto response = cpr::Post(
             cpr::Url{ std::string(SERVER_URL) + "/login" },
             cpr::Body{ "{\"username\":\"" + username + "\"}" },
@@ -138,6 +90,8 @@ bool ClientServer::LoginClient(const std::string& username) {
 
 bool ClientServer::RegisterClient(const std::string& username) {
     try {
+
+        m_username = username;
         cpr::Response response = cpr::Post(
             cpr::Url{ std::string(SERVER_URL) + "/register" },
             cpr::Body{ "{\"username\":\"" + username + "\"}" },
@@ -257,8 +211,10 @@ bool ClientServer::SaveSettings(const std::string& volume)
 bool ClientServer::SendKeyPress(const std::string& username, int keyCode) {
     try {
         // Create JSON payload
+        std::string name = ClientServer::m_username;
+
         nlohmann::json keyPressJson;
-        keyPressJson["username"] = username;
+        keyPressJson["username"] = name;
         keyPressJson["key_code"] = keyCode;
 
         // Send POST request
@@ -290,7 +246,8 @@ bool ClientServer::JoinGame(const std::string& gameCode, const std::string& user
         // Create a JSON object with the game code and username
         nlohmann::json jsonBody;
         jsonBody["game_code"] = gameCode;
-        jsonBody["username"] = username;
+        std::string name = ClientServer::m_username;
+        jsonBody["username"] = name;
 
         // Convert the JSON object to a string
         std::string jsonString = jsonBody.dump();
@@ -316,15 +273,17 @@ bool ClientServer::JoinGame(const std::string& gameCode, const std::string& user
         return false;
     }
 }
-
-
-std::string ClientServer::GenerateCode(uint8_t level)
+std::string ClientServer::GenerateCode(uint8_t level, const std::string& username)
 {
     try {
-        // Include the level in the request URL or as a query parameter
+        std::string name = ClientServer::m_username;
         cpr::Response response = cpr::Get(
             cpr::Url{ std::string(SERVER_URL) + "/generate_code" },
-            cpr::Parameters{ {"level", std::to_string(level)} }  // Send the level as a query parameter
+            cpr::Parameters{
+                {"level", std::to_string(level)},    // Add level as a query parameter
+                {"username", name}               // Add username as a query parameter
+            },
+            cpr::Header{ {"Content-Type", "application/json"} }  // Optional, you can send this header
         );
 
         if (response.status_code == 200) {
@@ -341,7 +300,6 @@ std::string ClientServer::GenerateCode(uint8_t level)
         return "";  // Return an empty string on exception
     }
 }
-
 
 void ClientServer::GetGeneralSettings() {
     try {

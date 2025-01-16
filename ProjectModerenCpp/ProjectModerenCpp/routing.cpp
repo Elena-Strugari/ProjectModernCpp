@@ -25,11 +25,11 @@ void http::Routing::Run()
     CROW_ROUTE(m_app, "/startGame")([]() {
         return crow::response(200, "Server: Conectare reusita la start!");
         });
-    CROW_ROUTE(m_app, "/user")([]() {
+   /* CROW_ROUTE(m_app, "/user")([]() {
         return crow::response(200, "Server: Conectare reusita la user!");
-        });
+        });*/
 
-    CROW_ROUTE(m_app, "/sendName").methods(crow::HTTPMethod::Post)([](const crow::request& req) {
+    /*CROW_ROUTE(m_app, "/sendName").methods(crow::HTTPMethod::Post)([](const crow::request& req) {
         auto body = req.body;
         std::string response;
         if (body == "John") {
@@ -40,7 +40,7 @@ void http::Routing::Run()
             response = "Server: Hello, " + body + "! Your name is not John, but it's still nice.";
             return crow::response(401, response);
         }
-        });
+        });*/
 
     CROW_ROUTE(m_app, "/login").methods("POST"_method)([](const crow::request& req) {
         auto json = crow::json::load(req.body);
@@ -109,8 +109,6 @@ void http::Routing::Run()
         std::string right = json["Right"];
         std::string shoot = json["Shoot"];
 
-        std::cout << "Received controls for " << username << ": " << "Up = " << up << ", Down = " << down
-            << ", Left = " << left << ", Right = " << right << ", Shoot = " << shoot << std::endl;
         if (playersActive.find(username) == playersActive.end()) {
             return crow::response(404, "User is not Active");
         }
@@ -126,22 +124,26 @@ void http::Routing::Run()
 
     CROW_ROUTE(m_app, "/generate_code").methods("GET"_method)([](const crow::request& req) {
         try {
-            auto level = req.url_params.get("level");
-            if (level == nullptr) {
-                return crow::response(400, "Missing level parameter");
+
+            auto levelStr = req.url_params.get("level");
+            auto username = req.url_params.get("username");
+
+            if (levelStr == nullptr || username == nullptr) {
+                return crow::response(400, "Invalid parameters");
             }
 
-            uint8_t levelInt = std::stoi(level);
-
+            uint8_t level = static_cast<uint8_t>(std::stoi(levelStr));
             std::string gameCode = Game::GenerateGameCode();
-
+            //uint8_t level = 1;
             while (games.find(gameCode) != games.end()) {
                 gameCode = Game::GenerateGameCode();
             }
-            //games[gameCode] = Game(levelInt, gameCode);
-            games.emplace(gameCode, Game(levelInt, gameCode));
-            //games[gameCode].m_players
-            //return crow::response(200, "Game code generated: " + gameCode);
+            Game game = Game(level, gameCode);
+            games.emplace(gameCode, game);
+            std::shared_ptr<Player> newPlayer = std::make_shared<Player>(username, db);
+            game.AddPlayer(newPlayer);
+            std::cout << "Player " << username << " joined the game " << gameCode << std::endl;
+
             return crow::response(200,  gameCode);
         }
         catch (const std::exception& e) {
@@ -205,7 +207,7 @@ void http::Routing::Run()
 
             Game& game = games[gameCode];  
             Map gameMap= game.GetMap();
-            //gameMap.DisplayMap();  
+            //gameMap.DisplayMap();   
             crow::json::wvalue json;
             json["width"] = gameMap.GetWidth();
             json["height"] = gameMap.GetHeight();

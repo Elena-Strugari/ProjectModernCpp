@@ -62,12 +62,12 @@ void MainWindow::LogUserWindow()
     try {
         LoginWindow* loginWindow = new LoginWindow();
         loginWindow->show();
-        ClientServer::verificare();
+        //ClientServer::verificare();
 
         connect(loginWindow, &LoginWindow::Login, this, &MainWindow::HandleLogin);
         connect(loginWindow, &LoginWindow::RegisterUser, this, &MainWindow::HandleRegister);
         close();
-        ClientServer::UserWindow();
+        //ClientServer::UserWindow();
     }
     catch (const std::exception& e) {
         QMessageBox::critical(this, "Error", e.what());
@@ -139,7 +139,7 @@ void MainWindow::CreateJoinWindow()
     connect(createJoinWindow, &CreateOrJoinGameWindow::CheckCode, this, &MainWindow::HandleCheckCode);
 }
 
-void MainWindow::HandleCreateCode()
+void MainWindow::HandleCreateCode(const QString& username)
 {
     LevelSelectionWindow* levelWindow = new LevelSelectionWindow();
     levelWindow->show();
@@ -161,9 +161,9 @@ void MainWindow::HandleCheckCode(const QString& gameCode, const QString& usernam
     }
 }
 
-void MainWindow::HandleLevel1()
+void MainWindow::HandleLevel1(const QString& username)
 {
-    std::string gameCode = ClientServer::GenerateCode(1);
+    std::string gameCode = ClientServer::GenerateCode(1, username.toUtf8().constData());
 
     if (gameCode.empty()) {
         QMessageBox::information(this, "Error", "Failed to generate code.");
@@ -175,9 +175,9 @@ void MainWindow::HandleLevel1()
 
 }
 
-void MainWindow::HandleLevel2()
+void MainWindow::HandleLevel2(const QString& username)
 {
-    std::string gameCode = ClientServer::GenerateCode(2);
+    std::string gameCode = ClientServer::GenerateCode(2, username.toUtf8().constData());
 
     if (gameCode.empty()) {
         QMessageBox::information(this, "Error", "Failed to generate code.");
@@ -187,9 +187,9 @@ void MainWindow::HandleLevel2()
         DisplayCode(QString(gameCode.c_str()));
     }
 }
-void MainWindow::HandleLevel3()
+void MainWindow::HandleLevel3(const QString& username)
 {
-    std::string gameCode = ClientServer::GenerateCode(3);
+    std::string gameCode = ClientServer::GenerateCode(3, username.toUtf8().constData());
 
     if (gameCode.empty()) {
         QMessageBox::information(this, "Error", "Failed to generate code.");

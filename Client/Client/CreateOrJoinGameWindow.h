@@ -16,7 +16,7 @@ public:
     ~CreateOrJoinGameWindow();
 
 signals:
-    void Generate();
+    void Generate(const QString& username);
     void CheckCode(const QString& code, const QString& username);
     void GeneralSettings();
 protected:

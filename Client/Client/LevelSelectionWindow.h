@@ -16,15 +16,17 @@ public:
     ~LevelSelectionWindow();
 
 signals:
-    void LevelEasy(); 
-    void LevelMediu(); 
-    void LevelHard(); 
+    void LevelEasy(const QString& username);
+    void LevelMediu(const QString& username);
+    void LevelHard(const QString& username);
 
 private:
     QLabel* titleLabel;        
     QPushButton* easyButton;    
     QPushButton* mediumButton;  
-    QPushButton* hardButton;    
+    QPushButton* hardButton;   
+
+    QString m_username;
 
     //void initializeBackground(); 
 protected:

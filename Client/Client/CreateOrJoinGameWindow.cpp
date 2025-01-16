@@ -79,7 +79,7 @@ CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
 
 
     connect(generateCodeButton, &QPushButton::clicked, this, [this]() {
-        emit Generate();
+        emit Generate(m_username);
         this->close();
         });
 
