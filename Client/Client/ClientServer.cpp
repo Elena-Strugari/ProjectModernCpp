@@ -304,7 +304,7 @@ bool ClientServer::IsLastPlayer()
 
     // Send the POST request to the server
     cpr::Response response = cpr::Post(
-        cpr::Url{ std::string(SERVER_URL) + " /is_last_player" },  // URL of your server
+        cpr::Url{ std::string(SERVER_URL) + "/is_last_player" },  // URL of your server
         cpr::Body{ requestBody.dump() },
         cpr::Header{ {"Content-Type", "application/json"} }
     );

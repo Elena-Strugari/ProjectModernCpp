@@ -32,6 +32,7 @@ void Game::AddPlayer(const std::shared_ptr<Player>& player) {
     playerThread.detach();
     player->AddPlayerObject();
     m_playerManager->AddPlayer(player);
+   // m_players.emplace(player);
     PlacePlayerOnMap(player);
 }
 
@@ -185,6 +186,11 @@ bool Game::IsLastPlayer(const std::shared_ptr<Player>& player) const {
     if (m_players.size() == 1 && m_players[0] == player) {
         return true;
     }
+    return false;
+}
+
+bool Game::ExistPlayerInGame()
+{
     return false;
 }
 

@@ -94,40 +94,6 @@ void http::Routing::Run()
         });
 
 
-    //CROW_ROUTE(m_app, "/controls").methods("POST"_method)([](const crow::request& req) {
-    //    // Parse the JSON request body
-    //    nlohmann::json json;
-    //    try {
-    //        json = nlohmann::json::parse(req.body);
-    //    }
-    //    catch (const std::exception& e) {
-    //        return crow::response(400, "Invalid JSON format: " + std::string(e.what()));
-    //    }
-
-    //    // Validate that all necessary fields are present in the JSON
-    //    if (!json.contains("username") || !json.contains("Up") || !json.contains("Down") ||
-    //        !json.contains("Left") || !json.contains("Right") || !json.contains("Shoot")) {
-    //        return crow::response(400, "Invalid JSON or missing fields");
-    //    }
-
-    //    std::string username = json["username"];
-    //    std::string up = json["Up"];
-    //    std::string down = json["Down"];
-    //    std::string left = json["Left"];
-    //    std::string right = json["Right"];
-    //    std::string shoot = json["Shoot"];
-
-    //    if (playersActive.find(username) == playersActive.end()) {
-    //        return crow::response(404, "User is not Active");
-    //    }
-
-    //    bool success = db.SaveKeyBindings(username, up, down, left, right, shoot);
-    //    if (!success) {
-    //        return crow::response(500, "Failed to save key bindings");
-    //    }
-    //    return crow::response(200, "Controls successfully set for user: " + username);
-    //    });
-
     CROW_ROUTE(m_app, "/controls").methods("POST"_method)([](const crow::request& req) {
         // Parse the JSON request body
         nlohmann::json json;
@@ -186,14 +152,21 @@ void http::Routing::Run()
 
             uint8_t level = static_cast<uint8_t>(std::stoi(levelStr));
             std::string gameCode = Game::GenerateGameCode();
-            //uint8_t level = 1;
+
             while (games.find(gameCode) != games.end()) {
                 gameCode = Game::GenerateGameCode();
             }
             Game game = Game(level, gameCode);
+            if (playersActive.find(username) == playersActive.end()) {
+                return crow::response(404, "Player not found or not active");
+            }
+
+    
+
+            //std::shared_ptr<Player> newPlayer = std::make_shared<Player>(username, db);
+            //game.AddPlayer(newPlayer);
+            game.AddPlayer(playersActive[username]);
             games.emplace(gameCode, game);
-            std::shared_ptr<Player> newPlayer = std::make_shared<Player>(username, db);
-            game.AddPlayer(newPlayer);
             /*MovementObject object = newPlayer.GetMovementObject();
             playersObject.emplace(username, object);*/
             /*Map map = game.GetMap();
@@ -237,14 +210,14 @@ void http::Routing::Run()
                 break;
             }
         }
-
         if (playerExists) {
             return crow::response(409, "Player already in the game");
         }
 
         // Add the player to the game
-        std::shared_ptr<Player> newPlayer = std::make_shared<Player>(username, db);
-        game.AddPlayer(newPlayer);
+        //std::shared_ptr<Player> newPlayer = std::make_shared<Player>(username, db);
+        //game.AddPlayer(newPlayer);
+        game.AddPlayer(playersActive[username]);
 
         std::cout << "Player " << username << " joined the game " << gameCode << std::endl;
 
@@ -389,6 +362,8 @@ void http::Routing::Run()
            // player.GetMovementObject().Move(direction);
             game.MovePlayer(player, direction);
             std::cout << "Player " << username << " moved in direction " << static_cast<int>(direction) << std::endl;
+            Map gameMap = game.GetMap();
+            gameMap.DisplayMap();
 
             return crow::response(200, "Key press processed successfully");
         }
@@ -438,10 +413,13 @@ void http::Routing::Run()
         else {
             return crow::response(200, username + " is not the last player in the game");
         }
-        });
+    });
 
 
 
+
+    m_app.port(8080).run();
+}
 
             //CROW_ROUTE(m_app, "/move_tank/up")([this](const crow::request& req) {
             //    auto clientId = req.url_params.get("id");
@@ -492,9 +470,6 @@ void http::Routing::Run()
             //if (numThreads == 0) numThreads = 4; // Asigură-te că există cel puțin un fir
 
            // m_app.port(8080).concurrency(numThreads).run();
-    m_app.port(8080).run();
-}
-
 
 
 

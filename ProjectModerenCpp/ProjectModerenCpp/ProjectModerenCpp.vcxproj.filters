@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Modules">
+      <UniqueIdentifier>{f8038c71-ad91-4800-b33d-1eedd7f92730}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Wall.h">
@@ -134,14 +137,14 @@
     <ClCompile Include="GameManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Wall.cppm">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Bomb.cppm">
-      <Filter>Source Files</Filter>
+      <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="Tank.cppm">
-      <Filter>Source Files</Filter>
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cppm">
+      <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
