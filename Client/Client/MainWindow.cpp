@@ -17,6 +17,8 @@
 #include "InGameSettingsWindow.h"
 #include "GeneralSettingsWindow.h"
 #include "DisplayCodeWindow.h"
+#include "GameOverWindow.h"
+#include "VictoryWindow.h"
 
 
 MainWindow::MainWindow(QWidget* parent)
@@ -268,6 +270,7 @@ void MainWindow::DisplayCode(const QString& message)
     DisplayCodeWindow* displayCode = new DisplayCodeWindow();
     displayCode->setMessage(message);
     displayCode->show();
+
 }
 
 void MainWindow::HandleInGameSettings()
@@ -288,7 +291,20 @@ void MainWindow::HandleBackToGameSetting() {
 
 // Alte sloturi similare
 void MainWindow::HandleExitGameSetting() {
-    qDebug() << "Exit game!";
+   // qDebug() << "Exit game!";
+    if (ClientServer::IsLastPlayer())
+    {
+        qDebug() << "Exit game!";
+        VictoryWindow* victoryGame = new VictoryWindow(this);
+        victoryGame->show();
+    }
+    else
+    {
+         qDebug() << "Exit game!";
+        GameOverWindow* gameOver = new GameOverWindow(this);
+        gameOver->show();
+        connect(gameOver, &GameOverWindow::StartNewGame, this, &MainWindow::CreateJoinWindow);
+    }
 }
 
 void MainWindow::HandleSaveSettings(int volume)

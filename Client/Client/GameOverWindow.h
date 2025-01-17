@@ -2,33 +2,36 @@
 #define GAMEOVERWINDOW_H
 
 #include <QWidget>
-#include <QPushButton>
 #include <QLabel>
-#include "BackgroundHelper.h"
+#include <QPushButton>
 
 class GameOverWindow : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit GameOverWindow(int score, QWidget* parent = nullptr);
+    explicit GameOverWindow(QWidget* parent = nullptr);
     ~GameOverWindow();
 
+    void setScore(int score);
+    void setMessage(const QString& message);
 signals:
-    void returnToMainMenu(); // Semnal pentru întoarcerea la meniul principal
+    void StartNewGame();
+    void ExitGame();
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
 
 private slots:
-    void onMainMenuButtonClicked(); // Slot pentru acțiunea butonului
+    void onStartNewGameClicked();
+    void onExitClicked();
 
 private:
-    int playerScore;
     QLabel* titleLabel;
     QLabel* scoreLabel;
     QLabel* messageLabel;
-    QPushButton* mainMenuButton;
+    QPushButton* startNewGameButton;
+    QPushButton* exitGameButton;
 };
 
 #endif // GAMEOVERWINDOW_H

@@ -62,8 +62,9 @@ private:
     Database& m_database;
 
     GameObject m_object;
-    std::optional<MovementObject> m_moveObject;
-    bool m_objectInitialized = false;
+    //MovementObject m_moveObject;
+   std::optional<MovementObject> m_moveObject;
+    //bool m_objectInitialized = false;
 
     std::atomic<bool> m_alive;
     std::atomic<bool> m_moving;

@@ -17,14 +17,20 @@ Player::Player(Player&& other) noexcept
     : m_name(std::move(other.m_name)),
     m_score(other.m_score),
     m_lives(other.m_lives),
-    m_database(other.m_database) {}
+    m_database(other.m_database), 
+    m_moveObject(std::move(other.m_moveObject)) {
+
+}
 
 // Copy constructor
 Player::Player(const Player& other)
     : m_name(other.m_name),
     m_score(other.m_score),
     m_lives(other.m_lives),
-    m_database(other.m_database) {}
+    m_database(other.m_database), 
+    m_moveObject(other.m_moveObject){
+    
+}
 
 // Move assignment operator
 Player& Player::operator=(Player&& other) noexcept {
@@ -33,6 +39,7 @@ Player& Player::operator=(Player&& other) noexcept {
         m_score = other.m_score;
         m_lives = other.m_lives;
         m_database = other.m_database;
+        m_moveObject = std::move(other.m_moveObject);
     }
     return *this;
 }
@@ -44,6 +51,7 @@ Player& Player::operator=(const Player& other) {
         m_score = other.m_score;
         m_lives = other.m_lives;
         m_database = other.m_database;
+        m_moveObject = other.m_moveObject;
     }
     return *this;
 }
@@ -59,11 +67,11 @@ void Player::AddPlayerObject()
     Bullet m_bullet;
     GameObject object(std::move(m_tank), std::move(m_bullet));
     m_object = std::move(object);
-    // m_moveObject = MovementObject(m_object);
+    //m_moveObject = MovementObject(m_object);
     m_moveObject.emplace(m_object);
-
-    std::cout << "GameObject initialized for player " << m_name << "." << std::endl;
+    //m_moveObject =GetMovementObject();
 }
+
 // void Player::AddPlayerObject(GameObject&& object)
 //{
 //    

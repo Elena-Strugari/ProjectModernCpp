@@ -17,8 +17,8 @@ using json = nlohmann::json;
 
 
 constexpr auto SERVER_URL = "http://localhost:8080";
-//static std::string ClientServer::m_username;
 std::string ClientServer::m_username = "";
+std::string ClientServer::m_gameCode = "";
 void ClientServer::connectServer()
 {
     qDebug() << "Am intrat in functia de conectare la server din ClientServer.";
@@ -194,62 +194,35 @@ bool ClientServer::ControlsClient(const std::string& controls)
     return false;
 }
 
-bool ClientServer::SaveSettings(const std::string& volume)
-    {
-        try {
-            // Trimite volumul către server printr-o cerere POST
-            cpr::Response response = cpr::Post(
-                cpr::Url{ std::string(SERVER_URL) + "/save_general_settings" },
-                cpr::Body{ "{\"volume\":\"" + volume + "\"}" },
-                cpr::Header{ {"Content-Type", "application/json"} }
-            );
 
-            if (response.status_code == 200) {
-                std::cout << "Settings saved successfully: " << response.text << std::endl;
-                return true;
-            }
-            else {
-                std::cerr << "Failed to save settings: " << response.text << std::endl;
-                return false;
-            }
-        }
-        catch (const std::exception& ex) {
-            std::cerr << "Error during settings save request: " << ex.what() << std::endl;
-            return false;
-        }
-    }
-
-bool ClientServer::SendKeyPress(int keyCode) {
+std::string ClientServer::GenerateCode(uint8_t level, const std::string& username)
+{
     try {
-        // Create JSON payload
         std::string name = ClientServer::m_username;
-
-        nlohmann::json keyPressJson;
-        keyPressJson["username"] = name;
-        keyPressJson["key_code"] = keyCode;
-
-        // Send POST request
-        cpr::Response response = cpr::Post(
-            cpr::Url{ std::string(SERVER_URL) + "/key_press" },
-            cpr::Body{ keyPressJson.dump() },
-            cpr::Header{ {"Content-Type", "application/json"} }
+        cpr::Response response = cpr::Get(
+            cpr::Url{ std::string(SERVER_URL) + "/generate_code" },
+            cpr::Parameters{
+                {"level", std::to_string(level)},    // Add level as a query parameter
+                {"username", name}               // Add username as a query parameter
+            },
+            cpr::Header{ {"Content-Type", "application/json"} }  // Optional, you can send this header
         );
 
         if (response.status_code == 200) {
-            std::cout << "Key press sent successfully: " << response.text << std::endl;
-            return true;
+            std::cout << "Generated Game Code: " << response.text << std::endl;
+            m_gameCode = response.text;
+            return response.text;  // Return the generated game code
         }
         else {
-            std::cerr << "Failed to send key press. Response: " << response.text << std::endl;
-            return false;
+            std::cerr << "Error: " << response.status_code << " " << response.text << std::endl;
+            return "";  // Return an empty string if there was an error
         }
     }
     catch (const std::exception& ex) {
-        std::cerr << "Exception while sending key press: " << ex.what() << std::endl;
-        return false;
+        std::cerr << "Exception during generating game code: " << ex.what() << std::endl;
+        return "";  // Return an empty string on exception
     }
 }
-
 
 bool ClientServer::JoinGame(const std::string& gameCode, const std::string& username)
 {
@@ -284,31 +257,93 @@ bool ClientServer::JoinGame(const std::string& gameCode, const std::string& user
         return false;
     }
 }
-std::string ClientServer::GenerateCode(uint8_t level, const std::string& username)
-{
+
+bool ClientServer::SendKeyPress(int keyCode) {
     try {
+        // Create JSON payload
         std::string name = ClientServer::m_username;
-        cpr::Response response = cpr::Get(
-            cpr::Url{ std::string(SERVER_URL) + "/generate_code" },
-            cpr::Parameters{
-                {"level", std::to_string(level)},    // Add level as a query parameter
-                {"username", name}               // Add username as a query parameter
-            },
-            cpr::Header{ {"Content-Type", "application/json"} }  // Optional, you can send this header
+        std::string code = ClientServer::m_gameCode;
+
+        nlohmann::json keyPressJson;
+        keyPressJson["username"] = name;
+        keyPressJson["code"] = code;
+        keyPressJson["key_code"] = keyCode;
+
+        // Send POST request
+        cpr::Response response = cpr::Post(
+            cpr::Url{ std::string(SERVER_URL) + "/key_press" },
+            cpr::Body{ keyPressJson.dump() },
+            cpr::Header{ {"Content-Type", "application/json"} }
         );
 
         if (response.status_code == 200) {
-            std::cout << "Generated Game Code: " << response.text << std::endl;
-            return response.text;  // Return the generated game code
+            std::cout << "Key press sent successfully: " << response.text << std::endl;
+            return true;
         }
         else {
-            std::cerr << "Error: " << response.status_code << " " << response.text << std::endl;
-            return "";  // Return an empty string if there was an error
+            std::cerr << "Failed to send key press. Response: " << response.text << std::endl;
+            return false;
         }
     }
     catch (const std::exception& ex) {
-        std::cerr << "Exception during generating game code: " << ex.what() << std::endl;
-        return "";  // Return an empty string on exception
+        std::cerr << "Exception while sending key press: " << ex.what() << std::endl;
+        return false;
+    }
+}
+
+bool ClientServer::IsLastPlayer()
+{
+    // Create the JSON body for the request
+    std::string name = ClientServer::m_username;
+    std::string code = ClientServer::m_gameCode;
+
+    json requestBody = {
+        {"username", name},
+        {"game_code", code}
+    };
+
+    // Send the POST request to the server
+    cpr::Response response = cpr::Post(
+        cpr::Url{ std::string(SERVER_URL) + " /is_last_player" },  // URL of your server
+        cpr::Body{ requestBody.dump() },
+        cpr::Header{ {"Content-Type", "application/json"} }
+    );
+
+    // Check the status code
+    if (response.status_code == 200) {
+        std::cout << response.text << std::endl;
+        return true;
+    }
+    else {
+        std::cerr << "Error: " << response.status_code << " - " << response.text << std::endl;
+        return false;
+    }
+}
+
+
+
+bool ClientServer::SaveSettings(const std::string& volume)
+{
+    try {
+        // Trimite volumul către server printr-o cerere POST
+        cpr::Response response = cpr::Post(
+            cpr::Url{ std::string(SERVER_URL) + "/save_general_settings" },
+            cpr::Body{ "{\"volume\":\"" + volume + "\"}" },
+            cpr::Header{ {"Content-Type", "application/json"} }
+        );
+
+        if (response.status_code == 200) {
+            std::cout << "Settings saved successfully: " << response.text << std::endl;
+            return true;
+        }
+        else {
+            std::cerr << "Failed to save settings: " << response.text << std::endl;
+            return false;
+        }
+    }
+    catch (const std::exception& ex) {
+        std::cerr << "Error during settings save request: " << ex.what() << std::endl;
+        return false;
     }
 }
 

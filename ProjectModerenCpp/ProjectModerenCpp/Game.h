@@ -33,6 +33,9 @@ public:
     void HandlePlayerActions(std::shared_ptr<Player> player);  // Declare the method for handling player actions
     Map GetMap()const;
     std::vector<std::shared_ptr<Player>> m_players; 
+    bool IsLastPlayer(const std::shared_ptr<Player>& player) const;
+    //void GetNameLastPlayer();
+
     //std::array<std::shared_ptr<Player>, 4> m_players;
 
 private:

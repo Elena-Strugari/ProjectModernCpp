@@ -181,3 +181,18 @@ Map Game::GetMap() const
     return m_map;
 }
 
+bool Game::IsLastPlayer(const std::shared_ptr<Player>& player) const {
+    if (m_players.size() == 1 && m_players[0] == player) {
+        return true;
+    }
+    return false;
+}
+
+//void Game::GetNameLastPlayer()
+//{
+//    for (const auto& player : m_players) {
+//           if (IsLastPlayer(player)) {
+//              std::cout << player->GetName() << " is the last player in the game!" << std::endl;
+//           }
+//    }
+//}

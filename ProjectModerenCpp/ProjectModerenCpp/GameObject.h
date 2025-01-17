@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <cstdint>
-#include "Tank.h"
 #include "Bullet.h"
-//import Tank;
+//#include "Tank.h"
+import Tank;
 class GameObject 
 {
 public:

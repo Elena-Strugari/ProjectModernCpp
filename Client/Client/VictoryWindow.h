@@ -2,37 +2,38 @@
 #define VICTORYWINDOW_H
 
 #include <QWidget>
-#include <QPushButton>
 #include <QLabel>
-#include <QListWidget>
-#include "BackgroundHelper.h"
+#include <QPushButton>
 
 class VictoryWindow : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit VictoryWindow(int currentScore, int totalScore, const QStringList& leaderboard, QWidget* parent = nullptr);
+    explicit VictoryWindow(QWidget* parent = nullptr);
     ~VictoryWindow();
 
+    void setPlayerScores(int currentScore, int totalScore); // Update current and total scores
+    void setLeaderboard(const QVector<QPair<QString, int>>& leaderboard); // Update leaderboard with player names and scores
+
 signals:
-    void returnToMainMenu(); // Semnal pentru întoarcerea la meniul principal
+    void StartNewGame();
+    void ExitGame();
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
 
 private slots:
-    void onMainMenuButtonClicked(); // Slot pentru acțiunea butonului
+    void onStartNewGameClicked();
+    void onExitClicked();
 
 private:
-    int currentScore;
-    int totalScore;
     QLabel* titleLabel;
-    QLabel* currentScoreLabel;
-    QLabel* totalScoreLabel;
+    QLabel* scoreLabel; // Displays current and total score
     QLabel* leaderboardTitleLabel;
-    QListWidget* leaderboardWidget;
-    QPushButton* mainMenuButton;
+    QList<QLabel*> leaderboardLabels; // Leaderboard labels
+    QPushButton* startNewGameButton;
+    QPushButton* exitGameButton;
 };
 
 #endif // VICTORYWINDOW_H

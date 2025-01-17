@@ -153,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="Bomb.cppm" />
     <ClCompile Include="BonusLife.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="CollisionManager.cpp" />
@@ -170,6 +171,7 @@
     <ClCompile Include="routing.cpp" />
     <ClCompile Include="ServerObject.cpp" />
     <ClCompile Include="Tank.cpp" />
+    <ClCompile Include="Tank.cppm" />
     <ClCompile Include="UserManager.cpp" />
     <ClCompile Include="Wall.cpp" />
     <ClCompile Include="Wall.cppm" />

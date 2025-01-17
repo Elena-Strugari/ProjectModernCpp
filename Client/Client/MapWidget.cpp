@@ -11,11 +11,11 @@ void MapWidget::setMapData(const QJsonArray& data)
 {
     qDebug() << "Am intrat in setMapData.";
     for (const QJsonValue& row : data) {
-        qDebug() << row;
+        //qDebug() << row;
     }
     mapData = data; // Salvează datele
     for (const QJsonValue& row : mapData) {
-        qDebug() << row;
+        //qDebug() << row;
     }
 
     update();       // Reîmprospătează widget-ul (declanșează paintEvent)
@@ -90,17 +90,17 @@ void MapWidget::paintEvent(QPaintEvent* event) {
                 img = QImage(); // Imagine nulă
             }
 
-            if (img.isNull()) {
-                qDebug() << "Imaginea nu a putut fi încărcată!";
-            }
-            else {
-                qDebug() << "Imaginea a fost încărcată cu succes!";
-            }
+            //if (img.isNull()) {
+            //    qDebug() << "Imaginea nu a putut fi încărcată!";
+            //}
+            //else {
+            //    qDebug() << "Imaginea a fost încărcată cu succes!";
+            //}
 
-            if (img.isNull()) {
-                qDebug() << "Eroare: Imaginea pentru valoarea" << value << "nu a fost încărcată!";
-                continue; // Sari peste această celulă
-            }
+            //if (img.isNull()) {
+            //    qDebug() << "Eroare: Imaginea pentru valoarea" << value << "nu a fost încărcată!";
+            //    continue; // Sari peste această celulă
+            //}
 
             // Definire și desenare celulă
             QRect cellRect(offsetX + col * squareSize, offsetY + row * squareSize, squareSize, squareSize);

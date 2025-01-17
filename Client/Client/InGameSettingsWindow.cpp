@@ -108,6 +108,7 @@ void InGameSettingsWindow::onExitGame()
     qDebug() << "Exit Game clicked.";
     QMessageBox::information(this, "Exit", "Exit button clicked.");
     emit exitGame(); // Emiterea semnalului
+    this->close();
 }
 void InGameSettingsWindow::onSaveSettings()
 {

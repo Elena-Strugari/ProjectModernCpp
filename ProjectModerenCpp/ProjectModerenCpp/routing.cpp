@@ -11,8 +11,12 @@ using json = nlohmann::json;
 using namespace http;
 Database db("NovaDatabase5.db");
 namespace http {
-    std::unordered_map<std::string, Player> playersActive;
+    //std::unordered_map<std::string, Player> playersActive;
+    std::unordered_map<std::string, std::shared_ptr<Player>> playersActive;
+
     std::unordered_map<std::string, Game> games;
+    //std::unordered_map<std::string, MovementObject> playersObject; 
+
 
 }
 
@@ -55,8 +59,10 @@ void http::Routing::Run()
                 return crow::response(403, "Player is already active");
             }
 
-            Player player(username, db);
-            playersActive.emplace(username, std::move(player));
+           /* Player player(username, db);
+            playersActive.emplace(username, std::move(player));*/
+            std::shared_ptr<Player> player = std::make_shared<Player>(username, db);
+            playersActive.emplace(username, player);
 
             return crow::response(200, "Login successful");
         }
@@ -79,8 +85,10 @@ void http::Routing::Run()
         }
         else {
             db.AddClient(username, 0);
-            Player player(username, db);
-            playersActive.emplace(username, std::move(player));
+           /* Player player(username, db);
+            playersActive.emplace(username, std::move(player));*/
+            std::shared_ptr<Player> player = std::make_shared<Player>(username, db);
+            playersActive.emplace(username, player);
             return crow::response(200, "Registration successful");
         }
         });
@@ -186,6 +194,8 @@ void http::Routing::Run()
             games.emplace(gameCode, game);
             std::shared_ptr<Player> newPlayer = std::make_shared<Player>(username, db);
             game.AddPlayer(newPlayer);
+            /*MovementObject object = newPlayer.GetMovementObject();
+            playersObject.emplace(username, object);*/
             /*Map map = game.GetMap();
             map.DisplayMap();*/
             std::cout << "Player " << username << " joined the game " << gameCode << std::endl;
@@ -322,12 +332,13 @@ void http::Routing::Run()
         try {
             // Parse the JSON payload
             auto json = crow::json::load(req.body);
-            if (!json.has("username") || !json.has("key_code")) {
+            if (!json.has("username") || !json.has("key_code") || !json.has("code")) {
                 return crow::response(400, "Missing 'username' or 'key_code' field");
             }
 
             // Extract fields from the JSON
             std::string username = json["username"].s();
+            std::string code = json["code"].s();
             int keyCode = json["key_code"].i();
 
             // Check if the user is active
@@ -336,7 +347,8 @@ void http::Routing::Run()
             }
 
             // Get the player object
-            auto& player = playersActive[username];
+            std::shared_ptr<Player> player = playersActive[username];
+            Game& game = games[code];
 
             // Fetch player controls from the database
             int up, down, left, right, shoot;
@@ -364,8 +376,8 @@ void http::Routing::Run()
             else if (keyCode == shoot) {
                 // If the keyCode corresponds to the shoot action
                 //player->GetMovementObject().Shoot();
-                directionBullet = player.GetMovementObject().GetDirection();
-                player.GetMovementObject().Move(directionBullet, 1);
+               /* directionBullet = player.GetMovementObject().GetDirection();
+                player.GetMovementObject().Move(directionBullet, 1);*/
                 std::cout << "Player " << username << " shot a bullet." << std::endl;
                 return crow::response(200, "Shoot action processed");
             }
@@ -374,8 +386,8 @@ void http::Routing::Run()
             }
 
             // Move the player in the direction based on the key press
-            player.GetMovementObject().Move(direction);
-
+           // player.GetMovementObject().Move(direction);
+            game.MovePlayer(player, direction);
             std::cout << "Player " << username << " moved in direction " << static_cast<int>(direction) << std::endl;
 
             return crow::response(200, "Key press processed successfully");
@@ -387,6 +399,46 @@ void http::Routing::Run()
         });
 
 
+    CROW_ROUTE(m_app, "/is_last_player").methods("POST"_method)([](const crow::request& req) {
+        // Parse the JSON request body
+        auto json = crow::json::load(req.body);
+        if (!json || !json.has("username") || !json.has("game_code")) {
+            return crow::response(400, "Invalid JSON or missing fields");
+        }
+
+        std::string username = json["username"].s();
+        std::string gameCode = json["game_code"].s();
+
+        // Check if the game exists
+        if (games.find(gameCode) == games.end()) {
+            return crow::response(404, "Game code not found");
+        }
+
+        // Get the game instance
+        Game& game = games[gameCode];
+
+        // Find the player in the game
+        std::shared_ptr<Player> player = nullptr;
+        for (const auto& p : game.m_players) {
+            if (p->GetName() == username) {
+                player = p;
+                break;
+            }
+        }
+
+        // If the player is not found
+        if (!player) {
+            return crow::response(404, "Player not found");
+        }
+
+        // Check if the player is the last player
+        if (game.IsLastPlayer(player)) {
+            return crow::response(200, username + " is the last player in the game");
+        }
+        else {
+            return crow::response(200, username + " is not the last player in the game");
+        }
+        });
 
 
 

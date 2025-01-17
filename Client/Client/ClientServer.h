@@ -38,6 +38,9 @@ public:
 	static bool SetInGameSettings(const std::string& settingsJson);
 	static bool SendKeyPress(int key);
 	static std::string m_username;
+	static std::string m_gameCode;
+
+	static bool IsLastPlayer();
 private:
 	QJsonArray mapData;
 };
