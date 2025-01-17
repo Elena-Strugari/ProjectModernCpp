@@ -41,6 +41,8 @@ public:
 	static std::string m_gameCode;
 
 	static bool IsLastPlayer();
+	static void RefreshGameMapIncrementally();
+	static void UpdateMapCell(int x, int y, const QString& type); 
 private:
 	QJsonArray mapData;
 };

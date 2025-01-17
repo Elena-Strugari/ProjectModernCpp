@@ -424,3 +424,36 @@ bool ClientServer::SetInGameSettings(const std::string& settingsJson) {
     }
 }
 
+void ClientServer::RefreshGameMapIncrementally() {
+    // Fetch the updated map data from the server
+    cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:8080/get_map_changes" });
+
+    if (response.status_code == 200) {
+        // Parse the received changes from the server
+        QJsonDocument doc = QJsonDocument::fromJson(response.text.c_str());
+        QJsonObject changes = doc.object();
+
+        // Assuming the changed cells are in the "changed_cells" array
+        QJsonArray changedCells = changes["changed_cells"].toArray();
+
+        // Apply the changes to the map
+        for (const QJsonValue& cell : changedCells) {
+            QJsonObject cellData = cell.toObject();
+            int x = cellData["x"].toInt();
+            int y = cellData["y"].toInt();
+            QString type = cellData["type"].toString();
+
+            // Update the corresponding cell in the map
+            UpdateMapCell(x, y, type);
+        }
+    }
+    else {
+        qDebug() << "Failed to fetch map changes from the server.";
+    }
+}
+
+void ClientServer::UpdateMapCell(int x, int y, const QString& type) {
+    // Here you would implement the actual logic to update the map in your UI
+    qDebug() << "Updating cell at (" << x << ", " << y << ") with type: " << type;
+    // For example, updating the map widget, or a QGraphicsItem, etc.
+}

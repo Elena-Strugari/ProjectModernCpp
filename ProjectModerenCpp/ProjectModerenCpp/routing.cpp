@@ -373,6 +373,34 @@ void http::Routing::Run()
         }
         });
 
+    CROW_ROUTE(m_app, "/get_map_changes").methods("GET"_method)([](const crow::request& req) {
+        try {
+            // Create a JSON object to send back
+            nlohmann::json responseJson;
+
+            // Example: assume this is the map and we track changes
+            // For simplicity, let's assume we're sending one changed cell
+            nlohmann::json changedCell;
+            changedCell["x"] = 5;
+            changedCell["y"] = 10;
+            changedCell["type"] = "player";  // You can add more types as necessary
+
+            // Add the changed cell to the response
+            responseJson["changed_cells"].push_back(changedCell);
+
+            // Send the JSON response back to the client
+            crow::response res;
+            res.code = 200;
+            res.write(responseJson.dump());
+
+            return res;
+        }
+        catch (const std::exception& e) {
+            return crow::response(500, "Error generating map changes: " + std::string(e.what()));
+        }
+        });
+
+
 
     CROW_ROUTE(m_app, "/is_last_player").methods("POST"_method)([](const crow::request& req) {
         // Parse the JSON request body

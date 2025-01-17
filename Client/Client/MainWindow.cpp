@@ -27,10 +27,17 @@ MainWindow::MainWindow(QWidget* parent)
 
     connectServer();
     StartGameWindoww();
+
+    // Setup the QTimer for refreshing the map periodically
+    //mapRefreshTimer = new QTimer(this);
+    //connect(mapRefreshTimer, &QTimer::timeout, this, &ClientServer::RefreshGameMapIncrementally);
+    //mapRefreshTimer->start(500);  // Update the map every 500 milliseconds (adjust as needed)
 }
 
 MainWindow::~MainWindow() {
     delete ui;
+    delete mapRefreshTimer;  // Clean up the timer
+
 }
 
 void MainWindow::connectServer() {
@@ -231,6 +238,10 @@ void MainWindow::GameWindow(const QString& gameCode)
         GameMapWindow* gameMapWindow = new GameMapWindow();
         gameMapWindow->show();
 
+        mapRefreshTimer = new QTimer(this);
+        connect(mapRefreshTimer, &QTimer::timeout, this, &ClientServer::RefreshGameMapIncrementally);
+        mapRefreshTimer->start(500);  // Update the map every 500 milliseconds (adjust as needed)
+
         connect(gameMapWindow, &GameMapWindow::KeyPressed, this, &MainWindow::HandleKeyPressedOnMap);
         connect(gameMapWindow, &GameMapWindow::SettingsClicked, this, &MainWindow::HandleInGameSettings);
 
@@ -290,21 +301,30 @@ void MainWindow::HandleBackToGameSetting() {
 }
 
 // Alte sloturi similare
+
 void MainWindow::HandleExitGameSetting() {
-   // qDebug() << "Exit game!";
+    // qDebug() << "Exit game!";
     if (ClientServer::IsLastPlayer())
     {
         qDebug() << "Exit game!";
         VictoryWindow* victoryGame = new VictoryWindow(this);
         victoryGame->show();
+        connect(victoryGame, &VictoryWindow::StartNewGame, this, &MainWindow::CreateJoinWindow);
+        connect(victoryGame, &VictoryWindow::ExitGame, this, &MainWindow::HandleCloseGame);
     }
     else
     {
-         qDebug() << "Exit game!";
+        qDebug() << "Exit game!";
         GameOverWindow* gameOver = new GameOverWindow(this);
         gameOver->show();
         connect(gameOver, &GameOverWindow::StartNewGame, this, &MainWindow::CreateJoinWindow);
+        connect(gameOver, &GameOverWindow::StartNewGame, this, &MainWindow::HandleCloseGame);
     }
+}
+
+void MainWindow::HandleCloseGame()
+{
+    QApplication::quit();
 }
 
 void MainWindow::HandleSaveSettings(int volume)
@@ -353,3 +373,4 @@ void MainWindow::HandleGeneralSettings()
     connect(generalSettings, &GeneralSettingsWindow::Logout, this, &MainWindow::HandleLogOut);
     connect(generalSettings, &GeneralSettingsWindow::Delete, this, &MainWindow::HandleDeleteAccount);
 }
+

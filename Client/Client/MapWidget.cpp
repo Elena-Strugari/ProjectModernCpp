@@ -2,6 +2,8 @@
 #include <QPainter>
 #include <QResizeEvent>
 #include <QDebug>
+#include <cstdlib>
+#include <ctime>
 #include "NoGreenScreen.h"
 MapWidget::MapWidget(QWidget* parent) : QWidget(parent) {
     qDebug() << "MapWidget created:" << this;
@@ -80,7 +82,30 @@ void MapWidget::paintEvent(QPaintEvent* event) {
             }
             else if (value == 5)
             {
-                img = RemoveGreenScreen(":/PlayersImages/resources/Astronaut_1.png");
+                std::srand(static_cast<unsigned>(std::time(nullptr)));
+                int randomNumber = 11 + std::rand() % 4;
+                switch (randomNumber)
+                {
+                case 11:
+                {
+                    img = RemoveGreenScreen(":/PlayersImages/resources/Astronaut_1.png");
+                    break;
+                };
+                case 12:
+                {
+                    img = RemoveGreenScreen(":/PlayersImages/resources/Astronaut_2.png");
+                    break;
+                }
+                case 13:
+                {
+                    img = RemoveGreenScreen(":/PlayersImages/resources/Astronaut_3.png");
+                    break;
+                } case 14:
+                {
+                    img = RemoveGreenScreen(":/PlayersImages/resources/Astronaut_4.png");
+                    break;
+                }
+                }
             }
             else if (value == 7)
             {

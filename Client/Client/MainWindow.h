@@ -3,6 +3,9 @@
 #pragma once
 
 #include <QMainWindow>
+#include <QTimer>  // Include QTimer
+#include <QJsonArray>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -44,9 +47,13 @@ private slots:
     void HandleDeleteAccount();
     void HandleBackToGameSetting();
     void HandleExitGameSetting();
+    void HandleCloseGame();
+
 
 private:
     Ui::MainWindow* ui;
+    QTimer* mapRefreshTimer;
+
 
     void connectServer();
     void StartGameWindoww();
