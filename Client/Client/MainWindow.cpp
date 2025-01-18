@@ -25,8 +25,12 @@ MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
+   
     connectServer();
     StartGameWindoww();
+
+   // MapWidget* mapWidget = new MapWidget(this);
+
 
     // Setup the QTimer for refreshing the map periodically
     //mapRefreshTimer = new QTimer(this);
@@ -374,3 +378,7 @@ void MainWindow::HandleGeneralSettings()
     connect(generalSettings, &GeneralSettingsWindow::Delete, this, &MainWindow::HandleDeleteAccount);
 }
 
+//void MainWindow::onCellUpdated(int x, int y) {
+//    // Update only the cell at position (x, y) on the map
+//    ui->mapWidget->update(QRect(y , x));
+//}

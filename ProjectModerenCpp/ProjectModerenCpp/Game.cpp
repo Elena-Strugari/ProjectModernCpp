@@ -3,6 +3,7 @@
 #include "libs/nlohmann/json.hpp"
 #include <iostream>
 #include <stdexcept>
+#include <utility>
 using json = nlohmann::json;
 
 Game::Game(uint8_t level, const std::string& code)
@@ -89,7 +90,11 @@ void Game::MovePlayer(const std::shared_ptr<Player>& player, MovementObject::Dir
         movement.SetPosition(newX, newY);
         movement.SetDirection(direction);
 
-        UpdateClientsWithNewMap();
+        std::pair<int, int> lastCoord = { currentX, currentY };
+        std::pair<int, int> newCoord = { newX, newY };
+
+        RecordChange(newCoord, lastCoord, "player");
+        //UpdateClientsWithNewMap();
     }
     else {
         std::cout << "Movement blocked to (" << newX << ", " << newY << ") due to collision or obstruction.\n";
@@ -99,14 +104,14 @@ void Game::MovePlayer(const std::shared_ptr<Player>& player, MovementObject::Dir
 
 
 
-void Game::UpdateClientsWithNewMap() {
-
-    std::cout << "mapUpdate";
-    //for (auto& client : m_players) {
-    //    // Send the updated map to each client
-    //    client->SendUpdatedMap(m_map.GetMapAsJson());
-    //}
-}
+//void Game::UpdateClientsWithNewMap() {
+//
+//    std::cout << "mapUpdate";
+//    //for (auto& client : m_players) {
+//    //    // Send the updated map to each client
+//    //    client->SendUpdatedMap(m_map.GetMapAsJson());
+//    //}
+//}
 
 //nlohmann::json Game::GetMapAsJson() {
 //    nlohmann::json jsonMap;
@@ -193,6 +198,18 @@ bool Game::ExistPlayerInGame()
 {
     return false;
 }
+
+void Game::RecordChange(const std::pair<int, int>& newCoord, const std::pair<int, int>& lastCoord, const std::string& type)
+{
+    m_changedCells.push_back({ newCoord, lastCoord, type });
+
+}
+
+const std::vector<std::tuple<std::pair<int, int>, std::pair<int, int>, std::string>>& Game::GetChangedCells() const
+{
+    return m_changedCells;
+}
+
 
 //void Game::GetNameLastPlayer()
 //{

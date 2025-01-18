@@ -3,6 +3,7 @@
 #include <QJsonArray>
 #include <cpr/cpr.h>
 #include <string>
+#include "MapWidget.h"
 
 
 class ClientServer
@@ -41,9 +42,10 @@ public:
 	static std::string m_gameCode;
 
 	static bool IsLastPlayer();
+	static void UpdateMapCellPlayer(int xNewe, int yNew, int xLast, int yLast); 
+	 QJsonArray mapData;
 	static void RefreshGameMapIncrementally();
-	static void UpdateMapCell(int x, int y, const QString& type); 
 private:
-	QJsonArray mapData;
+	MapWidget* mapWidget = new MapWidget();
 };
 

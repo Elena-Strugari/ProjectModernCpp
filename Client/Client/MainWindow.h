@@ -50,6 +50,10 @@ private slots:
     void HandleCloseGame();
 
 
+    //void onCellUpdated(int x, int y);
+
+
+
 private:
     Ui::MainWindow* ui;
     QTimer* mapRefreshTimer;

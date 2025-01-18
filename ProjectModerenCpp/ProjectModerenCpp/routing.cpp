@@ -377,28 +377,74 @@ void http::Routing::Run()
         try {
             // Create a JSON object to send back
             nlohmann::json responseJson;
+            std::string gameCode = req.url_params.get("game_code");
 
-            // Example: assume this is the map and we track changes
-            // For simplicity, let's assume we're sending one changed cell
-            nlohmann::json changedCell;
-            changedCell["x"] = 5;
-            changedCell["y"] = 10;
-            changedCell["type"] = "player";  // You can add more types as necessary
+            if (gameCode.empty()) {
+                return crow::response(400, "Game code is required");
+            }
+            // Get the list of changed cells from the game
+            Game& game = games[gameCode]; // Replace "game_code" with actual game code
+            const auto& changedCells = game.GetChangedCells();
 
-            // Add the changed cell to the response
-            responseJson["changed_cells"].push_back(changedCell);
+            // Iterate over the changed cells and add them to the JSON response
+            for (const auto& change : changedCells) {
+                const auto& [newCoord, lastCoord, type] = change;
+
+                // Create a JSON object for each changed cell
+                nlohmann::json changedCell;
+                changedCell["new_x"] = newCoord.first;
+                changedCell["new_y"] = newCoord.second;
+                changedCell["last_x"] = lastCoord.first;
+                changedCell["last_y"] = lastCoord.second;
+                changedCell["type"] = type;
+
+                // Add the changed cell to the response
+                responseJson["changed_cells"].push_back(changedCell);
+            }
 
             // Send the JSON response back to the client
             crow::response res;
             res.code = 200;
             res.write(responseJson.dump());
 
+            std::string serializedJson = responseJson.dump();
+
+            // Log the serialized JSON for debugging
+            std::cout << "Serialized JSON Response: " << serializedJson << std::endl;
             return res;
         }
         catch (const std::exception& e) {
             return crow::response(500, "Error generating map changes: " + std::string(e.what()));
         }
         });
+
+
+    //CROW_ROUTE(m_app, "/get_map_changes").methods("GET"_method)([](const crow::request& req) {
+    //    try {
+    //        // Create a JSON object to send back
+    //        nlohmann::json responseJson;
+
+    //        // Example: assume this is the map and we track changes
+    //        // For simplicity, let's assume we're sending one changed cell
+    //        nlohmann::json changedCell;
+    //        changedCell["x"] = 5;
+    //        changedCell["y"] = 10;
+    //        changedCell["type"] = "player";  // You can add more types as necessary
+
+    //        // Add the changed cell to the response
+    //        responseJson["changed_cells"].push_back(changedCell);
+
+    //        // Send the JSON response back to the client
+    //        crow::response res;
+    //        res.code = 200;
+    //        res.write(responseJson.dump());
+
+    //        return res;
+    //    }
+    //    catch (const std::exception& e) {
+    //        return crow::response(500, "Error generating map changes: " + std::string(e.what()));
+    //    }
+    //    });
 
 
 

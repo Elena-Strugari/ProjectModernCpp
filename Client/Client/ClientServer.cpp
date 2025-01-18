@@ -19,6 +19,8 @@ using json = nlohmann::json;
 constexpr auto SERVER_URL = "http://localhost:8080";
 std::string ClientServer::m_username = "";
 std::string ClientServer::m_gameCode = "";
+//QJsonArray ClientServer::mapData;
+
 void ClientServer::connectServer()
 {
     qDebug() << "Am intrat in functia de conectare la server din ClientServer.";
@@ -138,6 +140,7 @@ void ClientServer::FetchAndProcessMap(const std::string& gameCode) {
                 qMapArray.append(qRow);
             }
 
+            //ClientServer::mapData = qMapArray;
             this->mapData = qMapArray;
         }
         else {
@@ -424,36 +427,143 @@ bool ClientServer::SetInGameSettings(const std::string& settingsJson) {
     }
 }
 
+    //if (response.status_code == 200) {
+    //    // Parse the received changes from the server
+    //    QJsonDocument doc = QJsonDocument::fromJson(response.text.c_str());
+    //    QJsonObject changes = doc.object();
+
+    //    // Assuming the changed cells are in the "changed_cells" array
+    //    QJsonArray changedCells = changes["changed_cells"].toArray();
+
+    //    // Apply the changes to the map
+    //    for (const QJsonValue& cell : changedCells) {
+    //        QJsonObject cellData = cell.toObject();
+    //        int x = cellData["x"].toInt();
+    //        int y = cellData["y"].toInt();
+    //        QString type = cellData["type"].toString();
+
+    //        // Update the corresponding cell in the map
+    //        UpdateMapCell(x, y, type);
+    //    }
+    //}
 void ClientServer::RefreshGameMapIncrementally() {
     // Fetch the updated map data from the server
-    cpr::Response response = cpr::Get(cpr::Url{ "http://localhost:8080/get_map_changes" });
+    std::string code = ClientServer::m_gameCode;
+    cpr::Response response = cpr::Get(cpr::Url{ std::string(SERVER_URL) + "/get_map_changes" },
+        cpr::Parameters{ {"game_code", code} });
 
     if (response.status_code == 200) {
         // Parse the received changes from the server
         QJsonDocument doc = QJsonDocument::fromJson(response.text.c_str());
         QJsonObject changes = doc.object();
 
-        // Assuming the changed cells are in the "changed_cells" array
+        // Assuming the changed cells are in "changed_cells" array
         QJsonArray changedCells = changes["changed_cells"].toArray();
 
         // Apply the changes to the map
         for (const QJsonValue& cell : changedCells) {
             QJsonObject cellData = cell.toObject();
-            int x = cellData["x"].toInt();
-            int y = cellData["y"].toInt();
+            int xNew = cellData["new_x"].toInt();
+            int xLast = cellData["last_x"].toInt();
+            int yNew = cellData["new_y"].toInt();
+            int yLast = cellData["last_y"].toInt();
             QString type = cellData["type"].toString();
 
             // Update the corresponding cell in the map
-            UpdateMapCell(x, y, type);
+            if(type=="player")
+                UpdateMapCellPlayer(xNew, yNew, xLast, yLast);
         }
     }
     else {
         qDebug() << "Failed to fetch map changes from the server.";
     }
 }
+void ClientServer::UpdateMapCellPlayer(int startX, int startY, int stopX, int stopY) {
+    // Validate coordinates
+    ClientServer client;
+    if (startX < 0 || startY < 0 || stopX < 0 || stopY < 0 ||
+        startY >= client.mapData.size() || stopY >= client.mapData.size() ||
+        startX >= client.mapData[startY].toArray().size() || stopX >= client.mapData[stopY].toArray().size()) {
+        qDebug() << "Invalid coordinates for update.";
+        return;
+    }
 
-void ClientServer::UpdateMapCell(int x, int y, const QString& type) {
-    // Here you would implement the actual logic to update the map in your UI
-    qDebug() << "Updating cell at (" << x << ", " << y << ") with type: " << type;
-    // For example, updating the map widget, or a QGraphicsItem, etc.
+    // Access the rows to modify
+    QJsonArray startRow = client.mapData[startY].toArray();
+    QJsonArray stopRow = client.mapData[stopY].toArray();
+
+    // Get the values at the coordinates
+    int startValue = startRow[startX].toInt();
+    int stopValue = stopRow[stopX].toInt();
+
+    // Apply your logic: e.g., swap the values
+    startRow[startX] = stopValue;
+    stopRow[stopX] = startValue;
+
+    // Update mapData with the modified rows
+    client.mapData[startY] = startRow;
+    client. mapData[stopY] = stopRow;
+    emit client.mapWidget->setMapData(client.mapData);
+
+    // Repaint the map
+   // update();
 }
+
+//void ClientServer::UpdateMapCellPlayer(int xNew, int yNew, int xLast, int yLast) {
+//    ClientServer client;
+//
+//   QJsonArray newMap = client.GetMap();
+//   const QJsonArray& row = newMap[xLast].toArray();  // Get the row as an array
+//   row[yLast] = QJsonValue(0);
+//
+//
+//   const QJsonArray& row2 = newMap[xNew].toArray();  // Get the row as an array
+//   row2[yNew] = QJsonValue(5);
+//
+//  // client.mapWidget
+//   emit client.mapWidget->cellUpdated(xNew, yNew);
+// }
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+   //newMap[xLast][yLast] = 0.toJson();
+    //QJsonArray& lastRow = newMap[xLast].toArray();
+    //QJsonArray& lastRow = client.mapData[xLast].toArray();
+    //lastRow[yLast] = 0;  // Use 0 or any other identifier for "empty"
+
+    //// Update the new position to "player" (let's assume player is represented by "5")
+    //QJsonArray& newRow = ClientServer::mapData[xNew].toArray();
+    //newRow[yNew] = 5;  // "5" represents a player
+
+    //// Now, you need to trigger a repaint for that specific area
+    //// This would need to be done by calling update() for a specific cell area in your MapWidget
+    //emit mapWidget->cellUpdated(xNew, yNew);
+
+
+    //mapData[xLast].toArray()[yLast] = "";
+
+    //// Update the new position to the respective type (e.g., player, bullet, etc.)
+    //mapData[xNew].toArray()[yNew] = "5";
+
+    ////if (mapWidget) {
+    ////    // Update last position to "empty"
+    ////    mapWidget->UpdateMapCell(xLast, yLast, "empty");
+
+    ////    // Update the new position to "player"
+    ////    mapWidget->UpdateMapCell(xNew, yNew, "player");
+    ////}
+    ////else {
+    ////    qDebug() << "Error: mapWidget is not initialized.";
+    ////}
+    ////void ClientServer::UpdateMapCell(int x, int y, const QString& type) {
+    //// Here you would implement the actual logic to update the map in your UI
+    //qDebug() << "Updating cell at (" << xLast << ", " << yNew << ") with type: ";
+   // mapWidget->setMapData(changedMapData); // Set updated map data with the modified cell
+
+    // For example, updating the map widget, or a QGraphicsItem, etc.
+//}
