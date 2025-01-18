@@ -322,7 +322,7 @@ void MainWindow::HandleExitGameSetting() {
         GameOverWindow* gameOver = new GameOverWindow(this);
         gameOver->show();
         connect(gameOver, &GameOverWindow::StartNewGame, this, &MainWindow::CreateJoinWindow);
-        connect(gameOver, &GameOverWindow::StartNewGame, this, &MainWindow::HandleCloseGame);
+        connect(gameOver, &GameOverWindow::ExitGame, this, &MainWindow::HandleCloseGame);
     }
 }
 

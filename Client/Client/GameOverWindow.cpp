@@ -11,6 +11,17 @@ GameOverWindow::GameOverWindow(QWidget* parent)
     setWindowTitle("Game Over");
     resize(800, 600);
 
+    setWindowFlags(Qt::Window | Qt::WindowStaysOnTopHint); // Asigură-te că fereastra apare deasupra celorlalte
+
+    // Debugging - verifică dacă fereastra este vizibilă și activă
+  /*  qDebug() << "GameWindow visibility:" << isVisible();
+    qDebug() << "gameWindow isActiveWindow:" << isActiveWindow();*/
+
+    // Mută și aduce fereastra în prim-plan
+    //move(100, 100);      // Mută fereastra într-o poziție clar vizibilă
+    activateWindow();    // Forțează activarea ferestrei
+    raise();
+
     // Initialize background
     BackgroundHelper::InitializeBackground(this);
 
@@ -91,6 +102,7 @@ void GameOverWindow::onStartNewGameClicked()
 {
     QMessageBox::information(this, "Start New Game", "Starting a new game...");
     emit StartNewGame();
+    this->close();
 }
 void GameOverWindow::onExitClicked()
 {

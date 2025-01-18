@@ -16,6 +16,17 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
     setWindowTitle("General Settings");
     resize(800, 600);
 
+    setWindowFlags(Qt::Window | Qt::WindowStaysOnTopHint); // Asigură-te că fereastra apare deasupra celorlalte
+
+    // Debugging - verifică dacă fereastra este vizibilă și activă
+    /*qDebug() << "GameWindow visibility:" << isVisible();
+    qDebug() << "gameWindow isActiveWindow:" << isActiveWindow();*/
+
+    // Mută și aduce fereastra în prim-plan
+    //move(100, 100);      // Mută fereastra într-o poziție clar vizibilă
+    activateWindow();    // Forțează activarea ferestrei
+    raise();
+
     // Initializează fundalul
    BackgroundHelper:: InitializeBackground(this);
 

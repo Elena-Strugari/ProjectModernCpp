@@ -1,4 +1,4 @@
-#include "CreateOrJoinGameWindow.h"
+﻿#include "CreateOrJoinGameWindow.h"
 
 CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
     : QWidget(parent)
@@ -10,6 +10,17 @@ CreateOrJoinGameWindow::CreateOrJoinGameWindow(QWidget* parent)
 {
     setWindowTitle("Create Game or Join Game");
     resize(600, 400);
+
+    setWindowFlags(Qt::Window | Qt::WindowStaysOnTopHint); // Asigură-te că fereastra apare deasupra celorlalte
+
+    // Debugging - verifică dacă fereastra este vizibilă și activă
+   /* qDebug() << "GameWindow visibility:" << isVisible();
+    qDebug() << "gameWindow isActiveWindow:" << isActiveWindow();*/
+
+    // Mută și aduce fereastra în prim-plan
+    //move(100, 100);      // Mută fereastra într-o poziție clar vizibilă
+    activateWindow();    // Forțează activarea ferestrei
+    raise();
 
     BackgroundHelper::InitializeBackground(this);
 
