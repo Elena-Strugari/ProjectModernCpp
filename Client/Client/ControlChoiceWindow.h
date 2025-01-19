@@ -22,6 +22,7 @@ signals:
     void ForwardKeyEvent(QKeyEvent* event);
 };
 
+
 class ControlChoiceWindow : public QWidget
 {
     Q_OBJECT
@@ -33,15 +34,16 @@ public:
     static int GetKeyEventFromChar(char letter);
 
 signals:
-    //void ControlsSet(const QMap<QString, QString>& controls, const QString& username);
     void ControlsSet(const QMap<QString, int>& controls);
 
 private slots:
     void OnSaveControls();
     void OnResetControls();
     void HandleForwardedKeyEvent(QKeyEvent* event);
+
 protected:
     void resizeEvent(QResizeEvent* event)override;
+
 private:
     void HandleKeyEvent(const QString& keyText);
 
@@ -52,9 +54,6 @@ private:
     CustomLineEdit* shootInput;
     QPushButton* saveButton;
     QPushButton* resetButton;
-
-    //QString m_username;
-    //QMap<QString, QString> controls;
     QMap<QString, int> controls;
 };
 

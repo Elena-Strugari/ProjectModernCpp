@@ -11,22 +11,24 @@ class GeneralSettingsWindow : public QWidget
 
 public:
     explicit GeneralSettingsWindow(QWidget* parent = nullptr);
+
 signals:
     void SaveSettings(int volume);
     void EditControls();
     void Logout();
     void Delete();
     void backToGame();
+
+protected:
+    void resizeEvent(QResizeEvent* event) override;
+
 private slots:
     void onSaveSettings();
     void onEditControls();
     void onBackToGame();
     void onLogout();
     void onDelete();
-protected:
-    void resizeEvent(QResizeEvent* event) override;
 private:
-    //void InitializeBackground();
 
     QSlider* musicVolumeSlider;
     QPushButton* controlSettingsButton;

@@ -14,8 +14,8 @@ public:
     explicit VictoryWindow(QWidget* parent = nullptr);
     ~VictoryWindow();
 
-    void setPlayerScores(int currentScore, int totalScore); // Update current and total scores
-    void setLeaderboard(const std::vector<QPair<QString, int>>& leaderboard); // Update leaderboard
+    void setPlayerScores(int currentScore, int totalScore); 
+    void setLeaderboard(const std::vector<QPair<QString, int>>& leaderboard);
 
 signals:
     void StartNewGame();
@@ -29,7 +29,7 @@ private:
     QLabel* titleLabel;
     QLabel* scoreLabel;
     QLabel* leaderboardTitleLabel;
-    QListWidget* leaderboardWidget; // Use QListWidget for leaderboard
+    QListWidget* leaderboardWidget;
     QPushButton* startNewGameButton;
     QPushButton* exitGameButton;
 };

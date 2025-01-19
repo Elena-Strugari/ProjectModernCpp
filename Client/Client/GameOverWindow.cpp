@@ -3,7 +3,7 @@
 #include <QHBoxLayout>
 #include <QMessageBox>
 #include <QDebug>
-#include "BackgroundHelper.h" // Ensure this is included if used
+#include "BackgroundHelper.h"
 
 GameOverWindow::GameOverWindow(QWidget* parent)
     : QWidget(parent)
@@ -11,36 +11,24 @@ GameOverWindow::GameOverWindow(QWidget* parent)
     setWindowTitle("Game Over");
     resize(800, 600);
 
-    setWindowFlags(Qt::Window | Qt::WindowStaysOnTopHint); // Asigură-te că fereastra apare deasupra celorlalte
-
-    // Debugging - verifică dacă fereastra este vizibilă și activă
-  /*  qDebug() << "GameWindow visibility:" << isVisible();
-    qDebug() << "gameWindow isActiveWindow:" << isActiveWindow();*/
-
-    // Mută și aduce fereastra în prim-plan
-    //move(100, 100);      // Mută fereastra într-o poziție clar vizibilă
-    activateWindow();    // Forțează activarea ferestrei
+    setWindowFlags(Qt::Window | Qt::WindowStaysOnTopHint);
+    activateWindow();
     raise();
 
-    // Initialize background
     BackgroundHelper::InitializeBackground(this);
 
-    // Configure title
     titleLabel = new QLabel("Game Over", this);
     titleLabel->setAlignment(Qt::AlignCenter);
     titleLabel->setStyleSheet("font-size: 48px; font-weight: bold; color: red;");
 
-    // Placeholder for score (updated dynamically)
-    scoreLabel = new QLabel("Your Score: 0", this); // Default value
+    scoreLabel = new QLabel("Your Score: 0", this);
     scoreLabel->setAlignment(Qt::AlignCenter);
     scoreLabel->setStyleSheet("font-size: 24px; color: white;");
 
-    // Placeholder for message (updated dynamically)
-    messageLabel = new QLabel("Better luck next time!", this); // Default value
+    messageLabel = new QLabel("Better luck next time!", this);
     messageLabel->setAlignment(Qt::AlignCenter);
     messageLabel->setStyleSheet("font-size: 20px; color: white;");
 
-    // Configure buttons
     startNewGameButton = new QPushButton("Start New Game", this);
     exitGameButton = new QPushButton("Exit", this);
     QString style =
@@ -55,7 +43,6 @@ GameOverWindow::GameOverWindow(QWidget* parent)
     startNewGameButton->setFixedSize(200, 40);
     exitGameButton->setFixedSize(200, 40);
 
-    // Create main layout
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     mainLayout->addStretch();
     mainLayout->addWidget(titleLabel);
@@ -63,21 +50,18 @@ GameOverWindow::GameOverWindow(QWidget* parent)
     mainLayout->addWidget(messageLabel);
     mainLayout->addSpacing(20);
 
-    // Create a horizontal layout for the buttons
     QHBoxLayout* buttonLayout = new QHBoxLayout();
     buttonLayout->addStretch();
     buttonLayout->addWidget(startNewGameButton);
-    buttonLayout->addSpacing(20); // Add spacing between buttons
+    buttonLayout->addSpacing(20);
     buttonLayout->addWidget(exitGameButton);
     buttonLayout->addStretch();
 
-    // Add the horizontal button layout to the main layout
     mainLayout->addLayout(buttonLayout);
     mainLayout->addStretch();
 
     setLayout(mainLayout);
 
-    // Connect button signals
     connect(startNewGameButton, &QPushButton::clicked, this, &GameOverWindow::onStartNewGameClicked);
     connect(exitGameButton, &QPushButton::clicked, this, &GameOverWindow::onExitClicked);
 }

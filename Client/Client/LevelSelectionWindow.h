@@ -20,6 +20,9 @@ signals:
     void LevelMediu(const QString& username);
     void LevelHard(const QString& username);
 
+protected:
+    void resizeEvent(QResizeEvent* event)override;
+
 private:
     QLabel* titleLabel;        
     QPushButton* easyButton;    
@@ -27,10 +30,6 @@ private:
     QPushButton* hardButton;   
 
     QString m_username;
-
-    //void initializeBackground(); 
-protected:
-    void resizeEvent(QResizeEvent* event)override;
 };
 
 #endif // LEVELSELECTIONWINDOW_H

@@ -9,7 +9,6 @@
 
 namespace BackgroundHelper
 {
-   
     inline void InitializeBackground(QWidget* widget)
     {
         const QString imagePath = ":/StartImage/resources/StartGame.jpg"; 

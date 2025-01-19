@@ -3,7 +3,7 @@
 #pragma once
 
 #include <QMainWindow>
-#include <QTimer>  // Include QTimer
+#include <QTimer>
 #include <QJsonArray>
 
 
@@ -23,20 +23,18 @@ public:
 private slots:
     void onStartGameClicked();
     void HandleLogin(const QString& username);
+
     void HandleRegister(const QString& username);
-    //void HandleControlsSet(const QMap<QString, QString>& controls, const QString& username);
+   
     void HandleControlsSet(const QMap<QString, int>& controls);
+    
     void HandleCreateCode(const QString& username);
-   // void HandleCreateCode();
     void HandleCheckCode(const QString& gameCode, const QString& username);
+    
     void HandleLevel1(const QString& username);
     void HandleLevel2(const QString& username);
     void HandleLevel3(const QString& username);
     
-    /* void HandleLevel1();
-    void HandleLevel2();
-    void HandleLevel3();*/
-    //void DisplayMap(const QString& gameCode);
     void HandleInGameSettings();
     void HandleGeneralSettings();
     void HandleKeyPressedOnMap(int key);
@@ -49,11 +47,6 @@ private slots:
     void HandleExitGameSetting();
     void HandleCloseGame();
 
-
-    //void onCellUpdated(int x, int y);
-
-
-
 private:
     Ui::MainWindow* ui;
     QTimer* mapRefreshTimer;
@@ -65,8 +58,5 @@ private:
     void CreateJoinWindow();
     void GameWindow(const QString& gameCode);
     void DisplayCode(const QString& message);
-
 };
-
-
 #endif

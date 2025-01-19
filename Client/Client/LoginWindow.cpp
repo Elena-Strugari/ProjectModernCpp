@@ -1,7 +1,6 @@
 ﻿#include "LoginWindow.h"
 #include "ClientServer.h"
 #include "ControlChoiceWindow.h"
-#include "Client.h"
 #include <QMessageBox>
 #include <QVBoxLayout>
 #include <QHBoxLayout>

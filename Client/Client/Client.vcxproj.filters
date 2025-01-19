@@ -29,12 +29,6 @@
     <QtUic Include="Client.ui">
       <Filter>Form Files</Filter>
     </QtUic>
-    <QtMoc Include="Client.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <ClCompile Include="Client.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -43,22 +37,13 @@
     <ClCompile Include="ClientServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameEntity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LoginWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DisplayElements.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StartGameWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TestMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NoGreenScreen.cpp">
@@ -97,12 +82,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClientServer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameEntity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DisplayElements.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NoGreenScreen.h">

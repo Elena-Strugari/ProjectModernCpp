@@ -25,22 +25,13 @@ MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
-   
     connectServer();
     StartGameWindoww();
-
-   // MapWidget* mapWidget = new MapWidget(this);
-
-
-    // Setup the QTimer for refreshing the map periodically
-    //mapRefreshTimer = new QTimer(this);
-    //connect(mapRefreshTimer, &QTimer::timeout, this, &ClientServer::RefreshGameMapIncrementally);
-    //mapRefreshTimer->start(500);  // Update the map every 500 milliseconds (adjust as needed)
 }
 
 MainWindow::~MainWindow() {
     delete ui;
-    delete mapRefreshTimer;  // Clean up the timer
+    delete mapRefreshTimer; 
 
 }
 
@@ -75,12 +66,10 @@ void MainWindow::LogUserWindow()
     try {
         LoginWindow* loginWindow = new LoginWindow();
         loginWindow->show();
-        //ClientServer::verificare();
 
         connect(loginWindow, &LoginWindow::Login, this, &MainWindow::HandleLogin);
         connect(loginWindow, &LoginWindow::RegisterUser, this, &MainWindow::HandleRegister);
         close();
-        //ClientServer::UserWindow();
     }
     catch (const std::exception& e) {
         QMessageBox::critical(this, "Error", e.what());
@@ -118,34 +107,10 @@ void MainWindow::HandleRegister(const QString& username)
     }
 }
 
-//void MainWindow::HandleControlsSet(const QMap<QString, QString>& controls, const QString& username)
-//{
-//    QJsonObject jsonObject;
-//    jsonObject.insert("username", username);
-//    for (auto it = controls.begin(); it != controls.end(); ++it) {
-//        jsonObject.insert(it.key(), it.value());
-//    }
-//    QJsonDocument jsonDoc(jsonObject);
-//    QString jsonString = jsonDoc.toJson(QJsonDocument::Compact);
-//    QMessageBox::information(this, "JSON Sent to Server", "The following JSON was sent:\n\n" + jsonString);
-//
-//
-//    std::string controlsStr = jsonString.toUtf8().constData();
-//    if (ClientServer::ControlsClient(controlsStr))
-//    {
-//        QMessageBox::information(this, "Success", "Controls have been successfully set!");
-//        CreateJoinWindow();
-//    }
-//    else
-//        QMessageBox::warning(this, "Error", "Failed to set controls: ");
-//
-//
-//}
 
 void MainWindow::HandleControlsSet(const QMap<QString, int>& controls)
 {
     QJsonObject jsonObject;
-    //jsonObject.insert("username", username);
     for (auto it = controls.begin(); it != controls.end(); ++it) {
         jsonObject.insert(it.key(), it.value());
     }
@@ -189,8 +154,7 @@ void MainWindow::HandleCreateCode(const QString& username)
 void MainWindow::HandleCheckCode(const QString& gameCode, const QString& username)
 {
     if (ClientServer::JoinGame(gameCode.toUtf8().constData(), username.toUtf8().constData())) {
-        //QMessageBox::information(this, "Success", "Code verified. Loading game map...");
-        GameWindow(gameCode.toUtf8().constData());  // Transition to the game window
+        GameWindow(gameCode.toUtf8().constData());
     }
     else {
         QMessageBox::warning(this, "Error", "Invalid code. Please try again.");
@@ -244,7 +208,7 @@ void MainWindow::GameWindow(const QString& gameCode)
 
         mapRefreshTimer = new QTimer(this);
         connect(mapRefreshTimer, &QTimer::timeout, this, &ClientServer::RefreshGameMapIncrementally);
-        mapRefreshTimer->start(500);  // Update the map every 500 milliseconds (adjust as needed)
+        mapRefreshTimer->start(500);
 
         connect(gameMapWindow, &GameMapWindow::KeyPressed, this, &MainWindow::HandleKeyPressedOnMap);
         connect(gameMapWindow, &GameMapWindow::SettingsClicked, this, &MainWindow::HandleInGameSettings);
@@ -263,7 +227,6 @@ void MainWindow::GameWindow(const QString& gameCode)
             gameMapWindow->displayMap(mapData);
         }
         catch (const std::exception& e) {
-            // În caz de eroare, afișează un mesaj de eroare
             QMessageBox::critical(this, "Error", e.what());
         }
 }
@@ -299,15 +262,11 @@ void MainWindow::HandleInGameSettings()
     connect(settingsWindow, &InGameSettingsWindow::SaveSettings, this, &MainWindow::HandleSaveSettings);
 }
 
-// Slotul în MainWindow care se ocupă de Back to Game
 void MainWindow::HandleBackToGameSetting() {
     qDebug() << "Back to game!";
 }
 
-// Alte sloturi similare
-
 void MainWindow::HandleExitGameSetting() {
-    // qDebug() << "Exit game!";
     if (ClientServer::IsLastPlayer())
     {
         qDebug() << "Exit game!";
@@ -337,7 +296,6 @@ void MainWindow::HandleSaveSettings(int volume)
     qDebug() << "Save settings!";
     std::string volumeStr = std::to_string(volume);
 
-    // Trimite volumul la server (sau orice alte setări)
     if (ClientServer::SaveSettings(volumeStr)) {
         QMessageBox::information(this, "Success", "General settings have been saved to the server!");
     }
@@ -369,16 +327,10 @@ void MainWindow::HandleGeneralSettings()
 {
     GeneralSettingsWindow* generalSettings = new GeneralSettingsWindow(this);
     generalSettings->show();
-    //generalSettings->raise();  // Bring it to the front
-    //generalSettings->activateWindow();
+
     connect(generalSettings, &GeneralSettingsWindow::backToGame, this, &MainWindow::HandleBackToGameSetting);
     connect(generalSettings, &GeneralSettingsWindow::SaveSettings, this, &MainWindow::HandleSaveSettings);
     connect(generalSettings, &GeneralSettingsWindow::EditControls, this, &MainWindow::HandleEditControls);
     connect(generalSettings, &GeneralSettingsWindow::Logout, this, &MainWindow::HandleLogOut);
     connect(generalSettings, &GeneralSettingsWindow::Delete, this, &MainWindow::HandleDeleteAccount);
 }
-
-//void MainWindow::onCellUpdated(int x, int y) {
-//    // Update only the cell at position (x, y) on the map
-//    ui->mapWidget->update(QRect(y , x));
-//}

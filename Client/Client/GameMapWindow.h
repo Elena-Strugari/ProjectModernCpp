@@ -15,27 +15,23 @@ public:
     explicit GameMapWindow(QWidget* parent = nullptr);
     ~GameMapWindow() override;
 
-protected:
-    void resizeEvent(QResizeEvent* event) override;
-    void keyPressEvent(QKeyEvent* event) override;
-private:
-    void adjustMapWidgetSize(QResizeEvent* event);
-
-private:
-    //void InitializeBackground();
+public slots:
+    void onSettingsClicked();
+    void displayMap(const QJsonArray& mapData); 
 
 signals:
 void SettingsClicked();
 void KeyPressed(int key);
 
-public slots:
-    void onSettingsClicked();
-    void displayMap(const QJsonArray& mapData); 
+protected:
+    void resizeEvent(QResizeEvent* event) override;
+    void keyPressEvent(QKeyEvent* event) override;
+
 private:
-   // QWidget* mapWidget;
+    void adjustMapWidgetSize(QResizeEvent* event);
     QPushButton* settingsButton;
     QLabel* titleLabel;
-    MapWidget* mapWidget;     // Widget-ul pentru desenarea hărții
+    MapWidget* mapWidget;     
     QJsonArray mapData;
 };
 

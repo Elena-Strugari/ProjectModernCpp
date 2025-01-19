@@ -12,11 +12,11 @@ DisplayCodeWindow::DisplayCodeWindow(QWidget* parent)
     setFixedSize(300, 100);
     setStyleSheet("background-color: white;");
     QFont font;
-    font.setPointSize(25);  // Dimensiunea fontului
-    font.setBold(true);     // Font gros (bold)
+    font.setPointSize(25); 
+    font.setBold(true);
     messageLabel->setFont(font);
-    messageLabel->setStyleSheet("color: black;");  // Text negru
-    messageLabel->setAlignment(Qt::AlignCenter);   // Centrare text
+    messageLabel->setStyleSheet("color: black;");
+    messageLabel->setAlignment(Qt::AlignCenter);
     messageLabel->setText(" ");
     messageLabel->setTextInteractionFlags(Qt::TextSelectableByMouse | Qt::TextSelectableByKeyboard);
     messageLabel->setWordWrap(true);

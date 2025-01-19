@@ -19,8 +19,10 @@ signals:
     void Generate(const QString& username);
     void CheckCode(const QString& code, const QString& username);
     void GeneralSettings();
+
 protected:
     void resizeEvent(QResizeEvent* event) override;
+
 private slots:
     void OnSetting();
 private:

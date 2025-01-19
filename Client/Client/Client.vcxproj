@@ -129,22 +129,14 @@
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="MapWidget.cpp" />
     <ClCompile Include="NoGreenScreen.cpp" />
-    <ClCompile Include="DisplayElements.cpp" />
     <ClCompile Include="StartGameWindow.cpp" />
-    <ClCompile Include="TestMap.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="VictoryWindow.cpp" />
     <QtRcc Include="Client.qrc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </QtRcc>
     <QtUic Include="Client.ui" />
-    <QtMoc Include="Client.h" />
-    <ClCompile Include="Client.cpp" />
     <ClCompile Include="ClientServer.cpp" />
-    <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="LoginWindow.cpp" />
     <ClCompile Include="main.cpp" />
     <QtUic Include="MainWindow.ui" />
@@ -156,7 +148,6 @@
     <QtMoc Include="ControlChoiceWindow.h" />
     <QtMoc Include="CreateOrJoinGameWindow.h" />
     <QtMoc Include="DisplayCodeWindow.h" />
-    <ClInclude Include="GameEntity.h" />
     <QtMoc Include="LevelSelectionWindow.h" />
     <QtMoc Include="GameMapWindow.h" />
     <QtMoc Include="GeneralSettingsWindow.h" />
@@ -164,7 +155,6 @@
     <QtMoc Include="GameOverWindow.h" />
     <QtMoc Include="MapWidget.h" />
     <ClInclude Include="NoGreenScreen.h" />
-    <ClInclude Include="DisplayElements.h" />
     <QtMoc Include="StartGameWindow.h" />
     <QtMoc Include="MainWindow.h" />
     <QtMoc Include="LoginWindow.h" />

@@ -17,26 +17,16 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
     setWindowTitle("General Settings");
     resize(800, 600);
 
-    setWindowFlags(Qt::Window | Qt::WindowStaysOnTopHint); // Asigură-te că fereastra apare deasupra celorlalte
-
-    // Debugging - verifică dacă fereastra este vizibilă și activă
-    /*qDebug() << "GameWindow visibility:" << isVisible();
-    qDebug() << "gameWindow isActiveWindow:" << isActiveWindow();*/
-
-    // Mută și aduce fereastra în prim-plan
-    //move(100, 100);      // Mută fereastra într-o poziție clar vizibilă
-    activateWindow();    // Forțează activarea ferestrei
+    setWindowFlags(Qt::Window | Qt::WindowStaysOnTopHint);
+    activateWindow();
     raise();
 
-    // Initializează fundalul
    BackgroundHelper:: InitializeBackground(this);
 
-    // Configurare slider de volum
     musicVolumeSlider->setRange(0, 100);
     musicVolumeSlider->setValue(50);
     musicVolumeSlider->setFixedWidth(400);
 
-    // Stil butoane
     QString buttonStyle =
         "font-size: 16px; "
         "color: white; "
@@ -50,8 +40,6 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
     saveButton->setStyleSheet(buttonStyle);
     deleteButton->setStyleSheet(buttonStyle);
     
-
-    // Setăm dimensiuni fixe pentru butoane
     QSize buttonSize(120, 40);
     backToGameButton->setFixedSize(buttonSize);
     controlSettingsButton->setFixedSize(buttonSize);
@@ -59,7 +47,6 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
     saveButton->setFixedSize(buttonSize);
     deleteButton->setFixedSize(buttonSize);
 
-    // Layout pentru slider-ul de volum
     QVBoxLayout* slidersLayout = new QVBoxLayout();
     QLabel* musicLabel = new QLabel("Music Volume", this);
     musicLabel->setAlignment(Qt::AlignCenter);
@@ -69,7 +56,6 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
     slidersLayout->addWidget(musicVolumeSlider);
     slidersLayout->setAlignment(Qt::AlignCenter);
 
-    // Layout pentru butoane
     QHBoxLayout* buttonLayout = new QHBoxLayout();
     buttonLayout->addStretch();
     buttonLayout->addWidget(backToGameButton);
@@ -83,7 +69,6 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
     buttonLayout->addWidget(saveButton);
     buttonLayout->addStretch();
 
-    // Layout principal
     QVBoxLayout* mainLayout = new QVBoxLayout(this);
     QLabel* titleLabel = new QLabel("General Settings", this);
     titleLabel->setAlignment(Qt::AlignCenter);
@@ -99,7 +84,6 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
 
     setLayout(mainLayout);
 
-    // Conexiuni
     connect(backToGameButton, &QPushButton::clicked, this, &GeneralSettingsWindow::onBackToGame);
     connect(saveButton, &QPushButton::clicked, this, &GeneralSettingsWindow::onSaveSettings);
     connect(controlSettingsButton, &QPushButton::clicked, this, &GeneralSettingsWindow::onEditControls);
@@ -108,14 +92,12 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
 }
 void GeneralSettingsWindow::onBackToGame()
 {
-    qDebug() << "Back to Game clicked.";
-    emit backToGame(); // Emiterea semnalului
+    emit backToGame(); 
     this->close();
 }
 
 void GeneralSettingsWindow::onSaveSettings()
 {
-    qDebug() << "Save settings clicked.";
     QMessageBox::information(this, "Save", "Save Settings clicked.");
     emit SaveSettings(musicVolumeSlider->value());
 

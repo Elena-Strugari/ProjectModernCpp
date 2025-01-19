@@ -9,7 +9,7 @@
 #include <QResizeEvent>
 #include "BackgroundHelper.h"
 
-class Client; // Forward declaration
+class Client;
 
 class LoginWindow :public QWidget
 {
@@ -21,13 +21,12 @@ signals:
     void Login(const QString& username); 
     void RegisterUser(const QString& username); 
 
-private slots:
-    void OnLoginClicked();
-    void OnRegisterClicked();
-
 protected:
     void resizeEvent(QResizeEvent* event)override;
 
+private slots:
+    void OnLoginClicked();
+    void OnRegisterClicked();
 
 private:
     
@@ -36,6 +35,5 @@ private:
     QPushButton* registerButton;
     QLabel* imageLabel;
     QLabel* promptLabel;
-
 };
 

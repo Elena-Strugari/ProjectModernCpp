@@ -18,12 +18,12 @@ public:
 signals:
     void startGame(); 
 
-private slots:
-    void triggerStartGame(); 
-
 protected:
     void keyPressEvent(QKeyEvent* event) override;
     void resizeEvent(QResizeEvent* event)override;
+
+private slots:
+    void triggerStartGame(); 
 
 private:
     QLabel* textLabel;
