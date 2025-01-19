@@ -8,6 +8,7 @@
 GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
     : QWidget(parent),
     musicVolumeSlider(new QSlider(Qt::Horizontal, this)),
+    backToGameButton(new QPushButton("Back", this)),
     controlSettingsButton(new QPushButton("Edit Controls", this)),
     logoutButton(new QPushButton("Logout", this)),
     saveButton(new QPushButton("Save Settings", this)),
@@ -43,6 +44,7 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
         "border: 2px solid white; "
         "border-radius: 10px; "
         "padding: 5px;";
+    backToGameButton->setStyleSheet(buttonStyle);
     controlSettingsButton->setStyleSheet(buttonStyle);
     logoutButton->setStyleSheet(buttonStyle);
     saveButton->setStyleSheet(buttonStyle);
@@ -50,7 +52,8 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
     
 
     // Setăm dimensiuni fixe pentru butoane
-    QSize buttonSize(150, 40);
+    QSize buttonSize(120, 40);
+    backToGameButton->setFixedSize(buttonSize);
     controlSettingsButton->setFixedSize(buttonSize);
     logoutButton->setFixedSize(buttonSize);
     saveButton->setFixedSize(buttonSize);
@@ -69,6 +72,8 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
     // Layout pentru butoane
     QHBoxLayout* buttonLayout = new QHBoxLayout();
     buttonLayout->addStretch();
+    buttonLayout->addWidget(backToGameButton);
+    buttonLayout->addSpacing(50);
     buttonLayout->addWidget(controlSettingsButton);
     buttonLayout->addSpacing(50);
     buttonLayout->addWidget(logoutButton);
@@ -95,10 +100,17 @@ GeneralSettingsWindow::GeneralSettingsWindow(QWidget* parent)
     setLayout(mainLayout);
 
     // Conexiuni
+    connect(backToGameButton, &QPushButton::clicked, this, &GeneralSettingsWindow::onBackToGame);
     connect(saveButton, &QPushButton::clicked, this, &GeneralSettingsWindow::onSaveSettings);
     connect(controlSettingsButton, &QPushButton::clicked, this, &GeneralSettingsWindow::onEditControls);
     connect(logoutButton, &QPushButton::clicked, this, &GeneralSettingsWindow::onLogout);
     connect(deleteButton, &QPushButton::clicked, this, &GeneralSettingsWindow::onDelete);
+}
+void GeneralSettingsWindow::onBackToGame()
+{
+    qDebug() << "Back to Game clicked.";
+    emit backToGame(); // Emiterea semnalului
+    this->close();
 }
 
 void GeneralSettingsWindow::onSaveSettings()

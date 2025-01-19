@@ -235,7 +235,7 @@ bool ClientServer::JoinGame(const std::string& gameCode, const std::string& user
         jsonBody["game_code"] = gameCode;
         std::string name = ClientServer::m_username;
         jsonBody["username"] = name;
-
+        m_gameCode = gameCode;
         // Convert the JSON object to a string
         std::string jsonString = jsonBody.dump();
 
@@ -250,6 +250,12 @@ bool ClientServer::JoinGame(const std::string& gameCode, const std::string& user
             std::cout << "Successfully joined the game: " << response.text << std::endl;
             return true;
         }
+        else 
+            if (response.status_code == 410)
+            {
+                std::cout << "There are already 4 players in this game" << response.text << std::endl;
+                return true;
+            }
         else {
             std::cerr << "Failed to join the game. Server response: " << response.status_code << " " << response.text << std::endl;
             return false;
@@ -472,6 +478,8 @@ void ClientServer::RefreshGameMapIncrementally() {
             // Update the corresponding cell in the map
             if(type=="player")
                 UpdateMapCellPlayer(xNew, yNew, xLast, yLast);
+            if (type == "wall")
+                UpdateMapCellWall(xNew, yNew, xLast, yLast);
         }
     }
     else {
@@ -503,6 +511,37 @@ void ClientServer::UpdateMapCellPlayer(int startX, int startY, int stopX, int st
     // Update mapData with the modified rows
     client.mapData[startY] = startRow;
     client. mapData[stopY] = stopRow;
+    emit client.mapWidget->setMapData(client.mapData);
+
+    // Repaint the map
+   // update();
+}
+
+void ClientServer::UpdateMapCellWall(int startX, int startY, int stopX, int stopY) {
+    // Validate coordinates
+    ClientServer client;
+    if (startX < 0 || startY < 0 || stopX < 0 || stopY < 0 ||
+        startY >= client.mapData.size() || stopY >= client.mapData.size() ||
+        startX >= client.mapData[startY].toArray().size() || stopX >= client.mapData[stopY].toArray().size()) {
+        qDebug() << "Invalid coordinates for update.";
+        return;
+    }
+
+    // Access the rows to modify
+    QJsonArray startRow = client.mapData[startY].toArray();
+    QJsonArray stopRow = client.mapData[stopY].toArray();
+
+    // Get the values at the coordinates
+    int startValue = startRow[startX].toInt();
+    int stopValue = stopRow[stopX].toInt();
+
+    // Apply your logic: e.g., swap the values
+    startRow[startX] = stopValue;
+    stopRow[stopX] = startValue;
+
+    // Update mapData with the modified rows
+    client.mapData[startY] = startRow;
+    client.mapData[stopY] = stopRow;
     emit client.mapWidget->setMapData(client.mapData);
 
     // Repaint the map

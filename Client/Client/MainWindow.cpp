@@ -189,7 +189,7 @@ void MainWindow::HandleCreateCode(const QString& username)
 void MainWindow::HandleCheckCode(const QString& gameCode, const QString& username)
 {
     if (ClientServer::JoinGame(gameCode.toUtf8().constData(), username.toUtf8().constData())) {
-        QMessageBox::information(this, "Success", "Code verified. Loading game map...");
+        //QMessageBox::information(this, "Success", "Code verified. Loading game map...");
         GameWindow(gameCode.toUtf8().constData());  // Transition to the game window
     }
     else {
@@ -371,7 +371,7 @@ void MainWindow::HandleGeneralSettings()
     generalSettings->show();
     //generalSettings->raise();  // Bring it to the front
     //generalSettings->activateWindow();
-
+    connect(generalSettings, &GeneralSettingsWindow::backToGame, this, &MainWindow::HandleBackToGameSetting);
     connect(generalSettings, &GeneralSettingsWindow::SaveSettings, this, &MainWindow::HandleSaveSettings);
     connect(generalSettings, &GeneralSettingsWindow::EditControls, this, &MainWindow::HandleEditControls);
     connect(generalSettings, &GeneralSettingsWindow::Logout, this, &MainWindow::HandleLogOut);

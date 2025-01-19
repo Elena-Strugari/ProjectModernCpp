@@ -43,6 +43,7 @@ public:
 
 	static bool IsLastPlayer();
 	static void UpdateMapCellPlayer(int xNewe, int yNew, int xLast, int yLast); 
+	static void UpdateMapCellWall(int xNewe, int yNew, int xLast, int yLast);
 	 QJsonArray mapData;
 	static void RefreshGameMapIncrementally();
 private:

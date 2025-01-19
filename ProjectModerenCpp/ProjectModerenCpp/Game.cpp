@@ -42,6 +42,19 @@ void Game::Start() {
     m_map.DisplayMap();
 }
 
+//void Game::MovePlayer(const std::string& playerName, MovementObject::Direction direction) {
+//    // Get player by name from PlayerManager
+//    auto player = m_playerManager->GetPlayer(playerName);
+//    if (player) {
+//        // Perform movement
+//        //player->Move(direction);
+//        player->Move();
+//    }
+//    else {
+//        std::cerr << "Player not found!" << std::endl;
+//    }
+//}
+
 void Game::PlacePlayerOnMap(const std::shared_ptr<Player>& player) {
     static std::vector<std::pair<uint16_t, uint16_t>> cornerPositions = {
         {1, 1},
@@ -69,10 +82,47 @@ void Game::PlacePlayerOnMap(const std::shared_ptr<Player>& player) {
     auto& movement = player->GetMovementObject();
     movement.SetPosition(startX, startY);
     m_map.SetCellContent(startX, startY, Map::Tank{});
+
+    std::pair<int, int> lastCoord = { startX, startY };
+    std::pair<int, int> newCoord = { startX, startY };
+
+    RecordChange(newCoord, lastCoord, "player");
+    
 }
 
 
-void Game::MovePlayer(const std::shared_ptr<Player>& player, MovementObject::Direction direction) {
+//void Game::MovePlayer(const std::shared_ptr<Player>& player, MovementObject::Direction direction) {
+//    auto& movement = player->GetMovementObject();
+//    auto [currentX, currentY] = movement.GetPosition();
+//    auto [newX, newY] = movement.Move(direction);
+//
+//    if (!m_map.IsValidPosition(newX, newY)) {
+//        std::cout << "Movement blocked to (" << newX << ", " << newY << ") due to invalid position.\n";
+//        return;
+//    }
+//
+//    if (std::holds_alternative<Map::Empty>(m_map.GetCell(newX, newY).content) &&
+//        !m_collision->isOccupiedByAnotherTank(m_playerManager->GetAllPlayers(), newX, newY, player)) {
+//        m_map.SetCellContent(currentX, currentY, Map::Empty{});
+//        m_map.SetCellContent(newX, newY, Map::Tank{});
+//
+//        movement.SetPosition(newX, newY);
+//        movement.SetDirection(direction);
+//
+//        std::pair<int, int> lastCoord = { currentX, currentY };
+//        std::pair<int, int> newCoord = { newX, newY };
+//
+//        RecordChange(newCoord, lastCoord, "player");
+//        //UpdateClientsWithNewMap();
+//    }
+//    else {
+//        std::cout << "Movement blocked to (" << newX << ", " << newY << ") due to collision or obstruction.\n";
+//    }
+//}
+
+void Game::MovePlayer(const std::string& Nameplayer, MovementObject::Direction direction) {
+
+    auto player = m_playerManager->GetPlayer(Nameplayer);
     auto& movement = player->GetMovementObject();
     auto [currentX, currentY] = movement.GetPosition();
     auto [newX, newY] = movement.Move(direction);
@@ -95,6 +145,19 @@ void Game::MovePlayer(const std::shared_ptr<Player>& player, MovementObject::Dir
 
         RecordChange(newCoord, lastCoord, "player");
         //UpdateClientsWithNewMap();
+    }
+    if (std::holds_alternative<Wall::TypeWall>(m_map.GetCell(newX, newY).content)) {
+        auto& wall = std::get<Wall::TypeWall>(m_map.GetCell(newX, newY).content);
+        if (wall == Wall::TypeWall::destructible) {
+            // Handle the destruction of the wall (e.g., change it to empty or another state)
+            m_map.SetCellContent(currentX, currentY, Map::Empty{});  // Destroy the destructible wall
+            m_map.SetCellContent(newX, newY, Map::Empty{});  // Destroy the destructible wall
+            //std::cout << "Destructible wall at (" << newX << ", " << newY << ") destroyed!" << std::endl;
+            std::pair<int, int> lastCoord = { currentX, currentY };
+            std::pair<int, int> newCoord = { newX, newY };
+
+            RecordChange(newCoord, lastCoord, "wall");
+        }
     }
     else {
         std::cout << "Movement blocked to (" << newX << ", " << newY << ") due to collision or obstruction.\n";
@@ -187,17 +250,31 @@ Map Game::GetMap() const
     return m_map;
 }
 
-bool Game::IsLastPlayer(const std::shared_ptr<Player>& player) const {
-    if (m_players.size() == 1 && m_players[0] == player) {
+bool Game::IsPlayerInGame(const std::string& playerName) const
+{
+        // Access the PlayerManager to check if the player exists by name
+        std::shared_ptr<Player> player = m_playerManager->GetPlayer(playerName);
+
+        // Return true if the player exists, false otherwise
+        return player != nullptr;
+    }
+
+bool Game::IsLastPlayer(const std::string& playerName) const {
+    std::shared_ptr<Player> player = m_playerManager->GetPlayer(playerName);
+    const auto& allPlayers = m_playerManager->GetAllPlayers();
+
+    // Check if there is only one player, and if it matches the provided player
+    if (allPlayers.size() == 1 && allPlayers[0] == player) {
         return true;
     }
     return false;
 }
 
-bool Game::ExistPlayerInGame()
+std::shared_ptr<Player> Game::GetPlayer(const std::string& name)
 {
-    return false;
+    return m_playerManager->GetPlayer(name);
 }
+
 
 void Game::RecordChange(const std::pair<int, int>& newCoord, const std::pair<int, int>& lastCoord, const std::string& type)
 {

@@ -16,9 +16,11 @@ signals:
     void EditControls();
     void Logout();
     void Delete();
+    void backToGame();
 private slots:
     void onSaveSettings();
     void onEditControls();
+    void onBackToGame();
     void onLogout();
     void onDelete();
 protected:
@@ -31,6 +33,7 @@ private:
     QPushButton* logoutButton;
     QPushButton* saveButton;
     QPushButton* deleteButton;
+    QPushButton* backToGameButton;
 };
 
 #endif // GENERALSETTINGSWINDOW_H

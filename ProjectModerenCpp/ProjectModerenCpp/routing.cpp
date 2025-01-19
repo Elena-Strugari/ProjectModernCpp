@@ -156,17 +156,19 @@ void http::Routing::Run()
             while (games.find(gameCode) != games.end()) {
                 gameCode = Game::GenerateGameCode();
             }
-            Game game = Game(level, gameCode);
+            Game game(level, gameCode);
             if (playersActive.find(username) == playersActive.end()) {
                 return crow::response(404, "Player not found or not active");
             }
 
-    
+            std::shared_ptr<Player> player = playersActive[username];
+            game.AddPlayer(player);  // Add player to the game
+            games.emplace(gameCode, game);
 
             //std::shared_ptr<Player> newPlayer = std::make_shared<Player>(username, db);
             //game.AddPlayer(newPlayer);
-            game.AddPlayer(playersActive[username]);
-            games.emplace(gameCode, game);
+           /* game.AddPlayer(playersActive[username]);
+            games.emplace(gameCode, game);*/
             /*MovementObject object = newPlayer.GetMovementObject();
             playersObject.emplace(username, object);*/
             /*Map map = game.GetMap();
@@ -203,21 +205,25 @@ void http::Routing::Run()
         }
     
         // Check if the player is already in the game
-        bool playerExists = false;
-        for (const auto& player : game.m_players) {
-            if (player->GetName() == username) {
-                playerExists = true;
-                break;
-            }
-        }
+        /*bool playerExists = game.IsPlayerInGame(username);
         if (playerExists) {
+            return crow::response(409, "Player already in the game");
+        }*/
+        if (game.IsMaxPlayersReached()) {
+            return crow::response(410, "Maximum player limit reached, cannot join the game");
+        }
+
+        if (game.IsPlayerInGame(username)) {
             return crow::response(409, "Player already in the game");
         }
 
         // Add the player to the game
         //std::shared_ptr<Player> newPlayer = std::make_shared<Player>(username, db);
         //game.AddPlayer(newPlayer);
-        game.AddPlayer(playersActive[username]);
+        //game.AddPlayer(playersActive[username]);
+        std::shared_ptr<Player> player = playersActive[username];
+        game.AddPlayer(player);
+
 
         std::cout << "Player " << username << " joined the game " << gameCode << std::endl;
 
@@ -319,9 +325,11 @@ void http::Routing::Run()
                 return crow::response(404, "Player not found or not active");
             }
 
+            if (games.find(code) == games.end()) {
+                return crow::response(404, "Game not found");
+            }
+
             // Get the player object
-            std::shared_ptr<Player> player = playersActive[username];
-            Game& game = games[code];
 
             // Fetch player controls from the database
             int up, down, left, right, shoot;
@@ -329,10 +337,12 @@ void http::Routing::Run()
                 return crow::response(500, "Failed to fetch key bindings from the database");
             }
             
+            std::shared_ptr<Player> player = playersActive[username];
+            Game& game = games[code];
 
             // Compare the key press with the player's key bindings
             MovementObject::Direction direction;
-            MovementObject::Direction directionBullet;
+            //MovementObject::Direction directionBullet;
 
             if (keyCode == up) {
                 direction = MovementObject::Direction::Up;
@@ -347,6 +357,10 @@ void http::Routing::Run()
                 direction = MovementObject::Direction::Right;
             }
             else if (keyCode == shoot) {
+
+                game.ShootBulletS(player);  // Shooting
+                return crow::response(200, "Shoot action processed");
+
                 // If the keyCode corresponds to the shoot action
                 //player->GetMovementObject().Shoot();
                /* directionBullet = player.GetMovementObject().GetDirection();
@@ -360,7 +374,7 @@ void http::Routing::Run()
 
             // Move the player in the direction based on the key press
            // player.GetMovementObject().Move(direction);
-            game.MovePlayer(player, direction);
+            game.MovePlayer(username, direction);
             std::cout << "Player " << username << " moved in direction " << static_cast<int>(direction) << std::endl;
             Map gameMap = game.GetMap();
             gameMap.DisplayMap();
@@ -376,7 +390,6 @@ void http::Routing::Run()
     CROW_ROUTE(m_app, "/get_map_changes").methods("GET"_method)([](const crow::request& req) {
         try {
             // Create a JSON object to send back
-            nlohmann::json responseJson;
             std::string gameCode = req.url_params.get("game_code");
 
             if (gameCode.empty()) {
@@ -386,6 +399,7 @@ void http::Routing::Run()
             Game& game = games[gameCode]; // Replace "game_code" with actual game code
             const auto& changedCells = game.GetChangedCells();
 
+            nlohmann::json responseJson;
             // Iterate over the changed cells and add them to the JSON response
             for (const auto& change : changedCells) {
                 const auto& [newCoord, lastCoord, type] = change;
@@ -411,6 +425,7 @@ void http::Routing::Run()
 
             // Log the serialized JSON for debugging
             std::cout << "Serialized JSON Response: " << serializedJson << std::endl;
+            game.ClearChangedCells();
             return res;
         }
         catch (const std::exception& e) {
@@ -466,27 +481,42 @@ void http::Routing::Run()
         // Get the game instance
         Game& game = games[gameCode];
 
-        // Find the player in the game
-        std::shared_ptr<Player> player = nullptr;
-        for (const auto& p : game.m_players) {
-            if (p->GetName() == username) {
-                player = p;
-                break;
-            }
-        }
+        if (game.IsLastPlayer(username)) {
+            // Remove player from the game
+            // You can now handle what happens if the player is the last one
+            // e.g., send game over response, update clients, etc.
 
-        // If the player is not found
-        if (!player) {
-            return crow::response(404, "Player not found");
-        }
-
-        // Check if the player is the last player
-        if (game.IsLastPlayer(player)) {
-            return crow::response(200, username + " is the last player in the game");
+            // Optionally, send back a success message if needed
+            game.RemovePlayer(username);
+            return crow::response(200, "Player " + username + " is the last player and has been removed");
         }
         else {
-            return crow::response(200, username + " is not the last player in the game");
+            game.RemovePlayer(username);
+            return crow::response(400, "Player " + username + " is not the last player");
         }
+
+
+        // Find the player in the game
+        //std::shared_ptr<Player> player = nullptr;
+        //for (const auto& p : game.m_players) {
+        //    if (p->GetName() == username) {
+        //        player = p;
+        //        break;
+        //    }
+        //}
+
+        //// If the player is not found
+        //if (!player) {
+        //    return crow::response(404, "Player not found");
+        //}
+
+        //// Check if the player is the last player
+        //if (game.IsLastPlayer(player)) {
+        //    return crow::response(200, username + " is the last player in the game");
+        //}
+        //else {
+        //    return crow::response(200, username + " is not the last player in the game");
+        //}
     });
 
 
