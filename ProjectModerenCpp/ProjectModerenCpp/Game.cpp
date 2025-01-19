@@ -3,6 +3,8 @@
 #include <stdexcept>
 #include <utility>
 
+#include "Validation.h"
+
 #include "CollisionManager.h"
 #include "libs/nlohmann/json.hpp"
 using json = nlohmann::json;
@@ -60,7 +62,7 @@ void Game::PlacePlayerOnMap(const std::shared_ptr<Player>& player) {
     auto [startX, startY] = cornerPositions[nextCornerIndex];
     nextCornerIndex = (nextCornerIndex + 1) % cornerPositions.size();
 
-    if (!m_map.IsValidPosition(startX, startY))
+    if (!Validation::IsValidPosition(startX, startY, m_map.GetWidth(), m_map.GetHeight()))
         std::cout << "erroare la valid";
     if (!std::holds_alternative<Map::Empty>(m_map.GetCell(startX, startY).content)) {
         std::cout << "eroare la cell";
@@ -83,7 +85,7 @@ void Game::MovePlayer(const std::string& Nameplayer, MovementObject::Direction d
     auto [currentX, currentY] = movement.GetPosition();
     auto [newX, newY] = movement.Move(direction);
 
-    if (!m_map.IsValidPosition(newX, newY)) {
+    if (!Validation::IsValidPosition(newX, newY, m_map.GetWidth(), m_map.GetHeight())) {
         std::cout << "Movement blocked to (" << newX << ", " << newY << ") due to invalid position.\n";
         return;
     }
@@ -117,9 +119,9 @@ void Game::MovePlayer(const std::string& Nameplayer, MovementObject::Direction d
             m_map.SetCellContent(newX, newY, Wall::TypeWall::indestructible);
         }
     }
-    else {
+    /*else {
         std::cout << "Movement blocked to (" << newX << ", " << newY << ") due to collision or obstruction.\n";
-    }
+    }*/
 }
 void Game::HandlePlayerActions(std::shared_ptr<Player> player)
 {
@@ -162,7 +164,7 @@ void Game::MoveBullets() {
 
         if (movement.IsBulletActive()) {
             auto [newX, newY] = movement.Move(movement.GetDirection(), 1);
-            if (m_map.IsValidPosition(newX, newY)) {
+            if (Validation::IsValidPosition(newX, newY, m_map.GetWidth(), m_map.GetHeight())) {
                 m_collision->HandleBulletCollisions();
 
                 if (std::holds_alternative<Map::Empty>(m_map.GetCell(newX, newY).content)) {

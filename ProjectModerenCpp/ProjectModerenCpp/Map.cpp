@@ -32,7 +32,7 @@ Map::Map(uint8_t level) {
 uint16_t Map::GetWidth() const { return m_width; }
 uint16_t Map::GetHeight() const { return m_height; }
 const Map::Cell& Map::GetCell(uint16_t x, uint16_t y) const {
-    if (!IsValidPosition(x, y)) {
+    if (!Validation::IsValidPosition(x, y, m_width, m_height)) {
         throw std::out_of_range("Invalid position on the map!");
     }
     return m_map[y][x];
@@ -44,23 +44,23 @@ const std::vector<std::vector<Map::Cell>>& Map::GetMap() const {
 
 // Setters
 void Map::SetCell(uint16_t x, uint16_t y, const Cell& value) {
-    if (!IsValidPosition(x, y)) {
+    if (!Validation::IsValidPosition(x, y, m_width, m_height)) {
         throw std::out_of_range("Invalid position on the map!");
     }
     m_map[y][x] = value;
 }
 
 void Map::SetCellContent(uint16_t x, uint16_t y, CellContent content) {
-    if (!IsValidPosition(x, y)) {
+    if (!Validation::IsValidPosition(x, y, m_width, m_height)) {
         throw std::out_of_range("Invalid position on the map!");
     }
     m_map[y][x].content = content;
 }
 
 // Validation
-bool Map::IsValidPosition(uint16_t x, uint16_t y) const {
-    return x < m_width && y < m_height;
-}
+//bool Map::IsValidPosition(uint16_t x, uint16_t y) const {
+//    return x < m_width && y < m_height;
+//}
 
 std::pair<uint16_t, uint16_t> Map::FindValidPosition() {
     uint16_t x, y;
@@ -73,7 +73,7 @@ std::pair<uint16_t, uint16_t> Map::FindValidPosition() {
     do {
         x = std::rand() % m_width;
         y = std::rand() % m_height;
-    } while (!IsValidPosition(x, y) || !std::holds_alternative<Empty>(m_map[y][x].content) || isCorner(x, y));
+    } while (!Validation::IsValidPosition(x, y, m_width, m_height) || !std::holds_alternative<Empty>(m_map[y][x].content) || isCorner(x, y));
 
     return { x, y };
 }

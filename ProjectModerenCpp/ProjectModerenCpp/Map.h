@@ -6,6 +6,8 @@
 #include <tuple>
 #include <stdexcept>
 
+#include "Validation.h"
+
 import Wall;
 
 class Map {
@@ -59,7 +61,7 @@ public:
     void SetCellContent(uint16_t x, uint16_t y, CellContent content);
 
     // Validation
-    bool IsValidPosition(uint16_t x, uint16_t y) const;
+    //bool IsValidPosition(uint16_t x, uint16_t y) const;
 
     // Add specific elements
     void PlaceBomb(uint16_t x, uint16_t y);

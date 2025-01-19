@@ -17,6 +17,7 @@ public:
     const std::vector<std::shared_ptr<Player>>& GetAllPlayers() const;
     size_t GetPlayerCount() const;
 
+    void DisplayHighScores(int score) const;
 private:
     std::vector<std::shared_ptr<Player>> m_players; 
 };

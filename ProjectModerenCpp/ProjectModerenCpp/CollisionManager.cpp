@@ -89,7 +89,6 @@ void CollisionManager::HandleTankCollisions() {
         auto [targetX, targetY] = movement.GetPosition(true);
 
         if (!IsValidPosition(targetX, targetY) || positionMap.contains({ targetX, targetY })) {
-            std::cout << "Movement blocked: Invalid position or occupied (" << targetX << ", " << targetY << ").\n";
             continue;
         }
 

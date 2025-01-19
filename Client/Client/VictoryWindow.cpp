@@ -21,7 +21,7 @@ VictoryWindow::VictoryWindow(QWidget* parent)
     titleLabel->setAlignment(Qt::AlignCenter);
     titleLabel->setStyleSheet("font-size: 48px; font-weight: bold; color: green;");
 
-    scoreLabel = new QLabel("Your Score: Current: 0, Total: 0", this);
+    scoreLabel = new QLabel("Your Score: Current: 0, Total: 200", this);
     scoreLabel->setAlignment(Qt::AlignCenter);
     scoreLabel->setStyleSheet("font-size: 24px; color: white;");
 

@@ -1,5 +1,6 @@
 #include "PlayerManager.h"
 #include <iostream>
+#include <ranges>
 
 PlayerManager::PlayerManager() = default;
 
@@ -32,3 +33,15 @@ size_t PlayerManager::GetPlayerCount() const {
     return m_players.size();
 }
 
+void PlayerManager::DisplayHighScores(int score) const
+{
+    auto highScorers = m_players
+        | std::views::filter([&](const auto& p) {
+        return p->GetScore() > score;
+            });
+
+    /*std::cout << "Players with score above " << threshold << ":\n";
+    for (const auto& player : highScorers) {
+        std::cout << player->GetName() << " with score " << player->GetScore() << "\n";
+    }*/
+}
