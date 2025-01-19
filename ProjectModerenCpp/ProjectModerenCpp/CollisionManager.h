@@ -2,20 +2,17 @@
 #include <vector>
 #include <memory>
 #include <map>
-#include "Bullet.h"
 #include <unordered_map>
-#include "Map.h"
 
+#include "Map.h"
 #include "PlayerManager.h"
+
 import Bomb;
 import Tank;
 import Wall;
 
 
-
 class CollisionManager {
-    std::shared_ptr<Map> m_map;
-    std::shared_ptr<PlayerManager> m_playerManager;
 
 public:
     CollisionManager(std::shared_ptr<Map> map, std::shared_ptr<PlayerManager> playerManager);
@@ -23,12 +20,12 @@ public:
     template <typename T>
         requires std::is_integral_v<T>
     bool IsValidPosition(T x, T y) const;
-    //bool IsValidPosition(uint16_t x, uint16_t y) const;
     std::optional<Map::Cell> GetValidCell(uint16_t x, uint16_t y) const;
     void HandleBulletCollisions();
     void HandleTankCollisions();
     void HandleBulletTankCollisions();
     bool isOccupiedByAnotherTank(const std::vector<std::shared_ptr<Player>>& players, uint16_t x, uint16_t y, const std::shared_ptr<Player>& currentPlayer);
-    /*void AwardWinnerPoints(const std::shared_ptr<Player>& winner);
-    void TriggerBombExplosion(const Bomb& bomb);*/
+
+    std::shared_ptr<Map> m_map;
+    std::shared_ptr<PlayerManager> m_playerManager;
 };

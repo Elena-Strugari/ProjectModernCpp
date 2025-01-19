@@ -142,13 +142,9 @@
     <ClInclude Include="Map.h" />
     <ClInclude Include="MovementObject.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="PlayerGameObjectManager.h" />
     <ClInclude Include="PlayerManager.h" />
-    <ClInclude Include="PowerUp.h" />
     <ClInclude Include="routing.h" />
-    <ClInclude Include="ServerObject.h" />
     <ClInclude Include="Tank.h" />
-    <ClInclude Include="UserManager.h" />
     <ClInclude Include="Wall.h" />
   </ItemGroup>
   <ItemGroup>
@@ -165,14 +161,10 @@
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="MovementObject.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="PlayerGameObjectManager.cpp" />
     <ClCompile Include="PlayerManager.cpp" />
-    <ClCompile Include="PowerUp.cpp" />
     <ClCompile Include="routing.cpp" />
-    <ClCompile Include="ServerObject.cpp" />
     <ClCompile Include="Tank.cpp" />
     <ClCompile Include="Tank.cppm" />
-    <ClCompile Include="UserManager.cpp" />
     <ClCompile Include="Wall.cpp" />
     <ClCompile Include="Wall.cppm" />
   </ItemGroup>

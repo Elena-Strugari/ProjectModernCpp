@@ -1,4 +1,3 @@
-// Inside GameManager.h
 #include <unordered_map>
 #include <string>
 #include "Game.h"
@@ -10,5 +9,5 @@ public:
     Game& GetGame(const std::string& gameCode);
 
 private:
-    static std::unordered_map<std::string, Game> m_games;  // Ensure m_games is an unordered_map
+    static std::unordered_map<std::string, Game> m_games; 
 };

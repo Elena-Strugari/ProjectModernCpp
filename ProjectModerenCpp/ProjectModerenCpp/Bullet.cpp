@@ -1,13 +1,5 @@
 #include "Bullet.h"
 
-
-std::ostream& operator<<(std::ostream& os, const Bullet& bullet)
-{
-
-    os << "->";
-    return os;
-}
-
 Bullet::Bullet()
 {
     m_isActive = false;
@@ -22,4 +14,11 @@ void Bullet::SetBullet(bool active)
 bool Bullet::IsActive() const
 {
     return m_isActive;
+}
+
+std::ostream& operator<<(std::ostream& os, const Bullet& bullet)
+{
+
+    os << "->";
+    return os;
 }

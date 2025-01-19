@@ -2,7 +2,6 @@
 #include <cstdlib>
 #include <ctime>
 
-// Constructor
 Map::Map(uint8_t level) {
     auto [minWidth, maxWidth, numBombs, numBonusLives] = GetLevelBounds(level);
 
@@ -24,7 +23,6 @@ Map::Map(uint8_t level) {
             }
         }
     }
-
     GenerateWalls(level);
     InitializeGameElements(numBombs, numBonusLives);
 
@@ -33,16 +31,16 @@ Map::Map(uint8_t level) {
 // Getters
 uint16_t Map::GetWidth() const { return m_width; }
 uint16_t Map::GetHeight() const { return m_height; }
-const std::vector<std::vector<Map::Cell>>& Map::GetMap() const {
-    return m_map;
-}
-
 const Map::Cell& Map::GetCell(uint16_t x, uint16_t y) const {
     if (!IsValidPosition(x, y)) {
         throw std::out_of_range("Invalid position on the map!");
     }
     return m_map[y][x];
 }
+const std::vector<std::vector<Map::Cell>>& Map::GetMap() const {
+    return m_map;
+}
+
 
 // Setters
 void Map::SetCell(uint16_t x, uint16_t y, const Cell& value) {
@@ -61,7 +59,7 @@ void Map::SetCellContent(uint16_t x, uint16_t y, CellContent content) {
 
 // Validation
 bool Map::IsValidPosition(uint16_t x, uint16_t y) const {
-    return x < m_width && y < m_height; // Ensures the coordinates are within bounds
+    return x < m_width && y < m_height;
 }
 
 std::pair<uint16_t, uint16_t> Map::FindValidPosition() {
@@ -72,7 +70,6 @@ std::pair<uint16_t, uint16_t> Map::FindValidPosition() {
             (x == m_height - 2 && y == 1) ||                         
             (x == m_height - 2 && y == m_width - 2);                 
         };
-
     do {
         x = std::rand() % m_width;
         y = std::rand() % m_height;
@@ -80,6 +77,36 @@ std::pair<uint16_t, uint16_t> Map::FindValidPosition() {
 
     return { x, y };
 }
+
+// Game Element Initialization
+void Map::InitializeGameElements(uint8_t numBombs, uint8_t numBonusLives) {
+    for (uint8_t i = 0; i < numBombs; ++i) {
+        auto [x, y] = FindValidPosition();
+        SetCellContent(x, y, Bomb{});
+    }
+
+    for (uint8_t i = 0; i < numBonusLives; ++i) {
+        auto [x, y] = FindValidPosition();
+        SetCellContent(x, y, BonusLife{});
+    }
+}
+
+
+// Level Bounds
+std::tuple<uint16_t, uint16_t, uint16_t, uint16_t> Map::GetLevelBounds(uint8_t level) const {
+    switch (level) {
+    case 1: return { 15, 20, 1, 1 }; // Width range and game elements for level 1
+    case 2: return { 20, 25, 2, 2 }; // Level 2
+    case 3: return { 25, 30, 3, 3 }; // Level 3
+    default:
+        throw std::invalid_argument("Invalid level! Levels must be 1, 2, or 3.");
+    }
+}
+
+// Placing Game Elements
+void Map::PlaceBomb(uint16_t x, uint16_t y) { SetCellContent(x, y, Bomb{}); }
+void Map::PlaceBonusLife(uint16_t x, uint16_t y) { SetCellContent(x, y, BonusLife{}); }
+void Map::PlaceTank(uint16_t x, uint16_t y, const Tank& tank) { SetCellContent(x, y, tank); }
 
 // Display
 void Map::DisplayMap() const {
@@ -111,52 +138,10 @@ void Map::DisplayMap() const {
     }
 }
 
-// Game Element Initialization
-void Map::InitializeGameElements(uint8_t numBombs, uint8_t numBonusLives) {
-    for (uint8_t i = 0; i < numBombs; ++i) {
-        auto [x, y] = FindValidPosition();
-        SetCellContent(x, y, Bomb{});
-    }
-
-    for (uint8_t i = 0; i < numBonusLives; ++i) {
-        auto [x, y] = FindValidPosition();
-        SetCellContent(x, y, BonusLife{});
-    }
-}
-
-// Wall Generation
-//void Map::GenerateWalls(uint8_t level) {
-//    // Example: Add destructible walls randomly
-//    for (uint16_t i = 0; i < level * 10; ++i) {
-//        auto [x, y] = FindValidPosition();
-//        SetCellContent(x, y, Wall::TypeWall::destructible);
-//    }
-//}
-
-// Level Bounds
-std::tuple<uint16_t, uint16_t, uint16_t, uint16_t> Map::GetLevelBounds(uint8_t level) const {
-    switch (level) {
-    case 1: return { 15, 20, 1, 1 }; // Width range and game elements for level 1
-    case 2: return { 20, 25, 2, 2 }; // Level 2
-    case 3: return { 25, 30, 3, 3 }; // Level 3
-    default:
-        throw std::invalid_argument("Invalid level! Levels must be 1, 2, or 3.");
-    }
-}
-
-// Placing Game Elements
-void Map::PlaceBomb(uint16_t x, uint16_t y) { SetCellContent(x, y, Bomb{}); }
-void Map::PlaceBonusLife(uint16_t x, uint16_t y) { SetCellContent(x, y, BonusLife{}); }
-void Map::PlaceTank(uint16_t x, uint16_t y, const Tank& tank) { SetCellContent(x, y, tank); }
-
-
-
-
 void Map::GenerateWalls(uint8_t level) {
     uint16_t height = GetHeight();
     uint16_t width = GetWidth();
 
-    // Predefined wall positions for each level
     std::vector<std::pair<uint16_t, uint16_t>> predefinedIndestructibleWalls;
     std::vector<std::pair<uint16_t, uint16_t>> predefinedDestructibleWalls;
 
@@ -205,7 +190,6 @@ void Map::GenerateWalls(uint8_t level) {
         throw std::invalid_argument("Invalid level!");
     }
 
-    // Place predefined walls on the map
     for (const auto& pos : predefinedIndestructibleWalls) {
         SetCellContent(pos.first, pos.second, Wall::TypeWall::indestructible);
     }
@@ -213,8 +197,7 @@ void Map::GenerateWalls(uint8_t level) {
         SetCellContent(pos.first, pos.second, Wall::TypeWall::destructible);
     }
 
-    // Optionally, add random walls for additional variety
-    int additionalRandomWalls = 10; // Adjust as needed
+    int additionalRandomWalls = 10;
     for (int i = 0; i < additionalRandomWalls; ++i) {
         auto [x, y] = FindValidPosition();
         SetCellContent(x, y, Wall::TypeWall::destructible);

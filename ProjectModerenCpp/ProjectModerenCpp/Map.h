@@ -5,7 +5,7 @@
 #include <variant>
 #include <tuple>
 #include <stdexcept>
-//#include "Wall.h"
+
 import Wall;
 
 class Map {
@@ -34,13 +34,12 @@ public:
                 else if constexpr (std::is_same_v<T, Bomb>) return 1;
                 else if constexpr (std::is_same_v<T, BonusLife>) return 2;
                 else if constexpr (std::is_same_v<T, Wall::TypeWall>) {
-                    // Tratăm diferit zidurile indestructibile, destructibile și bordură
-                    if (border != 0) return 7; // Zid bordură
+                    if (border != 0) return 7; 
                     return (content == Wall::TypeWall::indestructible) ? 4 : 3;
                 }
                 else if constexpr (std::is_same_v<T, Tank>) return 5;
                 else if constexpr (std::is_same_v<T, Bullet>) return 6;
-                else return -1; // Unknown type
+                else return -1; 
                 }, content);
         }
     };
@@ -62,14 +61,13 @@ public:
     // Validation
     bool IsValidPosition(uint16_t x, uint16_t y) const;
 
-
-    // Display
-    void DisplayMap() const;
-
     // Add specific elements
     void PlaceBomb(uint16_t x, uint16_t y);
     void PlaceBonusLife(uint16_t x, uint16_t y);
     void PlaceTank(uint16_t x, uint16_t y, const Tank& tank);
+
+    // Display
+    void DisplayMap() const;
 
 private:
     uint16_t m_width;

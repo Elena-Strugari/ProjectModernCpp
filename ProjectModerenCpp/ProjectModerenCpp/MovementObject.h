@@ -6,17 +6,18 @@ public:
     enum class Direction { Up, Down, Left, Right };
 
     explicit MovementObject(GameObject& gameObject);
-    MovementObject(const MovementObject& other);            // Constructor de copiere
-    MovementObject(MovementObject&& other) noexcept;        // Constructor de mutare
-    MovementObject& operator=(const MovementObject& other); // Operator de atribuire prin copiere
-    MovementObject& operator=(MovementObject&& other) noexcept; // Operator de atribuire prin mutare
+    MovementObject(const MovementObject& other);            
+    MovementObject(MovementObject&& other) noexcept;        
+    MovementObject& operator=(const MovementObject& other); 
+    MovementObject& operator=(MovementObject&& other) noexcept;
 
 
-    // Common movement logic
+    // Getters
     std::pair<uint16_t, uint16_t> GetPosition(bool forBullet = false) const;
-    void SetPosition(uint16_t x, uint16_t y, bool forBullet = false);
-
     Direction GetDirection(bool forBullet = false) const;
+
+    //Setters
+    void SetPosition(uint16_t x, uint16_t y, bool forBullet = false);
     void SetDirection(Direction direction, bool forBullet = false);
 
     std::pair<uint16_t, uint16_t> Move(Direction direction, bool forBullet = false);
@@ -26,14 +27,14 @@ public:
     bool IsBulletActive() const;
     void DeactivateBullet();
 
-    void print() const;
-
 private:
-    GameObject& m_gameObject;
-    uint16_t m_tankX, m_tankY;
-    Direction m_tankDirection;
 
     bool m_bulletActive;
+    uint16_t m_tankX, m_tankY;
     uint16_t m_bulletX, m_bulletY;
+
+    Direction m_tankDirection;
     Direction m_bulletDirection;
+
+    GameObject& m_gameObject;
 };

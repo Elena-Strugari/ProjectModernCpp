@@ -11,7 +11,6 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const Bullet& bullet);
 
-
 private:
 	bool m_isActive;
 };

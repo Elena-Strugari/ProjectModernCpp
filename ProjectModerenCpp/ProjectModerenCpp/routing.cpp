@@ -1,23 +1,17 @@
 ﻿#pragma once
 #include "routing.h"
-#include "libs/nlohmann/json.hpp"
-#include "GameManager.h"
-//#include "Game.h"
-
-using json = nlohmann::json;
-
 #include <sstream>
+#include <regex>
+#include "GameManager.h"
 
+#include "libs/nlohmann/json.hpp"
+using json = nlohmann::json;
 using namespace http;
+
 Database db("NovaDatabase5.db");
 namespace http {
-    //std::unordered_map<std::string, Player> playersActive;
     std::unordered_map<std::string, std::shared_ptr<Player>> playersActive;
-
     std::unordered_map<std::string, Game> games;
-    //std::unordered_map<std::string, MovementObject> playersObject; 
-
-
 }
 
 
@@ -29,22 +23,6 @@ void http::Routing::Run()
     CROW_ROUTE(m_app, "/startGame")([]() {
         return crow::response(200, "Server: Conectare reusita la start!");
         });
-   /* CROW_ROUTE(m_app, "/user")([]() {
-        return crow::response(200, "Server: Conectare reusita la user!");
-        });*/
-
-    /*CROW_ROUTE(m_app, "/sendName").methods(crow::HTTPMethod::Post)([](const crow::request& req) {
-        auto body = req.body;
-        std::string response;
-        if (body == "John") {
-            response = "Server: Hello, John! Your name is recognized.";
-            return crow::response(200, response);
-        }
-        else {
-            response = "Server: Hello, " + body + "! Your name is not John, but it's still nice.";
-            return crow::response(401, response);
-        }
-        });*/
 
     CROW_ROUTE(m_app, "/login").methods("POST"_method)([](const crow::request& req) {
         auto json = crow::json::load(req.body);
@@ -58,9 +36,6 @@ void http::Routing::Run()
             if (playersActive.find(username) != playersActive.end()) {
                 return crow::response(403, "Player is already active");
             }
-
-           /* Player player(username, db);
-            playersActive.emplace(username, std::move(player));*/
             std::shared_ptr<Player> player = std::make_shared<Player>(username, db);
             playersActive.emplace(username, player);
 
@@ -69,33 +44,37 @@ void http::Routing::Run()
         else {
             return crow::response(401, "Invalid username");
         }
-        });
+    });
 
     CROW_ROUTE(m_app, "/register").methods(crow::HTTPMethod::POST)([](const crow::request& req) {
 
         auto json = crow::json::load(req.body);
-        if (!json) {
-            return crow::response(400, "Invalid JSON");
+        if (!json || !json.has("username")) {
+            return crow::response(400, "Invalid JSON or missing 'username' field");
         }
-
         std::string username = json["username"].s();
-
+        std::cout << username;
+        try {
+            std::regex usernameRegex("^(?=.*[A-Z])[A-Za-z0-9]{3,}$");
+            if (!std::regex_match(username, usernameRegex)) {
+                return crow::response(401, "Invalid username: The name must contain at least one uppercase letter and no special characters.");
+            }
+        }
+        catch (const std::regex_error& e) {
+            return crow::response(500, "Internal server error: Invalid regex configuration.");
+        }
         if (db.ClientExists(username)) {
             return crow::response(409, "Registration failed: User already exists");
         }
-        else {
-            db.AddClient(username, 0);
-           /* Player player(username, db);
-            playersActive.emplace(username, std::move(player));*/
-            std::shared_ptr<Player> player = std::make_shared<Player>(username, db);
-            playersActive.emplace(username, player);
-            return crow::response(200, "Registration successful");
-        }
+        db.AddClient(username, 0);
+        std::shared_ptr<Player> player = std::make_shared<Player>(username, db);
+        playersActive.emplace(username, player);
+
+        return crow::response(200, "Registration successful");
         });
 
 
     CROW_ROUTE(m_app, "/controls").methods("POST"_method)([](const crow::request& req) {
-        // Parse the JSON request body
         nlohmann::json json;
         try {
             json = nlohmann::json::parse(req.body);
@@ -103,42 +82,31 @@ void http::Routing::Run()
         catch (const std::exception& e) {
             return crow::response(400, "Invalid JSON format: " + std::string(e.what()));
         }
-
-        // Validate that all necessary fields are present in the JSON
         if (!json.contains("username") ||
-            !json.contains("controls") || // expecting "controls" which contains the key mappings
+            !json.contains("controls") || 
             !json["controls"].contains("Up") || !json["controls"].contains("Down") ||
             !json["controls"].contains("Left") || !json["controls"].contains("Right") ||
             !json["controls"].contains("Shoot")) {
             return crow::response(400, "Invalid JSON or missing fields");
         }
-
-        // Extract the username and controls
         std::string username = json["username"];
         auto controls = json["controls"];
-
-        // Extract specific controls (assume they are integers for key codes)
         int up = controls["Up"];
         int down = controls["Down"];
         int left = controls["Left"];
         int right = controls["Right"];
         int shoot = controls["Shoot"];
 
-        // Check if the user is active
         if (playersActive.find(username) == playersActive.end()) {
             return crow::response(404, "User is not Active");
         }
-
-        // Save the key bindings in the database (assuming SaveKeyBindings is defined)
         bool success = db.SaveKeyBindings(username, up, down, left, right, shoot);
         if (!success) {
             return crow::response(500, "Failed to save key bindings");
         }
 
         return crow::response(200, "Controls successfully set for user: " + username);
-        });
-
-
+    });
 
     CROW_ROUTE(m_app, "/generate_code").methods("GET"_method)([](const crow::request& req) {
         try {
@@ -160,21 +128,9 @@ void http::Routing::Run()
             if (playersActive.find(username) == playersActive.end()) {
                 return crow::response(404, "Player not found or not active");
             }
-
             std::shared_ptr<Player> player = playersActive[username];
-            game.AddPlayer(player);  // Add player to the game
+            game.AddPlayer(player);
             games.emplace(gameCode, game);
-
-            //std::shared_ptr<Player> newPlayer = std::make_shared<Player>(username, db);
-            //game.AddPlayer(newPlayer);
-           /* game.AddPlayer(playersActive[username]);
-            games.emplace(gameCode, game);*/
-            /*MovementObject object = newPlayer.GetMovementObject();
-            playersObject.emplace(username, object);*/
-            /*Map map = game.GetMap();
-            map.DisplayMap();*/
-            std::cout << "Player " << username << " joined the game " << gameCode << std::endl;
-
             return crow::response(200,  gameCode);
         }
         catch (const std::exception& e) {
@@ -188,44 +144,25 @@ void http::Routing::Run()
         if (!json || !json.has("game_code") || !json.has("username")) {
             return crow::response(400, "Invalid JSON or missing fields");
         }
-    
         std::string gameCode = json["game_code"].s();
         std::string username = json["username"].s();
     
-        // Check if the game code exists
         if (games.find(gameCode) == games.end()) {
             return crow::response(404, "Game code not found");
         }
     
         Game& game = games[gameCode];
-    
-        // Check if the game has already started
         if (game.IsGameStarted()) {
             return crow::response(403, "Game already started");
         }
-    
-        // Check if the player is already in the game
-        /*bool playerExists = game.IsPlayerInGame(username);
-        if (playerExists) {
-            return crow::response(409, "Player already in the game");
-        }*/
         if (game.IsMaxPlayersReached()) {
             return crow::response(410, "Maximum player limit reached, cannot join the game");
         }
-
         if (game.IsPlayerInGame(username)) {
             return crow::response(409, "Player already in the game");
         }
-
-        // Add the player to the game
-        //std::shared_ptr<Player> newPlayer = std::make_shared<Player>(username, db);
-        //game.AddPlayer(newPlayer);
-        //game.AddPlayer(playersActive[username]);
         std::shared_ptr<Player> player = playersActive[username];
         game.AddPlayer(player);
-
-
-        std::cout << "Player " << username << " joined the game " << gameCode << std::endl;
 
         return crow::response(200, "Player " + username + " joined the game successfully");
         });
@@ -242,14 +179,13 @@ void http::Routing::Run()
 
             Game& game = games[gameCode];  
             Map gameMap= game.GetMap();
-            gameMap.DisplayMap();   
+            //gameMap.DisplayMap(); 
+
             crow::json::wvalue json;
             json["width"] = gameMap.GetWidth();
             json["height"] = gameMap.GetHeight();
 
             const auto& mapData = gameMap.GetMap();
-
-            // Create the "cells" array
             crow::json::wvalue::list jsonMap;
             for (const auto& row : mapData) {
                 crow::json::wvalue::list jsonRow;
@@ -260,67 +196,27 @@ void http::Routing::Run()
             }
             json["map"] = std::move(jsonMap);
 
-            // Serialize the JSON to ensure it's valid
             std::string serializedJson = json.dump();
+           // std::cout << "Serialized JSON Response: " << serializedJson << std::endl;
 
-            // Log the serialized JSON for debugging
-            std::cout << "Serialized JSON Response: " << serializedJson << std::endl;
-
-            return crow::response(200, serializedJson);//.add_header("Content-Type", "application/json; charset=utf-8");
-
+            return crow::response(200, serializedJson);
         }
         catch (const std::exception& e) {
             return crow::response(500, "Server error: " + std::string(e.what()));
         }
         });
 
-            
-    //CROW_ROUTE(m_app, "/key_press").methods("POST"_method)([](const crow::request& req) {
-    //    try {
-    //        // Parse the JSON payload
-    //        auto json = crow::json::load(req.body);
-    //        if (!json.has("username") || !json.has("key_code")) {
-    //            return crow::response(400, "Missing 'username' or 'key_code' field");
-    //        }
-
-    //        // Extract fields from the JSON
-    //        std::string username = json["username"].s();
-    //        int keyCode = json["key_code"].i();
-
-    //        // Check if the user is active
-    //        if (playersActive.find(username) == playersActive.end()) {
-    //            return crow::response(404, "Player not found or not active");
-    //        }
-
-    //        // Handle the key press event (example: move tank or perform action)
-    //        auto& player = playersActive[username];
-
-    //        std::cout << "Key press received for player: " << username
-    //            << " with key code: " << keyCode << std::endl;
-
-    //        // Return a success response
-    //        return crow::response(200, "Key press processed successfully");
-    //    }
-    //    catch (const std::exception& ex) {
-    //        // Handle errors and return an appropriate response
-    //        return crow::response(500, "Server error: " + std::string(ex.what()));
-    //    }
-    //    });
 
     CROW_ROUTE(m_app, "/key_press").methods("POST"_method)([](const crow::request& req) {
         try {
-            // Parse the JSON payload
             auto json = crow::json::load(req.body);
             if (!json.has("username") || !json.has("key_code") || !json.has("code")) {
                 return crow::response(400, "Missing 'username' or 'key_code' field");
             }
-
-            // Extract fields from the JSON
             std::string username = json["username"].s();
             std::string code = json["code"].s();
             int keyCode = json["key_code"].i();
 
-            // Check if the user is active
             if (playersActive.find(username) == playersActive.end()) {
                 return crow::response(404, "Player not found or not active");
             }
@@ -328,10 +224,6 @@ void http::Routing::Run()
             if (games.find(code) == games.end()) {
                 return crow::response(404, "Game not found");
             }
-
-            // Get the player object
-
-            // Fetch player controls from the database
             int up, down, left, right, shoot;
             if (!db.GetKeyBindings(username, up, down, left, right, shoot)) {
                 return crow::response(500, "Failed to fetch key bindings from the database");
@@ -339,11 +231,7 @@ void http::Routing::Run()
             
             std::shared_ptr<Player> player = playersActive[username];
             Game& game = games[code];
-
-            // Compare the key press with the player's key bindings
             MovementObject::Direction direction;
-            //MovementObject::Direction directionBullet;
-
             if (keyCode == up) {
                 direction = MovementObject::Direction::Up;
             }
@@ -358,13 +246,8 @@ void http::Routing::Run()
             }
             else if (keyCode == shoot) {
 
-                game.ShootBulletS(player);  // Shooting
+                game.ShootBulletS(player);
                 return crow::response(200, "Shoot action processed");
-
-                // If the keyCode corresponds to the shoot action
-                //player->GetMovementObject().Shoot();
-               /* directionBullet = player.GetMovementObject().GetDirection();
-                player.GetMovementObject().Move(directionBullet, 1);*/
                 std::cout << "Player " << username << " shot a bullet." << std::endl;
                 return crow::response(200, "Shoot action processed");
             }
@@ -372,39 +255,31 @@ void http::Routing::Run()
                 return crow::response(400, "Invalid key code");
             }
 
-            // Move the player in the direction based on the key press
-           // player.GetMovementObject().Move(direction);
             game.MovePlayer(username, direction);
-            std::cout << "Player " << username << " moved in direction " << static_cast<int>(direction) << std::endl;
-            Map gameMap = game.GetMap();
-            gameMap.DisplayMap();
+            //std::cout << "Player " << username << " moved in direction " << static_cast<int>(direction) << std::endl;
+            /*Map gameMap = game.GetMap();
+            gameMap.DisplayMap();*/
 
             return crow::response(200, "Key press processed successfully");
         }
         catch (const std::exception& ex) {
-            // Handle errors and return an appropriate response
             return crow::response(500, "Server error: " + std::string(ex.what()));
         }
         });
 
     CROW_ROUTE(m_app, "/get_map_changes").methods("GET"_method)([](const crow::request& req) {
         try {
-            // Create a JSON object to send back
             std::string gameCode = req.url_params.get("game_code");
 
             if (gameCode.empty()) {
                 return crow::response(400, "Game code is required");
             }
-            // Get the list of changed cells from the game
-            Game& game = games[gameCode]; // Replace "game_code" with actual game code
+            Game& game = games[gameCode];
             const auto& changedCells = game.GetChangedCells();
 
             nlohmann::json responseJson;
-            // Iterate over the changed cells and add them to the JSON response
             for (const auto& change : changedCells) {
                 const auto& [newCoord, lastCoord, type] = change;
-
-                // Create a JSON object for each changed cell
                 nlohmann::json changedCell;
                 changedCell["new_x"] = newCoord.first;
                 changedCell["new_y"] = newCoord.second;
@@ -412,19 +287,13 @@ void http::Routing::Run()
                 changedCell["last_y"] = lastCoord.second;
                 changedCell["type"] = type;
 
-                // Add the changed cell to the response
                 responseJson["changed_cells"].push_back(changedCell);
             }
-
-            // Send the JSON response back to the client
             crow::response res;
             res.code = 200;
             res.write(responseJson.dump());
-
-            std::string serializedJson = responseJson.dump();
-
-            // Log the serialized JSON for debugging
-            std::cout << "Serialized JSON Response: " << serializedJson << std::endl;
+            /*std::string serializedJson = responseJson.dump();
+            std::cout << "Serialized JSON Response: " << serializedJson << std::endl;*/
             game.ClearChangedCells();
             return res;
         }
@@ -433,38 +302,7 @@ void http::Routing::Run()
         }
         });
 
-
-    //CROW_ROUTE(m_app, "/get_map_changes").methods("GET"_method)([](const crow::request& req) {
-    //    try {
-    //        // Create a JSON object to send back
-    //        nlohmann::json responseJson;
-
-    //        // Example: assume this is the map and we track changes
-    //        // For simplicity, let's assume we're sending one changed cell
-    //        nlohmann::json changedCell;
-    //        changedCell["x"] = 5;
-    //        changedCell["y"] = 10;
-    //        changedCell["type"] = "player";  // You can add more types as necessary
-
-    //        // Add the changed cell to the response
-    //        responseJson["changed_cells"].push_back(changedCell);
-
-    //        // Send the JSON response back to the client
-    //        crow::response res;
-    //        res.code = 200;
-    //        res.write(responseJson.dump());
-
-    //        return res;
-    //    }
-    //    catch (const std::exception& e) {
-    //        return crow::response(500, "Error generating map changes: " + std::string(e.what()));
-    //    }
-    //    });
-
-
-
     CROW_ROUTE(m_app, "/is_last_player").methods("POST"_method)([](const crow::request& req) {
-        // Parse the JSON request body
         auto json = crow::json::load(req.body);
         if (!json || !json.has("username") || !json.has("game_code")) {
             return crow::response(400, "Invalid JSON or missing fields");
@@ -473,20 +311,12 @@ void http::Routing::Run()
         std::string username = json["username"].s();
         std::string gameCode = json["game_code"].s();
 
-        // Check if the game exists
         if (games.find(gameCode) == games.end()) {
             return crow::response(404, "Game code not found");
         }
-
-        // Get the game instance
         Game& game = games[gameCode];
 
         if (game.IsLastPlayer(username)) {
-            // Remove player from the game
-            // You can now handle what happens if the player is the last one
-            // e.g., send game over response, update clients, etc.
-
-            // Optionally, send back a success message if needed
             game.RemovePlayer(username);
             return crow::response(200, "Player " + username + " is the last player and has been removed");
         }
@@ -494,241 +324,7 @@ void http::Routing::Run()
             game.RemovePlayer(username);
             return crow::response(400, "Player " + username + " is not the last player");
         }
-
-
-        // Find the player in the game
-        //std::shared_ptr<Player> player = nullptr;
-        //for (const auto& p : game.m_players) {
-        //    if (p->GetName() == username) {
-        //        player = p;
-        //        break;
-        //    }
-        //}
-
-        //// If the player is not found
-        //if (!player) {
-        //    return crow::response(404, "Player not found");
-        //}
-
-        //// Check if the player is the last player
-        //if (game.IsLastPlayer(player)) {
-        //    return crow::response(200, username + " is the last player in the game");
-        //}
-        //else {
-        //    return crow::response(200, username + " is not the last player in the game");
-        //}
     });
-
-
-
 
     m_app.port(8080).run();
 }
-
-            //CROW_ROUTE(m_app, "/move_tank/up")([this](const crow::request& req) {
-            //    auto clientId = req.url_params.get("id");
-            //    if (!clientId) {
-            //        return crow::response(400, "Missing client ID");
-            //    }
-
-            //    MoveTank(clientId, MovementObject::Direction::Up);
-            //    std::string word = GetTankPositionString(clientId);
-            //    return crow::response(200, "S-a mutat sus " + word);
-            //    });
-
-            //CROW_ROUTE(m_app, "/move_tank/down")([this](const crow::request& req) {
-            //    auto clientId = req.url_params.get("id");
-            //    if (!clientId) {
-            //        return crow::response(400, "Missing client ID");
-            //    }
-
-            //    MoveTank(clientId, MovementObject::Direction::Down);
-            //    std::string word = GetTankPositionString(clientId);
-            //    return crow::response(200, "S-a mutat jos " + word);
-            //    });
-
-            //CROW_ROUTE(m_app, "/move_tank/left")([this](const crow::request& req) {
-            //    auto clientId = req.url_params.get("id");
-            //    if (!clientId) {
-            //        return crow::response(400, "Missing client ID");
-            //    }
-
-            //    MoveTank(clientId, MovementObject::Direction::Left);
-            //    std::string word = GetTankPositionString(clientId);
-            //    return crow::response(200, "S-a mutat la stanga " + word);
-            //    });
-
-            //CROW_ROUTE(m_app, "/move_tank/right")([this](const crow::request& req) {
-            //    auto clientId = req.url_params.get("id");
-            //    if (!clientId) {
-            //        return crow::response(400, "Missing client ID");
-            //    }
-
-            //    MoveTank(clientId, MovementObject::Direction::Right);
-            //    std::string word = GetTankPositionString(clientId);
-            //    return crow::response(200, "S-a mutat la dreapta " + word);
-            //    });
-
-
-            //unsigned int numThreads = std::thread::hardware_concurrency(); // Determină numărul de fire
-            //if (numThreads == 0) numThreads = 4; // Asigură-te că există cel puțin un fir
-
-           // m_app.port(8080).concurrency(numThreads).run();
-
-
-
-
-
-//if (clientId) {
-
-//    // Verifică dacă tank-ul există pentru clientId
-//    if (m_tanks.find(clientId) == m_tanks.end()) {
-//        return crow::response(404, R"({"error":"Tank not found for given Client ID"})");
-//    }
-//    // Obține tank-ul asociat
-//    const auto& tank = m_tanks[clientId];
-//    Tank::ColorTank color = std::get<2>(tank);
-
-//    // Determină culoarea tank-ului
-//    std::string rezColorTank;
-//    switch (color) {
-//    case Tank::ColorTank::Red:
-//        rezColorTank = "Red";
-//        break;
-//    case Tank::ColorTank::Blue:
-//        rezColorTank = "Blue";
-//        break;
-//    case Tank::ColorTank::Green:
-//        rezColorTank = "Green";
-//        break;
-//    default:
-//        rezColorTank = "Unknown";
-//        break;
-//    }
-
-//    std::cout << "Tank color for Client ID " << clientId << ": " << rezColorTank << "\n\n";
-
-//    // Trimite răspunsul
-//    return crow::response(rezColorTank);
-//}
-
-//// Dacă clientId nu a fost specificat
-//return crow::response(400, R"({"error":"Client ID missing"})");
-//    });
-
-
-////var pt cand merge BD
-
-//CROW_ROUTE(m_app, "/move_tank")([this](const crow::request& req) {
-//    auto client_id = req.url_params.get("id");
-//    char* direction = req.url_params.get("direction");
-
-//    if (client_id && direction) {
-//        auto it = m_tanks.find(client_id);
-//        if (it != m_tanks.end()) {
-//            // Transformă caracterul direcției într-un obiect Direction
-//            MovementObject::Direction dir;
-//            if (strcmp(direction, "U") == 0) {
-//                dir = MovementObject::Direction::Up;
-//            }
-//            else if (strcmp(direction, "D") == 0) {
-//                dir = MovementObject::Direction::Down;
-//            }
-//            else if (strcmp(direction, "L") == 0) {
-//                dir = MovementObject::Direction::Left;
-//            }
-//            else if (strcmp(direction, "R") == 0) {
-//                dir = MovementObject::Direction::Right;
-//            }
-//            else {
-//                return crow::response(400, "Invalid direction");
-//            }
-
-//                // Transformă caracterul direcției într-un obiect Direction
-
-//            //std::cout << direction;
-//            //    MovementObject::Direction dir;
-//            //    if (strcmp(direction, "U") == 0) {  // Compară cu "U"
-//            //        // Mișcă în sus
-//            //        return crow::response(200, "S-a mutat sus");
-//            //    }
-//            //    else if (strcmp(direction, "D") == 0) {  // Compară cu "D"
-//            //        // Mișcă în jos
-//            //        return crow::response(200, "S-a mutat jos");
-//            //    }
-//            //    else if (strcmp(direction, "L") == 0) {  // Compară cu "L"
-//            //        // Mișcă în stânga
-//            //        return crow::response(200, "S-a mutat la stânga");
-//            //    }
-//            //    else if (strcmp(direction, "R") == 0) {  // Compară cu "R"
-//            //        // Mișcă în dreapta
-//            //        return crow::response(200, "S-a mutat la dreapta");
-//            //    }
-//            //    else {
-//            //        return crow::response(400, "Direcție invalidă");
-//            //    
-
-//                // Mișcă obiectul
-
-//                std::cout << "inainte de move";
-//                it->second.Move(dir);
-//                std::cout << "dupa de move";
-//                std::cout << "New position: (" << std::to_string(it->second.GetX()) << ", " << std::to_string(it->second.GetY()) << ")";
-//                // Răspunde cu noua poziție
-//                return crow::response(200, "New position: (" + std::to_string(it->second.GetX()) + ", " + std::to_string(it->second.GetY()) + ")");
-//            }
-//            return crow::response(404, "Tank not found");
-//        }
-
-//        return crow::response(400, "Missing parameters");
-//    
-//    });
-
-
-
-
-
-
-//CROW_ROUTE(m_app, "/move").methods("POST"_method)([](const crow::request& req) {
-//    auto json = crow::json::load(req.body);
-//    if (!json.has("username") || !json.has("direction")) {
-//        return crow::response(400, "Missing parameters");
-//    }
-//
-//    std::string username = json["username"].s();
-//    std::string direction = json["direction"].s();
-//
-//    auto* player = PlayerManager::GetPlayer(username);
-//    if (!player) {
-//        return crow::response(404, "Player not found");
-//    }
-//
-//    MovementObject::Direction dir;
-//    if (direction == "up") dir = MovementObject::Direction::Up;
-//    else if (direction == "down") dir = MovementObject::Direction::Down;
-//    else if (direction == "left") dir = MovementObject::Direction::Left;
-//    else if (direction == "right") dir = MovementObject::Direction::Right;
-//    else return crow::response(400, "Invalid direction");
-//
-//    player->GetMovementObject().Move(dir);
-//    return crow::response(200, "Player moved");
-//    });
-//CROW_ROUTE(m_app, "/shoot").methods("POST"_method)([](const crow::request& req) {
-//    auto json = crow::json::load(req.body);
-//    if (!json.has("username")) {
-//        return crow::response(400, "Missing username");
-//    }
-//
-//    std::string username = json["username"].s();
-//    auto* player = PlayerManager::GetPlayer(username);
-//    if (!player) {
-//        return crow::response(404, "Player not found");
-//    }
-//
-//    player->GetMovementObject().Shoot();
-//    return crow::response(200, "Bullet shot");
-//    });
-//
-//CROW_ROUTE(m_app, "/game_ws").websocket().onmessage([](crow::websocket::connection& conn, const std::string& data) {
-//    conn.send_text("Game update: " + data);
-//    });

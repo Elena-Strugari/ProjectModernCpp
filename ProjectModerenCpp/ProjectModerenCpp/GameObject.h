@@ -1,8 +1,9 @@
 ﻿#pragma once
 #include <cstdint>
 #include "Bullet.h"
-//#include "Tank.h"
+
 import Tank;
+
 class GameObject 
 {
 public:
@@ -16,9 +17,6 @@ public:
     Bullet& GetBullet();
 
     void ShootBullet(); 
-
-     friend std::ostream& operator<<(std::ostream& os, const GameObject& go);
-
 
 private:
     Tank m_tank;

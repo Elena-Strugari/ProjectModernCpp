@@ -55,6 +55,40 @@ bool Database::AddClient(const std::string& clientId, int score) {
     return success;
 }
 
+bool Database::ClientExists(const std::string& clientId) {
+    const char* existsSQL = "SELECT 1 FROM clients WHERE id = ? LIMIT 1;";
+
+    sqlite3_stmt* stmt = nullptr;
+    if (sqlite3_prepare_v2(db, existsSQL, -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+
+    sqlite3_bind_text(stmt, 1, clientId.c_str(), -1, SQLITE_TRANSIENT);
+
+    bool exists = sqlite3_step(stmt) == SQLITE_ROW;
+    sqlite3_finalize(stmt);
+
+    return exists;
+}
+
+bool Database::DeleteClient(const std::string& clientId) {
+    const char* deleteSQL = "DELETE FROM clients WHERE id = ?;";
+
+    sqlite3_stmt* stmt = nullptr;
+    if (sqlite3_prepare_v2(db, deleteSQL, -1, &stmt, nullptr) != SQLITE_OK) {
+        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
+        return false;
+    }
+
+    sqlite3_bind_text(stmt, 1, clientId.c_str(), -1, SQLITE_TRANSIENT);
+
+    bool success = sqlite3_step(stmt) == SQLITE_DONE;
+    sqlite3_finalize(stmt);
+
+    return success;
+}
+
 bool Database::UpdateScore(const std::string& clientId, int newScore) {
     const char* updateSQL = "UPDATE clients SET score = ? WHERE id = ?;";
 
@@ -91,40 +125,6 @@ int Database::GetScore(const std::string& clientId) {
 
     sqlite3_finalize(stmt);
     return score;
-}
-
-bool Database::DeleteClient(const std::string& clientId) {
-    const char* deleteSQL = "DELETE FROM clients WHERE id = ?;";
-
-    sqlite3_stmt* stmt = nullptr;
-    if (sqlite3_prepare_v2(db, deleteSQL, -1, &stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
-        return false;
-    }
-
-    sqlite3_bind_text(stmt, 1, clientId.c_str(), -1, SQLITE_TRANSIENT);
-
-    bool success = sqlite3_step(stmt) == SQLITE_DONE;
-    sqlite3_finalize(stmt);
-
-    return success;
-}
-
-bool Database::ClientExists(const std::string& clientId) {
-    const char* existsSQL = "SELECT 1 FROM clients WHERE id = ? LIMIT 1;";
-
-    sqlite3_stmt* stmt = nullptr;
-    if (sqlite3_prepare_v2(db, existsSQL, -1, &stmt, nullptr) != SQLITE_OK) {
-        std::cerr << "Failed to prepare statement: " << sqlite3_errmsg(db) << std::endl;
-        return false;
-    }
-
-    sqlite3_bind_text(stmt, 1, clientId.c_str(), -1, SQLITE_TRANSIENT);
-
-    bool exists = sqlite3_step(stmt) == SQLITE_ROW;
-    sqlite3_finalize(stmt);
-
-    return exists;
 }
 
 bool Database::SaveKeyBindings(const std::string& clientId, int up, int down, int left, int right, int shoot) {

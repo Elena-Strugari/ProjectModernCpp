@@ -127,7 +127,6 @@
     <ClCompile Include="InGameSettingsWindow.cpp" />
     <ClCompile Include="LevelSelectionWindow.cpp" />
     <ClCompile Include="MainWindow.cpp" />
-    <ClCompile Include="MapCell.cpp" />
     <ClCompile Include="MapWidget.cpp" />
     <ClCompile Include="NoGreenScreen.cpp" />
     <ClCompile Include="DisplayElements.cpp" />
@@ -144,7 +143,6 @@
     <QtUic Include="Client.ui" />
     <QtMoc Include="Client.h" />
     <ClCompile Include="Client.cpp" />
-    <ClCompile Include="ClientMap.cpp" />
     <ClCompile Include="ClientServer.cpp" />
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="LoginWindow.cpp" />
@@ -153,7 +151,6 @@
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="VictoryWindow.h" />
-    <QtMoc Include="ClientMap.h" />
     <ClInclude Include="BackgroundHelper.h" />
     <ClInclude Include="ClientServer.h" />
     <QtMoc Include="ControlChoiceWindow.h" />
@@ -165,7 +162,6 @@
     <QtMoc Include="GeneralSettingsWindow.h" />
     <QtMoc Include="InGameSettingsWindow.h" />
     <QtMoc Include="GameOverWindow.h" />
-    <ClInclude Include="MapCell.h" />
     <QtMoc Include="MapWidget.h" />
     <ClInclude Include="NoGreenScreen.h" />
     <ClInclude Include="DisplayElements.h" />

@@ -1,20 +1,20 @@
 #include "GameManager.h"
-#include <unordered_map>  // Ensure this is included
+#include <unordered_map>  
 
 std::unordered_map<std::string, Game> GameManager::m_games;  
 
 bool GameManager::GameExists(const std::string& gameCode) {
-    return m_games.find(gameCode) != m_games.end();  // Check if gameCode exists in the map
+    return m_games.find(gameCode) != m_games.end();
 }
 
 void GameManager::AddGame(const std::string& gameCode, const Game& game) {
-    m_games[gameCode] = game;  // Add game to the map with the gameCode as the key
+    m_games[gameCode] = game;
 }
 
 Game& GameManager::GetGame(const std::string& gameCode) {
-    auto it = m_games.find(gameCode);  // Find the game by its code
+    auto it = m_games.find(gameCode);
     if (it == m_games.end()) {
         throw std::runtime_error("Game not found");
     }
-    return it->second;  // Return the game associated with the gameCode
+    return it->second; 
 }
