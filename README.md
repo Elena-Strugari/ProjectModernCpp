@@ -25,31 +25,5 @@ A modular C++ desktop client built with Qt for managing multiplayer sessions, in
 - **CMake** – cross-platform build system
 - **Visual Studio (.sln)** – Windows development environment
 
-## Structure Overview
-
-ProjectModernCpp-main/
-├── .gitignore
-├── CMakeLists.txt
-├── Client/
-│   ├── Client/
-│   │   ├── *.cpp, *.h                # Multiple GUI components (Login, GameOver, etc.)
-│   │   ├── ClientServer.cpp/h        # Networking logic
-│   │   ├── *.ui                      # Qt Designer UI files
-│   │   ├── Client.qrc, Resource.qrc  # Qt resource files
-│   │   ├── libs/
-│   │   │   └── nlohmann/json.hpp     # JSON handling
-│   │   ├── resources/
-│   │   │   └── *.png, *.jpg          # Game assets (astronauts, oxygen, UI icons)
-│   │   └── main.cpp
-│   └── Client.sln                    # Visual Studio solution
-├── ProjectModerenCpp/
-│   ├── ProjectModerenCpp/
-│   │   ├── *.cpp, *.h                # Game logic (Bomb, Bullet, GameManager, etc.)
-│   │   ├── *.db                      # SQLite databases for testing or persistence
-│   │   ├── CMakeLists.txt
-│   │   └── Main.cpp
-└──        
-
-
 ## Video Demo link :
 https://youtu.be/ethhUT_XoZE
