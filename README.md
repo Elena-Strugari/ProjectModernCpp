@@ -1,4 +1,4 @@
-# Modern Multiplayer Game Lobby – C++ Qt Client
+# Modern Multiplayer Game – C++ Qt Client
 
 A modular C++ desktop client built with Qt for managing multiplayer sessions, in-game settings, and user interaction windows.
 
